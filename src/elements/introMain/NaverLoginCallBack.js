@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import { setCookie } from "../../shared/cookie";
 
 const NaverLoginCallBack = () => {
   const location = useLocation();
@@ -15,13 +16,17 @@ const NaverLoginCallBack = () => {
       })
       .then((res) => {
         const token = res.data.access_token;
+        setCookie(token);
 
         // 받아온 토큰으로 유저 정보 조회
         axios
           .post(`http://52.78.168.151:3000/member`, {
             token,
           })
-          .then((res) => console.log(res))
+          .then((res) => {
+            console.log(res);
+          })
+
           .catch((error) => console.log(error));
       })
       .catch((err) => console.log(err));
