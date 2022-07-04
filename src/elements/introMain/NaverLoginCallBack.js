@@ -24,7 +24,17 @@ const NaverLoginCallBack = () => {
             token,
           })
           .then((res) => {
-            console.log(res);
+            const user_email = res.data.response.email;
+            const user_id = res.data.response.id;
+            const user_name = res.data.response.name;
+
+            axios
+              .post(`http://52.78.168.151:3000/parsing`, {
+                user_email,
+                user_id,
+                user_name,
+              })
+              .then((res) => console.log(res));
           })
 
           .catch((error) => console.log(error));
@@ -36,7 +46,7 @@ const NaverLoginCallBack = () => {
     getNaverToken();
   }, []);
 
-  return <div>콜백페이지입니다</div>;
+  return <div>네이버 콜백페이지입니다</div>;
 };
 
 export default NaverLoginCallBack;
