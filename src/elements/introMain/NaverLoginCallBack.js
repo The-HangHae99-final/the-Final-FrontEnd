@@ -16,7 +16,7 @@ const NaverLoginCallBack = () => {
       })
       .then((res) => {
         const token = res.data.access_token;
-        setCookie(token);
+        setCookie("myToken", token);
 
         // 받아온 토큰으로 유저 정보 조회
         axios

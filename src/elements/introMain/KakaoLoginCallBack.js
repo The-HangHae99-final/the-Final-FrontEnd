@@ -16,7 +16,7 @@ const KakaoLoginCallback = () => {
       })
       .then((res) => {
         const token = res.data;
-        setCookie(token);
+        setCookie("myToken", token);
         axios
           .post(`http://52.78.168.151:3000/kakao/member`, {
             token,
