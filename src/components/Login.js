@@ -15,5 +15,7 @@ const Login = () => {
     </div>
   );
 };
-
+// 주소창에
+// https://nid.naver.com/oauth2.0/token?grant_type=delete&client_id=0wSIvykcfvmOTk3Dz4fS&client_secret=oQne0wSuP7&access_token=AAAANefUOe8jvoOYFOV1WiS0QZCD0SVN_JOtIg2WuRbDv24LdID7Sphk70difRV3rTX8cHmCKOuAX1Sb6HcVk0LjVJI&service_provider=NAVER
+// 치면 네이버 로그아웃 가능
 export default Login;

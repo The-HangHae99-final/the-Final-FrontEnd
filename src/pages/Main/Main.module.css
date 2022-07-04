@@ -1,0 +1,123 @@
+.main {
+  height: 100vh;
+  display: flex;
+}
+
+.leftSide {
+  background-color: #889aff;
+  height: 100%;
+  width: 80px;
+  min-width: 80px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0px;
+  box-sizing: border-box;
+}
+
+.rightSide {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  width: 60px;
+  height: 60px;
+  background-color: white;
+  border-radius: 50%;
+}
+
+.buttons {
+  margin-top: 121px;
+  display: Flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+}
+
+.buttonWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.btn {
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.header {
+  height: 80px;
+  width: 100%;
+  display: flex;
+  box-sizing: border-box;
+  justify-content: flex-end;
+  padding: 15px 0px;
+}
+
+.inputWrap {
+  position: relative;
+  width: 500px;
+}
+
+.searchInput {
+  height: 50px;
+  width: 500px;
+  border-radius: 5px;
+  border: none;
+  box-sizing: border-box;
+  padding: 16px 74px;
+  position: relative;
+  background-color: #ecedf1;
+}
+
+.searchIcon {
+  width: 24px;
+  height: 24px;
+  background-color: #889aff;
+  position: absolute;
+  top: 13px;
+  left: 30px;
+}
+
+.menuItems {
+  display: flex;
+  align-items: center;
+  margin-right: 90px;
+  margin-left: 205px;
+}
+
+.menuBtns {
+  display: flex;
+  gap: 25px;
+}
+
+.menuBtn {
+  all: unset;
+  width: 24px;
+  height: 24px;
+  background-color: #889aff;
+}
+
+.aboutUser {
+  margin-left: 42px;
+}
+
+.mainStyle {
+  width: 100%;
+  height: 100%;
+  background-color: cadetblue;
+  padding: 20px 20px 0px 20px;
+}
+
+/* .sideCalender {
+  width: 280px;
+  height: 924px;
+  background-color: #f8f8f9;
+} */
