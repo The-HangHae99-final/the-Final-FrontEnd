@@ -43,6 +43,10 @@ const Main = () => {
               <div className={styles.userAvatar}>
                 <UserAvatar size="big" />
               </div>
+              <div className={styles.userMetaInfo}>
+                <span className={styles.greeting}>Hi!</span>
+                <div className={styles.userName}>김규림님!</div>
+              </div>
             </div>
           </div>
         </header>
