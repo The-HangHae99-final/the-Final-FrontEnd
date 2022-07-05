@@ -1,9 +1,20 @@
-import React from "react";
-import { InputUnstyled } from "@mui/base";
-import UserAvatar from "../../elements/UserAvatar";
+import React, { useState } from "react";
 import styles from "./Main.module.css";
+import Header from "../../components/Header/Header";
+import { Outlet } from "react-router-dom";
 
 const Main = () => {
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
+
+  const handleLogin = () => {
+    setIsLoginModalOpen(!isLoginModalOpen);
+  };
+
+  const handleSignup = () => {
+    setIsSignupModalOpen(!isSignupModalOpen);
+  };
+
   return (
     <div className={styles.main}>
       <div className={styles.leftSide}>
@@ -25,7 +36,8 @@ const Main = () => {
       </div>
 
       <div className={styles.rightSide}>
-        <header className={styles.header}>
+        <Header />
+        {/* <header className={styles.header}>
           <form className={styles.inputWrap}>
             <input
               type="text"
@@ -38,6 +50,8 @@ const Main = () => {
             <div className={styles.menuBtns}>
               <button className={styles.menuBtn}></button>
               <button className={styles.menuBtn}></button>
+              <button onClick={handleLogin}>로그인</button>
+              <button onClick={handleSignup}>회원가입</button>
             </div>
             <div className={styles.aboutUser}>
               <div className={styles.userAvatar}>
@@ -49,11 +63,10 @@ const Main = () => {
               </div>
             </div>
           </div>
-        </header>
+        </header> */}
 
         <main className={styles.mainStyle}>
-          <div className={styles.sideCalender}>사이드달력</div>
-          <div className={styles.mainCalender}>메인달력</div>
+          <Outlet />
         </main>
       </div>
     </div>

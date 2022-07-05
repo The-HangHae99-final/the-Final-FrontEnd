@@ -108,12 +108,10 @@
 .aboutUser {
   margin-left: 42px;
   display: flex;
-  background-color: aquamarine;
 }
 
 .userAvatar {
   width: 78px;
-  background-color: red;
   height: 62px;
   display: flex;
   align-items: center;
