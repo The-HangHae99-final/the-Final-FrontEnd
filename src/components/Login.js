@@ -4,8 +4,15 @@ import Divider from "../elements/Divider";
 import SocialLogin from "./SocialLogin";
 
 const Login = ({ text }) => {
+  const closeModal = (e) => {
+    if (e.target.id !== "loginBg") {
+      return;
+    }
+    console.log(e.target.id);
+  };
+
   return (
-    <LoginBackGround>
+    <LoginBackGround id="loginBg" onClick={closeModal}>
       <LoginStyle>
         <LoginWrap>
           <LoginTitle>{text}</LoginTitle>
@@ -37,6 +44,7 @@ const LoginBackGround = styled.div`
   top: 0;
   left: 0;
   z-index: 9999;
+  cursor: pointer;
 `;
 
 const LoginStyle = styled.div`
