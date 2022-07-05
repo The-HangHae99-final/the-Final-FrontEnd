@@ -9,7 +9,6 @@ import Login from "./components/Login";
 // pages
 import Main from "./pages/Main/Main";
 import Board from "./pages/Board";
-import Mypage from "./pages/Mypage";
 import Message from "./pages/Message";
 import Calender from "./pages/Calender";
 import Storage from "./pages/Storage";
@@ -51,7 +50,6 @@ const App = () => {
               <Route path="board" element={<Board />} />
               <Route path="calender" element={<Calender />} />
               <Route path="message" element={<Message />} />
-              <Route path="mypage" element={<Mypage />} />
               <Route path="storage" element={<Storage />} />
             </Route>
           </>

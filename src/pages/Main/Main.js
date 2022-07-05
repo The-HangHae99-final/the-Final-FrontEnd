@@ -11,6 +11,11 @@ const Main = ({
   isLoginModalOpen,
   isSignupModalOpen,
 }) => {
+  const [modalOn, setModalOn] = useState(false);
+
+  const handleModal = () => {
+    setModalOn(!modalOn);
+  };
   return (
     <div className={styles.main}>
       <div className={styles.leftSide}>
@@ -42,8 +47,20 @@ const Main = ({
           <Outlet />
         </main>
       </div>
-      {isLoginModalOpen && <LoginModal text="Login" />}
-      {isSignupModalOpen && <LoginModal text="Signup" />}
+      {isLoginModalOpen && (
+        <LoginModal
+          text="Login"
+          isLoginModalOpen={isLoginModalOpen}
+          isSignupModalOpen={isSignupModalOpen}
+        />
+      )}
+      {isSignupModalOpen && (
+        <LoginModal
+          text="Signup"
+          isLoginModalOpen={isLoginModalOpen}
+          isSignupModalOpen={isSignupModalOpen}
+        />
+      )}
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import UserAvatar from "../../elements/UserAvatar";
 import styles from "../../pages/Main/Main.module.css";
+import { useDispatch } from "react-redux";
 
 const Header = ({ isLoggedIn, handleLogin, handleSignup }) => {
   return (
@@ -25,7 +26,9 @@ const Header = ({ isLoggedIn, handleLogin, handleSignup }) => {
                   <button onClick={handleSignup}>회원가입</button>
                 </>
               ) : (
-                <button onClick={handleLogin}>로그아웃</button>
+                <button onClick={() => console.log("로그아웃")}>
+                  로그아웃
+                </button>
               )}
             </div>
           </div>

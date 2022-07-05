@@ -2,49 +2,54 @@ import React from "react";
 import styled from "styled-components";
 import Divider from "../elements/Divider";
 import SocialLogin from "./SocialLogin";
+import ModalPortal from "../elements/Portal/Portal";
 
 const Login = ({ text }) => {
   const closeModal = (e) => {
     if (e.target.id !== "loginBg") {
       return;
     }
-    console.log(e.target.id);
   };
 
   return (
-    <LoginBackGround id="loginBg" onClick={closeModal}>
-      <LoginStyle>
-        <LoginWrap>
-          <LoginTitle>{text}</LoginTitle>
+    <ModalPortal>
+      <LoginBackGround id="loginBg" onClick={closeModal}>
+        <LoginStyle>
+          <LoginWrap>
+            <LoginTitle>{text}</LoginTitle>
 
-          <EmailWrap>
-            <EmailLabel>이메일 주소</EmailLabel>
-            <EmailInput id="textInput" type="text" />
-          </EmailWrap>
-          <EmailSubmit>계속</EmailSubmit>
+            <EmailWrap>
+              <EmailLabel>이메일 주소</EmailLabel>
+              <EmailInput id="textInput" type="text" />
+            </EmailWrap>
+            <EmailSubmit>계속</EmailSubmit>
 
-          <ContinueWrap>
-            <Divider />
-            <ContinueText>or continue with</ContinueText>
-            <Divider />
-          </ContinueWrap>
+            <ContinueWrap>
+              <Divider />
+              <ContinueText>or continue with</ContinueText>
+              <Divider />
+            </ContinueWrap>
 
-          <SocialLogin />
-        </LoginWrap>
-      </LoginStyle>
-    </LoginBackGround>
+            <SocialLogin />
+          </LoginWrap>
+        </LoginStyle>
+      </LoginBackGround>
+    </ModalPortal>
   );
 };
 
 const LoginBackGround = styled.div`
   width: 100vw;
   height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: ;
   backdrop-filter: blur(10px);
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  z-index: 9999;
   cursor: pointer;
+  text-align: center;
 `;
 
 const LoginStyle = styled.div`

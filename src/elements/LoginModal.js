@@ -7,7 +7,6 @@ const LoginModal = ({ text }) => {
     <>
       {
         text ? <Login text={text} /> : null
-
         // <Signup
         //   closeModal={closeModal}
         //   setIsLoginModalOpen={setIsLoginModalOpen}

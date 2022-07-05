@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 const Board = () => {
   const [data, setDatas] = useState({
@@ -7,13 +8,15 @@ const Board = () => {
     category: "",
   });
 
+  const user = useSelector((state) => state.uses.value);
+  console.log("data: ", data);
+  console.log("user: ", user);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
     setDatas({ ...data, [name]: value });
   };
 
-  console.log(data);
   return (
     <div>
       <form>
