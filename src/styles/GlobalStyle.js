@@ -3,6 +3,13 @@ import reset from "styled-reset";
 
 const GlobalStyle = createGlobalStyle`
     ${reset};
+    :root{
+        --point-main: #7D8BDB;
+        --FEFEFE: #FEFEFE;
+
+        /* grey */
+        --main-grey: #7A858E;
+    }
     *{
         margin: 0;
   box-sizing: border-box;

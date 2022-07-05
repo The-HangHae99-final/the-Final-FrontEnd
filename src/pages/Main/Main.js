@@ -2,19 +2,15 @@ import React, { useState } from "react";
 import styles from "./Main.module.css";
 import Header from "../../components/Header/Header";
 import { Outlet } from "react-router-dom";
+import LoginModal from "../../elements/LoginModal";
 
-const Main = () => {
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
-
-  const handleLogin = () => {
-    setIsLoginModalOpen(!isLoginModalOpen);
-  };
-
-  const handleSignup = () => {
-    setIsSignupModalOpen(!isSignupModalOpen);
-  };
-
+const Main = ({
+  isLoggedIn,
+  handleLogin,
+  handleSignup,
+  isLoginModalOpen,
+  isSignupModalOpen,
+}) => {
   return (
     <div className={styles.main}>
       <div className={styles.leftSide}>
@@ -36,39 +32,18 @@ const Main = () => {
       </div>
 
       <div className={styles.rightSide}>
-        <Header />
-        {/* <header className={styles.header}>
-          <form className={styles.inputWrap}>
-            <input
-              type="text"
-              placeholder="search"
-              className={styles.searchInput}
-            />
-            <div className={styles.searchIcon}></div>
-          </form>
-          <div className={styles.menuItems}>
-            <div className={styles.menuBtns}>
-              <button className={styles.menuBtn}></button>
-              <button className={styles.menuBtn}></button>
-              <button onClick={handleLogin}>로그인</button>
-              <button onClick={handleSignup}>회원가입</button>
-            </div>
-            <div className={styles.aboutUser}>
-              <div className={styles.userAvatar}>
-                <UserAvatar size="big" />
-              </div>
-              <div className={styles.userMetaInfo}>
-                <span className={styles.greeting}>Hi!</span>
-                <div className={styles.userName}>김규림님!</div>
-              </div>
-            </div>
-          </div>
-        </header> */}
+        <Header
+          isLoggedIn={isLoggedIn}
+          handleLogin={handleLogin}
+          handleSignup={handleSignup}
+        />
 
         <main className={styles.mainStyle}>
           <Outlet />
         </main>
       </div>
+      {isLoginModalOpen && <LoginModal text="Login" />}
+      {isSignupModalOpen && <LoginModal text="Signup" />}
     </div>
   );
 };

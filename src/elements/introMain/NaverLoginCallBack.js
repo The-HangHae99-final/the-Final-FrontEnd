@@ -33,9 +33,11 @@ const NaverLoginCallBack = () => {
           })
           .then((res) => {
             const user_email = res.data.response.email;
+            console.log("user_email: ", user_email);
             const user_id = res.data.response.id;
+            console.log("user_id: ", user_id);
             const user_name = res.data.response.name;
-
+            console.log("user_name: ", user_name);
             axios
               .post(`http://52.78.168.151:3000/parsing`, {
                 user_email,
@@ -43,7 +45,7 @@ const NaverLoginCallBack = () => {
                 user_name,
               })
               .then((res) => {
-                navigate("/main");
+                navigate("/auth/login/callback");
               });
           })
 

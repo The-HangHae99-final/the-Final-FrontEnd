@@ -1,7 +1,7 @@
 import React from "react";
 
 const Signup = () => {
-  return <div>Signup 페이지 입니다.</div>;
+  return <div>Signup</div>;
 };
 
 export default Signup;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import UserAvatar from "../../elements/UserAvatar";
 import styles from "../../pages/Main/Main.module.css";
 
-const Header = () => {
+const Header = ({ isLoggedIn, handleLogin, handleSignup }) => {
   return (
     <>
       <header className={styles.header}>
@@ -18,8 +18,16 @@ const Header = () => {
           <div className={styles.menuBtns}>
             <button className={styles.menuBtn}></button>
             <button className={styles.menuBtn}></button>
-            {/* <button onClick={handleLogin}>로그인</button>
-            <button onClick={handleSignup}>회원가입</button> */}
+            <div>
+              {!isLoggedIn ? (
+                <>
+                  <button onClick={handleLogin}>로그인</button>
+                  <button onClick={handleSignup}>회원가입</button>
+                </>
+              ) : (
+                <button onClick={handleLogin}>로그아웃</button>
+              )}
+            </div>
           </div>
           <div className={styles.aboutUser}>
             <div className={styles.userAvatar}>

@@ -14,43 +14,69 @@ import Message from "./pages/Message";
 import Calender from "./pages/Calender";
 import Storage from "./pages/Storage";
 import Public from "./pages/Public";
+import SocialLogin from "./components/SocialLogin";
 
 const App = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
 
-  // useEffect(() => {
-  //   if (getCookie("myToken") === null) {
-  //     console.log(`isLogin : ${isLogin}`);
-  //   } else {
-  //     setIsLogin(true);
-  //   }
-  // }, []);
+  const handleLogin = () => {
+    setIsLoginModalOpen(!isLoginModalOpen);
+    setIsSignupModalOpen(false);
+  };
 
+  const handleSignup = () => {
+    setIsSignupModalOpen(!isSignupModalOpen);
+    setIsLoginModalOpen(false);
+  };
   return (
     <div>
       <GlobalStyle />
       <Routes>
-        {isLogin ? (
+        {isLoggedIn ? (
           <>
-            <Route path="/" element={<Main />}>
+            <Route
+              path="/"
+              element={
+                <Main
+                  isLoggedIn={isLoggedIn}
+                  handleLogin={handleLogin}
+                  handleSignup={handleSignup}
+                  isLoginModalOpen={isLoginModalOpen}
+                  isSignupModalOpen={isSignupModalOpen}
+                />
+              }
+            >
               <Route path="board" element={<Board />} />
               <Route path="calender" element={<Calender />} />
               <Route path="message" element={<Message />} />
               <Route path="mypage" element={<Mypage />} />
               <Route path="storage" element={<Storage />} />
-              <Route
-                path="auth/login/callback"
-                element={<NaverLoginCallBack />}
-              />
-              <Route
-                path="auth/login/kakao/callback"
-                element={<KakaoLoginCallback />}
-              />
             </Route>
           </>
         ) : (
-          <Route path="/" element={<Main />}>
+          <Route
+            path="/"
+            element={
+              <Main
+                isLoggedIn={isLoggedIn}
+                handleLogin={handleLogin}
+                handleSignup={handleSignup}
+                isLoginModalOpen={isLoginModalOpen}
+                isSignupModalOpen={isSignupModalOpen}
+              />
+            }
+          >
             <Route path="public" element={<Public />} />
+            <Route
+              path="auth/login/callback"
+              element={<NaverLoginCallBack />}
+            />
+            <Route
+              path="auth/login/kakao/callback"
+              element={<KakaoLoginCallback />}
+            />
           </Route>
         )}
       </Routes>
