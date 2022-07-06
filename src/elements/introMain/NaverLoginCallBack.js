@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/userReducer";
 
 const NaverLoginCallBack = () => {
-  const [accessToken, setAccessToken] = useState("");
   const [userInfo, setUserInfo] = useState({
     user_email: "",
     user_name: "",
@@ -54,11 +53,6 @@ const NaverLoginCallBack = () => {
             const user_email = res.data.response.email;
             const user_id = res.data.response.id;
             const user_name = res.data.response.name;
-            // setUserInfo({
-            //   user_email,
-            //   user_id,
-            //   user_name,
-            // });
             dispatch(login({ user_name, user_email, user_id }));
             setDatas({ ...data, userId: user_id });
             axios
@@ -98,33 +92,7 @@ const NaverLoginCallBack = () => {
     getNaverToken();
   }, []);
 
-  return (
-    <div>
-      <div>네이버 콜백페이지입니다</div>
-
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="title"
-          placeholder="title"
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="content"
-          placeholder="content"
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="category"
-          placeholder="category"
-          onChange={handleChange}
-        />
-        <button type="submit">전송하기</button>
-      </form>
-    </div>
-  );
+  return <div>네이버 콜백페이지입니다</div>;
 };
 
 export default NaverLoginCallBack;

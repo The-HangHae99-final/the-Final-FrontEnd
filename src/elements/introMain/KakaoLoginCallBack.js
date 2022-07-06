@@ -12,7 +12,6 @@ const KakaoLoginCallback = () => {
     user_id: "",
     user_name: "",
   });
-  const { user_email, user_id, user_name } = userInfo;
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -27,7 +26,9 @@ const KakaoLoginCallback = () => {
       })
       .then((res) => {
         const token = res.data;
+        // Save access token in LS
         localStorage.setItem("myToken", token);
+
         axios
           .post(`http://52.78.168.151:3001/kakao/member`, {
             token,
@@ -36,12 +37,6 @@ const KakaoLoginCallback = () => {
             const user_email = res.data.kakao_account.email;
             const user_id = res.data.id;
             const user_name = res.data.kakao_account.profile.nickname;
-            console.log(user_email, user_id, user_name); // 성공
-            setUserInfo({
-              user_email,
-              user_id,
-              user_name,
-            });
             dispatch(login({ user_name, user_email, user_id }));
 
             axios
@@ -56,17 +51,11 @@ const KakaoLoginCallback = () => {
       .catch((err) => console.log(err));
   };
 
-  //   받아온 토큰으로 유저 정보 조회
-
   useEffect(() => {
     getKakaoToken();
   }, []);
 
-  return (
-    <div>
-      user_name: {user_name}, user_id: {user_id}
-    </div>
-  );
+  return <div>카카오 콜백페이지 입니다.</div>;
 };
 
 export default KakaoLoginCallback;
