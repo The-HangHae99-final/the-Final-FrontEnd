@@ -3,6 +3,8 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { setCookie } from "../../shared/cookie";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/userReducer";
 
 const KakaoLoginCallback = () => {
   const [userInfo, setUserInfo] = useState({
@@ -13,6 +15,7 @@ const KakaoLoginCallback = () => {
   const { user_email, user_id, user_name } = userInfo;
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const getKakaoToken = () => {
     const code = location.search.split("=")[1];
@@ -24,7 +27,6 @@ const KakaoLoginCallback = () => {
       })
       .then((res) => {
         const token = res.data;
-        // setCookie("myToken", token);
         localStorage.setItem("myToken", token);
         axios
           .post(`http://52.78.168.151:3001/kakao/member`, {
@@ -40,13 +42,15 @@ const KakaoLoginCallback = () => {
               user_id,
               user_name,
             });
+            dispatch(login({ user_name, user_email, user_id }));
+
             axios
               .post(`http://52.78.168.151:3001/kakao/parsing`, {
                 user_email,
                 user_id,
                 user_name,
               })
-              .then((res) => navigate("/main"));
+              .then((res) => navigate("/board"));
           });
       })
       .catch((err) => console.log(err));

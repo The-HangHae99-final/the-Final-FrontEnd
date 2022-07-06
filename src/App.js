@@ -32,11 +32,14 @@ const App = () => {
 
   useEffect(() => {
     if (localStorage.getItem("myToken")) {
+      console.log("로그인되었습니다!");
       setIsLoggedIn(true);
     } else {
+      console.log("로그아웃되었습니다!");
+
       setIsLoggedIn(false);
     }
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <div>
@@ -56,7 +59,6 @@ const App = () => {
                 />
               }
             >
-              <Route path="main" element={<Main />} />
               <Route path="board" element={<Board />} />
               <Route path="calender" element={<Calender />} />
               <Route path="message" element={<Message />} />
@@ -77,6 +79,8 @@ const App = () => {
             }
           >
             <Route path="public" element={<Public />} />
+            <Route path="board" element={<Board />} />
+
             <Route
               path="auth/login/callback"
               element={<NaverLoginCallBack />}

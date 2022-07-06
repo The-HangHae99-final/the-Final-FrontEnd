@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const Board = () => {
@@ -6,20 +7,38 @@ const Board = () => {
     title: "",
     content: "",
     category: "",
+    user_id: "",
   });
 
-  const user = useSelector((state) => state.uses.value);
+  const user = useSelector((state) => state.user.value);
   console.log("data: ", data);
-  console.log("user: ", user);
+  console.log("user: ", user.user_id);
+  const userId = user.user_id;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setDatas({ ...data, [name]: value });
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post("http://52.78.168.151:3001/api/board/post", data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("myToken")}`,
+        },
+      })
+      .then((res) => console.log(res))
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    setDatas({ ...data, user_id: userId });
+  }, []);
+
   return (
     <div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           name="title"
