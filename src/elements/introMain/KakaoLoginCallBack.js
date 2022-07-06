@@ -37,7 +37,9 @@ const KakaoLoginCallback = () => {
             const user_email = res.data.kakao_account.email;
             const user_id = res.data.id;
             const user_name = res.data.kakao_account.profile.nickname;
-            dispatch(login({ user_name, user_email, user_id }));
+            dispatch(
+              login({ user_name, user_email, user_id, isLoggedIn: true })
+            );
 
             axios
               .post(`http://52.78.168.151:3001/kakao/parsing`, {
@@ -45,7 +47,10 @@ const KakaoLoginCallback = () => {
                 user_id,
                 user_name,
               })
-              .then((res) => navigate("/board"));
+              .then((res) => {
+                alert("카카오로 로그인 완료!");
+                navigate("/");
+              });
           });
       })
       .catch((err) => console.log(err));

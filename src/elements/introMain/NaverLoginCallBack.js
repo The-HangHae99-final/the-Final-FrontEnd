@@ -12,10 +12,9 @@ const NaverLoginCallBack = () => {
     user_name: "",
     userId: "",
   });
-  const { user_email, userId, user_name } = userInfo;
-  const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [data, setDatas] = useState({
     title: "",
@@ -53,8 +52,9 @@ const NaverLoginCallBack = () => {
             const user_email = res.data.response.email;
             const user_id = res.data.response.id;
             const user_name = res.data.response.name;
-            dispatch(login({ user_name, user_email, user_id }));
-            setDatas({ ...data, userId: user_id });
+            dispatch(
+              login({ user_name, user_email, user_id, isLoggedIn: true })
+            );
             axios
               .post(`http://52.78.168.151:3001/parsing`, {
                 user_email,
@@ -62,7 +62,8 @@ const NaverLoginCallBack = () => {
                 user_name,
               })
               .then((res) => {
-                navigate("/auth/login/callback");
+                alert("네이버로 로그인 완료!");
+                navigate("/");
               });
           })
 

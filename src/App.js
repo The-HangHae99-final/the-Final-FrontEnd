@@ -14,11 +14,14 @@ import Calender from "./pages/Calender";
 import Storage from "./pages/Storage";
 import Public from "./pages/Public";
 import SocialLogin from "./components/SocialLogin";
+import { useSelector } from "react-redux";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
+  const user = useSelector((state) => state.user.value);
+  console.log(user);
 
   const handleLogin = () => {
     setIsLoginModalOpen(!isLoginModalOpen);
@@ -36,11 +39,9 @@ const App = () => {
       setIsLoggedIn(true);
     } else {
       console.log("로그아웃되었습니다!");
-
       setIsLoggedIn(false);
     }
   }, [isLoggedIn]);
-
   return (
     <div>
       <GlobalStyle />
@@ -78,9 +79,6 @@ const App = () => {
               />
             }
           >
-            <Route path="public" element={<Public />} />
-            <Route path="board" element={<Board />} />
-
             <Route
               path="auth/login/callback"
               element={<NaverLoginCallBack />}
