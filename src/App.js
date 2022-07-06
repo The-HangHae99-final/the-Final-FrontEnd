@@ -21,6 +21,7 @@ const App = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
   const user = useSelector((state) => state.user.value);
+
   const handleLogin = () => {
     setIsLoginModalOpen(!isLoginModalOpen);
     setIsSignupModalOpen(false);

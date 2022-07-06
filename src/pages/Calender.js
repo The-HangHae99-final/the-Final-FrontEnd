@@ -12,14 +12,28 @@ const Calender = () => {
       key: "selection",
     },
   ]);
-  // useEffect(() => {
-  //   axios
-  //     .get("http://52.78.168.151:3001/task")
-  //     .then((res) => console.log(res))
-  //     .catch((error) => console.log(error));
-  // });
+  const [data, setData] = useState({
+    start_date: "",
+    end_date: "",
+    title: "",
+    desc: "",
+  });
+  const { title, desc } = data;
 
   const handleSelect = (ranges) => {
+    const end_date = ranges["selection"].endDate;
+    const start_date = ranges["selection"].startDate;
+
+    // UTC timezone 기준 -> 한국 날짜 기준
+    function toKrTime(date) {
+      return new Date(
+        date.getTime() - date.getTimezoneOffset() * 60000
+      ).toISOString();
+    }
+
+    const end_date_kr = toKrTime(end_date).split("T")[0];
+    const start_date_kr = toKrTime(start_date).split("T")[0];
+
     setSelectionRange([
       {
         startDate: ranges["selection"].startDate,
@@ -27,8 +41,23 @@ const Calender = () => {
         key: ranges["selection"].key,
       },
     ]);
+    setData({ ...data, start_date: start_date_kr, end_date: end_date_kr });
   };
-  console.log(selectionRange);
+  console.log(data);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
+  console.log(data);
+
+  const handleSubmit = (e) => {
+    e.prevetDefault();
+    axios
+      .get("http://52.78.168.151:3001/task")
+      .then((res) => console.log(res))
+      .catch((error) => console.log(error));
+  };
 
   return (
     <div>
@@ -41,6 +70,23 @@ const Calender = () => {
       <div>Start Date : {selectionRange[0].startDate.toString()}</div>
       <br />
       <div>End Date : {selectionRange[0].endDate.toString()}</div>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="title"
+          value={title}
+          name="title"
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          placeholder="desc"
+          value={desc}
+          name="desc"
+          onChange={handleChange}
+        />
+        <button type="submit">전송하기</button>
+      </form>
     </div>
   );
 };
