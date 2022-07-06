@@ -2,8 +2,16 @@ import React, { useState } from "react";
 import UserAvatar from "../../elements/UserAvatar";
 import styles from "../../pages/Main/Main.module.css";
 import { useDispatch } from "react-redux";
+import ModalPortal from "../../elements/Portal/Portal";
+import Modal from "../Modal";
 
 const Header = ({ isLoggedIn, handleLogin, handleSignup }) => {
+  const [modalOn, setModalOn] = useState(false);
+
+  const handleModal = () => {
+    setModalOn(!modalOn);
+  };
+
   return (
     <>
       <header className={styles.header}>
@@ -20,10 +28,15 @@ const Header = ({ isLoggedIn, handleLogin, handleSignup }) => {
             <button className={styles.menuBtn}></button>
             <button className={styles.menuBtn}></button>
             <div>
-              {!isLoggedIn ? (
+              <button onClick={handleModal}>로그인</button>
+              <button onClick={handleModal}>회원가입</button>
+              <ModalPortal>
+                {modalOn && <Modal text="login" onClose={handleModal} />}
+              </ModalPortal>
+              {!modalOn ? (
                 <>
-                  <button onClick={handleLogin}>로그인</button>
-                  <button onClick={handleSignup}>회원가입</button>
+                  <button onClick={handleModal}>로그인</button>
+                  <button onClick={handleModal}>회원가입</button>
                 </>
               ) : (
                 <button onClick={() => console.log("로그아웃")}>

@@ -1,12 +1,12 @@
 import React from "react";
-import Login from "../components/Login";
+import Modal from "../components/Modal";
 import Signup from "../components/Signup";
 
 const LoginModal = ({ text }) => {
   return (
     <>
       {
-        text ? <Login text={text} /> : null
+        text ? <Modal text={text} /> : null
         // <Signup
         //   closeModal={closeModal}
         //   setIsLoginModalOpen={setIsLoginModalOpen}

@@ -3,6 +3,9 @@ import styles from "./Main.module.css";
 import Header from "../../components/Header/Header";
 import { Outlet } from "react-router-dom";
 import LoginModal from "../../elements/LoginModal";
+import ModalPortal from "../../elements/Portal/Portal";
+import Modal from "../../components/Modal";
+import { useNavigate } from "react-router-dom";
 
 const Main = ({
   isLoggedIn,
@@ -12,6 +15,7 @@ const Main = ({
   isSignupModalOpen,
 }) => {
   const [modalOn, setModalOn] = useState(false);
+  const navigate = useNavigate();
 
   const handleModal = () => {
     setModalOn(!modalOn);
@@ -23,11 +27,17 @@ const Main = ({
         <div className={styles.logo}></div>
         <div className={styles.buttons}>
           <div className={styles.buttonWrap}>
-            <div className={styles.btn}></div>
+            <div
+              onClick={() => navigate("/calender")}
+              className={styles.btn}
+            ></div>
             <span>Board</span>
           </div>
           <div className={styles.buttonWrap}>
-            <div className={styles.btn}></div>
+            <div
+              className={styles.btn}
+              onClick={() => navigate("/calender")}
+            ></div>
             <span>Calender</span>
           </div>
           <div className={styles.buttonWrap}>
@@ -48,7 +58,7 @@ const Main = ({
           <Outlet />
         </main>
       </div>
-      {isLoginModalOpen && (
+      {/* {isLoginModalOpen && (
         <LoginModal
           text="Login"
           isLoginModalOpen={isLoginModalOpen}
@@ -61,7 +71,7 @@ const Main = ({
           isLoginModalOpen={isLoginModalOpen}
           isSignupModalOpen={isSignupModalOpen}
         />
-      )}
+      )} */}
     </div>
   );
 };

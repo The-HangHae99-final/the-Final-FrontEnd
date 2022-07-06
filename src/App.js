@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import NaverLoginCallBack from "./elements/introMain/NaverLoginCallBack";
 import KakaoLoginCallback from "./elements/introMain/KakaoLoginCallBack";
 import { getCookie } from "./shared/cookie";
-import Login from "./components/Login";
+import Modal from "./components/Modal";
 
 // pages
 import Main from "./pages/Main/Main";
@@ -21,32 +21,21 @@ const App = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
   const user = useSelector((state) => state.user.value);
-  console.log(user);
-
   const handleLogin = () => {
     setIsLoginModalOpen(!isLoginModalOpen);
     setIsSignupModalOpen(false);
   };
-
+  console.log(user.isLoggedIn);
   const handleSignup = () => {
     setIsSignupModalOpen(!isSignupModalOpen);
     setIsLoginModalOpen(false);
   };
 
-  useEffect(() => {
-    if (localStorage.getItem("myToken")) {
-      console.log("로그인되었습니다!");
-      setIsLoggedIn(true);
-    } else {
-      console.log("로그아웃되었습니다!");
-      setIsLoggedIn(false);
-    }
-  }, [isLoggedIn]);
   return (
     <div>
       <GlobalStyle />
       <Routes>
-        {isLoggedIn ? (
+        {user.isLoggedIn ? (
           <>
             <Route
               path="/"

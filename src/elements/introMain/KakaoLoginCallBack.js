@@ -26,14 +26,15 @@ const KakaoLoginCallback = () => {
       })
       .then((res) => {
         const token = res.data;
-        // Save access token in LS
-        localStorage.setItem("myToken", token);
+        console.log("token: ", token);
 
+        // Save access token in LS
         axios
           .post(`http://52.78.168.151:3001/kakao/member`, {
             token,
           })
           .then((res) => {
+            console.log(`member req : ${res}`);
             const user_email = res.data.kakao_account.email;
             const user_id = res.data.id;
             const user_name = res.data.kakao_account.profile.nickname;
@@ -48,6 +49,7 @@ const KakaoLoginCallback = () => {
                 user_name,
               })
               .then((res) => {
+                localStorage.setItem("myToken", token);
                 alert("카카오로 로그인 완료!");
                 navigate("/");
               });

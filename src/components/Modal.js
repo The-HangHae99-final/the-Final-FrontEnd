@@ -4,11 +4,12 @@ import Divider from "../elements/Divider";
 import SocialLogin from "./SocialLogin";
 import ModalPortal from "../elements/Portal/Portal";
 
-const Login = ({ text }) => {
+const Modal = ({ text, onClose }) => {
   const closeModal = (e) => {
     if (e.target.id !== "loginBg") {
       return;
     }
+    onClose();
   };
 
   return (
@@ -43,7 +44,8 @@ const LoginBackGround = styled.div`
   height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: ;
+  justify-content: center;
+  z-index: 1000;
   backdrop-filter: blur(10px);
   position: fixed;
   top: 0;
@@ -142,4 +144,4 @@ const ContinueText = styled.span`
 // const  = styled.div``;
 // const  = styled.div``;
 
-export default Login;
+export default Modal;
