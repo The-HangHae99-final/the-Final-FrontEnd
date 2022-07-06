@@ -45,7 +45,7 @@ const NaverLoginCallBack = () => {
         }
         // 받아온 토큰으로 유저 정보 조회
         axios
-          .post(`http://52.78.168.151:3001/member`, {
+          .post(`http://13.125.169.225/member`, {
             token,
           })
           .then((res) => {
@@ -56,7 +56,7 @@ const NaverLoginCallBack = () => {
               login({ user_name, user_email, user_id, isLoggedIn: true })
             );
             axios
-              .post(`http://52.78.168.151:3001/parsing`, {
+              .post(`http://13.125.169.225/parsing`, {
                 user_email,
                 user_id,
                 user_name,
@@ -80,7 +80,7 @@ const NaverLoginCallBack = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://52.78.168.151:3001/api/board/post", data, {
+      .post("http://13.125.169.225/api/board/post", data, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("myToken")}`,
         },

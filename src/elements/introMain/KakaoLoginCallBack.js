@@ -21,16 +21,15 @@ const KakaoLoginCallback = () => {
     console.log(code);
     // 인가 코드 서버로 전송
     axios
-      .post(`http://52.78.168.151:3001/auth/login/kakao/callback`, {
+      .post(`http://3.36.74.108/auth/login/kakao/callback`, {
         code: code,
       })
       .then((res) => {
         const token = res.data;
         console.log("token: ", token);
-
         // Save access token in LS
         axios
-          .post(`http://52.78.168.151:3001/kakao/member`, {
+          .post(`http://3.36.74.108/kakao/member`, {
             token,
           })
           .then((res) => {
@@ -43,7 +42,7 @@ const KakaoLoginCallback = () => {
             );
 
             axios
-              .post(`http://52.78.168.151:3001/kakao/parsing`, {
+              .post(`http://3.36.74.108/kakao/parsing`, {
                 user_email,
                 user_id,
                 user_name,

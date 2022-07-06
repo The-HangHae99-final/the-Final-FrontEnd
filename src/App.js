@@ -35,7 +35,9 @@ const App = () => {
     <div>
       <GlobalStyle />
       <Routes>
-        {user.isLoggedIn ? (
+        <Route path="calender" element={<Calender />} />
+
+        {/* {user.isLoggedIn ? (
           <>
             <Route
               path="/"
@@ -77,7 +79,7 @@ const App = () => {
               element={<KakaoLoginCallback />}
             />
           </Route>
-        )}
+        )} */}
       </Routes>
     </div>
   );
