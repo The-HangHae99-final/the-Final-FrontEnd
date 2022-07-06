@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { setCookie } from "../../shared/cookie";
+import { useNavigate } from "react-router-dom";
 
 const KakaoLoginCallback = () => {
   const [userInfo, setUserInfo] = useState({
@@ -11,6 +12,7 @@ const KakaoLoginCallback = () => {
   });
   const { user_email, user_id, user_name } = userInfo;
   const location = useLocation();
+  const navigate = useNavigate();
 
   const getKakaoToken = () => {
     const code = location.search.split("=")[1];
@@ -22,7 +24,8 @@ const KakaoLoginCallback = () => {
       })
       .then((res) => {
         const token = res.data;
-        setCookie("myToken", token);
+        // setCookie("myToken", token);
+        localStorage.setItem("myToken", token);
         axios
           .post(`http://52.78.168.151:3001/kakao/member`, {
             token,
@@ -43,7 +46,7 @@ const KakaoLoginCallback = () => {
                 user_id,
                 user_name,
               })
-              .then((res) => console.log(res));
+              .then((res) => navigate("/main"));
           });
       })
       .catch((err) => console.log(err));
@@ -54,6 +57,7 @@ const KakaoLoginCallback = () => {
   useEffect(() => {
     getKakaoToken();
   }, []);
+
   return (
     <div>
       user_name: {user_name}, user_id: {user_id}

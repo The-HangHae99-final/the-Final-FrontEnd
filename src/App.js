@@ -29,6 +29,15 @@ const App = () => {
     setIsSignupModalOpen(!isSignupModalOpen);
     setIsLoginModalOpen(false);
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("myToken")) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
+
   return (
     <div>
       <GlobalStyle />
@@ -47,6 +56,7 @@ const App = () => {
                 />
               }
             >
+              <Route path="main" element={<Main />} />
               <Route path="board" element={<Board />} />
               <Route path="calender" element={<Calender />} />
               <Route path="message" element={<Message />} />

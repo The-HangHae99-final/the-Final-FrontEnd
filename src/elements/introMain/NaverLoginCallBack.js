@@ -41,8 +41,8 @@ const NaverLoginCallBack = () => {
       })
       .then((res) => {
         const token = res.data.access_token;
-        setCookie("myToken", token);
-        setAccessToken(token);
+        localStorage.setItem("myToken", token);
+
         if (token) {
         }
         // 받아온 토큰으로 유저 정보 조회
@@ -87,7 +87,7 @@ const NaverLoginCallBack = () => {
     axios
       .post("http://52.78.168.151:3001/api/board/post", data, {
         headers: {
-          Authorization: `Bearer ${getCookie("myToken")}`,
+          Authorization: `Bearer ${localStorage.getItem("myToken")}`,
         },
       })
       .then((res) => console.log(res))

@@ -16,6 +16,7 @@ const Main = ({
   const handleModal = () => {
     setModalOn(!modalOn);
   };
+
   return (
     <div className={styles.main}>
       <div className={styles.leftSide}>
