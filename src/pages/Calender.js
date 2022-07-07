@@ -43,18 +43,23 @@ const Calender = () => {
     ]);
     setData({ ...data, start_date: start_date_kr, end_date: end_date_kr });
   };
-  console.log(data);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
-  console.log(data);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    console.log(`데이터를 보냅니다 ${data}`);
+
     axios
-      .post("http://52.78.168.151:3001/task")
+      .post("http://3.39.187.40/task", data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("myToken")}`,
+        },
+      })
       .then((res) => console.log(res))
       .catch((error) => console.log(error));
   };

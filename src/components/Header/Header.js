@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import UserAvatar from "../../elements/UserAvatar";
-import styles from "../../pages/Main/Main.module.css";
+import styles from "../../pages/Main/main.module.css";
 import { useDispatch } from "react-redux";
 import ModalPortal from "../../elements/Portal/Portal";
 import Modal from "../Modal";

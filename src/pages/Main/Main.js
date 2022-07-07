@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./Main.module.css";
+import styles from "./main.module.css";
 import Header from "../../components/Header/Header";
 import { Outlet } from "react-router-dom";
 import LoginModal from "../../elements/LoginModal";
