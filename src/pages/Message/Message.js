@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import human01 from "../../public/img/human1.png";
 import Ellipse106 from "../../public/img/Ellipse106.png";
 import "./message.module.css";
+import UserProfile from "../../elements/UserProfile";
 
 const Chat = () => {
   return (
@@ -14,18 +14,7 @@ const Chat = () => {
             <OnlineUserCount className="online-user-count">5</OnlineUserCount>
           </BoxHeader>
           <UserList className="user-list">
-            <OnlineUser>
-              <OnlineUserProfile
-                alt="human"
-                className="online-user-profile"
-                src={human01}
-              ></OnlineUserProfile>
-              <StatusOnline
-                className="status status-online"
-                src={Ellipse106}
-              ></StatusOnline>
-              <StatusOffline className="status status-offline"></StatusOffline>
-            </OnlineUser>
+            <OnlineUser></OnlineUser>
           </UserList>
         </OnlineBox>
         <TeamchatBox className="teamchat-box">
@@ -37,6 +26,13 @@ const Chat = () => {
           <BoxHeader className="box-header">
             <BoxTitle className="box-title">My Chat</BoxTitle>
           </BoxHeader>
+          <MyChatList>
+            <UserProfile text="이형섭" name="이형섭" online={true} />
+            <UserProfile text="전영준" name="전영준" online={true} />
+            <UserProfile text="김하연" name="김하연" online={false} />
+            <UserProfile text="정연욱" name="정연욱" online={false} />
+            <UserProfile text="김규림" name="김규림" online={false} />
+          </MyChatList>
         </MyChatBox>
       </LeftSection>
       <RightSection className="rightSection">sd</RightSection>
@@ -99,26 +95,12 @@ const UserList = styled.div``;
 
 const OnlineUser = styled.div``;
 
-const OnlineUserProfile = styled.img`
-  width: 60px;
-  height: 62px;
-  border-radius: 50%;
+const MyChatList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 18px;
 `;
-
-const StatusOnline = styled.div`
-  background: radial-gradient(
-    60% 60% at 37.5% 40%,
-    #97e4c2 28.12%,
-    #79d9ae 100%
-  );
-`;
-
-const StatusOffline = styled.div`
-  display: none;
-`;
-
-// const ChatStyle = styled.div`
-// `;
 
 // const ChatStyle = styled.div`
 // `;
