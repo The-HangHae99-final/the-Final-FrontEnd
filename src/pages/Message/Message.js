@@ -30,6 +30,7 @@ const Chat = () => {
           </BoxHeader>
           <TeamChatList>
             <UserProfile text="1조 공지방" name="1조공지방" />
+            <UserProfile text="프론트 알고리즘 공지방" name="1조공지방" />
           </TeamChatList>
         </TeamchatBox>
 
@@ -44,6 +45,8 @@ const Chat = () => {
             <UserProfile text="김하연" name="김하연" online={false} />
             <UserProfile text="정연욱" name="정연욱" online={false} />
             <UserProfile text="김규림" name="김규림" online={false} />
+            <UserProfile text="유재석" name="김규림" online={false} />
+            <UserProfile text="정준하" name="김규림" online={false} />
           </MyChatList>
         </MyChatBox>
       </LeftSection>
@@ -66,7 +69,6 @@ const LeftSection = styled.div`
   height: 100%;
   padding: 30px 20px;
   background-color: aliceblue;
-  box-sizing: border-box;
 `;
 
 const RightSection = styled.div`
@@ -106,29 +108,31 @@ const OnlineUserCount = styled.div`
   color: #7d8bdb;
 `;
 
-const OnlineUser = styled.div``;
-
 const TeamchatBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  margin-top: 30px;
+  margin-top: 25px;
 `;
 
 const TeamChatList = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const MyChatList = styled.div`
-  display: flex;
-  flex-direction: column;
   gap: 18px;
-  margin-top: 18px;
+  margin-top: 20px;
 `;
 
 const MyChatBox = styled.div`
   margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+`;
+
+const MyChatList = styled.div`
+  display: flex;
+  height: 305px;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 20px;
+  overflow: scroll;
 `;
 
 // const MyChatBox = styled.div`
