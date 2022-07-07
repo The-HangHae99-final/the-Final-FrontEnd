@@ -99,7 +99,14 @@ const Chat = () => {
       <RightSection className="rightSection">
         <ChatSection className="ChatSection">
           {/* 바 */}
-          <BarTop className="BarTop"></BarTop>
+          <BarTop className="BarTop">
+            <UserProfile
+              text="전영준"
+              name="전영준"
+              online={true}
+              alignItems={"center"}
+            />
+          </BarTop>
 
           {/* 채팅 스크린 */}
           <ChattingScreen className="ChattingScreen">
@@ -200,13 +207,13 @@ const LeftSection = styled.div`
   width: 280px;
   height: 100%;
   padding: 30px 20px;
-  background-color: aliceblue;
+  background-color: #ffffff;
 `;
 
 const RightSection = styled.div`
   width: 100%;
   height: 100%;
-  background-color: aliceblue;
+  background-color: #ffffff;
 `;
 
 const OnlineBox = styled.div``;
@@ -279,8 +286,10 @@ const BarTop = styled.div`
   background-color: #ffffff;
   position: sticky;
   top: 0;
-  opacity: 0.8;
-  backdrop-filter: blur(30px);
+  padding: 16px 45px;
+  z-index: 99;
+  display: flex;
+  align-items: center;
 `;
 
 const ChattingScreen = styled.div`
