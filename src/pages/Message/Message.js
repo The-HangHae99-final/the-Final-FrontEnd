@@ -9,15 +9,18 @@ const Chat = () => {
     <ChatStyle>
       <LeftSection className="leftSection">
         {/* Online User */}
-
         <OnlineBox className="online-box">
           <BoxHeader className="box-header">
             <BoxTitle className="box-title">Online User</BoxTitle>
             <OnlineUserCount className="online-user-count">5</OnlineUserCount>
           </BoxHeader>
-          <UserList className="user-list">
-            <OnlineUser></OnlineUser>
-          </UserList>
+          <OnlineList className="user-list">
+            <UserProfile online={true} marginRight="10px" />
+            <UserProfile online={true} marginRight="10px" />
+            <UserProfile online={true} marginRight="10px" />
+            <UserProfile online={true} marginRight="10px" />
+            <UserProfile online={true} marginRight="10px" />
+          </OnlineList>
         </OnlineBox>
 
         {/* Team Chat */}
@@ -87,6 +90,12 @@ const BoxTitle = styled.div`
   color: #7d8bdb;
 `;
 
+const OnlineList = styled.div`
+  display: flex;
+  width: 100%;
+  overflow: scroll;
+`;
+
 const OnlineUserCount = styled.div`
   font-family: "Poppins";
   font-style: normal;
@@ -96,8 +105,6 @@ const OnlineUserCount = styled.div`
   text-align: right;
   color: #7d8bdb;
 `;
-
-const UserList = styled.div``;
 
 const OnlineUser = styled.div``;
 

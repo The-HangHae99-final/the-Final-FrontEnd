@@ -5,13 +5,14 @@ import Ellipse103 from "../public/img/Ellipse103.png";
 import styled from "styled-components";
 import "../pages/Message/message.module.css";
 
-const UserProfile = ({ text, online }) => {
+const UserProfile = ({ text, online, marginRight }) => {
   return (
     <OnlineUser>
       <OnlineUserProfile
         alt="human"
         className="online-user-profile"
         src={human01}
+        marginRight={marginRight}
       ></OnlineUserProfile>
       {text && <UserName>{text}</UserName>}
       {online == true || online == false ? (
@@ -33,7 +34,7 @@ const OnlineUserProfile = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  margin-right: 15px;
+  margin-right: ${({ marginRight }) => (marginRight ? marginRight : "15px")};
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
