@@ -8,6 +8,8 @@ const Chat = () => {
   return (
     <ChatStyle>
       <LeftSection className="leftSection">
+        {/* Online User */}
+
         <OnlineBox className="online-box">
           <BoxHeader className="box-header">
             <BoxTitle className="box-title">Online User</BoxTitle>
@@ -17,11 +19,18 @@ const Chat = () => {
             <OnlineUser></OnlineUser>
           </UserList>
         </OnlineBox>
+
+        {/* Team Chat */}
         <TeamchatBox className="teamchat-box">
           <BoxHeader className="box-header">
             <BoxTitle className="box-title">Team Chat</BoxTitle>
           </BoxHeader>
+          <TeamChatList>
+            <UserProfile text="1조 공지방" name="1조공지방" />
+          </TeamChatList>
         </TeamchatBox>
+
+        {/* My Chat */}
         <MyChatBox className="myChat-box">
           <BoxHeader className="box-header">
             <BoxTitle className="box-title">My Chat</BoxTitle>
@@ -35,6 +44,7 @@ const Chat = () => {
           </MyChatList>
         </MyChatBox>
       </LeftSection>
+
       <RightSection className="rightSection">sd</RightSection>
     </ChatStyle>
   );
@@ -64,10 +74,6 @@ const RightSection = styled.div`
 
 const OnlineBox = styled.div``;
 
-const TeamchatBox = styled.div``;
-
-const MyChatBox = styled.div``;
-
 const BoxHeader = styled.div`
   display: flex;
   align-items: center;
@@ -95,6 +101,18 @@ const UserList = styled.div``;
 
 const OnlineUser = styled.div``;
 
+const TeamchatBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 30px;
+`;
+
+const TeamChatList = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const MyChatList = styled.div`
   display: flex;
   flex-direction: column;
@@ -102,7 +120,14 @@ const MyChatList = styled.div`
   margin-top: 18px;
 `;
 
-// const ChatStyle = styled.div`
+const MyChatBox = styled.div`
+  margin-top: 30px;
+`;
+
+// const MyChatBox = styled.div`
+// `;
+
+// const MyChatBox = styled.div`
 // `;
 
 export default Chat;
