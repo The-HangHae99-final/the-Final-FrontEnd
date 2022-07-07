@@ -65,7 +65,7 @@ const Calender = () => {
   };
 
   return (
-    <div>
+    <>
       <DateRange
         editableDateInputs={true}
         ranges={selectionRange}
@@ -92,7 +92,7 @@ const Calender = () => {
         />
         <button type="submit">전송하기</button>
       </form>
-    </div>
+    </>
   );
 };
 

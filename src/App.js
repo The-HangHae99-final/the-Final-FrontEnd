@@ -4,17 +4,15 @@ import { Routes, Route } from "react-router-dom";
 import NaverLoginCallBack from "./elements/introMain/NaverLoginCallBack";
 import KakaoLoginCallback from "./elements/introMain/KakaoLoginCallBack";
 import { getCookie } from "./shared/cookie";
+import { useSelector } from "react-redux";
 import Modal from "./components/Modal";
 
 // pages
 import Main from "./pages/Main/Main";
 import Board from "./pages/Board";
-import Message from "./pages/Message";
+import Message from "./pages/Message/Message";
 import Calender from "./pages/Calender";
 import Storage from "./pages/Storage";
-import Public from "./pages/Public";
-import SocialLogin from "./components/SocialLogin";
-import { useSelector } from "react-redux";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -36,8 +34,6 @@ const App = () => {
     <div>
       <GlobalStyle />
       <Routes>
-        <Route path="calender" element={<Calender />} />
-
         {user.isLoggedIn ? (
           <>
             <Route

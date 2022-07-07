@@ -14,12 +14,7 @@ const Main = ({
   isLoginModalOpen,
   isSignupModalOpen,
 }) => {
-  const [modalOn, setModalOn] = useState(false);
   const navigate = useNavigate();
-
-  const handleModal = () => {
-    setModalOn(!modalOn);
-  };
 
   return (
     <div className={styles.main}>
@@ -28,7 +23,7 @@ const Main = ({
         <div className={styles.buttons}>
           <div className={styles.buttonWrap}>
             <div
-              onClick={() => navigate("/calender")}
+              onClick={() => navigate("/board")}
               className={styles.btn}
             ></div>
             <span>Board</span>
@@ -41,7 +36,10 @@ const Main = ({
             <span>Calender</span>
           </div>
           <div className={styles.buttonWrap}>
-            <div className={styles.btn}></div>
+            <div
+              className={styles.btn}
+              onClick={() => navigate("/message")}
+            ></div>
             <span>Message</span>
           </div>
         </div>
@@ -58,20 +56,6 @@ const Main = ({
           <Outlet />
         </main>
       </div>
-      {/* {isLoginModalOpen && (
-        <LoginModal
-          text="Login"
-          isLoginModalOpen={isLoginModalOpen}
-          isSignupModalOpen={isSignupModalOpen}
-        />
-      )}
-      {isSignupModalOpen && (
-        <LoginModal
-          text="Signup"
-          isLoginModalOpen={isLoginModalOpen}
-          isSignupModalOpen={isSignupModalOpen}
-        />
-      )} */}
     </div>
   );
 };
