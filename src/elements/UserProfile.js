@@ -4,9 +4,9 @@ import Ellipse106 from "../public/img/Ellipse106.png";
 import Ellipse103 from "../public/img/Ellipse103.png";
 import styled from "styled-components";
 
-const UserProfile = ({ text, online, marginRight, toTop }) => {
+const UserProfile = ({ text, online, marginRight, toTop, alignItems }) => {
   return (
-    <OnlineUser toTop={toTop}>
+    <OnlineUser toTop={toTop} alignItems={alignItems}>
       <OnlineUserProfile
         alt="human"
         className="online-user-profile"
@@ -23,7 +23,8 @@ const UserProfile = ({ text, online, marginRight, toTop }) => {
 
 const OnlineUser = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: ${({ alignItems }) =>
+    alignItems === "center" ? alignItems : "flex-start"};
   position: relative;
   top: ${({ toTop }) => (toTop ? toTop : null)};
   padding: 4px;
@@ -49,8 +50,8 @@ const StatusOnline = styled.div`
   background: ${({ online }) =>
     online ? `url(${Ellipse106})` : `url(${Ellipse103})`};
   position: absolute;
-  left: 36px;
-  top: 36px;
+  left: 40px;
+  top: 40px;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.18);
 `;
 

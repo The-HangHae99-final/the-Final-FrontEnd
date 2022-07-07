@@ -30,8 +30,16 @@ const Chat = () => {
             <BoxTitle className="box-title">Team Chat</BoxTitle>
           </BoxHeader>
           <TeamChatList>
-            <UserProfile text="1조 공지방" name="1조공지방" />
-            <UserProfile text="프론트 알고리즘 공지방" name="1조공지방" />
+            <UserProfile
+              text="1조 공지방"
+              name="1조공지방"
+              alignItems={"center"}
+            />
+            <UserProfile
+              text="프론트 알고리즘 공지방"
+              name="1조공지방"
+              alignItems={"center"}
+            />
           </TeamChatList>
         </TeamchatBox>
 
@@ -41,13 +49,48 @@ const Chat = () => {
             <BoxTitle className="box-title">My Chat</BoxTitle>
           </BoxHeader>
           <MyChatList>
-            <UserProfile text="이형섭" name="이형섭" online={true} />
-            <UserProfile text="전영준" name="전영준" online={true} />
-            <UserProfile text="김하연" name="김하연" online={false} />
-            <UserProfile text="정연욱" name="정연욱" online={false} />
-            <UserProfile text="김규림" name="김규림" online={false} />
-            <UserProfile text="유재석" name="김규림" online={false} />
-            <UserProfile text="정준하" name="김규림" online={false} />
+            <UserProfile
+              text="이형섭"
+              name="이형섭"
+              online={true}
+              alignItems={"center"}
+            />
+            <UserProfile
+              text="전영준"
+              name="전영준"
+              online={true}
+              alignItems={"center"}
+            />
+            <UserProfile
+              text="김하연"
+              name="김하연"
+              online={false}
+              alignItems={"center"}
+            />
+            <UserProfile
+              text="정연욱"
+              name="정연욱"
+              online={false}
+              alignItems={"center"}
+            />
+            <UserProfile
+              text="김규림"
+              name="김규림"
+              online={false}
+              alignItems={"center"}
+            />
+            <UserProfile
+              text="유재석"
+              name="김규림"
+              online={false}
+              alignItems={"center"}
+            />
+            <UserProfile
+              text="정준하"
+              name="김규림"
+              online={false}
+              alignItems={"center"}
+            />
           </MyChatList>
         </MyChatBox>
       </LeftSection>
