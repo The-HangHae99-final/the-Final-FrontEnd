@@ -39,7 +39,6 @@ const NaverLoginCallBack = () => {
       })
       .then((res) => {
         const token = res.data.access_token;
-        localStorage.setItem("myToken", token);
 
         if (token) {
         }
@@ -62,6 +61,7 @@ const NaverLoginCallBack = () => {
                 user_name,
               })
               .then((res) => {
+                localStorage.setItem("myToken", token);
                 alert("네이버로 로그인 완료!");
                 navigate("/");
               });
@@ -70,23 +70,6 @@ const NaverLoginCallBack = () => {
           .catch((error) => console.log(error));
       })
       .catch((err) => console.log(err));
-  };
-  // const naverLogout = () => {
-  //   axios.get(
-  //     `https://nid.naver.com/oauth2.0/token?grant_type=delete&client_id=0wSIvykcfvmOTk3Dz4fS&client_secret=oQne0wSuP7&access_token=${accessToken}&service_provider=NAVER`
-  //   );
-  // };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios
-      .post("http://13.125.169.225/api/board/post", data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("myToken")}`,
-        },
-      })
-      .then((res) => console.log(res))
-      .catch((error) => console.log(error));
   };
 
   useEffect(() => {

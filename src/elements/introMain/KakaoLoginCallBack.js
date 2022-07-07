@@ -18,7 +18,6 @@ const KakaoLoginCallback = () => {
 
   const getKakaoToken = () => {
     const code = location.search.split("=")[1];
-    console.log(code);
     // 인가 코드 서버로 전송
     axios
       .post(`http://13.125.169.225:3001/auth/login/kakao/callback`, {
@@ -27,7 +26,6 @@ const KakaoLoginCallback = () => {
       .then((res) => {
         const token = res.data;
         console.log("token: ", token);
-        // Save access token in LS
         axios
           .post(`http://13.125.169.225:3001/kakao/member`, {
             token,

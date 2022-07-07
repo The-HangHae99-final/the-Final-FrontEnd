@@ -13,6 +13,7 @@ import Board from "./pages/Board";
 import Message from "./pages/Message/Message";
 import Calender from "./pages/Calender";
 import Storage from "./pages/Storage";
+import Login from "./pages/Login";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -24,7 +25,7 @@ const App = () => {
     setIsLoginModalOpen(!isLoginModalOpen);
     setIsSignupModalOpen(false);
   };
-  console.log(user.isLoggedIn);
+
   const handleSignup = () => {
     setIsSignupModalOpen(!isSignupModalOpen);
     setIsLoginModalOpen(false);
@@ -48,6 +49,7 @@ const App = () => {
                 />
               }
             >
+              <Route path="login" element={<Login />} />
               <Route path="board" element={<Board />} />
               <Route path="calender" element={<Calender />} />
               <Route path="message" element={<Message />} />

@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import Ellipse106 from "../../public/img/Ellipse106.png";
-import "./message.module.css";
 import UserProfile from "../../elements/UserProfile";
+import style from "./message.module.css";
 
 const Chat = () => {
   return (
     <ChatStyle>
+      {/* 왼쪽 섹션 */}
       <LeftSection className="leftSection">
         {/* Online User */}
         <OnlineBox className="online-box">
@@ -51,7 +52,96 @@ const Chat = () => {
         </MyChatBox>
       </LeftSection>
 
-      <RightSection className="rightSection">sd</RightSection>
+      {/* 오른쪽 섹션 */}
+      <RightSection className="rightSection">
+        <ChatSection className="ChatSection">
+          {/* 바 */}
+          <BarTop className="BarTop"></BarTop>
+
+          {/* 채팅 스크린 */}
+          <ChattingScreen className="ChattingScreen">
+            {/* 상대방이 보낸 메시지 버블 */}
+            <LeftBubble className="LeftBubble">
+              <UserProfile marginRight="10px" />
+              <ContentBox className="ContentBox">
+                <YourName className="YourName">전영준</YourName>
+                <BubbleContent className="BubbleContent">
+                  <YourMessage bg={"#F8F8F9"} className="YourMessage">
+                    아 배고파 아 배고파아 배고파아 배고파아 배고파아 배고파아
+                    배고파아 배고파아 배고파아 배고파
+                  </YourMessage>
+                  <SendTimeforLeftBubble className="SendTime">
+                    오후 1:30
+                  </SendTimeforLeftBubble>
+                </BubbleContent>
+              </ContentBox>
+            </LeftBubble>
+
+            {/* 내가 보낸 메시지 버블*/}
+            <RightBubble className="RightBubble">
+              <BubbleContent className="BubbleContent">
+                <SendTimeforRightBubble className="SendTime">
+                  오후 1:30
+                </SendTimeforRightBubble>
+                <YourMessage bg={"#EEF1FF"} className="YourMessage">
+                  아 배고파 아 배고파아 배고파아 배고파아 배고파아 배고파아
+                  배고파아 배고파아 배고파아 배고파 아 배고파 아 배고파아
+                  배고파아 배고 파아 배고파아 배고파아 배고파아 배고파아
+                  배고파아 배고파 아 배고파 아 배고파아 배고파아 배고파아
+                  배고파아 배고파아 배고파아 배고파아 배고파아 배고파
+                </YourMessage>
+              </BubbleContent>
+            </RightBubble>
+
+            <LeftBubble className="LeftBubble">
+              <UserProfile marginRight="10px" />
+              <ContentBox className="ContentBox">
+                <YourName className="YourName">전영준</YourName>
+                <BubbleContent className="BubbleContent">
+                  <YourMessage bg={"#F8F8F9"} className="YourMessage">
+                    닭발 부대찌개 치즈닭갈비 냉면 막국수 냉모밀
+                  </YourMessage>
+                  <SendTimeforLeftBubble className="SendTime">
+                    오후 1:30
+                  </SendTimeforLeftBubble>
+                </BubbleContent>
+              </ContentBox>
+            </LeftBubble>
+
+            <LeftBubble className="LeftBubble">
+              <UserProfile marginRight="10px" />
+              <ContentBox className="ContentBox">
+                <YourName className="YourName">전영준</YourName>
+                <BubbleContent className="BubbleContent">
+                  <YourMessage bg={"#F8F8F9"} className="YourMessage">
+                    지금은 오전 12시 17분 자고싶다 지금은 오전 12시 17분
+                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
+                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
+                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
+                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
+                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
+                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
+                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
+                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
+                    자고싶다
+                  </YourMessage>
+                  <SendTimeforLeftBubble className="SendTime">
+                    오후 1:30
+                  </SendTimeforLeftBubble>
+                </BubbleContent>
+              </ContentBox>
+            </LeftBubble>
+          </ChattingScreen>
+
+          {/* 인풋 */}
+          <div className={style.inputWrap}>
+            <div className="EmojiBtn"></div>
+            <div className="FileSubmitBtn"></div>
+            <div className="SubmitBtn"></div>
+            <input className="ChatInput"></input>
+          </div>
+        </ChatSection>
+      </RightSection>
     </ChatStyle>
   );
 };
@@ -59,7 +149,6 @@ const Chat = () => {
 const ChatStyle = styled.div`
   width: 100%;
   height: 100%;
-  background-color: greenyellow;
   display: flex;
   gap: 20px;
 `;
@@ -135,10 +224,84 @@ const MyChatList = styled.div`
   overflow: scroll;
 `;
 
-// const MyChatBox = styled.div`
+const ChatSection = styled.div`
+  width: 100%;
+  height: 100%;
+  position: relative;
+`;
+
+const BarTop = styled.div`
+  width: 100%;
+  height: 80px;
+  background-color: #d9d9d9;
+  position: sticky;
+  /* padding-top: 30px;
+  top: -30px; */
+  top: 0;
+  opacity: 0.8;
+  backdrop-filter: blur(30px);
+`;
+
+const ChattingScreen = styled.div`
+  padding: 0px 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 19px;
+`;
+
+const LeftBubble = styled.div`
+  display: flex;
+  align-self: flex-start;
+`;
+
+const BubbleContent = styled.div`
+  display: Flex;
+`;
+
+const ContentBox = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const YourName = styled.div`
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  color: #353841;
+`;
+
+const YourMessage = styled.div`
+  max-width: 726px;
+  background-color: ${(props) =>
+    props.bg === "#F8F8F9" ? "#F8F8F9" : "#EEF1FF"};
+  border-radius: 5px;
+  padding: 13px 20px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  color: #353841;
+`;
+const SendTimeforLeftBubble = styled.div`
+  align-self: flex-end;
+  margin-left: 6px;
+`;
+
+const SendTimeforRightBubble = styled.div`
+  align-self: flex-end;
+  margin-right: 6px;
+`;
+
+const RightBubble = styled.div`
+  align-self: flex-end;
+`;
+
+// const ContentBox = styled.div`
 // `;
 
-// const MyChatBox = styled.div`
+// const ContentBox = styled.div`
 // `;
 
 export default Chat;

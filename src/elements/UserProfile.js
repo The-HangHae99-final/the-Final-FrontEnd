@@ -3,7 +3,6 @@ import human01 from "../public/img/human1.png";
 import Ellipse106 from "../public/img/Ellipse106.png";
 import Ellipse103 from "../public/img/Ellipse103.png";
 import styled from "styled-components";
-import "../pages/Message/message.module.css";
 
 const UserProfile = ({ text, online, marginRight }) => {
   return (
@@ -24,15 +23,16 @@ const UserProfile = ({ text, online, marginRight }) => {
 
 const OnlineUser = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   position: relative;
+  top: -15px;
   padding: 4px;
   cursor: pointer;
 `;
 
 const OnlineUserProfile = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   margin-right: ${({ marginRight }) => (marginRight ? marginRight : "15px")};
   font-weight: 500;
@@ -61,9 +61,6 @@ const UserName = styled.div`
   letter-spacing: -0.02em;
   color: #353841;
 `;
-
-// const StatusOffline = styled.div`
-// `;
 
 // const StatusOffline = styled.div`
 // `;
