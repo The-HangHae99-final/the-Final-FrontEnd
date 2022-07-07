@@ -4,9 +4,9 @@ import Ellipse106 from "../public/img/Ellipse106.png";
 import Ellipse103 from "../public/img/Ellipse103.png";
 import styled from "styled-components";
 
-const UserProfile = ({ text, online, marginRight }) => {
+const UserProfile = ({ text, online, marginRight, toTop }) => {
   return (
-    <OnlineUser>
+    <OnlineUser toTop={toTop}>
       <OnlineUserProfile
         alt="human"
         className="online-user-profile"
@@ -25,7 +25,7 @@ const OnlineUser = styled.div`
   display: flex;
   align-items: flex-start;
   position: relative;
-  top: -15px;
+  top: ${({ toTop }) => (toTop ? toTop : null)};
   padding: 4px;
   cursor: pointer;
 `;

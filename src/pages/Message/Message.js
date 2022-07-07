@@ -62,7 +62,7 @@ const Chat = () => {
           <ChattingScreen className="ChattingScreen">
             {/* 상대방이 보낸 메시지 버블 */}
             <LeftBubble className="LeftBubble">
-              <UserProfile marginRight="10px" />
+              <UserProfile marginRight="10px" toTop="-15px" />
               <ContentBox className="ContentBox">
                 <YourName className="YourName">전영준</YourName>
                 <BubbleContent className="BubbleContent">
@@ -94,7 +94,7 @@ const Chat = () => {
             </RightBubble>
 
             <LeftBubble className="LeftBubble">
-              <UserProfile marginRight="10px" />
+              <UserProfile marginRight="10px" toTop="-15px" />
               <ContentBox className="ContentBox">
                 <YourName className="YourName">전영준</YourName>
                 <BubbleContent className="BubbleContent">
@@ -109,7 +109,7 @@ const Chat = () => {
             </LeftBubble>
 
             <LeftBubble className="LeftBubble">
-              <UserProfile marginRight="10px" />
+              <UserProfile marginRight="10px" toTop="-15px" />
               <ContentBox className="ContentBox">
                 <YourName className="YourName">전영준</YourName>
                 <BubbleContent className="BubbleContent">
@@ -135,10 +135,10 @@ const Chat = () => {
 
           {/* 인풋 */}
           <div className={style.inputWrap}>
-            <div className="EmojiBtn"></div>
-            <div className="FileSubmitBtn"></div>
-            <div className="SubmitBtn"></div>
-            <input className="ChatInput"></input>
+            <div className={style.emojiBtn}></div>
+            <div className={style.fileSubmitBtn}></div>
+            <div className={style.submitBtn}></div>
+            <input className={style.chatInput} type="text"></input>
           </div>
         </ChatSection>
       </RightSection>
@@ -233,10 +233,8 @@ const ChatSection = styled.div`
 const BarTop = styled.div`
   width: 100%;
   height: 80px;
-  background-color: #d9d9d9;
+  background-color: #ffffff;
   position: sticky;
-  /* padding-top: 30px;
-  top: -30px; */
   top: 0;
   opacity: 0.8;
   backdrop-filter: blur(30px);
