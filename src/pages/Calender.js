@@ -52,9 +52,9 @@ const Calender = () => {
   console.log(data);
 
   const handleSubmit = (e) => {
-    e.prevetDefault();
+    e.preventDefault();
     axios
-      .get("http://52.78.168.151:3001/task")
+      .post("http://52.78.168.151:3001/task")
       .then((res) => console.log(res))
       .catch((error) => console.log(error));
   };

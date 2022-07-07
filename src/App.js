@@ -38,7 +38,7 @@ const App = () => {
       <Routes>
         <Route path="calender" element={<Calender />} />
 
-        {/* {user.isLoggedIn ? (
+        {user.isLoggedIn ? (
           <>
             <Route
               path="/"
@@ -80,7 +80,7 @@ const App = () => {
               element={<KakaoLoginCallback />}
             />
           </Route>
-        )} */}
+        )}
       </Routes>
     </div>
   );
