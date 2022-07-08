@@ -24,9 +24,9 @@ const Calender = () => {
                 <div className="box-title">My calendar</div>
                 <button></button>
               </div>
-              <ul className="calender-list">
+              <ul className="calender-list-my">
                 <li className="calender-item">
-                  <div className="diffcolor yellow"></div>
+                  <div className="diffcolor blue"></div>
                   <span className="daily-title">Contents design</span>
                 </li>
                 <li className="calender-item">
@@ -46,7 +46,20 @@ const Calender = () => {
               <div className="box-header">
                 <div className="box-title">Team calendar</div>
               </div>
-              <div className="calender-list"></div>
+              <ul className="calender-list calender-list-team">
+                <li className="calender-item">
+                  <div className="diffcolor yellow"></div>
+                  <span className="daily-title">Meeting</span>
+                </li>
+                <li className="calender-item">
+                  <div className="diffcolor red"></div>
+                  <span className="daily-title">Event</span>
+                </li>
+                <div className="add-button-container">
+                  <button className="add-button">+</button>
+                  <span>Add</span>
+                </div>
+              </ul>
             </div>
           </div>
         </div>
