@@ -25,7 +25,6 @@ GIF Images
 Front-end
 
 - 이형섭
-- 이효리
 
 Back-end
 
@@ -33,17 +32,25 @@ Back-end
 - 전영준
 - 정연욱
 
+Designer
+
+- 김규림
+
 ## 기술 스택
 
 language
 
 - Javascript
 
-Framework
+Framework / Library
 
 - React
+- Redux toolkit
 
 Tool
+
+- react-datePicker
+- react-big-calendar
 
 <!--
 | JavaScript | TypeScript |  React   |  Node   |
@@ -54,16 +61,24 @@ Tool
 
 ## 구현 기능
 
-### 소셜로그인
+### 로그인, 회원가입
+
+- 카카오톡, 네이버로 소셜로그인
+- 일반 로그인
 
 ### 실시간 채팅
 
-### 게시판 기능
+- 개인 채팅방
+- 팀 채팅방
+- 팀 공지방
 
-업무를 해야할 일, 진행 중인 일, 완료된 일
-3가지로 분류해 프로젝트 작업 진행 상태를 확인하기 편리합니다.
+### 보드 기능
 
-### 프로젝트에 필요한 일정들을 확인하자. 캘린더 기능
+- 작업 상태를 진행 할 일, 진행 중, 완료 3가지로 나누어 보여줍니다
+
+### 캘린더 기능
+
+- 이번달의 일정을 한 눈에 확인 할 수 있습니다
 
 <br>
 
