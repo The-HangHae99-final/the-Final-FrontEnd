@@ -31,9 +31,9 @@ const Main = ({
           <div className={styles.buttonWrap}>
             <div
               className={styles.btn}
-              onClick={() => navigate("/calender")}
+              onClick={() => navigate("/calendar")}
             ></div>
-            <span>Calender</span>
+            <span>Calendar</span>
           </div>
           <div className={styles.buttonWrap}>
             <div

@@ -11,7 +11,7 @@ import Modal from "./components/Modal";
 import Main from "./pages/Main/Main";
 import Board from "./pages/Board";
 import Message from "./pages/Message/Message";
-import Calender from "./pages/Calender";
+import Calender from "./pages/Calendar/Calendar";
 import Storage from "./pages/Storage";
 import Login from "./pages/Login";
 
@@ -51,7 +51,7 @@ const App = () => {
             >
               <Route path="login" element={<Login />} />
               <Route path="board" element={<Board />} />
-              <Route path="calender" element={<Calender />} />
+              <Route path="calendar" element={<Calender />} />
               <Route path="message" element={<Message />} />
               <Route path="storage" element={<Storage />} />
             </Route>

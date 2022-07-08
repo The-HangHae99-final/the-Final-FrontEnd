@@ -4,7 +4,7 @@ import Ellipse106 from "../../public/img/Ellipse106.png";
 import UserProfile from "../../elements/UserProfile";
 import style from "./message.module.css";
 
-const Chat = () => {
+const Message = () => {
   return (
     <ChatStyle>
       {/* 왼쪽 섹션 */}
@@ -354,4 +354,4 @@ const RightBubble = styled.div`
 // const ContentBox = styled.div`
 // `;
 
-export default Chat;
+export default Message;
