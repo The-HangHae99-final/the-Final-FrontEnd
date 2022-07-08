@@ -6,6 +6,7 @@ import style from "./message.module.css";
 import io from "socket.io-client";
 import DirectChatList from "../../elements/DirectChatList";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 const socket = io.connect("http://3.36.74.108");
 
@@ -14,18 +15,29 @@ const Message = () => {
     opponent: "",
     workspace: "",
   });
+  const [currentMessage, setCurrentMessage] = useState("");
+
+  const { opponent, workspace } = DataForJoin;
 
   const user = useSelector((state) => state.user.value);
-  // const joinRoom = () => {
-  //   if (username !== "" && room !== "") {
-  //     socket.emit("join_room", username, room);
-  //     socket.on("chat_list", (chat_list) => {
-  //       console.log(chat_list);
-  //     });
-  //     setShowChat(true);
-  //   }
-  // }
-  console.log(DataForJoin);
+
+  // 유저 프로필을 클릭 시 방에 접속, 채팅리스트 받아온다
+  const joinRoom = () => {
+    if (opponent !== "" && workspace !== "") {
+      socket.emit("join_room", opponent, workspace);
+      socket.on("chat_list", (chat_list) => {
+        console.log(chat_list);
+      });
+    }
+  };
+
+  //   useEffect(() => {
+  //     axios.post("http://3.36.74.108", {
+  //       params: {
+  //         ID: 12345
+  //       }
+  //   }).then((res) => console.log(res)).error((error) => console.log(error))
+  // }, [DataForJoin])
   return (
     <ChatStyle>
       {/* 왼쪽 섹션 */}
@@ -69,7 +81,7 @@ const Message = () => {
           <BoxHeader className="box-header">
             <BoxTitle className="box-title">My Chat</BoxTitle>
           </BoxHeader>
-          <DirectChatList setDataForJoin={setDataForJoin} />
+          <DirectChatList joinRoom={joinRoom} setDataForJoin={setDataForJoin} />
         </MyChatBox>
       </LeftSection>
 

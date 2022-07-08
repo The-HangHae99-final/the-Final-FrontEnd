@@ -2,7 +2,7 @@ import React from "react";
 import UserProfile from "./UserProfile";
 import styled from "styled-components";
 
-const DirectChatList = ({ setDataForJoin }) => {
+const DirectChatList = ({ joinRoom, setDataForJoin }) => {
   return (
     <>
       <MyChatList>
@@ -13,6 +13,7 @@ const DirectChatList = ({ setDataForJoin }) => {
           online={true}
           alignItems={"center"}
           setDataForJoin={setDataForJoin}
+          joinRoom={joinRoom}
         />
         <UserProfile
           text="전영준"
@@ -21,6 +22,7 @@ const DirectChatList = ({ setDataForJoin }) => {
           online={true}
           alignItems={"center"}
           setDataForJoin={setDataForJoin}
+          joinRoom={joinRoom}
         />
         <UserProfile
           text="김하연"

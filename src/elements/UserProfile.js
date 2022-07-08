@@ -14,12 +14,16 @@ const UserProfile = ({
   toTop,
   alignItems,
   setDataForJoin,
+  joinRoom,
 }) => {
   return (
     <OnlineUser
       toTop={toTop}
       alignItems={alignItems}
-      onClick={(e) => setDataForJoin({ opponent: name, workspace: workspace })}
+      onClick={(e) => {
+        setDataForJoin({ opponent: name, workspace: workspace });
+        joinRoom();
+      }}
     >
       <OnlineUserProfile
         alt="human"
