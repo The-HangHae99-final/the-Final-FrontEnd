@@ -10,12 +10,45 @@ import "./calendar.css";
 
 const Calender = () => {
   const [startDate, setStartDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
 
   return (
     <>
       <div className="calenderStyle">
         <div className="leftSection">
           <DatePicker selected={startDate} inline />
+
+          <div className="myCalender-box">
+            <div className="teamchat-box">
+              <div className="box-header">
+                <div className="box-title">My calendar</div>
+                <button></button>
+              </div>
+              <ul className="calender-list">
+                <li className="calender-item">
+                  <div className="diffcolor yellow"></div>
+                  <span className="daily-title">Contents design</span>
+                </li>
+                <li className="calender-item">
+                  <div className="diffcolor red"></div>
+                  <span className="daily-title">Product design</span>
+                </li>
+                <div className="add-button-container">
+                  <button className="add-button">+</button>
+                  <span>Add</span>
+                </div>
+              </ul>
+            </div>
+          </div>
+
+          <div className="teamCalender">
+            <div className="teamchat-box">
+              <div className="box-header">
+                <div className="box-title">Team calendar</div>
+              </div>
+              <div className="calender-list"></div>
+            </div>
+          </div>
         </div>
 
         <div className="rightSection"></div>

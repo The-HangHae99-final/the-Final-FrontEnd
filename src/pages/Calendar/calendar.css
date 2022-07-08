@@ -39,13 +39,8 @@
 .react-datepicker__day {
   font-weight: 400;
   font-size: 12px;
-  /* identical to box height */
-
   text-align: center;
   letter-spacing: -0.02em;
-
-  /* light/text */
-
   color: #353841;
 }
 
@@ -53,13 +48,8 @@
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
-  /* identical to box height */
-
   text-align: center;
   letter-spacing: -0.02em;
-
-  /* light/guide */
-
   color: #dcdce8;
 }
 
@@ -98,4 +88,57 @@
 }
 .react-datepicker__day--disabled {
   color: #cccccc !important;
+}
+
+/*  */
+.myCalender-box {
+  margin-top: 25px;
+  height: 191px;
+}
+
+.box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 24px;
+}
+
+.box-title {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: #7d8bdb;
+}
+
+.calender-list {
+}
+
+.calender-item {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  color: #353841;
+  padding: 13px 10px;
+  display: Flex;
+}
+
+.diffcolor {
+  width: 24px;
+  height: 24px;
+  background: #7ea0e3;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.diffcolor.red {
+  background: #e37e7e;
+}
+
+.add-button-container {
+  padding: 13px 10px;
+}
+
+.add-button {
+  cursor: pointer;
+  margin-right: 10px;
 }
