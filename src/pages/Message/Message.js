@@ -5,7 +5,7 @@ import UserProfile from "../../elements/UserProfile";
 import style from "./message.module.css";
 import io from "socket.io-client";
 import DirectChatList from "../../elements/DirectChatList";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
 const socket = io.connect("http://3.36.74.108");
@@ -15,18 +15,22 @@ const Message = () => {
     opponent: "",
     workspace: "",
   });
-  const [currentMessage, setCurrentMessage] = useState("");
-
   const { opponent, workspace } = DataForJoin;
 
-  const user = useSelector((state) => state.user.value);
+  // const user = useSelector((state) => state.user.value);
+  const dispatch = useDispatch();
+  const messageList = useSelector((state) => state.messageList.value);
+  console.log(messageList);
 
   // 유저 프로필을 클릭 시 방에 접속, 채팅리스트 받아온다
   const joinRoom = () => {
     if (opponent !== "" && workspace !== "") {
       socket.emit("join_room", opponent, workspace);
+
+      // chat_list를 불러와서 redux에 저장
       socket.on("chat_list", (chat_list) => {
         console.log(chat_list);
+        dispatch(chat_list);
       });
     }
   };
