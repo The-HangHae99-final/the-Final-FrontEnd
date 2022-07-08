@@ -16,7 +16,7 @@ const Calender = () => {
     <>
       <div className="calenderStyle">
         <div className="leftSection">
-          <DatePicker selected={startDate} inline />
+          <DatePicker selected={startDate} minDate={new Date()} inline />
 
           <div className="myCalender-box">
             <div className="teamchat-box">
@@ -64,7 +64,9 @@ const Calender = () => {
           </div>
         </div>
 
-        <div className="rightSection"></div>
+        <div className="rightSection">
+          <DatePicker selected={startDate} showPopperArrow={false} inline />
+        </div>
       </div>
     </>
   );

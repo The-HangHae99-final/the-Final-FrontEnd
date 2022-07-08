@@ -1,10 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Ellipse106 from "../../public/img/Ellipse106.png";
 import UserProfile from "../../elements/UserProfile";
 import style from "./message.module.css";
+import io from "socket.io-client";
+import DirectChatList from "../../elements/DirectChatList";
+import { useSelector } from "react-redux";
+
+const socket = io.connect("http://3.36.74.108");
 
 const Message = () => {
+  const [DataForJoin, setDataForJoin] = useState({
+    opponent: "",
+    workspace: "",
+  });
+
+  const user = useSelector((state) => state.user.value);
+  // const joinRoom = () => {
+  //   if (username !== "" && room !== "") {
+  //     socket.emit("join_room", username, room);
+  //     socket.on("chat_list", (chat_list) => {
+  //       console.log(chat_list);
+  //     });
+  //     setShowChat(true);
+  //   }
+  // }
+  console.log(DataForJoin);
   return (
     <ChatStyle>
       {/* 왼쪽 섹션 */}
@@ -48,50 +69,7 @@ const Message = () => {
           <BoxHeader className="box-header">
             <BoxTitle className="box-title">My Chat</BoxTitle>
           </BoxHeader>
-          <MyChatList>
-            <UserProfile
-              text="이형섭"
-              name="이형섭"
-              online={true}
-              alignItems={"center"}
-            />
-            <UserProfile
-              text="전영준"
-              name="전영준"
-              online={true}
-              alignItems={"center"}
-            />
-            <UserProfile
-              text="김하연"
-              name="김하연"
-              online={false}
-              alignItems={"center"}
-            />
-            <UserProfile
-              text="정연욱"
-              name="정연욱"
-              online={false}
-              alignItems={"center"}
-            />
-            <UserProfile
-              text="김규림"
-              name="김규림"
-              online={false}
-              alignItems={"center"}
-            />
-            <UserProfile
-              text="유재석"
-              name="김규림"
-              online={false}
-              alignItems={"center"}
-            />
-            <UserProfile
-              text="정준하"
-              name="김규림"
-              online={false}
-              alignItems={"center"}
-            />
-          </MyChatList>
+          <DirectChatList setDataForJoin={setDataForJoin} />
         </MyChatBox>
       </LeftSection>
 
