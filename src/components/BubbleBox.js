@@ -1,42 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import UserProfile from "../elements/UserProfile";
 
-const BubbleBox = () => {
+const BubbleBox = ({ showChat }) => {
   return (
     <>
-      {/* 상대방이 보낸 메시지 버블 */}
-      <LeftBubble className="LeftBubble">
-        <UserProfile marginRight="10px" toTop="-15px" />
-        <ContentBox className="ContentBox">
-          <YourName className="YourName">전영준</YourName>
-          <BubbleContent className="BubbleContent">
-            <YourMessage bg={"#F8F8F9"} className="YourMessage">
-              아 배고파 아 배고파아 배고파아 배고파아 배고파아 배고파아 배고파아
-              배고파아 배고파아 배고파
-            </YourMessage>
-            <SendTimeforLeftBubble className="SendTime">
-              오후 1:30
-            </SendTimeforLeftBubble>
-          </BubbleContent>
-        </ContentBox>
-      </LeftBubble>
+      {showChat ? (
+        <>
+          <LeftBubble className="LeftBubble">
+            <UserProfile marginRight="10px" toTop="-15px" />
+            <ContentBox className="ContentBox">
+              <YourName className="YourName">전영준</YourName>
+              <BubbleContent className="BubbleContent">
+                <YourMessage bg={"#F8F8F9"} className="YourMessage">
+                  아 배고파 아 배고파아 배고파아 배고파아 배고파아 배고파아
+                  배고파아 배고파아 배고파아 배고파
+                </YourMessage>
+                <SendTimeforLeftBubble className="SendTime">
+                  오후 1:30
+                </SendTimeforLeftBubble>
+              </BubbleContent>
+            </ContentBox>
+          </LeftBubble>
 
-      {/* 내가 보낸 메시지 버블*/}
-      <RightBubble className="RightBubble">
-        <BubbleContent className="BubbleContent">
-          <SendTimeforRightBubble className="SendTime">
-            오후 1:30
-          </SendTimeforRightBubble>
-          <YourMessage bg={"#EEF1FF"} className="YourMessage">
-            아 배고파 아 배고파아 배고파아 배고파아 배고파아 배고파아 배고파아
-            배고파아 배고파아 배고파 아 배고파 아 배고파아 배고파아 배고 파아
-            배고파아 배고파아 배고파아 배고파아 배고파아 배고파 아 배고파 아
-            배고파아 배고파아 배고파아 배고파아 배고파아 배고파아 배고파아
-            배고파아 배고파
-          </YourMessage>
-        </BubbleContent>
-      </RightBubble>
+          <RightBubble className="RightBubble">
+            <BubbleContent className="BubbleContent">
+              <SendTimeforRightBubble className="SendTime">
+                오후 1:30
+              </SendTimeforRightBubble>
+              <YourMessage bg={"#EEF1FF"} className="YourMessage">
+                아 배고파 아 배고파아 배고파아 배고파아 배고파아 배고파아
+                배고파아 배고파아 배고파아 배고파 아 배고파 아 배고파아 배고파아
+                배고 파아 배고파아
+              </YourMessage>
+            </BubbleContent>
+          </RightBubble>
+        </>
+      ) : (
+        <div>채팅을 시작해보세요!</div>
+      )}
     </>
   );
 };
