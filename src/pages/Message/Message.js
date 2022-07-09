@@ -1,17 +1,23 @@
+// 작성자 : 이형섭
+// 페이지 기능 :
+//  - 실시간 채팅
+//  - 채팅방(단체 메시지, 개인 메시지) 목록 조회
+// 업데이트 날짜 : 21.07.09
+
+// module, library
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Ellipse106 from "../../public/img/Ellipse106.png";
-import axios from "axios";
-import UserProfile from "../../elements/UserProfile";
 import style from "./message.module.css";
-import DirectChatList from "../../elements/DirectChatList";
-import { useDispatch, useSelector } from "react-redux";
 import io from "socket.io-client";
+import { useDispatch, useSelector } from "react-redux";
+
+// import files
+import UserProfile from "../../elements/UserProfile";
+import DirectChatList from "../../elements/DirectChatList";
 import BubbleBox from "../../components/BubbleBox";
 
-const socket = io.connect("http://3.36.74.108");
-
 const Message = () => {
+  const socket = io.connect("http://3.36.74.108");
   const [currentChatList, setCurrentChatList] = useState([]);
   const [DataForJoin, setDataForJoin] = useState({
     opponent: "",
@@ -87,7 +93,7 @@ const Message = () => {
       {/* 오른쪽 섹션 */}
       <RightSection className="rightSection">
         <ChatSection className="ChatSection">
-          {/* 바 */}
+          {/* 채팅 화면 상단 바 */}
           <BarTop className="BarTop">
             <UserProfile
               text="전영준"
@@ -97,12 +103,12 @@ const Message = () => {
             />
           </BarTop>
 
-          {/* 채팅 스크린 */}
+          {/* 채팅 화면 */}
           <ChattingScreen className="ChattingScreen">
             {currentChatList && <BubbleBox />}
           </ChattingScreen>
 
-          {/* 인풋 */}
+          {/* 채팅 화면의 인풋 섹션*/}
           <div className={style.inputWrap}>
             <div className={style.emojiBtn}></div>
             <div className={style.fileSubmitBtn}></div>

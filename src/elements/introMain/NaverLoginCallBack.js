@@ -30,7 +30,7 @@ const NaverLoginCallBack = () => {
 
     // 인가 코드 서버로 전송
     axios
-      .post(`http://3.36.78.173:3001/naver`, {
+      .post(`http://3.36.78.173/naver`, {
         code: code,
       })
       .then((res) => {
@@ -41,7 +41,7 @@ const NaverLoginCallBack = () => {
         }
         // 받아온 토큰으로 유저 정보 조회
         axios
-          .post(`http://3.36.78.173:3001/member`, {
+          .post(`http://3.36.78.173/member`, {
             token,
           })
           .then((res) => {
@@ -54,14 +54,14 @@ const NaverLoginCallBack = () => {
             );
             // 파싱 할 데이터 전달
             axios
-              .post(`http://3.36.78.173:3001/parsing`, {
+              .post(`http://3.36.78.173/parsing`, {
                 user_email,
                 user_id,
                 user_name,
               })
               .then((res) => {
                 console.log(res);
-                setCookie("myToken", token);
+                localStorage.setItem("myToken", token);
                 alert("네이버로 로그인 완료!");
                 navigate("/");
               });
