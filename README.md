@@ -113,6 +113,18 @@ redux말고 툴킷 쓴 이유
 
 <br>
 
+## 커밋 메시지 규칙
+
+Fix: 올바르지 않은 동작을 고친 경우
+Add: 코드나 테스트, 예제, 문서 등의 추가
+Remove: 코드의 삭제 ( ‘unnecessary’, ‘useless’, ‘unneeded’, ‘unused’, ‘duplicated’ 등 주로 사용 예정)
+Refactor: 전면 수정
+Simplify: Refactor보다 작은 부분적인 수정 시
+Update: 개정, 버전 업데이트
+Improve: 성능, 접근성 등 향상의 목적
+Correct: 문법의 오류, 타입의 변경, 이름 변경
+Ensure: 확실한 기능 구현 시
+
 ## 배운 점 & 아쉬운 점
 
 <p align="justify">
