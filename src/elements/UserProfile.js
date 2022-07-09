@@ -21,8 +21,9 @@ const UserProfile = ({
       toTop={toTop}
       alignItems={alignItems}
       onClick={(e) => {
-        setDataForJoin({ opponent: name, workspace: workspace });
-        joinRoom();
+        setDataForJoin({ opponent: name, workspace: workspace }, () => {
+          joinRoom();
+        });
       }}
     >
       <OnlineUserProfile

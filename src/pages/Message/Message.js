@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import UserProfile from "../../elements/UserProfile";
 import DirectChatList from "../../elements/DirectChatList";
 import BubbleBox from "../../components/BubbleBox";
+import axios from "axios";
 
 const Message = () => {
   const socket = io.connect("http://3.36.74.108");
@@ -25,27 +26,30 @@ const Message = () => {
   });
   const { opponent, workspace } = DataForJoin;
   const [showChat, setShowChat] = useState(false);
+  console.log(showChat);
 
   const dispatch = useDispatch();
   const messageList = useSelector((state) => state);
-
   // 유저 프로필을 클릭 시 방에 접속, 채팅리스트 받아온다
-  const joinRoom = () => {
-    console.log(opponent, workspace);
-    socket.emit("join_room", opponent, workspace);
-    if (opponent !== "" && workspace !== "") {
-      setShowChat(true);
-      // 서버로부터 채팅리스트를 받는다
-      // 채팅리스트와  리덕스에 업데이트
-      // 방이름 = "(접속한 유저의 이름)" + "(상대 유저의 이름)" => 가나다순 정렬
-      socket.on("chat_list", (chat_list) => {
-        // dispatch(chat_list);
-        console.log(chat_list);
-        // setCurrentChatList(chat_list);
-      });
-    }
-  };
-  console.log(showChat);
+  // const joinRoom = () => {
+  //   axios.post("")
+  //   console.log(opponent, workspace);
+  //   if (opponent !== "" && workspace !== "") {
+  //     socket.emit("join_room", opponent, workspace);
+  //     setShowChat(true);
+  //     // 서버로부터 채팅리스트를 받는다
+  //     // 채팅리스트와  리덕스에 업데이트
+  //     // 방이름 = "(접속한 유저의 이름)" + "(상대 유저의 이름)" => 가나다순 정렬
+  //     socket.on("chat_list", (chat_list) => {
+  //       // dispatch(chat_list);
+  //       console.log(chat_list);
+  //       // setCurrentChatList(chat_list);
+  //     });
+  //   }
+  // };
+  console.log(DataForJoin);
+
+  useEffect(() => {}, [DataForJoin]);
 
   return (
     <ChatStyle>
@@ -91,7 +95,7 @@ const Message = () => {
             <BoxTitle className="box-title">My Chat</BoxTitle>
           </BoxHeader>
           {/* 개인 메시지 유저 리스트 */}
-          <DirectChatList joinRoom={joinRoom} setDataForJoin={setDataForJoin} />
+          <DirectChatList setDataForJoin={setDataForJoin} />
         </MyChatBox>
       </LeftSection>
 
