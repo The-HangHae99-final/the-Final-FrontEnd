@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   dataList: [],
-  user_name: "",
+  room: "",
 };
 
 export const messageSlice = createSlice({

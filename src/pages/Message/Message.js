@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Ellipse106 from "../../public/img/Ellipse106.png";
+import axios from "axios";
 import UserProfile from "../../elements/UserProfile";
 import style from "./message.module.css";
-import io from "socket.io-client";
 import DirectChatList from "../../elements/DirectChatList";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
+import io from "socket.io-client";
+import BubbleBox from "../../components/BubbleBox";
 
 const socket = io.connect("http://3.36.74.108");
 
 const Message = () => {
+  const [currentChatList, setCurrentChatList] = useState([]);
   const [DataForJoin, setDataForJoin] = useState({
     opponent: "",
     workspace: "",
   });
   const { opponent, workspace } = DataForJoin;
 
-  // const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
   const messageList = useSelector((state) => state.messageList.value);
   console.log(messageList);
@@ -27,21 +28,15 @@ const Message = () => {
     if (opponent !== "" && workspace !== "") {
       socket.emit("join_room", opponent, workspace);
 
-      // chat_list를 불러와서 redux에 저장
+      // 채팅리스트를 불러와서 리덕스에 저장
       socket.on("chat_list", (chat_list) => {
+        // dispatch(chat_list);
         console.log(chat_list);
-        dispatch(chat_list);
+        setCurrentChatList(chat_list);
       });
     }
   };
 
-  //   useEffect(() => {
-  //     axios.post("http://3.36.74.108", {
-  //       params: {
-  //         ID: 12345
-  //       }
-  //   }).then((res) => console.log(res)).error((error) => console.log(error))
-  // }, [DataForJoin])
   return (
     <ChatStyle>
       {/* 왼쪽 섹션 */}
@@ -104,77 +99,7 @@ const Message = () => {
 
           {/* 채팅 스크린 */}
           <ChattingScreen className="ChattingScreen">
-            {/* 상대방이 보낸 메시지 버블 */}
-            <LeftBubble className="LeftBubble">
-              <UserProfile marginRight="10px" toTop="-15px" />
-              <ContentBox className="ContentBox">
-                <YourName className="YourName">전영준</YourName>
-                <BubbleContent className="BubbleContent">
-                  <YourMessage bg={"#F8F8F9"} className="YourMessage">
-                    아 배고파 아 배고파아 배고파아 배고파아 배고파아 배고파아
-                    배고파아 배고파아 배고파아 배고파
-                  </YourMessage>
-                  <SendTimeforLeftBubble className="SendTime">
-                    오후 1:30
-                  </SendTimeforLeftBubble>
-                </BubbleContent>
-              </ContentBox>
-            </LeftBubble>
-
-            {/* 내가 보낸 메시지 버블*/}
-            <RightBubble className="RightBubble">
-              <BubbleContent className="BubbleContent">
-                <SendTimeforRightBubble className="SendTime">
-                  오후 1:30
-                </SendTimeforRightBubble>
-                <YourMessage bg={"#EEF1FF"} className="YourMessage">
-                  아 배고파 아 배고파아 배고파아 배고파아 배고파아 배고파아
-                  배고파아 배고파아 배고파아 배고파 아 배고파 아 배고파아
-                  배고파아 배고 파아 배고파아 배고파아 배고파아 배고파아
-                  배고파아 배고파 아 배고파 아 배고파아 배고파아 배고파아
-                  배고파아 배고파아 배고파아 배고파아 배고파아 배고파
-                </YourMessage>
-              </BubbleContent>
-            </RightBubble>
-
-            <LeftBubble className="LeftBubble">
-              <UserProfile marginRight="10px" toTop="-15px" />
-              <ContentBox className="ContentBox">
-                <YourName className="YourName">전영준</YourName>
-                <BubbleContent className="BubbleContent">
-                  <YourMessage bg={"#F8F8F9"} className="YourMessage">
-                    닭발 부대찌개 치즈닭갈비 냉면 막국수 냉모밀
-                  </YourMessage>
-                  <SendTimeforLeftBubble className="SendTime">
-                    오후 1:30
-                  </SendTimeforLeftBubble>
-                </BubbleContent>
-              </ContentBox>
-            </LeftBubble>
-
-            <LeftBubble className="LeftBubble">
-              <UserProfile marginRight="10px" toTop="-15px" />
-              <ContentBox className="ContentBox">
-                <YourName className="YourName">전영준</YourName>
-                <BubbleContent className="BubbleContent">
-                  <YourMessage bg={"#F8F8F9"} className="YourMessage">
-                    지금은 오전 12시 17분 자고싶다 지금은 오전 12시 17분
-                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
-                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
-                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
-                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
-                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
-                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
-                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
-                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
-                    자고싶다
-                  </YourMessage>
-                  <SendTimeforLeftBubble className="SendTime">
-                    오후 1:30
-                  </SendTimeforLeftBubble>
-                </BubbleContent>
-              </ContentBox>
-            </LeftBubble>
+            {currentChatList && <BubbleBox />}
           </ChattingScreen>
 
           {/* 인풋 */}

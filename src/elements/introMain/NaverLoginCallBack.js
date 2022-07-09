@@ -24,44 +24,44 @@ const NaverLoginCallBack = () => {
   });
   console.log(data);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setDatas({ ...data, [name]: value });
-  };
-
   const getNaverToken = () => {
     const code = location.search.split("=")[1].split("&")[0];
+    console.log("-------------1------------code: ", code);
 
     // 인가 코드 서버로 전송
     axios
-      .post(`http://52.78.168.151:3001/naver`, {
+      .post(`http://3.36.78.173:3001/naver`, {
         code: code,
       })
       .then((res) => {
         const token = res.data.access_token;
+        console.log("-------------2------------token: ", token);
 
         if (token) {
         }
         // 받아온 토큰으로 유저 정보 조회
         axios
-          .post(`http://13.125.169.225/member`, {
+          .post(`http://3.36.78.173:3001/member`, {
             token,
           })
           .then((res) => {
+            console.log("-------------3------------res: ", res);
             const user_email = res.data.response.email;
             const user_id = res.data.response.id;
             const user_name = res.data.response.name;
             dispatch(
               login({ user_name, user_email, user_id, isLoggedIn: true })
             );
+            // 파싱 할 데이터 전달
             axios
-              .post(`http://13.125.169.225/parsing`, {
+              .post(`http://3.36.78.173:3001/parsing`, {
                 user_email,
                 user_id,
                 user_name,
               })
               .then((res) => {
-                localStorage.setItem("myToken", token);
+                console.log(res);
+                setCookie("myToken", token);
                 alert("네이버로 로그인 완료!");
                 navigate("/");
               });
