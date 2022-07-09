@@ -20,14 +20,14 @@ const KakaoLoginCallback = () => {
     const code = location.search.split("=")[1];
     // 인가 코드 서버로 전송
     axios
-      .post(`http://3.36.78.173/api/auth/login/kakao/callback`, {
+      .post(`http://52.79.82.195:3001/api/auth/login/kakao/callback`, {
         code: code,
       })
       .then((res) => {
         const token = res.data;
         console.log("token: ", token);
         axios
-          .post(`http://3.36.78.173/api/kakao/member`, {
+          .post(`http://52.79.82.195:3001/api/kakao/member`, {
             token,
           })
           .then((res) => {
@@ -40,7 +40,7 @@ const KakaoLoginCallback = () => {
             );
 
             axios
-              .post(`http://3.36.78.173/api/kakao/parsing`, {
+              .post(`http://52.79.82.195:3001/api/kakao/parsing`, {
                 user_email,
                 user_id,
                 user_name,

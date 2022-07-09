@@ -9,7 +9,7 @@ const DirectChatList = ({ joinRoom, setDataForJoin }) => {
         <UserProfile
           text="이형섭"
           name="이형섭"
-          workspace="1조"
+          workspace="1조팀노트"
           online={true}
           alignItems={"center"}
           setDataForJoin={setDataForJoin}
@@ -18,7 +18,7 @@ const DirectChatList = ({ joinRoom, setDataForJoin }) => {
         <UserProfile
           text="전영준"
           name="전영준"
-          workspace="1조"
+          workspace="1조팀노트"
           online={true}
           alignItems={"center"}
           setDataForJoin={setDataForJoin}
