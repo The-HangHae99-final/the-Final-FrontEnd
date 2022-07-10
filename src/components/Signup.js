@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import loginBg from "../public/img/Ellipse103.png";
 
 const Signup = () => {
   const [signupValue, setSignupValue] = useState({
@@ -28,13 +30,13 @@ const Signup = () => {
         console.log(response);
         if (response.data.success) {
           alert("로그인에 성공하였습니다!");
-          navigate("/login");
+          navigate("/");
         }
       })
       .catch((error) => console.log(error));
   };
   return (
-    <div>
+    <SignupStyle>
       <h1 className="login-title">TeamNote에 오신걸 환영합니다</h1>
       <form className="registerForm" onSubmit={handleSubmit}>
         <div>
@@ -67,8 +69,10 @@ const Signup = () => {
         </div>
         <button type="submit">회원가입하기</button>
       </form>
-    </div>
+    </SignupStyle>
   );
 };
+
+const SignupStyle = styled.div``;
 
 export default Signup;
