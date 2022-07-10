@@ -17,16 +17,36 @@ const Login = () => {
     setLoginValue({ ...loginValue, [name]: value });
   };
 
-  console.log(loginValue.userEmail);
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("서버로 회원가입 데이터를 보냅니다.");
-    axios
-      .post("http://52.79.82.195:3001/api/users/email", loginValue.userEmail)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => console.log(error));
+    const placeholoder = e.target[0].placeholder;
+    console.log(placeholoder);
+    if (placeholoder === "아이디") {
+      axios
+        .post("http://52.79.82.195:3001/api/users/email", loginValue.userEmail)
+        .then((response) => {
+          console.log(response);
+          if (response.data.success) {
+            alert("존재하는 아이디입니다");
+            setShowPwInput(true);
+          }
+        })
+        .catch((error) => console.log(error));
+    } else {
+      console.log(loginValue.password);
+      axios
+        .post("http://52.79.82.195:3001/api/users/password", {
+          userEmail: loginValue.userEmail,
+          password: loginValue.password,
+        })
+        .then((response) => {
+          console.log(response);
+          // if (response.data.success) {
+          //   setShowPwInput(true);
+          // }
+        })
+        .catch((error) => console.log(error));
+    }
   };
 
   return (
@@ -47,8 +67,9 @@ const Login = () => {
         ) : (
           <>
             <input
-              type="password"
+              type="text"
               placeholder="비밀번호"
+              name="password"
               value={loginValue.password}
               onChange={handleChange}
             />
