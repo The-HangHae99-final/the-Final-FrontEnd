@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import loginBg from "../public/img/Ellipse103.png";
 
 const Signup = () => {
   const [signupValue, setSignupValue] = useState({
@@ -17,20 +16,18 @@ const Signup = () => {
     const { name, value } = e.target;
     setSignupValue({ ...signupValue, [name]: value });
   };
-  console.log(signupValue);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log("서버로 회원가입 데이터를 보냅니다.");
-
+    // 회원가입에 필요한 데이터 서버로 전송
     axios
       .post("http://52.79.82.195:3001/api/users/signup", signupValue)
       .then((response) => {
-        console.log(response);
         if (response.data.success) {
           alert("로그인에 성공하였습니다!");
           navigate("/");
+        } else {
+          alert("이메일 혹은 비밀번호가 틀렸습니다!");
         }
       })
       .catch((error) => console.log(error));

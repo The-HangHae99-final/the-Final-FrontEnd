@@ -1,5 +1,5 @@
-import axios from "axios";
 import React, { useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,8 +23,9 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const placeholoder = e.target[0].placeholder;
-    console.log(placeholoder);
+
     if (placeholoder === "아이디") {
+      // 등록된 이메일인지 확인
       axios
         .post("http://52.79.82.195:3001/api/users/email", loginValue.userEmail)
         .then((response) => {
@@ -36,6 +37,7 @@ const Login = () => {
         .catch((error) => console.log(error));
     } else {
       console.log(loginValue.password);
+      // 입력한 비밀번호가 앞서 입력한 이메일과 매칭되는지 확인
       axios
         .post("http://52.79.82.195:3001/api/users/password", {
           userEmail: loginValue.userEmail,
@@ -46,13 +48,9 @@ const Login = () => {
             const token = response.data.token;
             alert("로그인에 성공하였습니다!");
             localStorage.setItem("myToken", token);
-            console.log(user.isLoggedIn);
             navigate("/main");
             dispatch(login({ ...user, isLoggedIn: true }));
           }
-          // if (response.data.success) {
-          //   setShowPwInput(true);
-          // }
         })
         .catch((error) => console.log(error));
     }
