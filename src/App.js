@@ -39,7 +39,7 @@ const App = () => {
         {user.isLoggedIn ? (
           <>
             <Route
-              path="/"
+              path="/main"
               element={
                 <Main
                   isLoggedIn={isLoggedIn}

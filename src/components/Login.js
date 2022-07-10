@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../redux/userReducer";
 
 const Login = () => {
   const [loginValue, setLoginValue] = useState({
@@ -9,8 +11,9 @@ const Login = () => {
     password: "",
   });
   const [showPwInput, setShowPwInput] = useState(false);
-
   const navigate = useNavigate();
+  const user = useSelector((state) => state.user.value);
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,7 +30,6 @@ const Login = () => {
         .then((response) => {
           console.log(response);
           if (response.data.success) {
-            alert("존재하는 아이디입니다");
             setShowPwInput(true);
           }
         })
@@ -40,7 +42,14 @@ const Login = () => {
           password: loginValue.password,
         })
         .then((response) => {
-          console.log(response);
+          if (response.data.success) {
+            const token = response.data.token;
+            alert("로그인에 성공하였습니다!");
+            localStorage.setItem("myToken", token);
+            console.log(user.isLoggedIn);
+            navigate("/main");
+            dispatch(login({ ...user, isLoggedIn: true }));
+          }
           // if (response.data.success) {
           //   setShowPwInput(true);
           // }
