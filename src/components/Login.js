@@ -1,17 +1,18 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const Login = () => {
-  return <LoginStyle>Login</LoginStyle>;
+  return <LoginStyle></LoginStyle>;
 };
 
 const LoginStyle = styled.div`
-  background: linear-gradient(
+  /* background: linear-gradient(
       0deg,
       rgba(165, 163, 217, 0.2),
       rgba(165, 163, 217, 0.2)
     ),
-    url(03.jpg);
+    url(); */
 `;
 
 export default Login;

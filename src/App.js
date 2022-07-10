@@ -13,7 +13,8 @@ import Board from "./pages/Board";
 import Message from "./pages/Message/Message";
 import Calender from "./pages/Calendar/Calendar";
 import Storage from "./pages/Storage";
-import Login from "./pages/Login";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,7 +31,7 @@ const App = () => {
     setIsSignupModalOpen(!isSignupModalOpen);
     setIsLoginModalOpen(false);
   };
-
+  console.log(user.isLoggedIn);
   return (
     <div>
       <GlobalStyle />
@@ -49,7 +50,6 @@ const App = () => {
                 />
               }
             >
-              <Route path="login" element={<Login />} />
               <Route path="board" element={<Board />} />
               <Route path="calendar" element={<Calender />} />
               <Route path="message" element={<Message />} />
@@ -57,29 +57,32 @@ const App = () => {
             </Route>
           </>
         ) : (
-          <Route
-            path="/"
-            element={
-              <Main
-                isLoggedIn={isLoggedIn}
-                handleLogin={handleLogin}
-                handleSignup={handleSignup}
-                isLoginModalOpen={isLoginModalOpen}
-                isSignupModalOpen={isSignupModalOpen}
-              />
-            }
-          >
+          <>
             <Route
-              path="auth/login/callback"
-              element={<NaverLoginCallBack />}
+              path="/"
+              element={
+                <Login />
+                // <Main
+                //   isLoggedIn={isLoggedIn}
+                //   handleLogin={handleLogin}
+                //   handleSignup={handleSignup}
+                //   isLoginModalOpen={isLoginModalOpen}
+                //   isSignupModalOpen={isSignupModalOpen}
+                // />
+              }
             />
-            <Route
-              path="auth/login/kakao/callback"
-              element={<KakaoLoginCallback />}
-            />
-          </Route>
+            <Route path="/signup" element={<Signup />} />
+          </>
         )}
       </Routes>
+      {/* <Route
+          path="auth/login/callback"
+          element={<NaverLoginCallBack />}
+        />
+        <Route
+          path="auth/login/kakao/callback"
+          element={<KakaoLoginCallback />}
+        /> */}
     </div>
   );
 };
