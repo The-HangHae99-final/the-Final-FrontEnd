@@ -17,13 +17,26 @@ import KakaoLoginCallback from "./elements/introMain/KakaoLoginCallBack";
 const App = () => {
   const ls = localStorage.getItem("myToken");
 
+  // useEffect(() => {
+  //   if (!ls) return;
+  //   setIsLoggedIn(true);
+  // }, [ls]);
+  // console.log(isLoggedIn);
+  console.log(ls);
   return (
     <div>
       <GlobalStyle />
       <Routes>
-        {ls ? (
+        <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/main" element={<Main />}>
+          <Route path="board" element={<Board />} />
+          <Route path="calendar" element={<Calender />} />
+          <Route path="message" element={<Message />} />
+        </Route>
+        {/* {ls ? (
           <>
-            <Route path="/" element={<Main />}>
+            <Route path="/main" element={<Main />}>
               <Route path="board" element={<Board />} />
               <Route path="calendar" element={<Calender />} />
               <Route path="message" element={<Message />} />
@@ -43,7 +56,7 @@ const App = () => {
               element={<KakaoLoginCallback />}
             />
           </>
-        )}
+        )} */}
       </Routes>
     </div>
   );

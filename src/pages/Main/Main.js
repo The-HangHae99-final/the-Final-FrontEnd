@@ -13,11 +13,13 @@ const Main = ({}) => {
   return (
     <div className={styles.main}>
       <div className={styles.leftSide}>
-        <div className={styles.logo}></div>
+        <div className={styles.logo} onClick={() => navigate("/main")}>
+          {" "}
+        </div>
         <div className={styles.buttons}>
           <div className={styles.buttonWrap}>
             <div
-              onClick={() => navigate("/board")}
+              onClick={() => navigate("/main/board")}
               className={styles.btn}
             ></div>
             <span>Board</span>
@@ -25,14 +27,14 @@ const Main = ({}) => {
           <div className={styles.buttonWrap}>
             <div
               className={styles.btn}
-              onClick={() => navigate("/calendar")}
+              onClick={() => navigate("/main/calendar")}
             ></div>
             <span>Calendar</span>
           </div>
           <div className={styles.buttonWrap}>
             <div
               className={styles.btn}
-              onClick={() => navigate("/message")}
+              onClick={() => navigate("/main/message")}
             ></div>
             <span>Message</span>
           </div>

@@ -7,7 +7,7 @@ import Modal from "../Modal";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 
-const Header = ({ isLoggedIn, handleLogin, handleSignup }) => {
+const Header = () => {
   const [modalOn, setModalOn] = useState(false);
   const [name, setName] = useState("");
   const user = useSelector((state) => state.user.value);
@@ -19,7 +19,7 @@ const Header = ({ isLoggedIn, handleLogin, handleSignup }) => {
   useEffect(() => {
     setName(user.user_name);
   }, [user]);
-
+  console.log(user);
   return (
     <>
       <header className={styles.header}>
@@ -35,7 +35,7 @@ const Header = ({ isLoggedIn, handleLogin, handleSignup }) => {
           <div className={styles.menuBtns}>
             <button className={styles.menuBtn}></button>
             <button className={styles.menuBtn}></button>
-            <JoinButtons>
+            {/* <JoinButtons>
               {!modalOn ? (
                 <>
                   <button onClick={handleModal}>로그인</button>
@@ -46,7 +46,7 @@ const Header = ({ isLoggedIn, handleLogin, handleSignup }) => {
                   로그아웃
                 </button>
               )}
-            </JoinButtons>
+            </JoinButtons> */}
           </div>
           <div className={styles.aboutUser}>
             <div className={styles.userAvatar}>

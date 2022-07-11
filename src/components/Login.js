@@ -36,7 +36,6 @@ const Login = () => {
         })
         .catch((error) => console.log(error));
     } else {
-      console.log(loginValue.password);
       // 입력한 비밀번호가 앞서 입력한 이메일과 매칭되는지 확인
       axios
         .post("http://52.79.82.195:3001/api/users/password", {
@@ -44,13 +43,17 @@ const Login = () => {
           password: loginValue.password,
         })
         .then((response) => {
+          console.log(response);
+          const user_email = response.date.email;
+          const user_name = response.date.name;
+
+          // response 값이 success라면 토큰 저장, 리디렉션, 유저 정보 저장
           if (response.data.success) {
             const token = response.data.token;
             alert("로그인에 성공하였습니다!");
             localStorage.setItem("myToken", token);
             navigate("/main");
-            console.log(response);
-            dispatch(login({ ...user, isLoggedIn: true }));
+            dispatch(login({ user_email: user_email, user_name: user_name }));
           }
         })
         .catch((error) => console.log(error));

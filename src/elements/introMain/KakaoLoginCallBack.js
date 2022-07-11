@@ -42,7 +42,6 @@ const KakaoLoginCallback = () => {
             axios
               .post(`http://13.125.169.225:3001/kakao/parsing`, {
                 user_email,
-                user_id,
                 user_name,
               })
               .then((res) => {
