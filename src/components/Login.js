@@ -49,6 +49,7 @@ const Login = () => {
             alert("로그인에 성공하였습니다!");
             localStorage.setItem("myToken", token);
             navigate("/main");
+            console.log(response);
             dispatch(login({ ...user, isLoggedIn: true }));
           }
         })

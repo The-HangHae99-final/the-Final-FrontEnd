@@ -7,13 +7,7 @@ import ModalPortal from "../../elements/Portal/Portal";
 import Modal from "../../components/Modal";
 import { useNavigate } from "react-router-dom";
 
-const Main = ({
-  isLoggedIn,
-  handleLogin,
-  handleSignup,
-  isLoginModalOpen,
-  isSignupModalOpen,
-}) => {
+const Main = ({}) => {
   const navigate = useNavigate();
 
   return (
@@ -46,11 +40,7 @@ const Main = ({
       </div>
 
       <div className={styles.rightSide}>
-        <Header
-          isLoggedIn={isLoggedIn}
-          handleLogin={handleLogin}
-          handleSignup={handleSignup}
-        />
+        <Header />
 
         <main className={styles.mainStyle}>
           <Outlet />
