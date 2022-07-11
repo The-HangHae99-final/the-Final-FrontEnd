@@ -44,8 +44,8 @@ const Login = () => {
         })
         .then((response) => {
           console.log(response);
-          const user_email = response.date.email;
-          const user_name = response.date.name;
+          const user_email = response.data.email;
+          const user_name = response.data.name;
 
           // response 값이 success라면 토큰 저장, 리디렉션, 유저 정보 저장
           if (response.data.success) {

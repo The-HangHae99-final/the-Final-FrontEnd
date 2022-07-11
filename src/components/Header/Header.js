@@ -6,20 +6,15 @@ import ModalPortal from "../../elements/Portal/Portal";
 import Modal from "../Modal";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import vector from "../../public/img/Vector1.png";
 
 const Header = () => {
-  const [modalOn, setModalOn] = useState(false);
-  const [name, setName] = useState("");
+  const [name, serName] = useState("");
   const user = useSelector((state) => state.user.value);
 
-  const handleModal = () => {
-    setModalOn(!modalOn);
-  };
-
   useEffect(() => {
-    setName(user.user_name);
+    serName(user.user_name);
   }, [user]);
-  console.log(user);
   return (
     <>
       <header className={styles.header}>
@@ -35,40 +30,79 @@ const Header = () => {
           <div className={styles.menuBtns}>
             <button className={styles.menuBtn}></button>
             <button className={styles.menuBtn}></button>
-            {/* <JoinButtons>
-              {!modalOn ? (
-                <>
-                  <button onClick={handleModal}>로그인</button>
-                  <button onClick={handleModal}>회원가입</button>
-                </>
-              ) : (
-                <button onClick={() => console.log("로그아웃")}>
-                  로그아웃
-                </button>
-              )}
-            </JoinButtons> */}
           </div>
-          <div className={styles.aboutUser}>
-            <div className={styles.userAvatar}>
-              <UserAvatar size="big" />
+          <AboutUser>
+            <UserAvatar size="big" width={50} height={50} />
+            <div className="userMetaInfo">
+              <span className="greeting">Hi!</span>
+              <UsernameWrap className="usernameWrap">
+                <div className="username">{name}님</div>
+                <div className="vector-img-wrap">
+                  <img src={vector} alt="vector" className="vector-img"></img>
+                </div>
+              </UsernameWrap>
             </div>
-            <div className={styles.userMetaInfo}>
-              <span className={styles.greeting}>Hi!</span>
-              <div className={styles.userName}>{name}님</div>
-            </div>
-          </div>
+          </AboutUser>
         </div>
       </header>
-      <ModalPortal>
+      {/* <ModalPortal>
         {modalOn && <Modal text="login" onClose={handleModal} />}
-      </ModalPortal>
+      </ModalPortal> */}
     </>
   );
 };
 
-const JoinButtons = styled.div`
+const AboutUser = styled.div`
+  width: 130px;
+  margin-left: 42px;
   display: flex;
-  cursor: pointer;
+  align-items: center;
+  background-color: red;
+
+  & > .userMetaInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 11px;
+  }
+
+  & > .userMetaInfo .greeting {
+    font-size: 24px;
+    font-weight: 600;
+    color: #7d8bdb;
+    line-height: 36px;
+  }
 `;
+
+const UsernameWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  & > .username {
+    margin-right: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: -2%;
+    line-height: 21px;
+  }
+
+  & > .vector-img-wrap {
+    padding: 2px 2px;
+  }
+
+  & > .vector-img-wrap .vector-img {
+    width: 15px;
+    height: 10px;
+    cursor: pointer;
+    padding: 2px 2px;
+  }
+`;
+
+// const UserName = styled.div``;
+// const UserName = styled.div``;
+// const UserName = styled.div``;
+// const UserName = styled.div``;
+// const UserName = styled.div``;
+// const UserName = styled.div``;
+// const UserName = styled.div``;
 
 export default Header;

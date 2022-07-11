@@ -105,37 +105,6 @@
   background-color: #889aff;
 }
 
-.aboutUser {
-  margin-left: 42px;
-  display: flex;
-}
-
-.userAvatar {
-  width: 78px;
-  height: 62px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.userMetaInfo {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.greeting {
-  font-size: 24px;
-  font-weight: 600;
-  color: #7d8bdb;
-  line-height: 36px;
-}
-.userName {
-  font-weight: 600;
-  font-size: 14px;
-  letter-spacing: -2%;
-  line-height: 21px;
-}
-
 .mainStyle {
   width: 100%;
   height: 100%;
