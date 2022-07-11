@@ -52,15 +52,6 @@
   cursor: pointer;
 }
 
-.header {
-  height: 80px;
-  width: 100%;
-  display: flex;
-  box-sizing: border-box;
-  justify-content: flex-end;
-  padding: 15px 0px;
-}
-
 .inputWrap {
   position: relative;
   width: 500px;
@@ -89,7 +80,7 @@
 .menuItems {
   display: flex;
   align-items: center;
-  margin-right: 90px;
+  margin-right: 45px;
   margin-left: 205px;
 }
 
