@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/userReducer";
+import { setItemToLs } from "./localStorage";
 
 const Login = () => {
   const [loginValue, setLoginValue] = useState({
@@ -44,14 +45,16 @@ const Login = () => {
         })
         .then((response) => {
           console.log(response);
-          const user_email = response.data.email;
           const user_name = response.data.name;
+          const user_email = response.data.email;
 
           // response 값이 success라면 토큰 저장, 리디렉션, 유저 정보 저장
           if (response.data.success) {
             const token = response.data.token;
             alert("로그인에 성공하였습니다!");
-            localStorage.setItem("myToken", token);
+            setItemToLs("myToken", token);
+            setItemToLs("userName", user_name);
+            setItemToLs("userEmail", user_email);
             navigate("/main");
             dispatch(login({ user_email: user_email, user_name: user_name }));
           }

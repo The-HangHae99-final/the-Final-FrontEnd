@@ -5,6 +5,7 @@ import { getCookie, setCookie } from "../../shared/cookie";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/userReducer";
+import { setItemToLs } from "../../components/localStorage";
 
 const NaverLoginCallBack = () => {
   const [userInfo, setUserInfo] = useState({
@@ -61,7 +62,7 @@ const NaverLoginCallBack = () => {
                 user_name,
               })
               .then((res) => {
-                localStorage.setItem("myToken", token);
+                setItemToLs("myToken", token);
                 alert("네이버로 로그인 완료!");
                 navigate("/");
               });

@@ -5,6 +5,7 @@ import { setCookie } from "../../shared/cookie";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/userReducer";
+import { setItemToLs } from "../../components/localStorage";
 
 const KakaoLoginCallback = () => {
   const [userInfo, setUserInfo] = useState({
@@ -45,7 +46,7 @@ const KakaoLoginCallback = () => {
                 user_name,
               })
               .then((res) => {
-                localStorage.setItem("myToken", token);
+                setItemToLs("myToken", token);
                 alert("카카오로 로그인 완료!");
                 navigate("/");
               });

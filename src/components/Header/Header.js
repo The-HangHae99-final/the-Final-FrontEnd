@@ -5,23 +5,36 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import vector from "../../public/img/Vector1.png";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { getItemFromLs, removeItemFromLs } from "../localStorage";
 
 const Header = () => {
   const [openDropdown, setOpenDropdown] = useState(false);
   const [userInfo, seruserInfo] = useState({});
   const user = useSelector((state) => state.user.value);
   const dropdownRef = useRef(null);
+  const username = getItemFromLs("userName");
+  const userEmail = getItemFromLs("userEmail");
+
   const navigate = useNavigate();
 
   const logout = () => {
-    localStorage.removeItem("myToken");
+    removeItemFromLs("myToken");
+    removeItemFromLs("userName");
+    removeItemFromLs("userEmail");
+
     alert("로그아웃 되었습니다");
     navigate("/");
+  };
+
+  const getWorkspaceList = () => {
+    setOpenDropdown(!openDropdown);
   };
 
   useEffect(() => {
     seruserInfo({ ...user });
   }, [user]);
+
   return (
     <>
       <HeaderStyle>
@@ -45,12 +58,12 @@ const Header = () => {
 
               {/* show dropdown */}
               <UsernameWrap className="usernameWrap">
-                <div className="username">{userInfo.user_name}님</div>
+                <div className="username">{username}님</div>
                 <div
                   className={`vector-img-wrap ${
                     openDropdown ? "toBottom" : "toTop"
                   }`}
-                  onClick={() => setOpenDropdown(!openDropdown)}
+                  onClick={getWorkspaceList}
                 >
                   <img src={vector} alt="vector" className="vector-img"></img>
                 </div>
@@ -68,7 +81,7 @@ const Header = () => {
                 <h3 className="li-header-title">내 계정</h3>
                 <span className="edit_account">| 편집하기</span>
               </div>
-              <div className="nav_email">{userInfo.user_email}</div>
+              <div className="nav_email">{userEmail}</div>
             </li>
             <li className="nav-item">
               <div className="li-header">

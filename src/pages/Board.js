@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { getItemFromLs } from "../components/localStorage";
 
 const Board = () => {
   const [data, setDatas] = useState({
@@ -25,7 +26,7 @@ const Board = () => {
     axios
       .post("http://52.78.168.151:3001/api/board/post", data, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("myToken")}`,
+          Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },
       })
       .then((res) => console.log(res))

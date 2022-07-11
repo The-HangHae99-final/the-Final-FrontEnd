@@ -15,14 +15,6 @@ import NaverLoginCallBack from "./elements/introMain/NaverLoginCallBack";
 import KakaoLoginCallback from "./elements/introMain/KakaoLoginCallBack";
 
 const App = () => {
-  const ls = localStorage.getItem("myToken");
-
-  // useEffect(() => {
-  //   if (!ls) return;
-  //   setIsLoggedIn(true);
-  // }, [ls]);
-  // console.log(isLoggedIn);
-  console.log(ls);
   return (
     <div>
       <GlobalStyle />
