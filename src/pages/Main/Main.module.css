@@ -77,25 +77,6 @@
   left: 30px;
 }
 
-.menuItems {
-  display: flex;
-  align-items: center;
-  margin-right: 45px;
-  margin-left: 205px;
-}
-
-.menuBtns {
-  display: flex;
-  gap: 25px;
-}
-
-.menuBtn {
-  all: unset;
-  width: 24px;
-  height: 24px;
-  background-color: #889aff;
-}
-
 .mainStyle {
   width: 100%;
   height: 100%;

@@ -1,17 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-import UserAvatar from "../../elements/UserAvatar";
-import styles from "../../pages/Main/main.module.css";
-import { useSelector } from "react-redux";
-import styled from "styled-components";
-import vector from "../../public/img/Vector1.png";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { getItemFromLs, removeItemFromLs } from "../localStorage";
+
+// module
+import styles from "../../pages/Main/main.module.css";
+import UserAvatar from "../../elements/UserAvatar";
+import vector from "../../public/img/Vector1.png";
+import sunIcon from "../../public/img/sun.png";
+import bellIcon from "../../public/img/bell.png";
 
 const Header = () => {
   const [openDropdown, setOpenDropdown] = useState(false);
-  const [userInfo, seruserInfo] = useState({});
-  const user = useSelector((state) => state.user.value);
   const dropdownRef = useRef(null);
   const username = getItemFromLs("userName");
   const userEmail = getItemFromLs("userEmail");
@@ -31,10 +33,6 @@ const Header = () => {
     setOpenDropdown(!openDropdown);
   };
 
-  useEffect(() => {
-    seruserInfo({ ...user });
-  }, [user]);
-
   return (
     <>
       <HeaderStyle>
@@ -46,10 +44,14 @@ const Header = () => {
           />
           <div className={styles.searchIcon}></div>
         </form>
-        <div className={styles.menuItems}>
-          <div className={styles.menuBtns}>
-            <button className={styles.menuBtn}></button>
-            <button className={styles.menuBtn}></button>
+        <div className="menuItems">
+          <div className="menuBtns">
+            <button className="menuBtn">
+              <img src={sunIcon} alt="sun icon" />
+            </button>
+            <button className="menuBtn">
+              <img src={bellIcon} alt="sun icon" />
+            </button>
           </div>
           <AboutUser>
             <UserAvatar size="big" width={50} height={50} />
@@ -126,6 +128,28 @@ const HeaderStyle = styled.div`
   padding: 15px 0px;
   position: relative;
 
+  .menuBtns {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+  }
+
+  .menuBtn {
+    all: unset;
+    width: 29px;
+    height: 29px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .menuItems {
+    display: flex;
+    align-items: center;
+    margin-right: 45px;
+    margin-left: 205px;
+  }
+
   .menu {
     width: 271px;
     background-color: #ffffff;
@@ -135,6 +159,8 @@ const HeaderStyle = styled.div`
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+    border: 1px solid #ecedf1;
+    box-shadow: -4px 4px 10px rgba(0, 0, 0, 0.1);
   }
 
   .menu.active {
@@ -143,7 +169,7 @@ const HeaderStyle = styled.div`
   }
 
   .nav-item {
-    padding: 20px 25px;
+    padding: 20px 25px 15px 25px;
     border: 1px solid #ecedf1;
   }
 
@@ -175,6 +201,7 @@ const HeaderStyle = styled.div`
   .nav_email {
     font-size: 16px;
     line-height: 24px;
+    height: 24px;
     color: #7a858e;
     font-weight: 400;
   }
