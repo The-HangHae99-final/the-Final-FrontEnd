@@ -4,12 +4,20 @@ import styles from "../../pages/Main/main.module.css";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import vector from "../../public/img/Vector1.png";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [openDropdown, setOpenDropdown] = useState(false);
   const [userInfo, seruserInfo] = useState({});
   const user = useSelector((state) => state.user.value);
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
+
+  const logout = () => {
+    localStorage.removeItem("myToken");
+    alert("로그아웃 되었습니다");
+    navigate("/");
+  };
 
   useEffect(() => {
     seruserInfo({ ...user });
@@ -82,7 +90,9 @@ const Header = () => {
               <div className="li-header li-header_grey">워크스페이스 추가</div>
             </li>
             <li className="nav-item">
-              <div className="li-header li-header_grey">로그아웃</div>
+              <div className="li-header li-header_grey" onClick={logout}>
+                로그아웃
+              </div>
             </li>
           </ul>
         </nav>
