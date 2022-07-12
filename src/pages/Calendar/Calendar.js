@@ -3,9 +3,9 @@
 // import "react-date-range/dist/theme/default.css"; // theme css file
 // import axios from "axios";
 import React, { useEffect, useState } from "react";
-
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import BigCalendar from "../../components/Calendar";
 import "./calendar.css";
 
 const Calender = () => {
@@ -64,7 +64,9 @@ const Calender = () => {
           </div>
         </div>
 
-        <div className="rightSection"></div>
+        <div className="rightSection">
+          <BigCalendar />
+        </div>
       </div>
     </>
   );

@@ -29,6 +29,10 @@ const Header = () => {
     navigate("/");
   };
 
+  const addWorkspace = () => {
+    axios.post("http://52.79.82.195:3001/api/workSpace/create");
+  };
+
   const getWorkspaceList = () => {
     setOpenDropdown(!openDropdown);
   };
@@ -44,6 +48,7 @@ const Header = () => {
           />
           <div className={styles.searchIcon}></div>
         </form>
+
         <div className="menuItems">
           <div className="menuBtns">
             <button className="menuBtn">
@@ -102,7 +107,9 @@ const Header = () => {
               </WorkspaceList>
             </li>
             <li className="nav-item">
-              <div className="li-header li-header_grey">워크스페이스 추가</div>
+              <div className="li-header li-header_grey" onClick={addWorkspace}>
+                워크스페이스 추가
+              </div>
             </li>
             <li className="nav-item">
               <div className="li-header li-header_grey" onClick={logout}>
