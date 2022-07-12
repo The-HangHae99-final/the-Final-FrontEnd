@@ -1,163 +1,151 @@
-// import { Calendar, DateRangePicker, DateRange } from "react-date-range";
-// import "react-date-range/dist/styles.css"; // main style file
-// import "react-date-range/dist/theme/default.css"; // theme css file
-// import axios from "axios";
+// Calendar 페이지입니다
+
 import React, { useEffect, useState } from "react";
-import DatePicker from "react-datepicker";
+import styled from "styled-components";
 import "react-datepicker/dist/react-datepicker.css";
-import BigCalendar from "../../components/Calendar";
 import "./calendar.css";
 
+// file
+import BigCalendar from "../../components/BigCalendar";
+import SmallCalendar from "../../components/SmallCalendar";
+
 const Calender = () => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
-
   return (
-    <>
-      <div className="calenderStyle">
-        <div className="leftSection">
-          <DatePicker selected={startDate} inline />
+    <CalenderStyle className="calenderStyle">
+      <div className="leftSection">
+        {/* 작은 달력 */}
+        <SmallCalendar />
 
-          <div className="myCalender-box">
-            <div className="teamchat-box">
-              <div className="box-header">
-                <div className="box-title">My calendar</div>
-                <button></button>
-              </div>
-              <ul className="calender-list-my">
-                <li className="calender-item">
-                  <div className="diffcolor blue"></div>
-                  <span className="daily-title">Contents design</span>
-                </li>
-                <li className="calender-item">
-                  <div className="diffcolor red"></div>
-                  <span className="daily-title">Product design</span>
-                </li>
-                <div className="add-button-container">
-                  <button className="add-button">+</button>
-                  <span>Add</span>
-                </div>
-              </ul>
+        {/* My Calendar */}
+        <div className="myCalender-box">
+          <div className="teamchat-box">
+            <div className="box-header">
+              <div className="box-title">My calendar</div>
+              <button></button>
             </div>
-          </div>
-
-          <div className="teamCalender">
-            <div className="teamchat-box">
-              <div className="box-header">
-                <div className="box-title">Team calendar</div>
+            <ul className="calender-list-my">
+              <li className="calender-item">
+                <div className="diffcolor blue"></div>
+                <span className="daily-title">Contents design</span>
+              </li>
+              <li className="calender-item">
+                <div className="diffcolor red"></div>
+                <span className="daily-title">Product design</span>
+              </li>
+              <div className="add-button-container">
+                <button className="add-button">+</button>
+                <span>Add</span>
               </div>
-              <ul className="calender-list calender-list-team">
-                <li className="calender-item">
-                  <div className="diffcolor yellow"></div>
-                  <span className="daily-title">Meeting</span>
-                </li>
-                <li className="calender-item">
-                  <div className="diffcolor red"></div>
-                  <span className="daily-title">Event</span>
-                </li>
-                <div className="add-button-container">
-                  <button className="add-button">+</button>
-                  <span>Add</span>
-                </div>
-              </ul>
-            </div>
+            </ul>
           </div>
         </div>
 
-        <div className="rightSection">
-          <BigCalendar />
+        {/* Team calendar */}
+        <div className="teamCalender">
+          <div className="teamchat-box">
+            <div className="box-header">
+              <div className="box-title">Team calendar</div>
+            </div>
+            <ul className="calender-list calender-list-team">
+              <li className="calender-item">
+                <div className="diffcolor yellow"></div>
+                <span className="daily-title">Meeting</span>
+              </li>
+              <li className="calender-item">
+                <div className="diffcolor red"></div>
+                <span className="daily-title">Event</span>
+              </li>
+              <div className="add-button-container">
+                <button className="add-button">+</button>
+                <span>Add</span>
+              </div>
+            </ul>
+          </div>
         </div>
       </div>
-    </>
+
+      <div className="rightSection">
+        {/* 큰 달력 */}
+        <BigCalendar />
+      </div>
+    </CalenderStyle>
   );
 };
 
+const CalenderStyle = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  gap: 20px;
+
+  .leftSection {
+    width: 280px;
+    height: 100%;
+    padding: 30px 20px;
+    background-color: #ffffff;
+
+    .myCalender-box {
+      margin-top: 25px;
+      height: 191px;
+    }
+
+    .calender-item {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 21px;
+      color: #353841;
+      padding: 13px 10px;
+      display: Flex;
+    }
+
+    .diffcolor {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .diffcolor.yellow {
+      background: #f4d687;
+    }
+
+    .diffcolor.red {
+      background: #e37e7e;
+    }
+
+    .diffcolor.blue {
+      background: #7ea0e3;
+    }
+
+    .add-button-container {
+      padding: 13px 10px;
+    }
+
+    .add-button {
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .box-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 24px;
+    }
+
+    .box-title {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 24px;
+      color: #7d8bdb;
+    }
+  }
+
+  .rightSection {
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+  }
+`;
+
 export default Calender;
-
-// const [selectionRange, setSelectionRange] = useState([
-//   {
-//     startDate: new Date(),
-//     endDate: new Date(),
-//     key: "selection",
-//   },
-// ]);
-// const [data, setData] = useState({
-//   start_date: "",
-//   end_date: "",
-//   title: "",
-//   desc: "",
-// });
-// const { title, desc } = data;
-
-// const handleSelect = (ranges) => {
-//   const end_date = ranges["selection"].endDate;
-//   const start_date = ranges["selection"].startDate;
-
-//   // UTC timezone 기준 -> 한국 날짜 기준
-//   function toKrTime(date) {
-//     return new Date(
-//       date.getTime() - date.getTimezoneOffset() * 60000
-//     ).toISOString();
-//   }
-
-//   const end_date_kr = toKrTime(end_date).split("T")[0];
-//   const start_date_kr = toKrTime(start_date).split("T")[0];
-
-//   setSelectionRange([
-//     {
-//       startDate: ranges["selection"].startDate,
-//       endDate: ranges["selection"].endDate,
-//       key: ranges["selection"].key,
-//     },
-//   ]);
-//   setData({ ...data, start_date: start_date_kr, end_date: end_date_kr });
-// };
-
-// const handleChange = (e) => {
-//   const { name, value } = e.target;
-//   setData({ ...data, [name]: value });
-// };
-
-// const handleSubmit = (e) => {
-//   e.preventDefault();
-
-//   console.log(`데이터를 보냅니다 ${data}`);
-
-//   axios
-//     .post("http://3.39.187.40/task", data, {
-//       headers: {
-//         Authorization: `Bearer ${localStorage.getItem("myToken")}`,
-//       },
-//     })
-//     .then((res) => console.log(res))
-//     .catch((error) => console.log(error));
-// };
-
-{
-  /* <DateRange
-        editableDateInputs={true}
-        ranges={selectionRange}
-        moveRangeOnFirstSelection={false}
-        onChange={handleSelect}
-      />
-      <div>Start Date : {selectionRange[0].startDate.toString()}</div>
-      <br />
-      <div>End Date : {selectionRange[0].endDate.toString()}</div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="title"
-          value={title}
-          name="title"
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          placeholder="desc"
-          value={desc}
-          name="desc"
-          onChange={handleChange}
-        />
-        <button type="submit">전송하기</button>
-      </form> */
-}

@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
 import styled from "styled-components";
 
 const BigCalendar = (props) => {
-  const [startDate, setStartDate] = useState(new Date());
-
   return (
     <BigCalendarStyle>
       <DatePicker inline />
@@ -107,6 +104,11 @@ const BigCalendarStyle = styled.div`
   /* 해당 달이 아닌 일 */
   .react-datepicker__day--outside-month {
     color: #dcdce8;
+  }
+
+  /* 오늘 날짜(unnecessary) */
+  .react-datepicker__day--keyboard-selected {
+    background-color: #ffffff;
   }
 `;
 
