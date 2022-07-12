@@ -20,17 +20,18 @@ const Header = () => {
   const username = getItemFromLs("userName");
   const userEmail = getItemFromLs("userEmail");
   const [modalOn, setModalOn] = useState(false);
+  const [workspaceList, setWorkspaceList] = useState([]);
 
   const handleModal = (e) => {
     setModalOn(!modalOn);
   };
+
   const navigate = useNavigate();
 
   const logout = () => {
     removeItemFromLs("myToken");
     removeItemFromLs("userName");
     removeItemFromLs("userEmail");
-
     alert("로그아웃 되었습니다");
     navigate("/");
   };
@@ -41,8 +42,8 @@ const Header = () => {
 
   const [workspaceName, setWorkspaceName] = useState("");
 
+  //
   const addNewWorkSpace = (e) => {
-    console.log(workspaceName);
     axios
       .post(
         "http://52.79.82.195:3001/api/workSpace/create",
@@ -53,21 +54,31 @@ const Header = () => {
           },
         }
       )
-      .then((res) =>
-        axios
-          .get("http://52.79.82.195:3001/api/workSpace/workSpaceList", {
-            headers: {
-              Authorization: `Bearer ${getItemFromLs("myToken")}`,
-            },
-          })
-          .then((res) => console.log(res))
-      );
+      .then((res) => {
+        setWorkspaceName("");
+        setModalOn(!modalOn);
+        alert("새로운 워크스페이스가 만들어졌어요");
+      });
   };
+  //
 
   const handleChange = (e) => {
     setWorkspaceName(e.target.value);
   };
-  useEffect(() => {}, [workspaceName]);
+
+  useEffect(() => {
+    axios
+      .get("http://52.79.82.195:3001/api/workSpace/workSpaceList", {
+        headers: {
+          Authorization: `Bearer ${getItemFromLs("myToken")}`,
+        },
+      })
+      .then((res) => {
+        const wsInfoList = res.data.includedList;
+        const wsList = wsInfoList.map((a, idx) => a.name.split("+")[1]);
+        setWorkspaceList(wsList);
+      });
+  }, [workspaceList]);
 
   return (
     <>
@@ -128,14 +139,14 @@ const Header = () => {
                 <span className="edit_account">| 편집하기</span>
               </div>
               <WorkspaceList>
-                <li className="workspace-item">
-                  <div className="workspace_avatar"></div>
-                  <div className="workspace_name">항해99 1조</div>
-                </li>
-                <li className="workspace-item">
-                  <div className="workspace_avatar"></div>
-                  <div className="workspace_name">7기 디자이너</div>
-                </li>
+                {workspaceList.map((item) => {
+                  return (
+                    <li className="workspace-item">
+                      <div className="workspace_avatar">{item[0]}</div>
+                      <div className="workspace_name">{item}</div>
+                    </li>
+                  );
+                })}
               </WorkspaceList>
             </li>
             <li className="nav-item">
@@ -266,13 +277,27 @@ const WorkspaceList = styled.ul`
   .workspace_avatar {
     width: 40px;
     height: 40px;
-    background-color: aquamarine;
     border-radius: 50%;
     margin-right: 20px;
+    background: #f8f8f9;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+    letter-spacing: -0.02em;
+    color: #7d8bdb;
   }
 
   .workspace_name {
     cursor: pointer;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    letter-spacing: -0.02em;
+    color: #353841;
   }
 `;
 
