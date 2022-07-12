@@ -11,13 +11,19 @@ import UserAvatar from "../../elements/UserAvatar";
 import vector from "../../public/img/Vector1.png";
 import sunIcon from "../../public/img/sun.png";
 import bellIcon from "../../public/img/bell.png";
+import ModalPortal from "../../elements/Portal/ModalPortal";
+import WorkspaceModal from "../Modal/WorkspaceModal";
 
 const Header = () => {
   const [openDropdown, setOpenDropdown] = useState(false);
   const dropdownRef = useRef(null);
   const username = getItemFromLs("userName");
   const userEmail = getItemFromLs("userEmail");
+  const [modalOn, setModalOn] = useState(false);
 
+  const handleModal = (e) => {
+    setModalOn(!modalOn);
+  };
   const navigate = useNavigate();
 
   const logout = () => {
@@ -29,13 +35,39 @@ const Header = () => {
     navigate("/");
   };
 
-  const addWorkspace = () => {
-    axios.post("http://52.79.82.195:3001/api/workSpace/create");
-  };
-
   const getWorkspaceList = () => {
     setOpenDropdown(!openDropdown);
   };
+
+  const [workspaceName, setWorkspaceName] = useState("");
+
+  const addNewWorkSpace = (e) => {
+    console.log(workspaceName);
+    axios
+      .post(
+        "http://52.79.82.195:3001/api/workSpace/create",
+        { name: workspaceName },
+        {
+          headers: {
+            Authorization: `Bearer ${getItemFromLs("myToken")}`,
+          },
+        }
+      )
+      .then((res) =>
+        axios
+          .get("http://52.79.82.195:3001/api/workSpace/workSpaceList", {
+            headers: {
+              Authorization: `Bearer ${getItemFromLs("myToken")}`,
+            },
+          })
+          .then((res) => console.log(res))
+      );
+  };
+
+  const handleChange = (e) => {
+    setWorkspaceName(e.target.value);
+  };
+  useEffect(() => {}, [workspaceName]);
 
   return (
     <>
@@ -92,7 +124,7 @@ const Header = () => {
             </li>
             <li className="nav-item">
               <div className="li-header">
-                <h3 li-header-title>내 워크스페이스</h3>
+                <h3 className="li-header-title">내 워크스페이스</h3>
                 <span className="edit_account">| 편집하기</span>
               </div>
               <WorkspaceList>
@@ -107,7 +139,7 @@ const Header = () => {
               </WorkspaceList>
             </li>
             <li className="nav-item">
-              <div className="li-header li-header_grey" onClick={addWorkspace}>
+              <div className="li-header li-header_grey" onClick={handleModal}>
                 워크스페이스 추가
               </div>
             </li>
@@ -118,10 +150,17 @@ const Header = () => {
             </li>
           </ul>
         </nav>
+        <ModalPortal>
+          {modalOn && (
+            <WorkspaceModal
+              handleChange={handleChange}
+              workspaceName={workspaceName}
+              addNewWorkSpace={addNewWorkSpace}
+              onClose={handleModal}
+            />
+          )}
+        </ModalPortal>
       </HeaderStyle>
-      {/* <ModalPortal>
-        {modalOn && <Modal text="login" onClose={handleModal} />}
-      </ModalPortal> */}
     </>
   );
 };
