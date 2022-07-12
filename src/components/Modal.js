@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Divider from "../elements/Divider";
 import SocialLogin from "./SocialLogin";
-import ModalPortal from "../elements/Portal/Portal";
+import ModalPortal from "../elements/Portal/ModalPortal";
 
 const Modal = ({ text, onClose }) => {
   const closeModal = (e) => {

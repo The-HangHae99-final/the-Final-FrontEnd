@@ -3,11 +3,10 @@ import styles from "./main.module.css";
 import Header from "../../components/Header/Header";
 import { Outlet } from "react-router-dom";
 import LoginModal from "../../elements/LoginModal";
-import ModalPortal from "../../elements/Portal/Portal";
 import Modal from "../../components/Modal";
 import { useNavigate } from "react-router-dom";
 
-const Main = ({}) => {
+const Main = () => {
   const navigate = useNavigate();
 
   return (

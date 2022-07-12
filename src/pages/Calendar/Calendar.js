@@ -8,8 +8,23 @@ import "./calendar.css";
 // file
 import BigCalendar from "../../components/BigCalendar";
 import SmallCalendar from "../../components/SmallCalendar";
+import ModalPortal from "../../elements/Portal/ModalPortal";
+import CalendarModal from "../../components/CalendarModal";
 
 const Calender = () => {
+  const [modalOn, setModalOn] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+
+  const handleModal = (e) => {
+    setModalOn(() => {
+      setModalTitle(e.target.title);
+      return !modalOn;
+    });
+  };
+
+  // useEffect(() => {
+  // }, []);
+
   return (
     <CalenderStyle className="calenderStyle">
       <div className="leftSection">
@@ -21,7 +36,6 @@ const Calender = () => {
           <div className="teamchat-box">
             <div className="box-header">
               <div className="box-title">My calendar</div>
-              <button></button>
             </div>
             <ul className="calender-list-my">
               <li className="calender-item">
@@ -32,7 +46,11 @@ const Calender = () => {
                 <div className="diffcolor red"></div>
                 <span className="daily-title">Product design</span>
               </li>
-              <div className="add-button-container">
+              <div
+                className="add-button-container"
+                title="My Calendal"
+                onClick={handleModal}
+              >
                 <button className="add-button">
                   <div>+</div>
                 </button>
@@ -57,7 +75,11 @@ const Calender = () => {
                 <div className="diffcolor red"></div>
                 <span className="daily-title">Event</span>
               </li>
-              <div className="add-button-container">
+              <div
+                className="add-button-container"
+                onClick={handleModal}
+                title="Team calendar"
+              >
                 <button className="add-button">
                   <div>+</div>
                 </button>
@@ -72,6 +94,11 @@ const Calender = () => {
         {/* 큰 달력 */}
         <BigCalendar />
       </div>
+      <ModalPortal>
+        {modalOn && (
+          <CalendarModal onClose={handleModal} modalTitle={modalTitle} />
+        )}
+      </ModalPortal>
     </CalenderStyle>
   );
 };
@@ -127,6 +154,7 @@ const CalenderStyle = styled.div`
       align-items: center;
       color: #7a858e;
       opacity: 0.7;
+      cursor: pointer;
     }
 
     .add-button {
@@ -140,7 +168,6 @@ const CalenderStyle = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
       div {
         height: 100%;
         display: Flex;
