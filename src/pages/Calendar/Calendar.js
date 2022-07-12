@@ -33,7 +33,9 @@ const Calender = () => {
                 <span className="daily-title">Product design</span>
               </li>
               <div className="add-button-container">
-                <button className="add-button">+</button>
+                <button className="add-button">
+                  <div>+</div>
+                </button>
                 <span>Add</span>
               </div>
             </ul>
@@ -56,7 +58,9 @@ const Calender = () => {
                 <span className="daily-title">Event</span>
               </li>
               <div className="add-button-container">
-                <button className="add-button">+</button>
+                <button className="add-button">
+                  <div>+</div>
+                </button>
                 <span>Add</span>
               </div>
             </ul>
@@ -119,11 +123,30 @@ const CalenderStyle = styled.div`
 
     .add-button-container {
       padding: 13px 10px;
+      display: flex;
+      align-items: center;
+      color: #7a858e;
+      opacity: 0.7;
     }
 
     .add-button {
-      cursor: pointer;
+      all: unset;
+      border-radius: 50%;
       margin-right: 10px;
+      opacity: 0.7;
+      border: 1px solid #7a858e;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      div {
+        height: 100%;
+        display: Flex;
+        align-items: center;
+        transform: translateY(3%);
+      }
     }
 
     .box-header {
