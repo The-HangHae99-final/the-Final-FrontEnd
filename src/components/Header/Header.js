@@ -139,9 +139,16 @@ const Header = () => {
                 <span className="edit_account">| 편집하기</span>
               </div>
               <WorkspaceList>
-                {workspaceList.map((item) => {
+                {workspaceList.map((item, idx) => {
                   return (
-                    <li className="workspace-item">
+                    <li
+                      key={idx}
+                      className="workspace-item"
+                      onClick={() => {
+                        navigate(`/main/${idx}`);
+                        setOpenDropdown(false);
+                      }}
+                    >
                       <div className="workspace_avatar">{item[0]}</div>
                       <div className="workspace_name">{item}</div>
                     </li>
@@ -218,6 +225,7 @@ const HeaderStyle = styled.div`
     transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
     border: 1px solid #ecedf1;
     box-shadow: -4px 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
   }
 
   .menu.active {

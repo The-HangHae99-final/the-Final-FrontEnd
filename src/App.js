@@ -21,11 +21,17 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/main" element={<Main />}>
+        <Route path="/main" element={<Main />} />
+        <Route path="/board" element={<Board />} />
+        <Route path="/calendar" element={<Calender />} />
+        <Route path="/message" element={<Message />} />
+
+        <Route path="/main/:id" element={<Main />}>
           <Route path="board" element={<Board />} />
           <Route path="calendar" element={<Calender />} />
           <Route path="message" element={<Message />} />
         </Route>
+
         {/* {ls ? (
           <>
             <Route path="/main" element={<Main />}>
