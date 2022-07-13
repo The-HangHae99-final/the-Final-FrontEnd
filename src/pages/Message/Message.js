@@ -1,8 +1,21 @@
-import React from "react";
+// 작성자 : 이형섭
+// 페이지 기능 :
+//  - 실시간 채팅
+//  - 채팅방(단체 메시지, 개인 메시지) 목록 조회
+// 업데이트 날짜 : 21.07.09
+
+// module, library
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Ellipse106 from "../../public/img/Ellipse106.png";
-import UserProfile from "../../elements/UserProfile";
 import style from "./message.module.css";
+import io from "socket.io-client";
+import { useDispatch, useSelector } from "react-redux";
+
+// import files
+import UserProfile from "../../elements/UserProfile";
+import DirectChatList from "../../elements/DirectChatList";
+import BubbleBox from "../../components/BubbleBox";
+import axios from "axios";
 
 const Message = () => {
   // const socket = io.connect("http://3.35.49.164");
@@ -77,57 +90,15 @@ const Message = () => {
           <BoxHeader className="box-header">
             <BoxTitle className="box-title">My Chat</BoxTitle>
           </BoxHeader>
-          <MyChatList>
-            <UserProfile
-              text="이형섭"
-              name="이형섭"
-              online={true}
-              alignItems={"center"}
-            />
-            <UserProfile
-              text="전영준"
-              name="전영준"
-              online={true}
-              alignItems={"center"}
-            />
-            <UserProfile
-              text="김하연"
-              name="김하연"
-              online={false}
-              alignItems={"center"}
-            />
-            <UserProfile
-              text="정연욱"
-              name="정연욱"
-              online={false}
-              alignItems={"center"}
-            />
-            <UserProfile
-              text="김규림"
-              name="김규림"
-              online={false}
-              alignItems={"center"}
-            />
-            <UserProfile
-              text="유재석"
-              name="김규림"
-              online={false}
-              alignItems={"center"}
-            />
-            <UserProfile
-              text="정준하"
-              name="김규림"
-              online={false}
-              alignItems={"center"}
-            />
-          </MyChatList>
+          {/* 개인 메시지 유저 리스트 */}
+          <DirectChatList joinRoom={joinRoom} setDataForJoin={setDataForJoin} />
         </MyChatBox>
       </LeftSection>
 
       {/* 오른쪽 섹션 */}
       <RightSection className="rightSection">
         <ChatSection className="ChatSection">
-          {/* 바 */}
+          {/* 채팅 화면 상단 바 */}
           <BarTop className="BarTop">
             <UserProfile
               text="전영준"
@@ -137,82 +108,12 @@ const Message = () => {
             />
           </BarTop>
 
-          {/* 채팅 스크린 */}
+          {/* 채팅 화면 */}
           <ChattingScreen className="ChattingScreen">
-            {/* 상대방이 보낸 메시지 버블 */}
-            <LeftBubble className="LeftBubble">
-              <UserProfile marginRight="10px" toTop="-15px" />
-              <ContentBox className="ContentBox">
-                <YourName className="YourName">전영준</YourName>
-                <BubbleContent className="BubbleContent">
-                  <YourMessage bg={"#F8F8F9"} className="YourMessage">
-                    아 배고파 아 배고파아 배고파아 배고파아 배고파아 배고파아
-                    배고파아 배고파아 배고파아 배고파
-                  </YourMessage>
-                  <SendTimeforLeftBubble className="SendTime">
-                    오후 1:30
-                  </SendTimeforLeftBubble>
-                </BubbleContent>
-              </ContentBox>
-            </LeftBubble>
-
-            {/* 내가 보낸 메시지 버블*/}
-            <RightBubble className="RightBubble">
-              <BubbleContent className="BubbleContent">
-                <SendTimeforRightBubble className="SendTime">
-                  오후 1:30
-                </SendTimeforRightBubble>
-                <YourMessage bg={"#EEF1FF"} className="YourMessage">
-                  아 배고파 아 배고파아 배고파아 배고파아 배고파아 배고파아
-                  배고파아 배고파아 배고파아 배고파 아 배고파 아 배고파아
-                  배고파아 배고 파아 배고파아 배고파아 배고파아 배고파아
-                  배고파아 배고파 아 배고파 아 배고파아 배고파아 배고파아
-                  배고파아 배고파아 배고파아 배고파아 배고파아 배고파
-                </YourMessage>
-              </BubbleContent>
-            </RightBubble>
-
-            <LeftBubble className="LeftBubble">
-              <UserProfile marginRight="10px" toTop="-15px" />
-              <ContentBox className="ContentBox">
-                <YourName className="YourName">전영준</YourName>
-                <BubbleContent className="BubbleContent">
-                  <YourMessage bg={"#F8F8F9"} className="YourMessage">
-                    닭발 부대찌개 치즈닭갈비 냉면 막국수 냉모밀
-                  </YourMessage>
-                  <SendTimeforLeftBubble className="SendTime">
-                    오후 1:30
-                  </SendTimeforLeftBubble>
-                </BubbleContent>
-              </ContentBox>
-            </LeftBubble>
-
-            <LeftBubble className="LeftBubble">
-              <UserProfile marginRight="10px" toTop="-15px" />
-              <ContentBox className="ContentBox">
-                <YourName className="YourName">전영준</YourName>
-                <BubbleContent className="BubbleContent">
-                  <YourMessage bg={"#F8F8F9"} className="YourMessage">
-                    지금은 오전 12시 17분 자고싶다 지금은 오전 12시 17분
-                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
-                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
-                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
-                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
-                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
-                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
-                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
-                    자고싶다지금은 오전 12시 17분 자고싶다지금은 오전 12시 17분
-                    자고싶다
-                  </YourMessage>
-                  <SendTimeforLeftBubble className="SendTime">
-                    오후 1:30
-                  </SendTimeforLeftBubble>
-                </BubbleContent>
-              </ContentBox>
-            </LeftBubble>
+            {currentChatList && <BubbleBox showChat={showChat} />}
           </ChattingScreen>
 
-          {/* 인풋 */}
+          {/* 채팅 화면의 인풋 섹션*/}
           <div className={style.inputWrap}>
             <div className={style.emojiBtn}></div>
             <div className={style.fileSubmitBtn}></div>

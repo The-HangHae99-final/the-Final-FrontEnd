@@ -60,6 +60,7 @@ const Calender = () => {
           </div>
         </div>
 
+<<<<<<< HEAD
         {/* Team calendar */}
         <div className="teamCalender">
           <div className="teamchat-box">
@@ -87,6 +88,10 @@ const Calender = () => {
               </div>
             </ul>
           </div>
+=======
+        <div className="rightSection">
+          <DatePicker selected={startDate} showPopperArrow={false} inline />
+>>>>>>> message
         </div>
       </div>
 

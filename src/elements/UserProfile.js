@@ -3,10 +3,30 @@ import human01 from "../public/img/human1.png";
 import Ellipse106 from "../public/img/Ellipse106.png";
 import Ellipse103 from "../public/img/Ellipse103.png";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
-const UserProfile = ({ text, online, marginRight, toTop, alignItems }) => {
+const UserProfile = ({
+  text,
+  name,
+  workspace,
+  online,
+  marginRight,
+  toTop,
+  alignItems,
+  setDataForJoin,
+  joinRoom,
+}) => {
   return (
-    <OnlineUser toTop={toTop} alignItems={alignItems}>
+    <OnlineUser
+      toTop={toTop}
+      alignItems={alignItems}
+      onClick={(e) => {
+        setDataForJoin(() => {
+          joinRoom(name, workspace);
+          return { opponent: name, workspace: workspace };
+        });
+      }}
+    >
       <OnlineUserProfile
         alt="human"
         className="online-user-profile"
