@@ -22,6 +22,20 @@ const Calender = () => {
     });
   };
 
+  const [taskContents, setTaskContents] = useState({
+    start_date: "",
+    end_date: "",
+    title: "",
+    desc: "",
+    color: "",
+  });
+
+  const handleTaskInfoChange = (e) => {
+    const { value, name } = e.target;
+    setTaskContents({ ...taskContents, [name]: value });
+  };
+  console.log(taskContents);
+
   // useEffect(() => {
   // }, []);
 
@@ -96,7 +110,13 @@ const Calender = () => {
       </div>
       <ModalPortal>
         {modalOn && (
-          <CalendarModal onClose={handleModal} modalTitle={modalTitle} />
+          <CalendarModal
+            onClose={handleModal}
+            modalTitle={modalTitle}
+            taskContents={taskContents}
+            setTaskContents={setTaskContents}
+            handleTaskInfoChange={handleTaskInfoChange}
+          />
         )}
       </ModalPortal>
     </CalenderStyle>

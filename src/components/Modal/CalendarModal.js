@@ -15,21 +15,43 @@ import Vector3 from "../../public/img/Vector3.png";
 
 registerLocale("ko", ko);
 
-const CalendarModal = ({ onClose, modalTitle }) => {
+const CalendarModal = ({
+  onClose,
+  modalTitle,
+  setTaskContents,
+  taskContents,
+  handleTaskInfoChange,
+}) => {
   const [startDate, setStartDate] = useState(new Date());
-  console.log("startDate: ", startDate);
   const [endDate, setEndDate] = useState(new Date());
-  console.log("endDate: ", endDate);
+
+  function toKrTime(date) {
+    return new Date(
+      date.getTime() - date.getTimezoneOffset() * 60000
+    ).toISOString();
+  }
+
+  const processingDate = (date) => {
+    const end_date_kr = toKrTime(endDate).split("T")[0];
+    const start_date_kr = toKrTime(date).split("T")[0];
+    console.log("start_date_kr: ", start_date_kr);
+  };
+
   return (
     <ModalPortal>
       <CalendarModalBg>
         <CalendarModalStyle>
           <h3 className="task-title">{modalTitle}</h3>
+
+          {/* 캘린더 데이터 폼 */}
           <form className="task-form">
             <input
               type="text"
               placeholder="일정 이름을 입력하세요"
               className="task-name"
+              name="title"
+              value={taskContents.title}
+              onChange={handleTaskInfoChange}
             />
 
             <RegisterDate>
@@ -37,7 +59,7 @@ const CalendarModal = ({ onClose, modalTitle }) => {
               <div className="datepickerWrap">
                 <DatePickerCustom
                   selected={startDate}
-                  onChange={(date) => setStartDate(date)}
+                  onChange={(date) => processingDate(date)}
                   // 시간 추가 가능
                   // showTimeSelect
                   // dateFormat="Pp"
@@ -46,20 +68,25 @@ const CalendarModal = ({ onClose, modalTitle }) => {
                   style={{
                     border: "none",
                   }}
+                  name="start_date"
                 />
                 <DatePickerCustom
                   selected={endDate}
-                  onChange={(date) => setEndDate(date)}
+                  onChange={(date) => processingDate(date)}
                   // showTimeSelect
                   // dateFormat="Pp"
                   locale="ko"
                   dateFormat="yyyy-MM-dd"
+                  name="end_date"
                 />
               </div>
             </RegisterDate>
             <ColorPickWrap>
               <div className="color-pick_circle"></div>
-              <spa className="color-pick_title">기본 색상</spa>
+
+              <spa className="color-pick_title" name="color">
+                기본 색상
+              </spa>
               <div className="color-pick_icon-wrap">
                 <img src={Vector3} alt="Vector3" className="color-pick_icon" />
               </div>
@@ -81,7 +108,10 @@ const CalendarModal = ({ onClose, modalTitle }) => {
                   height: "114px",
                   padding: "7px 13px",
                 }}
+                name="desc"
                 className="task-textarea"
+                value={taskContents.desc}
+                onChange={handleTaskInfoChange}
               />
             </TextWrap>
 

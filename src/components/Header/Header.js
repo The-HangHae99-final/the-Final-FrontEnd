@@ -21,6 +21,7 @@ const Header = () => {
   const userEmail = getItemFromLs("userEmail");
   const [modalOn, setModalOn] = useState(false);
   const [workspaceList, setWorkspaceList] = useState([]);
+  const [workspaceName, setWorkspaceName] = useState("");
 
   const handleModal = (e) => {
     setModalOn(!modalOn);
@@ -37,16 +38,14 @@ const Header = () => {
   };
 
   const getWorkspaceList = () => {
+    console.log("hihi");
     setOpenDropdown(!openDropdown);
   };
 
-  const [workspaceName, setWorkspaceName] = useState("");
-
-  //
   const addNewWorkSpace = (e) => {
     axios
       .post(
-        "http://52.79.82.195:3001/api/workSpace/create",
+        "http://doublenongdam.shop/api/workSpace/create",
         { name: workspaceName },
         {
           headers: {
@@ -58,6 +57,7 @@ const Header = () => {
         setWorkspaceName("");
         setModalOn(!modalOn);
         alert("새로운 워크스페이스가 만들어졌어요");
+        console.log(res);
       });
   };
   //
@@ -68,17 +68,19 @@ const Header = () => {
 
   useEffect(() => {
     axios
-      .get("http://52.79.82.195:3001/api/workSpace/workSpaceList", {
+      .get("http://doublenongdam.shop/api/workSpace/workSpaceList", {
         headers: {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },
       })
       .then((res) => {
+        console.log(res);
         const wsInfoList = res.data.includedList;
         const wsList = wsInfoList.map((a, idx) => a.name.split("+")[1]);
         setWorkspaceList(wsList);
-      });
-  }, [workspaceList]);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   return (
     <>

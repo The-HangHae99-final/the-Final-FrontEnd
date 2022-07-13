@@ -28,7 +28,7 @@ const Login = () => {
     if (placeholoder === "아이디") {
       // 등록된 이메일인지 확인
       axios
-        .post("http://52.79.82.195:3001/api/users/email", loginValue.userEmail)
+        .post("http://doublenongdam.shop/api/users/email", loginValue.userEmail)
         .then((response) => {
           console.log(response);
           if (response.data.success) {
@@ -39,12 +39,11 @@ const Login = () => {
     } else {
       // 입력한 비밀번호가 앞서 입력한 이메일과 매칭되는지 확인
       axios
-        .post("http://52.79.82.195:3001/api/users/password", {
+        .post("http://doublenongdam.shop/api/users/password", {
           userEmail: loginValue.userEmail,
           password: loginValue.password,
         })
         .then((response) => {
-          console.log(response);
           const user_name = response.data.name;
           const user_email = response.data.email;
 
