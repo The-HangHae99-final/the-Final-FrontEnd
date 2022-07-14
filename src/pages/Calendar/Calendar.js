@@ -9,7 +9,7 @@ import "./calendar.css";
 import BigCalendar from "../../components/BigCalendar";
 import SmallCalendar from "../../components/SmallCalendar";
 import ModalPortal from "../../elements/Portal/ModalPortal";
-import CalendarModal from "../../components/CalendarModal";
+import CalendarModal from "../../components/Modal/CalendarModal";
 
 const Calender = () => {
   const [modalOn, setModalOn] = useState(false);
@@ -21,6 +21,20 @@ const Calender = () => {
       return !modalOn;
     });
   };
+
+  const [taskContents, setTaskContents] = useState({
+    start_date: "",
+    end_date: "",
+    title: "",
+    desc: "",
+    color: "",
+  });
+
+  const handleTaskInfoChange = (e) => {
+    const { value, name } = e.target;
+    setTaskContents({ ...taskContents, [name]: value });
+  };
+  console.log(taskContents);
 
   // useEffect(() => {
   // }, []);
@@ -48,7 +62,7 @@ const Calender = () => {
               </li>
               <div
                 className="add-button-container"
-                title="My Calendal"
+                title="My calendal"
                 onClick={handleModal}
               >
                 <button className="add-button">
@@ -96,7 +110,13 @@ const Calender = () => {
       </div>
       <ModalPortal>
         {modalOn && (
-          <CalendarModal onClose={handleModal} modalTitle={modalTitle} />
+          <CalendarModal
+            onClose={handleModal}
+            modalTitle={modalTitle}
+            taskContents={taskContents}
+            setTaskContents={setTaskContents}
+            handleTaskInfoChange={handleTaskInfoChange}
+          />
         )}
       </ModalPortal>
     </CalenderStyle>

@@ -51,7 +51,6 @@ const Login = () => {
           password: loginValue.password,
         })
         .then((response) => {
-          console.log(response);
           const user_name = response.data.name;
           const user_email = response.data.email;
 
@@ -258,56 +257,3 @@ const ContinueText = styled.span`
 `;
 
 export default Login;
-
-// return (
-//   <LoginBackGround>
-//     <LoginStyle>
-//     <LoginWrap>
-//     <LoginTitle>Sign in</LoginTitle>
-
-//     <EmailWrap>
-//           <EmailLabel>이메일 주소</EmailLabel>
-//           <EmailInput id="textInput" type="text" />
-//           </EmailWrap>
-//     <EmailSubmit>계속</EmailSubmit>
-
-//     <ContinueWrap>
-//           <Divider />
-//           <ContinueText>or continue with</ContinueText>
-//           <Divider />
-//         </ContinueWrap>
-
-// <SocialLogin />
-
-//       </LoginWrap>
-//     </LoginStyle>
-//     로그인페이지입니다
-//     <form onSubmit={handleSubmit}>
-//       {!showPwInput ? (
-//         <>
-//           <input
-//             type="text"
-//             placeholder="아이디"
-//             name="userEmail"
-//             value={loginValue.userEmail}
-//             onChange={handleChange}
-//           />
-//           <button type="submit">계속</button>
-//         </>
-//       ) : (
-//         <>
-//           <input
-//             type="text"
-//             placeholder="비밀번호"
-//             name="password"
-//             value={loginValue.password}
-//             onChange={handleChange}
-//           />
-//           <button type="submit">계속</button>
-//         </>
-//       )}
-//     </form>
-// <button onClick={() => navigate("/signup")}>회원가입하기</button>
-//   </LoginBackGround>
-// );
-// };

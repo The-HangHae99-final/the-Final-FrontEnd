@@ -16,11 +16,12 @@ import WorkspaceModal from "../Modal/WorkspaceModal";
 
 const Header = () => {
   const [openDropdown, setOpenDropdown] = useState(false);
+  const [workspaceList, setWorkspaceList] = useState([]);
+  const [workspaceName, setWorkspaceName] = useState("");
+  const [modalOn, setModalOn] = useState(false);
   const dropdownRef = useRef(null);
   const username = getItemFromLs("userName");
   const userEmail = getItemFromLs("userEmail");
-  const [modalOn, setModalOn] = useState(false);
-  const [workspaceList, setWorkspaceList] = useState([]);
 
   const handleModal = (e) => {
     setModalOn(!modalOn);
@@ -37,12 +38,10 @@ const Header = () => {
   };
 
   const getWorkspaceList = () => {
+    console.log("hihi");
     setOpenDropdown(!openDropdown);
   };
 
-  const [workspaceName, setWorkspaceName] = useState("");
-
-  //
   const addNewWorkSpace = (e) => {
     axios
       .post(
@@ -76,7 +75,6 @@ const Header = () => {
         },
       })
       .then((res) => {
-        console.log(res);
         const wsInfoList = res.data.includedList;
         const wsList = wsInfoList.map((a, idx) => a.name.split("+")[1]);
         setWorkspaceList(wsList);
@@ -372,13 +370,5 @@ const UsernameWrap = styled.div`
     transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
   }
 `;
-
-// const HeaderStyle = styled.div``;
-// const UserName = styled.div``;
-// const UserName = styled.div``;
-// const UserName = styled.div``;
-// const UserName = styled.div``;
-// const UserName = styled.div``;
-// const UserName = styled.div``;
 
 export default Header;
