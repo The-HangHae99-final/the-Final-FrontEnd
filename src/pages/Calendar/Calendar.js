@@ -23,8 +23,8 @@ const Calender = () => {
   };
 
   const [taskContents, setTaskContents] = useState({
-    start_date: "",
-    end_date: "",
+    startDate: "",
+    endDate: "",
     title: "",
     desc: "",
     color: "#FFFF",
@@ -38,8 +38,8 @@ const Calender = () => {
   const handleTaskDateChage = (startDate, endDate) => {
     setTaskContents({
       ...taskContents,
-      start_date: startDate,
-      end_date: endDate,
+      startDate: startDate,
+      endDate: endDate,
     });
   };
   console.log(taskContents);

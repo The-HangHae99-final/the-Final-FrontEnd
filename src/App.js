@@ -30,35 +30,12 @@ const App = () => {
           path="auth/login/kakao/callback"
           element={<KakaoLoginCallback />}
         />
+
         <Route path="/main/:id" element={<Main />}>
           <Route path="board" element={<Board />} />
           <Route path="calendar" element={<Calender />} />
           <Route path="message" element={<Message />} />
         </Route>
-
-        {/* {ls ? (
-          <>
-            <Route path="/main" element={<Main />}>
-              <Route path="board" element={<Board />} />
-              <Route path="calendar" element={<Calender />} />
-              <Route path="message" element={<Message />} />
-              <Route path="storage" element={<Storage />} />
-            </Route>
-          </>
-        ) : (
-          <>
-            <Route path="/" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route
-              path="auth/login/callback"
-              element={<NaverLoginCallBack />}
-            />
-            <Route
-              path="auth/login/kakao/callback"
-              element={<KakaoLoginCallback />}
-            />
-          </>
-        )} */}
       </Routes>
     </div>
   );

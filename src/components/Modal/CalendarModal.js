@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import DatePicker from "react-datepicker";
 import axios from "axios";
@@ -11,6 +12,7 @@ import hamburger from "../../public/img/hamburger.png";
 import Vector3 from "../../public/img/Vector3.png";
 import { TextareaAutosize } from "@mui/base";
 import ko from "date-fns/locale/ko";
+import { getItemFromLs } from "../localStorage";
 
 registerLocale("ko", ko);
 
@@ -24,6 +26,7 @@ const CalendarModal = ({
 }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const location = useLocation();
 
   // UTC 시간 -> 한국 시간으로 변환
   const toKrTime = (date) => {
@@ -32,11 +35,19 @@ const CalendarModal = ({
     ).toISOString();
   };
 
-  console.log(location);
   const taskSubmit = (e) => {
     e.preventDefault();
+    const workSpaceName = getItemFromLs("workspace");
+    const encodeingURI = encodeURI(
+      `http://13.209.3.168:3001/api/task/${workSpaceName}`
+    );
+
     axios
-      .post("http://13.209.3.168:3001/api/task", taskContents)
+      .post(encodeingURI, taskContents, {
+        headers: {
+          Authorization: `Bearer ${getItemFromLs("myToken")}`,
+        },
+      })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };
@@ -53,7 +64,6 @@ const CalendarModal = ({
       <CalendarModalBg>
         <CalendarModalStyle>
           <h3 className="task-title">{modalTitle}</h3>
-
           {/* 캘린더 데이터 폼 */}
           <form className="task-form">
             <input
@@ -72,31 +82,25 @@ const CalendarModal = ({
                   selected={startDate}
                   onChange={(date) => setStartDate(date)}
                   value={startDate}
-                  // 시간 추가 가능
-                  // showTimeSelect
-                  // dateFormat="Pp"
                   locale="ko"
                   dateFormat="yyyy-MM-dd"
                   style={{
                     border: "none",
                   }}
-                  name="start_date"
+                  name="startDate"
                 />
                 <DatePickerCustom
                   selected={endDate}
                   onChange={(date) => setEndDate(date)}
                   value={endDate}
-                  // showTimeSelect
-                  // dateFormat="Pp"
                   locale="ko"
                   dateFormat="yyyy-MM-dd"
-                  name="end_date"
+                  name="endDate"
                 />
               </div>
             </RegisterDate>
             <ColorPickWrap>
               <div className="color-pick_circle"></div>
-
               <span className="color-pick_title" name="color">
                 기본 색상
               </span>
@@ -132,6 +136,7 @@ const CalendarModal = ({
               <button onClick={onClose} className="task-button button_cancel">
                 취소하기
               </button>
+
               <button
                 onClick={taskSubmit}
                 className="task-button button_register"
@@ -175,7 +180,6 @@ const CalendarModalStyle = styled.div`
     line-height: 27px;
     color: #7d8bdb;
   }
-
   .task-form {
     width: 100%;
     height: 100%;

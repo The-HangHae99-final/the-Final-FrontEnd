@@ -3,7 +3,7 @@ import axios from "axios";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getItemFromLs, removeItemFromLs } from "../localStorage";
+import { getItemFromLs, removeItemFromLs, setItemToLs } from "../localStorage";
 
 // module
 import styles from "../../pages/Main/main.module.css";
@@ -38,7 +38,6 @@ const Header = () => {
   };
 
   const getWorkspaceList = () => {
-    console.log("hihi");
     setOpenDropdown(!openDropdown);
   };
 
@@ -150,6 +149,7 @@ const Header = () => {
                         key={idx}
                         className="workspace-item"
                         onClick={() => {
+                          setItemToLs("workspace", item);
                           navigate(`/main/${idx}`);
                           setOpenDropdown(false);
                         }}
