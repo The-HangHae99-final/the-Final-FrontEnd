@@ -32,7 +32,7 @@ const Login = () => {
     if (e.target.innerText.includes("이메일")) {
       // 등록된 이메일인지 확인
       axios
-        .post("http://doublenongdam.shop/api/users/email", {
+        .post("http://13.209.3.168:3001/api/users/email", {
           userEmail: loginValue.userEmail,
         })
         .then((response) => {
@@ -46,7 +46,7 @@ const Login = () => {
     } else {
       // 입력한 비밀번호가 앞서 입력한 이메일과 매칭되는지 확인
       axios
-        .post("http://doublenongdam.shop/api/users/password", {
+        .post("http://13.209.3.168:3001/api/users/password", {
           userEmail: loginValue.userEmail,
           password: loginValue.password,
         })
@@ -106,7 +106,7 @@ const Login = () => {
               <EmailSubmit type="submit" userEmail={userEmail}>
                 계속
               </EmailSubmit>
-              <div className="join" onClick={() => setSignIn(!showSignIn)}>
+              <div className="join" onClick={() => navigate("/signup")}>
                 {join}
               </div>
             </FormWrap>
@@ -123,12 +123,9 @@ const Login = () => {
       </LoginStyle>
     );
   };
-  console.log(loginValue);
+
   useEffect(() => {
-    setLoginValue({
-      userEmail: "",
-      password: "",
-    });
+    inputRef.current.vlaue = "";
   }, [showPwInput]);
 
   return (

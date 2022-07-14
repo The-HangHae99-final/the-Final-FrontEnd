@@ -335,123 +335,56 @@ Share your task ~!
 
 ## ❗트러블 슈팅
 
-### 1. VPC
+### 1. 채팅페이지에서 유저프로필을 클릭했을 때 state값을 업데이트 시켜주고, 바로 다음 줄에 그 값을 인자로 쓰는 함수를 호출했지만 콘솔로 인자를 찍어보니 빈 문자열이 출력되었다.
 
 - **어떤 문제점을 겪었는가?**
 
-  Elastic Cache를 사용하여 Redis를 구성 후 **다른 AWS 계정**으로 Elastic Cache에 접근했을 때. `Connection Error` 발생하는 이슈
+  채팅 페이지에서 상대와 대화를 시작하기 위해 필요한 상대방의 이름과
+  워크스페이스 이름 state값을 업데이트 시키고, 바로 다음 줄에서 업데이트 된 state값을 인자로 받는 joinRoom 함수를 호출했는데 앞서 업데이트 시킨 인자값이 빈 문자열로 뜨는 이슈.
 
 - **왜 이런 문제가 발생했는가?**
 
-  Elastic Cache는 RDS와는 다르게 **동일한 VPC 내부에서만 경우에 접근이 가능**하다.
-
-  즉 서로 다른 AWS 계정은 서로 다른 VPC에 속하기 때문이다.
+  setState는 비동기로 작동한다.
+  그렇기 때문에 state가 비동기적으로 실행되어, joinRoom 함수에는 업데이트 되기 전 값인 초깃값 빈 문자열이 들어갔기 때문이다.
 
 - **어떻게 해결했는가?**
 
-  ![image](https://user-images.githubusercontent.com/84619866/144465228-7aa9f54f-489d-4209-9c70-c11e5edb6a96.png)
+  setState는 상태값을 업데이트시킨다
 
-  `VPC Peering` 라는 기능을 AWS에서 제공을 해준다. 이 기능은 서로 다른 AWS 계정끼리 VPC를 공유할 수 있게 해준다.
+  근데 문제는 setState는()같은 state 변경함수는 전부 비동기적으로 처리된다.
 
-  추가적으로 같은 `가용 영역`에 존재할 경우 `무료`요금이다. 신청자가 VPC Peering을 요청하면 수락자가 요청을 받고, 라우팅 테이블을 설정 후, 보안그룹(인바운드 규칙)을 설정해준다.
+  다시말해서 setState는()이 오래 시간이 걸리면 이걸 제껴두고 다른 코드부터 실행한다는 것이다.
 
-  VPC Peering 설정은 AWS 공식 문서에 정리가 잘 되어있다.
+  이런 경우 setstate가 동기적으로 처리가 되게끔 해주어야한다.
 
-  > 참고문헌:https://docs.aws.amazon.com/ko_kr/vpc/latest/peering/working-with-vpc-peering.html
+  이때 useEffect 의존성 배열을 활용하면 된다.
 
-### 2. CI/CD
+  의존성 배열 안에 업데이트 할 데이터를 넣어주면 useEffect 안의 콜백함수는 그 데이터에 변경이 이루어질 경우에만 실행이 된다.
+
+  > 참고문헌:https://velog.io/@dosilv/TIL-React-setState-%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0-648sv7je
+
+### 2. 로그인 후 새로고침하면 로그인 유지상태가 풀리는 이슈.
 
 - **어떤 문제점을 겪었는가?**
 
-  1. 보안 상 `.env`파일을 Github 저장소에 push하지 못하기에 젠킨스에서 테스트 코드를 검증할 시 **환경 변수를 참조 하지못하는 이슈**
-  2. Dockerfile 를 빌드할 경우, `.env`파일을 참조해오지 못해서 CI/CD 배포 후 **컨테이너에 어플리케이션을 구동하기 위한 `.env`가 없는 이슈**
+  로그인을 하고 난 뒤 새로고침을 하면 로그인 상태가 풀려버려서 로그인을 해야만 보이는 페이지들을 볼 수 없게 되었다.
 
 - **왜 이런 문제가 발생했는가?**
 
-  1. `.env`은 보안상 예민한 정보를 담고있어 Public 저장소에 올릴 수 없었다.
+  성공적으로 로그인을 하게 되면 isLoggedIn이라는 초깃값으로 지정해둔 false에서 true로 바꾸면서 그 상태에 맞게 삼항연산자로 페이지별 라우팅을 시켰다. 새로고침을 하게되면 변경된 state가 다시 초기화 되기 때문이다.
 
-     그러므로 Github 저장소 파일을 기준으로 동작하는 CI/CD 과정에서 테스트코드 검증 과정을 실패하여 에러가 발생했다.
+  - **어떻게 해결했는가?**
 
-  2. CD 단계에서 DockerFile를 build할 때 `.env`가 없었으므로 그 결과 해당 image로 만든 컨테이너안에는 `.env`가 없었다.
+    state값처럼 새로고침 시 변하는 상태가 아니라 불변하는 상태를 만들면 될 것 같았다.
+    고민하던 중 localStorage에 저장해놓은 엑세스토큰 값이 생각났다. ls에 저장 시 로그아웃 버튼을 누르거나 개발자도구애서 직접 지워주지 않는 이상 데이터가 사라지지 않는다.
+    로그인되어 있지 않다면 isLoggedIn이라는 키값을 false로 ls에 저장하고, 로그인되어 있다면 true로 바꾸어 페이지별 라우팅을 시켜서 해결했다.
 
-- **어떻게 해결했는가?**
+    ### 3. 워크스페이스 리스트를 불러오는데 무한 요청
 
-  1. `Jenkins`내에서 환경 변수를 설정하여 테스트코드 실행 시 참조해올 수 있도록 설정하였다.
-  2. EC2 호스트 영역에 미리 `.env`를 생성하고 docker run 할 때, -volumes 옵션으로 `.env`파일을 마운팅하여 컨테이너에서 외부 파일을 참조할 수 있게 설정하였다.
+    - **어떤 문제점을 겪었는가?**
+      워크스페이스 추가 요청을 보내고 만들어진 리스트를 가져오는 api요청을 보내는데 무한 요청이 보내졌다.
 
-### 3. Nginx
+    - **왜 이런 문제가 발생했는가?**
+      문제는 useEffect의 두 번째 인자로 들어오는 의존성 배열 내에 항상 바뀌는 값을 넣었기 때문에 무한루프가 발생했다.
 
-- **어떤 문제점을 겪었는가?**
-
-  ![image](https://user-images.githubusercontent.com/84619866/144455878-e89d7d5a-487a-495f-8999-9e7a815f172c.png)
-
-  위와 같은 그림으로 EC2 서버의 Port 단위로 부하를 분산하는 인프라로 구성하였다.
-
-  그러나 실제 부하테스트를 진행한 결과 **node 1개로 수행했을 때와 node 2개로 수행했을 경우 차이가 없었다**.
-
-- **왜 이런 문제가 발생했는가?**
-
-  위와 같은 그림으로는 만약 100개의 요청이 왔을 때, 요청을 분담하여 처리할 뿐 EC2 하나가 처리해야할 요청의 총량이 줄어드는 것이 아니다.
-
-- **어떻게 해결했는가?**
-
-  ![image](https://user-images.githubusercontent.com/84619866/144468346-5eb12e8b-66e7-4dd4-8216-aa66326e0586.png)
-
-  Reverse Proxy를 로드 밸런서의 역할로도 사용하며 요청을 각각의 서버에 분산처리하도록 설계하였다.
-
-  - 결과
-
-    ![image](https://user-images.githubusercontent.com/84619866/144453387-0ab81c66-0d82-419a-8db7-69fb0f91baaf.png)
-
-    > 물리적인 서버를 나눈 후 중개서버로 로드밸런싱을 하여 서버를 나누기 전/후 부하테스트를 진행한 사진
-
-    - 기존에는 많은 요청을 감당하지 못해 에러가 확인되기도 하며 테스트 기간동안 3초 이상의 응답속도를 보임
-
-    - 반면, 로드밸런싱 후에는 에러가 나지 않으며 서버 부하를 낮출 수 있도록 개선된 모습을 확인할 수 있음
-
-### 4. Promise.all
-
-- **어떤 문제점을 겪었는가?**
-
-  - 변경 전 코드
-    ```javascript
-     ...
-    const either = await sequelize.query(mainQuery.getMainForEither(), { type:QueryTypes.SELECT });
-    const multi = await sequelize.query(mainQuery.getMainForMulti(), { type:QueryTypes.SELECT });
-    const [eitherNum, multiNum] = await countPosting();
-    const attendNum = await countAttend();
-    ```
-    위와 같이 코드를 구현할 경우, 해당 API 부하테스트 결과 최대 응답시간이 9초로 매우 느린 성능을 보여주었다.
-
-- **왜 이런 문제가 발생했는가?**
-
-  ![image](https://user-images.githubusercontent.com/84619866/144460615-b3295b13-9f92-4b5d-822f-95ca344437f3.png)
-
-  위와 같이 연속적인 비동기 처리를 할 경우, async-await 함수를 **하나하나 기다리므**로 소요 시간이 오래 걸린다.
-
-- **어떻게 해결했는가?**
-
-  ![image](https://user-images.githubusercontent.com/84619866/144461227-3fc34121-44f7-4fec-b7ca-ceb39ab6f318.png)
-
-  결과적으로 말하면 Promise.all 을 사용하였다. Promise.all 은 서로 영향을 끼치지 않는, 즉 **독립적으로 수행되는 비동기 함수를 병렬처리**해준다.
-
-  그림으로보면 총 걸린 시간은 가장 오래걸린 수행 시간 3초로 `총 소요시간 = 가장 오래걸린 함수 시간` 이다.
-
-  - 변경 후 코드
-    ```javascript
-    const [either, multi, [eitherNum, multiNum], attendNum]: [
-      MainEither[],
-      MainMulti[],
-      number[],
-      number
-    ] = await Promise.all([
-      //Promise.all로 각각의 데이터들(찬반투표 포스팅, 객관식 포스팅, 찬반투표 포스팅갯수, 객관식 포스팅갯수, 참여자수)를 병렬적으로 받아온다.
-      sequelize.query(mainQuery.getMainForEither(), {
-        type: QueryTypes.SELECT,
-      }),
-      sequelize.query(mainQuery.getMainForMulti(), { type: QueryTypes.SELECT }),
-      countPosting(),
-      countAttend(),
-    ]);
-    ```
-    > 그림 참고:https://code-masterjung.tistory.com/91
+    https://velog.io/@khy226/useEffect-%EC%99%84%EB%B2%BD-%EA%B0%80%EC%9D%B4%EB%93%9C-%EC%9A%94%EC%95%BD

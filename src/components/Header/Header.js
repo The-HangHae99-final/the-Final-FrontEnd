@@ -20,7 +20,7 @@ const Header = () => {
   const username = getItemFromLs("userName");
   const userEmail = getItemFromLs("userEmail");
   const [modalOn, setModalOn] = useState(false);
-  const [workspaceList, setWorkspaceList] = useState([]);
+  const [workspaceList, setWorkspaceList] = useState(null);
 
   const handleModal = (e) => {
     setModalOn(!modalOn);
@@ -46,7 +46,7 @@ const Header = () => {
   const addNewWorkSpace = (e) => {
     axios
       .post(
-        "http://doublenongdam.shop/api/workSpace/create",
+        "http://13.209.3.168:3001/api/workSpace/create",
         { name: workspaceName },
         {
           headers: {
@@ -58,6 +58,21 @@ const Header = () => {
         setWorkspaceName("");
         setModalOn(!modalOn);
         alert("새로운 워크스페이스가 만들어졌어요");
+        axios
+          .get("http://13.209.3.168:3001/api/workSpace/workSpaceList", {
+            headers: {
+              Authorization: `Bearer ${getItemFromLs("myToken")}`,
+            },
+          })
+          .then((res) => {
+            console.log(res);
+            const wsInfoList = res.data.includedList;
+            const wsList = wsInfoList.map((a, idx) => a.name.split("+")[1]);
+            setWorkspaceList(wsList);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       });
   };
   //
@@ -68,17 +83,21 @@ const Header = () => {
 
   useEffect(() => {
     axios
-      .get("http://doublenongdam.shop/api/workSpace/workSpaceList", {
+      .get("http://13.209.3.168:3001/api/workSpace/workSpaceList", {
         headers: {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },
       })
       .then((res) => {
+        console.log(res);
         const wsInfoList = res.data.includedList;
         const wsList = wsInfoList.map((a, idx) => a.name.split("+")[1]);
         setWorkspaceList(wsList);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-  }, [workspaceList]);
+  }, []);
 
   return (
     <>
@@ -139,21 +158,22 @@ const Header = () => {
                 <span className="edit_account">| 편집하기</span>
               </div>
               <WorkspaceList>
-                {workspaceList.map((item, idx) => {
-                  return (
-                    <li
-                      key={idx}
-                      className="workspace-item"
-                      onClick={() => {
-                        navigate(`/main/${idx}`);
-                        setOpenDropdown(false);
-                      }}
-                    >
-                      <div className="workspace_avatar">{item[0]}</div>
-                      <div className="workspace_name">{item}</div>
-                    </li>
-                  );
-                })}
+                {workspaceList &&
+                  workspaceList.map((item, idx) => {
+                    return (
+                      <li
+                        key={idx}
+                        className="workspace-item"
+                        onClick={() => {
+                          navigate(`/main/${idx}`);
+                          setOpenDropdown(false);
+                        }}
+                      >
+                        <div className="workspace_avatar">{item[0]}</div>
+                        <div className="workspace_name">{item}</div>
+                      </li>
+                    );
+                  })}
               </WorkspaceList>
             </li>
             <li className="nav-item">
