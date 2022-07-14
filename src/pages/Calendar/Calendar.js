@@ -27,12 +27,20 @@ const Calender = () => {
     end_date: "",
     title: "",
     desc: "",
-    color: "",
+    color: "#FFFF",
   });
 
   const handleTaskInfoChange = (e) => {
     const { value, name } = e.target;
     setTaskContents({ ...taskContents, [name]: value });
+  };
+
+  const handleTaskDateChage = (startDate, endDate) => {
+    setTaskContents({
+      ...taskContents,
+      start_date: startDate,
+      end_date: endDate,
+    });
   };
   console.log(taskContents);
 
@@ -116,6 +124,7 @@ const Calender = () => {
             taskContents={taskContents}
             setTaskContents={setTaskContents}
             handleTaskInfoChange={handleTaskInfoChange}
+            handleTaskDateChage={handleTaskDateChage}
           />
         )}
       </ModalPortal>

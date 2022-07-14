@@ -1,17 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import ModalPortal from "../../elements/Portal/ModalPortal";
-
-import { DateRange } from "react-date-range";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
-import ko from "date-fns/locale/ko";
-import { TextareaAutosize } from "@mui/base";
+import DatePicker from "react-datepicker";
+import axios from "axios";
 
+import "react-datepicker/dist/react-datepicker.css";
+import ModalPortal from "../../elements/Portal/ModalPortal";
 import clockIcon from "../../public/img/clockIcon.png";
 import hamburger from "../../public/img/hamburger.png";
 import Vector3 from "../../public/img/Vector3.png";
+import { TextareaAutosize } from "@mui/base";
+import ko from "date-fns/locale/ko";
 
 registerLocale("ko", ko);
 
@@ -21,21 +20,33 @@ const CalendarModal = ({
   setTaskContents,
   taskContents,
   handleTaskInfoChange,
+  handleTaskDateChage,
 }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
-  function toKrTime(date) {
+  // UTC 시간 -> 한국 시간으로 변환
+  const toKrTime = (date) => {
     return new Date(
       date.getTime() - date.getTimezoneOffset() * 60000
     ).toISOString();
-  }
-
-  const processingDate = (date) => {
-    const end_date_kr = toKrTime(endDate).split("T")[0];
-    const start_date_kr = toKrTime(date).split("T")[0];
-    console.log("start_date_kr: ", start_date_kr);
   };
+
+  console.log(location);
+  const taskSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post("http://13.209.3.168:3001/api/task", taskContents)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    const end_date_kr = toKrTime(endDate).split("T")[0];
+    const start_date_kr = toKrTime(startDate).split("T")[0];
+
+    handleTaskDateChage(start_date_kr, end_date_kr);
+  }, [startDate, endDate]);
 
   return (
     <ModalPortal>
@@ -59,7 +70,8 @@ const CalendarModal = ({
               <div className="datepickerWrap">
                 <DatePickerCustom
                   selected={startDate}
-                  onChange={(date) => processingDate(date)}
+                  onChange={(date) => setStartDate(date)}
+                  value={startDate}
                   // 시간 추가 가능
                   // showTimeSelect
                   // dateFormat="Pp"
@@ -72,7 +84,8 @@ const CalendarModal = ({
                 />
                 <DatePickerCustom
                   selected={endDate}
-                  onChange={(date) => processingDate(date)}
+                  onChange={(date) => setEndDate(date)}
+                  value={endDate}
                   // showTimeSelect
                   // dateFormat="Pp"
                   locale="ko"
@@ -84,9 +97,9 @@ const CalendarModal = ({
             <ColorPickWrap>
               <div className="color-pick_circle"></div>
 
-              <spa className="color-pick_title" name="color">
+              <span className="color-pick_title" name="color">
                 기본 색상
-              </spa>
+              </span>
               <div className="color-pick_icon-wrap">
                 <img src={Vector3} alt="Vector3" className="color-pick_icon" />
               </div>
@@ -119,7 +132,12 @@ const CalendarModal = ({
               <button onClick={onClose} className="task-button button_cancel">
                 취소하기
               </button>
-              <button className="task-button button_register">등록하기</button>
+              <button
+                onClick={taskSubmit}
+                className="task-button button_register"
+              >
+                등록하기
+              </button>
             </ButtonsWrap>
           </form>
         </CalendarModalStyle>
