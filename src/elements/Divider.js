@@ -6,7 +6,7 @@ const Divider = (props) => {
 };
 
 const DividerStyle = styled.div`
-  height: 10px;
+  height: 1px;
   width: ${(props) => props.width || "100%"};
   background-color: #f8f8f9;
 `;

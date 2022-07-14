@@ -24,7 +24,7 @@ const Signup = () => {
     e.preventDefault();
     // 회원가입에 필요한 데이터 서버로 전송
     axios
-      .post("http://52.79.82.195:3001/api/users/signup", signupValue)
+      .post("http://doublenongdam.shop/api/users/signup", signupValue)
       .then((response) => {
         if (response.data.success) {
           alert("로그인에 성공하였습니다!");

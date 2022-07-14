@@ -5,10 +5,10 @@
 // 업데이트 날짜 : 21.07.09
 
 // module, library
+import io from "socket.io-client";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import style from "./message.module.css";
-import io from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
 
 // import files
@@ -18,32 +18,32 @@ import BubbleBox from "../../components/BubbleBox";
 import axios from "axios";
 
 const Message = () => {
-  // const socket = io.connect("http://3.35.49.164");
-  // const [DataForJoin, setDataForJoin] = useState({
-  //   opponent: "",
-  //   workspace: "",
-  // });
-  // const [currentChatList, setCurrentChatList] = useState([]);
-  // const [showChat, setShowChat] = useState(false);
-  // console.log(showChat);
+  const socket = io.connect("http://3.35.49.164");
+  const [DataForJoin, setDataForJoin] = useState({
+    opponent: "",
+    workspace: "",
+  });
+  const [currentChatList, setCurrentChatList] = useState([]);
+  const [showChat, setShowChat] = useState(false);
+  console.log(showChat);
 
-  // const dispatch = useDispatch();
-  // const { opponent, workspace } = DataForJoin;
+  const dispatch = useDispatch();
+  const { opponent, workspace } = DataForJoin;
 
-  // // 유저 프로필을 클릭 시 방에 접속, 채팅리스트 받아온다
-  // const joinRoom = (opponent, workspace) => {
-  //   if (opponent !== "" && workspace !== "") {
-  //     // 상대방 이름과 워크스페이스 이름을 join_room 이벤트로 보낸다
-  //     socket.emit("join_room", opponent, workspace);
+  // 유저 프로필을 클릭 시 방에 접속, 채팅리스트 받아온다
+  const joinRoom = (opponent, workspace) => {
+    if (opponent !== "" && workspace !== "") {
+      // 상대방 이름과 워크스페이스 이름을 join_room 이벤트로 보낸다
+      socket.emit("join_room", opponent, workspace);
 
-  //     setShowChat(true);
-  //     // 서버로부터 채팅리스트를 받는다
-  //     // 방이름 = "(접속한 유저의 이름)" + "(상대 유저의 이름)" => 가나다순 정렬
-  //     socket.on("chat_list", (chat_list) => {
-  //       console.log(chat_list);
-  //     });
-  //   }
-  // };
+      setShowChat(true);
+      // 서버로부터 채팅리스트를 받는다
+      // 방이름 = "(접속한 유저의 이름)" + "(상대 유저의 이름)" => 가나다순 정렬
+      socket.on("chat_list", (chat_list) => {
+        console.log(chat_list);
+      });
+    }
+  };
 
   // useEffect(() => {}, [DataForJoin]);
 
