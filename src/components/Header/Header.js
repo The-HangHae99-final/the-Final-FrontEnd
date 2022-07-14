@@ -20,7 +20,7 @@ const Header = () => {
   const username = getItemFromLs("userName");
   const userEmail = getItemFromLs("userEmail");
   const [modalOn, setModalOn] = useState(false);
-  const [workspaceList, setWorkspaceList] = useState(null);
+  const [workspaceList, setWorkspaceList] = useState([]);
 
   const handleModal = (e) => {
     setModalOn(!modalOn);
@@ -55,24 +55,11 @@ const Header = () => {
         }
       )
       .then((res) => {
+        const newWorkSpace = res.data.result.name.split("+")[1];
         setWorkspaceName("");
         setModalOn(!modalOn);
         alert("새로운 워크스페이스가 만들어졌어요");
-        axios
-          .get("http://13.209.3.168:3001/api/workSpace/workSpaceList", {
-            headers: {
-              Authorization: `Bearer ${getItemFromLs("myToken")}`,
-            },
-          })
-          .then((res) => {
-            console.log(res);
-            const wsInfoList = res.data.includedList;
-            const wsList = wsInfoList.map((a, idx) => a.name.split("+")[1]);
-            setWorkspaceList(wsList);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        setWorkspaceList([...workspaceList, newWorkSpace]);
       });
   };
   //
