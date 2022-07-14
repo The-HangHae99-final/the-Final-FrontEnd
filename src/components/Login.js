@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -19,8 +19,8 @@ const Login = () => {
   const { userEmail, password } = loginValue;
 
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
+  const inputRef = useRef();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,18 +29,17 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const placeholoder = e.target[0].placeholder;
-
-    if (placeholoder === "아이디") {
+    if (e.target.innerText.includes("이메일")) {
       // 등록된 이메일인지 확인
       axios
         .post("http://doublenongdam.shop/api/users/email", {
           userEmail: loginValue.userEmail,
         })
         .then((response) => {
-          console.log(response);
           if (response.data.success) {
             setShowPwInput(true);
+            alert("이메일있다");
+            inputRef.current.focus();
           }
         })
         .catch((error) => console.log(error));
@@ -86,8 +85,9 @@ const Login = () => {
                     id="textInput"
                     type="text"
                     name="userEmail"
-                    defaultValue={userEmail}
+                    value={userEmail || ""}
                     onChange={handleChange}
+                    ref={inputRef}
                   />
                 </>
               ) : (
@@ -97,8 +97,9 @@ const Login = () => {
                     id="textInput"
                     type="password"
                     name="password"
-                    defaultValue={password}
+                    value={password || ""}
                     onChange={handleChange}
+                    ref={inputRef}
                   />
                 </>
               )}
@@ -122,6 +123,13 @@ const Login = () => {
       </LoginStyle>
     );
   };
+  console.log(loginValue);
+  useEffect(() => {
+    setLoginValue({
+      userEmail: "",
+      password: "",
+    });
+  }, [showPwInput]);
 
   return (
     <LoginBackGround>

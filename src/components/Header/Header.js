@@ -46,7 +46,7 @@ const Header = () => {
   const addNewWorkSpace = (e) => {
     axios
       .post(
-        "http://52.79.82.195:3001/api/workSpace/create",
+        "http://doublenongdam.shop/api/workSpace/create",
         { name: workspaceName },
         {
           headers: {
@@ -68,7 +68,7 @@ const Header = () => {
 
   useEffect(() => {
     axios
-      .get("http://52.79.82.195:3001/api/workSpace/workSpaceList", {
+      .get("http://doublenongdam.shop/api/workSpace/workSpaceList", {
         headers: {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },
