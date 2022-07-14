@@ -56,12 +56,6 @@ redux말고 툴킷 쓴 이유
 
 ## 배운 점 & 아쉬운 점
 
-<p align="justify">
-
-</p>
-
-<br>
-
 ## 라이센스
 
 MIT &copy; [NoHack](mailto:lbjp114@gmail.com)
@@ -73,16 +67,11 @@ MIT &copy; [NoHack](mailto:lbjp114@gmail.com)
 [react]: /images/stack/react.svg
 [node]: /images/stack/node.svg
 
-Footer
-© 2022 GitHub, Inc.
-Footer navigation
-Terms
+# 💻 TEAM NOTE - FrontEnd
 
-# 💻 TEAM NOTE - Backend
+## 🏠 [Home Page Link]()
 
-## 🏠 [Home Page Link](https://www.antsori.com)
-
-## 소개 영상 [youtube]
+## 소개 영상 []
 
 <hr>
 <br>
@@ -122,84 +111,11 @@ Share your task ~!
 
 ## 🗓 프로젝트 기간
 
-- 2022년 6월 --일 ~ 2022년 8월 --일
-
 <br>
 
 ## 🧑‍💻 팀 구성
 
-[팀 소개 페이지](https://crawling-health-e0d.notion.site/be6df84bde484ca883f54739be96eb8f)
-
-<table>
-  <tr>
-  <td colspan='2' align="center">
-  Backend
-  </td>
-  <td colspan='2' align="center">
-  Frontend
-  </td>
-  <td colspan='2' align="center">
-  Designer
-  </td>
-  <tr>
-  <td align="center"><img src="" width="60px;" alt=""/>
-    </td>
-    <td align="center" >
-    <b>김하연</b></a><br>
-    <a href="https://github.com/hayeonkimm">Github</a>
-    <br><img src="https://img.shields.io/badge/Node.js-339933?style=flat&logo=Node.js&logoColor=white"/><br>
-    </td>
-    <td align="center"><img src="https://crawling-health-e0d.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F4cd551ad-0c09-4ef8-8027-b9e3d47a79e8%2FUntitled.png?table=block&id=493a20f5-e908-4ef8-b07d-710d2f42f3f9&spaceId=e0735ea4-78ca-47db-be31-3e9c8641e938&width=260&UserName=&cache=v2" width="60px;" alt=""/>
-    </td>
-    <td align="center">
-    <b></b></a><br />
-    <a href="https://github.com/gabmin" >Github</a>
-    <br><img src="https://img.shields.io/badge/React-61DAFB?style=flat&logo=React&logoColor=white"/><br>
-    </td>
-    <td align="center"><img src="https://crawling-health-e0d.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd266d37c-2c38-4f03-b50f-c7908dabf868%2FUntitled.png?table=block&id=ebb3a525-c75c-4f30-974a-629f8818f109&spaceId=e0735ea4-78ca-47db-be31-3e9c8641e938&width=260&UserName=&cache=v2" width="60px;" alt=""/>
-    </td>
-    <td align="center">
-    <b></b></a><br />
-    </td>
-    <tr>
-    <td align="center"><img src="https://crawling-health-e0d.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F2f229f59-5b48-4501-b9d8-44395fa066ab%2FUntitled.png?table=block&id=65bb4f7a-a244-4ba9-85e9-1886dc98432b&spaceId=e0735ea4-78ca-47db-be31-3e9c8641e938&width=260&UserName=&cache=v2" width="60px;" alt=""/>
-    </td>
-    <td align="center">
-    <b></b></a><br /> 
-    <a href="https://github.com/Yunjaejo">Github</a>
-    <br><img src="https://img.shields.io/badge/Node.js-339933?style=flat&logo=Node.js&logoColor=white"/><br>
-    </td>
-    <td align="center"><img src="https://crawling-health-e0d.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F651ce4da-3dd7-4845-8207-bcb564eb641d%2FUntitled.png?table=block&id=9973b5b1-8ec8-4d30-a7da-64d453e1da16&spaceId=e0735ea4-78ca-47db-be31-3e9c8641e938&width=260&UserName=&cache=v2" width="60px;" alt=""/>
-    </td>
-    <td align="center">
-    <b></b></a><br /> 
-    <a href="https://github.com/larisms">Github</a>
-    <br><img src="https://img.shields.io/badge/React-61DAFB?style=flat&logo=React&logoColor=white"/><br>
-    </td>
-    <td align="center"><img src="https://crawling-health-e0d.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fcd2c4a8c-5a95-41e0-9053-9897e4c95a1b%2FUntitled.png?table=block&id=d4cdb94a-8915-455e-af65-6f98d33dc665&spaceId=e0735ea4-78ca-47db-be31-3e9c8641e938&width=260&UserName=&cache=v2" width="60px;" alt=""/>
-    </td>
-    <td align="center">
-    <b></b></a><br /> 
-    </td>
-    </tr>
-    <tr>
-    <td align="center"><img src="https://crawling-health-e0d.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fd36d536e-0432-4cb0-96ef-9a1c3a1889d5%2FUntitled.png?table=block&id=8b7efded-cc3e-45e9-a950-724957fe55cd&spaceId=e0735ea4-78ca-47db-be31-3e9c8641e938&width=260&UserName=&cache=v2" width="60px;" alt=""/>
-    </td>
-    <td align="center">
-    <b></b></a><br /> 
-    <a href="https://github.com/changchanghwang">Github</a>
-    <br><img src="https://img.shields.io/badge/Node.js-339933?style=flat&logo=Node.js&logoColor=white"/><br>
-    </td>
-    <td align="center"><img src="https://crawling-health-e0d.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F828d0f28-79c9-407a-83da-6ba55ce7fbe4%2FUntitled.png?table=block&id=3d63dc23-b006-47f5-8191-65e9cc1350d8&spaceId=e0735ea4-78ca-47db-be31-3e9c8641e938&width=260&UserName=&cache=v2" width="60px;" alt=""/>
-    </td>
-    <td align="center">
-    <b></b></a><br /> 
-    <a href="https://github.com/calvin9150">Github</a>
-    <br><img src="https://img.shields.io/badge/React-61DAFB?style=flat&logo=React&logoColor=white"/><br>
-    </td>
-    <td colspan='2'></td>
-    </tr>
-</table>
+[팀 소개 페이지]()
 
 <br>
 
@@ -213,9 +129,9 @@ Share your task ~!
 
 <br>
 
-## 📖 라이브러리 ([WHY?](https://spark-stove-6bf.notion.site/9064e96f94854aaca56925f80d978bdb))
+## 📖 라이브러리 ([WHY?]())
 
-| 라이브러리                                                                            |          설명          |
+<!-- | 라이브러리                                                                            |          설명          |
 | ------------------------------------------------------------------------------------- | :--------------------: |
 | <img src='https://img.shields.io/badge/artillery-1.7.9-lightgrey'>                    |    서버 부하 테스트    |
 | <img src='https://img.shields.io/badge/bcrypt-5.0.1-lightgrey'>                       |    비밀번호 암호화     |
@@ -243,7 +159,7 @@ Share your task ~!
 | <img src='https://img.shields.io/badge/winston-3.3.3-lightgrey'>                      |     Log 파일 생성      |
 | <img src='https://img.shields.io/badge/winston--daily--rotate--file-4.5.5-lightgrey'> |     Log 파일 관리      |
 
-<br>
+<br> -->
 
 ## 🕹️ 주요 기능
 
@@ -379,21 +295,24 @@ Share your task ~!
     고민하던 중 localStorage에 저장해놓은 엑세스토큰 값이 생각났다. ls에 저장 시 로그아웃 버튼을 누르거나 개발자도구애서 직접 지워주지 않는 이상 데이터가 사라지지 않는다.
     로그인되어 있지 않다면 isLoggedIn이라는 키값을 false로 ls에 저장하고, 로그인되어 있다면 true로 바꾸어 페이지별 라우팅을 시켜서 해결했다.
 
-    ### 3. 워크스페이스 리스트를 불러오는데 무한 요청
+### 3. 워크스페이스 리스트를 불러오는데 무한 요청
 
-    - **어떤 문제점을 겪었는가?**
-      워크스페이스 리스트에 데이터를 추가하는 요청을 보내고, 새로 업데이트된 리스트를 가져오는 GET요청을 보내는 과정에서 무한루프 현상이 발생했다.
+- **어떤 문제점을 겪었는가?**
 
-    - **왜 이런 문제가 발생했는가?**
-      문제는 데이터가 생성 될 때(POST 요청 시) 업데이트되는 state값을 useEffect의 두번째 인자값으로 넣었다.
-      그런데 useEffect 콜백함수 내에도 데이터 set함수를 썼기때문에 무한루프가 발생했다.
-      POST요청 -> setState() -> GET 요청(useEffect 내) -> setState() -> GET 요청(useEffect 내) -> setState() ..
+  워크스페이스 리스트에 데이터를 추가하는 요청을 보내고, 새로 업데이트된리스트를 가져오는 GET요청을 보내는 과정에서 무한루프 현상이 발생했다.
 
-    - **어떻게 해결했는가?**
-      post 요청이 성공하면 서버로부터 data가 담긴 response 값을 받아 state값으로 append해준다.
+- **왜 이런 문제가 발생했는가?**
 
-    로그인 한 뒤 처음 렌더링 할 때도 워크스페이스 리스트를 가져와야 하므로 빈 배열을 두 번째 인자로 담은 useEffect에 get요청을 하는 코드를 담는다.
+  문제는 데이터가 생성 될 때(POST 요청 시) 업데이트되는 state값을useEffect의 두번째 인자값으로 넣었다.
+  그런데 useEffect 콜백함수 내에도 데이터 set함수를 썼기때문에 무한루프가발생했다.
+  POST요청 -> setState() -> GET 요청(useEffect 내) -> setStat() -> GET 요청(useEffect 내) -> setState() ..
 
-    화면에서 워크스페이스 리스트를 map으로 뿌려준다.
+- **어떻게 해결했는가?**
 
-    https://velog.io/@khy226/useEffect-%EC%99%84%EB%B2%BD-%EA%B0%80%EC%9D%B4%EB%93%9C-%EC%9A%94%EC%95%BD
+  post 요청이 성공하면 서버로부터 data가 담긴 response 값을 받아state값으로 append해준다.
+
+  로그인 한 뒤 처음 렌더링 할 때도 워크스페이스 리스트를 가져와야 하므로 빈배열을 두 번째 인자로 담은 useEffect에 get요청을 하는 코드를 담는다.
+
+  화면에서 워크스페이스 리스트를 map으로 뿌려준다.
+
+> 참고문헌: https://velog.io/@khy226useEffect-%EC%99%84%EB%B2%BD-%EA%B0%80%EC%9D%B4%EB%93%9C-%EC9A%94%EC%95%BD
