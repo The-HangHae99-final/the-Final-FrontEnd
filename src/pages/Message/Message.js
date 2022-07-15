@@ -25,7 +25,6 @@ const Message = () => {
   });
   const [currentChatList, setCurrentChatList] = useState([]);
   const [showChat, setShowChat] = useState(false);
-  console.log(showChat);
 
   const dispatch = useDispatch();
   const { opponent, workspace } = DataForJoin;

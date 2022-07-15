@@ -154,7 +154,7 @@ const Header = () => {
                         className="workspace-item"
                         onClick={() => {
                           setItemToLs("workspace", item);
-                          navigate(`/main/${idx}`);
+                          navigate(`/main/${idx}/private`);
                           setOpenDropdown(false);
                         }}
                       >

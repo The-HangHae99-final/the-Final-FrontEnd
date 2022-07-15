@@ -11,17 +11,26 @@ const Main = () => {
   const navigate = useNavigate();
   const params = useParams();
   const id = params.id;
-
+  console.log(id);
   return (
     <div className={styles.main}>
       <div className={styles.leftSide}>
-        <div className={styles.logo} onClick={() => navigate(`/main/${id}`)}>
+        <div
+          className={styles.logo}
+          onClick={() => {
+            id !== "undefined"
+              ? navigate(`/main`)
+              : navigate(`/main/${id}/private`);
+          }}
+        >
           {" "}
         </div>
         <div className={styles.buttons}>
           <div className={styles.buttonWrap}>
             <div
-              onClick={() => navigate(`/main/${id}/board`)}
+              onClick={() => {
+                navigate(`/main/${id}/calendar`);
+              }}
               className={styles.btn}
             ></div>
             <span>Board</span>
@@ -48,7 +57,6 @@ const Main = () => {
         <main className={styles.mainStyle}>
           {id !== "undefined" ? (
             <>
-              <PrivateMain />
               <Outlet />
             </>
           ) : (

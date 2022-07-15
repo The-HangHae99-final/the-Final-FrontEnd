@@ -13,6 +13,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import NaverLoginCallBack from "./elements/introMain/NaverLoginCallBack";
 import KakaoLoginCallback from "./elements/introMain/KakaoLoginCallBack";
+import PrivateMain from "./components/PrivateMain";
 
 const App = () => {
   return (
@@ -30,8 +31,8 @@ const App = () => {
           path="auth/login/kakao/callback"
           element={<KakaoLoginCallback />}
         />
-
         <Route path="/main/:id" element={<Main />}>
+          <Route path="private" element={<PrivateMain />} />
           <Route path="board" element={<Board />} />
           <Route path="calendar" element={<Calender />} />
           <Route path="message" element={<Message />} />

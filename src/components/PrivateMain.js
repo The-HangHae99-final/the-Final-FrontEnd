@@ -21,7 +21,6 @@ const PrivateMain = () => {
   const handleAddMember = () => {
     setModalOn(!modalOn);
   };
-  console.log(modalOn);
 
   const handleChange = (e) => {
     setNewMember({ ...newMember, userEmail: e.target.value });
@@ -30,7 +29,6 @@ const PrivateMain = () => {
   const closeModal = (e) => {
     setModalOn(!modalOn);
   };
-  console.log(newMember);
   const getNewMember = (e) => {
     e.preventDefault();
     axios({
