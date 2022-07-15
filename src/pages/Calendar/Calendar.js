@@ -11,6 +11,7 @@ import SmallCalendar from "../../components/SmallCalendar";
 import ModalPortal from "../../elements/Portal/ModalPortal";
 import CalendarModal from "../../components/Modal/CalendarModal";
 import { getItemFromLs } from "../../components/localStorage";
+import axios from "axios";
 
 const Calender = () => {
   const [modalOn, setModalOn] = useState(false);
@@ -44,7 +45,32 @@ const Calender = () => {
       endDate: endDate,
     });
   };
-  console.log(taskContents);
+
+  // 전체 개인 일정 조회
+  const fetchMyTasks = () => {
+    axios({
+      method: "get",
+      url: "http://13.209.3.168:3001/api/mytask",
+      headers: {
+        Authorization: `Bearer ${getItemFromLs("myToken")}`,
+      },
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+
+  // 전체 팀 일정 조회
+  const fetchTeamTasks = () => {
+    axios({
+      method: "get",
+      url: "http://13.209.3.168:3001/api/task/team/workSpaceName",
+      headers: {
+        Authorization: `Bearer ${getItemFromLs("myToken")}`,
+      },
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
     setTaskContents({
@@ -63,7 +89,9 @@ const Calender = () => {
         <div className="myCalender-box">
           <div className="teamchat-box">
             <div className="box-header">
-              <div className="box-title">My calendar</div>
+              <div className="box-title" onClick={fetchMyTasks}>
+                My calendar
+              </div>
             </div>
             <ul className="calender-list-my">
               <li className="calender-item">
@@ -76,7 +104,7 @@ const Calender = () => {
               </li>
               <div
                 className="add-button-container"
-                title="My calendal"
+                title="My calendar"
                 onClick={handleModal}
               >
                 <button className="add-button">
@@ -92,7 +120,9 @@ const Calender = () => {
         <div className="teamCalender">
           <div className="teamchat-box">
             <div className="box-header">
-              <div className="box-title">Team calendar</div>
+              <div className="box-title" onClick={fetchTeamTasks}>
+                Team calendar
+              </div>
             </div>
             <ul className="calender-list calender-list-team">
               <li className="calender-item">

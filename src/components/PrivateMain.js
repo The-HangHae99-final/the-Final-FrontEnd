@@ -16,7 +16,7 @@ const PrivateMain = () => {
   });
   const [modalOn, setModalOn] = useState(false);
 
-  const workSpaceName = getItemFromLs("workspace");
+  const getWorkSpaceName = getItemFromLs("workspace");
 
   const handleAddMember = () => {
     setModalOn(!modalOn);
@@ -50,16 +50,22 @@ const PrivateMain = () => {
     });
   }, []);
 
+  useEffect(() => {
+    setWorkspaceName(getWorkSpaceName);
+  }, [getWorkSpaceName]);
+
+  console.log(getWorkSpaceName);
+
   return (
     <PrivateMainStyle>
       <MainHeader className="MainHeader">
-        <h1 className="main-header-workspace-name">
-          {workSpaceName ? (
-            workSpaceName.split("+")[1]
+        <div className="main-header-workspace-name">
+          {workspaceName ? (
+            workspaceName.split("+")[1]
           ) : (
             <h1>워크스페이스를 선택해주세요!</h1>
           )}
-        </h1>
+        </div>
         <button className="main-header-addBtn" onClick={handleAddMember}>
           <img src={addMemberIcon} alt="addMemberIcon" className="addBtn-img" />
           <span className="addBtn-name">멤버 추가하기</span>

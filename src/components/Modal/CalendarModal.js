@@ -26,7 +26,7 @@ const CalendarModal = ({
 }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const location = useLocation();
+  const [showPickers, setShowPickers] = useState(false);
 
   // UTC 시간 -> 한국 시간으로 변환
   const toKrTime = (date) => {
@@ -35,12 +35,14 @@ const CalendarModal = ({
     ).toISOString();
   };
 
+  // 개인 일정 or 팀 일정 생성 함수
   const taskSubmit = (e) => {
     e.preventDefault();
-    if (modalTitle === " My calendar") {
+    if (modalTitle === "My calendar") {
+      console.log("개인일정 요청임!");
       axios({
         method: "post",
-        url: "http://13.209.3.168:3001/api/task/work",
+        url: "http://13.209.3.168:3001/api/mytask/work",
         data: taskContents,
         headers: {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
@@ -49,6 +51,7 @@ const CalendarModal = ({
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
     } else {
+      console.log("팀일정 요청임!");
       axios({
         method: "post",
         url: "http://13.209.3.168:3001/api/task/team/workSpaceName",
@@ -62,18 +65,15 @@ const CalendarModal = ({
     }
   };
 
+  const showColorPickers = () => {
+    setShowPickers(!showPickers);
+  };
+
   useEffect(() => {
     const end_date_kr = toKrTime(endDate).split("T")[0];
     const start_date_kr = toKrTime(startDate).split("T")[0];
     handleTaskDateChage(start_date_kr, end_date_kr);
   }, [startDate, endDate]);
-
-  // useEffect(() => {
-  // axios
-  //   .get("http://13.209.3.168:3001/api/workSpace/everyWorkSpace")
-  //   .then((res) => console.log(res))
-  //   .catch((err) => console.log(err));
-  // }, []);
 
   return (
     <ModalPortal>
@@ -120,7 +120,7 @@ const CalendarModal = ({
               <span className="color-pick_title" name="color">
                 기본 색상
               </span>
-              <div className="color-pick_icon-wrap">
+              <div className="color-pick_icon-wrap" onClick={showColorPickers}>
                 <img src={Vector3} alt="Vector3" className="color-pick_icon" />
               </div>
             </ColorPickWrap>
