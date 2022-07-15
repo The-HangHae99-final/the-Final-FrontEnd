@@ -10,6 +10,7 @@ import BigCalendar from "../../components/BigCalendar";
 import SmallCalendar from "../../components/SmallCalendar";
 import ModalPortal from "../../elements/Portal/ModalPortal";
 import CalendarModal from "../../components/Modal/CalendarModal";
+import { getItemFromLs } from "../../components/localStorage";
 
 const Calender = () => {
   const [modalOn, setModalOn] = useState(false);
@@ -28,6 +29,7 @@ const Calender = () => {
     title: "",
     desc: "",
     color: "#FFFF",
+    workSpaceName: "",
   });
 
   const handleTaskInfoChange = (e) => {
@@ -44,8 +46,12 @@ const Calender = () => {
   };
   console.log(taskContents);
 
-  // useEffect(() => {
-  // }, []);
+  useEffect(() => {
+    setTaskContents({
+      ...taskContents,
+      workSpaceName: `${getItemFromLs("workspace")}`,
+    });
+  }, []);
 
   return (
     <CalenderStyle className="calenderStyle">

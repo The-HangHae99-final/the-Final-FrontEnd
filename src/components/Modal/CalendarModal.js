@@ -38,16 +38,15 @@ const CalendarModal = ({
   const taskSubmit = (e) => {
     e.preventDefault();
     const workSpaceName = getItemFromLs("workspace");
-    const encodeingURI = encodeURI(
-      `http://13.209.3.168:3001/api/task/${workSpaceName}`
-    );
-
-    axios
-      .post(encodeingURI, taskContents, {
-        headers: {
-          Authorization: `Bearer ${getItemFromLs("myToken")}`,
-        },
-      })
+    // const encodingURI = encodeURI(encodeURIComponent(workSpaceName));
+    axios({
+      method: "post",
+      url: "http://13.209.3.168:3001/api/task/work",
+      data: taskContents,
+      headers: {
+        Authorization: `Bearer ${getItemFromLs("myToken")}`,
+      },
+    })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };
@@ -55,9 +54,15 @@ const CalendarModal = ({
   useEffect(() => {
     const end_date_kr = toKrTime(endDate).split("T")[0];
     const start_date_kr = toKrTime(startDate).split("T")[0];
-
     handleTaskDateChage(start_date_kr, end_date_kr);
   }, [startDate, endDate]);
+
+  useEffect(() => {
+    axios
+      .get("http://13.209.3.168:3001/api/workSpace/everyWorkSpace")
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <ModalPortal>

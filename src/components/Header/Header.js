@@ -33,6 +33,8 @@ const Header = () => {
     removeItemFromLs("myToken");
     removeItemFromLs("userName");
     removeItemFromLs("userEmail");
+    removeItemFromLs("workspace");
+
     alert("로그아웃 되었습니다");
     navigate("/");
   };
@@ -53,11 +55,13 @@ const Header = () => {
         }
       )
       .then((res) => {
-        const newWorkSpace = res.data.result.name.split("+")[1];
+        const newWorkSpaceFullName = res.data.result.name;
+        // const newWorkSpace = res.data.result.name.split("+")[1];
         setWorkspaceName("");
         setModalOn(!modalOn);
+        console.log(newWorkSpaceFullName);
+        setWorkspaceList([...workspaceList, newWorkSpaceFullName]);
         alert("새로운 워크스페이스가 만들어졌어요");
-        setWorkspaceList([...workspaceList, newWorkSpace]);
       });
   };
   //
@@ -75,13 +79,14 @@ const Header = () => {
       })
       .then((res) => {
         const wsInfoList = res.data.includedList;
-        const wsList = wsInfoList.map((a, idx) => a.name.split("+")[1]);
+        const wsList = wsInfoList.map((a, idx) => a.name);
         setWorkspaceList(wsList);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
+  console.log(workspaceList);
 
   return (
     <>
@@ -154,8 +159,12 @@ const Header = () => {
                           setOpenDropdown(false);
                         }}
                       >
-                        <div className="workspace_avatar">{item[0]}</div>
-                        <div className="workspace_name">{item}</div>
+                        <div className="workspace_avatar">
+                          {item.split("+")[1][0]}
+                        </div>
+                        <div className="workspace_name">
+                          {item.split("+")[1]}
+                        </div>
                       </li>
                     );
                   })}
