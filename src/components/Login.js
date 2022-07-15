@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/userReducer";
 import { setItemToLs } from "./localStorage";
 import Divider from "../elements/Divider";
-import loginbg from "../public/img/loginbg.png";
+import loginbg from "../public/img/loginBg.png";
 import SocialLogin from "./SocialLogin";
 
 const Login = () => {

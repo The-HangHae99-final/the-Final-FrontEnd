@@ -1,17 +1,68 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { getItemFromLs } from "./localStorage";
 import addMemberIcon from "../public/img/addMemberIcon.png";
 import thunder from "../public/img/thunder.png";
+import AddMemberModal from "./Modal/AddMemberModal";
+import ModalPortal from "../elements/Portal/ModalPortal";
+import axios from "axios";
+
 const PrivateMain = () => {
+  const [workspaceName, setWorkspaceName] = useState("");
+  const [newMember, setNewMember] = useState({
+    workSpaceName: "",
+    userEmail: "",
+  });
+  const [modalOn, setModalOn] = useState(false);
+
   const workSpaceName = getItemFromLs("workspace");
+
+  const handleAddMember = () => {
+    setModalOn(!modalOn);
+  };
+  console.log(modalOn);
+
+  const handleChange = (e) => {
+    setNewMember({ ...newMember, userEmail: e.target.value });
+  };
+
+  const closeModal = (e) => {
+    setModalOn(!modalOn);
+  };
+  console.log(newMember);
+  const getNewMember = (e) => {
+    e.preventDefault();
+    axios({
+      method: "put",
+      url: "http://13.209.3.168:3001/api/workSpace/memberAdd/workSpaceName",
+      data: newMember,
+      headers: {
+        Authorization: `Bearer ${getItemFromLs("myToken")}`,
+      },
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    setNewMember({
+      ...newMember,
+      workSpaceName: `${getItemFromLs("workspace")}`,
+    });
+  }, []);
 
   return (
     <PrivateMainStyle>
       <MainHeader className="MainHeader">
-        <h1 className="main-header-workspace-name">{workSpaceName}</h1>
-        <button className="main-header-addBtn">
+        <h1 className="main-header-workspace-name">
+          {workSpaceName ? (
+            workSpaceName.split("+")[1]
+          ) : (
+            <h1>워크스페이스를 선택해주세요!</h1>
+          )}
+        </h1>
+        <button className="main-header-addBtn" onClick={handleAddMember}>
           <img src={addMemberIcon} alt="addMemberIcon" className="addBtn-img" />
           <span className="addBtn-name">멤버 추가하기</span>
         </button>
@@ -37,6 +88,15 @@ const PrivateMain = () => {
         </PrivateMainLeft>
         <PrivateMainRight>hihi</PrivateMainRight>
       </PrivateMainContainer>
+      <ModalPortal>
+        {modalOn && (
+          <AddMemberModal
+            handleChange={handleChange}
+            onClose={closeModal}
+            getNewMember={getNewMember}
+          />
+        )}
+      </ModalPortal>
     </PrivateMainStyle>
   );
 };

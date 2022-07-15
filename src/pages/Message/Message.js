@@ -18,7 +18,7 @@ import BubbleBox from "../../components/BubbleBox";
 import axios from "axios";
 
 const Message = () => {
-  const socket = io.connect("http://3.35.49.164");
+  // const socket = io.connect("http://3.35.49.164");
   const [DataForJoin, setDataForJoin] = useState({
     opponent: "",
     workspace: "",
@@ -31,19 +31,19 @@ const Message = () => {
   const { opponent, workspace } = DataForJoin;
 
   // 유저 프로필을 클릭 시 방에 접속, 채팅리스트 받아온다
-  const joinRoom = (opponent, workspace) => {
-    if (opponent !== "" && workspace !== "") {
-      // 상대방 이름과 워크스페이스 이름을 join_room 이벤트로 보낸다
-      socket.emit("join_room", opponent, workspace);
+  // const joinRoom = (opponent, workspace) => {
+  //   if (opponent !== "" && workspace !== "") {
+  //     // 상대방 이름과 워크스페이스 이름을 join_room 이벤트로 보낸다
+  //     socket.emit("join_room", opponent, workspace);
 
-      setShowChat(true);
-      // 서버로부터 채팅리스트를 받는다
-      // 방이름 = "(접속한 유저의 이름)" + "(상대 유저의 이름)" => 가나다순 정렬
-      socket.on("chat_list", (chat_list) => {
-        console.log(chat_list);
-      });
-    }
-  };
+  //     setShowChat(true);
+  //     // 서버로부터 채팅리스트를 받는다
+  //     // 방이름 = "(접속한 유저의 이름)" + "(상대 유저의 이름)" => 가나다순 정렬
+  //     socket.on("chat_list", (chat_list) => {
+  //       console.log(chat_list);
+  //     });
+  //   }
+  // };
 
   // useEffect(() => {}, [DataForJoin]);
 
@@ -91,7 +91,8 @@ const Message = () => {
             <BoxTitle className="box-title">My Chat</BoxTitle>
           </BoxHeader>
           {/* 개인 메시지 유저 리스트 */}
-          <DirectChatList joinRoom={joinRoom} setDataForJoin={setDataForJoin} />
+          <DirectChatList setDataForJoin={setDataForJoin} />
+          {/* joinRoom={joinRoom}  */}
         </MyChatBox>
       </LeftSection>
 
