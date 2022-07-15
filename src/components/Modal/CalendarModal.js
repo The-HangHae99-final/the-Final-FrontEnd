@@ -32,7 +32,6 @@ const CalendarModal = ({
     ).toISOString();
   };
 
-  console.log(location);
   const taskSubmit = (e) => {
     e.preventDefault();
     axios

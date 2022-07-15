@@ -5,13 +5,12 @@ import { Outlet, useParams } from "react-router-dom";
 import LoginModal from "../../elements/LoginModal";
 import Modal from "../../components/Modal";
 import { useNavigate } from "react-router-dom";
+import PrivateMain from "../../components/PrivateMain";
 
 const Main = () => {
   const navigate = useNavigate();
   const params = useParams();
   const id = params.id;
-  if (id) {
-  }
 
   return (
     <div className={styles.main}>
@@ -48,7 +47,10 @@ const Main = () => {
         <Header />
         <main className={styles.mainStyle}>
           {id !== "undefined" ? (
-            <Outlet />
+            <>
+              <PrivateMain />
+              <Outlet />
+            </>
           ) : (
             <div>워크 스페이스에 입장해주세요!</div>
           )}
