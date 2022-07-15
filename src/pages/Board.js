@@ -1,20 +1,20 @@
+// Board 페이지 입니다
+
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getItemFromLs } from "../components/localStorage";
+import styled from "styled-components";
 
 const Board = () => {
   const [data, setDatas] = useState({
     title: "",
     content: "",
     category: "",
-    user_id: "",
+    workSpaceName: "",
   });
-
-  const user = useSelector((state) => state.user.value);
-  console.log("data: ", data);
-  console.log("user: ", user.user_id);
-  const userId = user.user_id;
+  console.log(data);
+  const [workSpaceName, setWorkSpaceName] = useState({ workSpaceName: "" });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,22 +23,38 @@ const Board = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("http://52.78.168.151:3001/api/board/post", data, {
-        headers: {
-          Authorization: `Bearer ${getItemFromLs("myToken")}`,
-        },
-      })
+    console.log("hihi");
+    axios({
+      method: "post",
+      url: "http://13.209.3.168:3001/api/post/workSpaceName",
+      data: data,
+      headers: {
+        Authorization: `Bearer ${getItemFromLs("myToken")}`,
+      },
+    })
       .then((res) => console.log(res))
-      .catch((error) => console.log(error));
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
-    setDatas({ ...data, user_id: userId });
+    setDatas({ ...data, workSpaceName: getItemFromLs("workspace") });
+  }, []);
+
+  useEffect(() => {
+    axios({
+      method: "post",
+      url: "http://13.209.3.168:3001/api/post/workSpaceName/all",
+      data: { workSpaceName: `${getItemFromLs("workspace")}` },
+      headers: {
+        Authorization: `Bearer ${getItemFromLs("myToken")}`,
+      },
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   }, []);
 
   return (
-    <div>
+    <BoardStyle>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -60,8 +76,14 @@ const Board = () => {
         />
         <button type="submit">전송하기</button>
       </form>
-    </div>
+      <div></div>
+    </BoardStyle>
   );
 };
+
+const BoardStyle = styled.div`
+  background-color: aqua;
+  width: 100%;
+`;
 
 export default Board;

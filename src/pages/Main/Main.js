@@ -29,7 +29,7 @@ const Main = () => {
           <div className={styles.buttonWrap}>
             <div
               onClick={() => {
-                navigate(`/main/${id}/calendar`);
+                navigate(`/main/${id}/board`);
               }}
               className={styles.btn}
             ></div>

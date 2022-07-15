@@ -27,6 +27,8 @@ const KakaoLoginCallback = () => {
       .then((res) => {
         const token = res.data;
         console.log("token: ", token);
+
+        // 서버가 받아온 유저 정보 조회
         axios
           .post(`http://13.209.3.168:3001/api/kakao/member`, {
             token,
