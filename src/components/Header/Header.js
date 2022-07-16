@@ -90,15 +90,6 @@ const Header = () => {
   return (
     <>
       <HeaderStyle>
-        <form className={styles.inputWrap}>
-          <input
-            type="text"
-            placeholder="search"
-            className={styles.searchInput}
-          />
-          <div className={styles.searchIcon}></div>
-        </form>
-
         <div className="menuItems">
           <div className="menuBtns">
             <button className="menuBtn">
