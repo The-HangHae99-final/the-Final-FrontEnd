@@ -36,6 +36,7 @@ const App = () => {
           <Route path="board" element={<Board />} />
           <Route path="calendar" element={<Calender />} />
           <Route path="message" element={<Message />} />
+          <Route path="*" element={<div>There's nothing here!</div>} />
         </Route>
       </Routes>
     </div>

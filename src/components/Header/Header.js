@@ -72,7 +72,7 @@ const Header = () => {
 
   useEffect(() => {
     axios
-      .get("http://13.209.3.168:3001/api/workSpace/workSpaceList", {
+      .get("http://13.209.3.168:3001/api/workSpace/list", {
         headers: {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },

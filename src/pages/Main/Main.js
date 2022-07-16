@@ -16,6 +16,7 @@ const Main = () => {
   const navigate = useNavigate();
   const params = useParams();
   const id = params.id;
+  console.log(id);
   return (
     <MainStyle className={styles.main}>
       <LeftSide className={styles.leftSide}>
