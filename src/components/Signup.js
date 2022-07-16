@@ -1,18 +1,22 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import loginBg from "../public/img/Ellipse103.png";
 import Divider from "../elements/Divider";
-import SocialLogin from "./SocialLogin";
+import loginbg from "../public/img/loginBg.png";
 
 const Signup = () => {
+  // 이메일, 이름, 비밀번호, 비밀번호 확인
   const [signupValue, setSignupValue] = useState({
     userEmail: "",
     userName: "",
     password: "",
     confirmPassword: "",
   });
+
+  const inputRef = useRef();
+
+  const { userEmail, userName, password, confirmPassword } = signupValue;
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -35,74 +39,95 @@ const Signup = () => {
       })
       .catch((error) => console.log(error));
   };
+
+  const signupBox = (title, sub, join) => {
+    return (
+      <SignupStyle>
+        <LoginWrap>
+          <LoginTitle>{title}</LoginTitle>
+          <EmailWrap>
+            <FormWrap onSubmit={handleSubmit}>
+              <div className="formbox">
+                <EmailLabel>이름</EmailLabel>
+                <EmailInput
+                  type="text"
+                  name="userName"
+                  value={userName || ""}
+                  onChange={handleChange}
+                  placeholder="5글자 이내로 입력해주세요."
+                  ref={inputRef}
+                />
+              </div>
+
+              <div className="formbox">
+                <EmailLabel htmlFor="userEmail">이메일</EmailLabel>
+                <EmailInput
+                  type="text"
+                  name="userEmail"
+                  value={userEmail || ""}
+                  onChange={handleChange}
+                  placeholder="사용 가능한 이메일주소를 입력해주세요."
+                  ref={inputRef}
+                />
+              </div>
+
+              <div className="formbox">
+                <EmailLabel>비밀번호</EmailLabel>
+                <EmailInput
+                  name="password"
+                  type="password"
+                  value={password || ""}
+                  onChange={handleChange}
+                  placeholder="6글자 이상 입력해주세요."
+                  ref={inputRef}
+                />
+              </div>
+              <div className="formbox">
+                <EmailLabel>비밀번호 확인</EmailLabel>
+                <EmailInput
+                  name="confirmPassword"
+                  type="password"
+                  value={confirmPassword || ""}
+                  onChange={handleChange}
+                  placeholder="비밀번호를 확인해주세요."
+                  ref={inputRef}
+                />
+              </div>
+              <EmailSubmit type="submit" userEmail={userEmail}>
+                회원가입하기
+              </EmailSubmit>
+            </FormWrap>
+          </EmailWrap>
+        </LoginWrap>
+      </SignupStyle>
+    );
+  };
   return (
-    <SignupStyle>
-      <h1 className="login-title">TeamNote에 오신걸 환영합니다</h1>
-      <form className="registerForm" onSubmit={handleSubmit}>
-        <div>
-          <label className="label">이메일</label>
-          <input
-            placeholder="이메일"
-            onChange={handleChange}
-            name="userEmail"
-          />
-        </div>
-        <div>
-          <label>닉네임</label>
-          <input placeholder="닉네임" onChange={handleChange} name="userName" />
-        </div>
-        <div>
-          <label>비밀번호</label>
-          <input
-            placeholder="비밀번호"
-            onChange={handleChange}
-            name="password"
-          />
-        </div>
-        <div>
-          <label>비밀번호</label>
-          <input
-            placeholder="비밀번호"
-            onChange={handleChange}
-            name="confirmPassword"
-          />
-        </div>
-        <button type="submit">회원가입하기</button>
-      </form>
-    </SignupStyle>
+    <LoginBackGround>
+      {signupBox("Join Us", "이메일 주소", "JOIN US")}
+    </LoginBackGround>
   );
 };
-
-const SignupStyle = styled.div`
-  /* background: url("public/img/loginBg.png"); */
-  height: 100vh;
-  width: 100vw;
-  background-repeat: no-repeat;
-  background-size: cover;
-`;
 
 const LoginBackGround = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  backdrop-filter: blur(10px);
   position: fixed;
   top: 0;
   left: 0;
-  cursor: pointer;
-  text-align: center;
+  background-image: url(${loginbg});
+  background-size: cover;
+  background-position: center;
 `;
 
-const LoginStyle = styled.div`
+const SignupStyle = styled.div`
   padding: 50px 100px 81px 100px;
   background: rgba(254, 254, 254, 0.5);
   opacity: 0.9;
   border-radius: 20px;
   width: 560px;
-  height: 532px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -125,40 +150,88 @@ const EmailWrap = styled.div`
   flex-direction: column;
 `;
 
+const FormWrap = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  .formbox {
+    margin-top: 30px;
+  }
+
+  .join {
+    align-self: flex-end;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: right;
+    text-decoration-line: underline;
+    color: #7d8bdb;
+    margin: 8px 0px;
+    margin-bottom: 32px;
+  }
+
+  .formbox {
+    position: relative;
+    .message {
+      font-weight: 500;
+      font-size: 1.6rem;
+      line-height: 24px;
+      letter-spacing: -1px;
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      👉 &.success {
+        color: #8f8c8b;
+      }
+      👉 &.error {
+        color: #ff2727;
+      }
+    }
+  }
+`;
+
 const EmailLabel = styled.div`
-  font-style: normal;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 14px;
-  line-height: 17px;
-  color: var(--main-grey);
+  line-height: 20px;
+  color: #7a858e;
 `;
 
 const EmailInput = styled.input`
   all: unset;
-  border-bottom: var(--FEFEFE);
+  border-bottom: 1px solid var(--FEFEFE);
   width: 100%;
   height: 20px;
   padding: 10px 10px 10px 0px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+
+  ::placeholder {
+    color: #7a858e;
+    opacity: 0.5;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+  }
 `;
 
-const EmailSubmit = styled.div`
+const EmailSubmit = styled.button`
+  all: unset;
+  align-self: flex-end;
   width: 100px;
   height: 40px;
-  background: rgba(247, 247, 247, 0.9);
+  background: ${(props) =>
+    props.userEmail === "" ? "rgba(247, 247, 247, 0.5)" : "#7d8bdb"};
+  transition: all 0.2s linear;
   border-radius: 5px;
-
   cursor: pointer;
-  display: Flex;
-  justify-content: center;
-  align-items: center;
-  justify-self: flex-end;
-  margin-top: 19px;
-  margin-bottom: 64px;
+  margin-top: 40px;
   color: var(--main-grey);
   position: position;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: ${(props) => (props.userEmail === "" ? "#7A858E" : "#ffffff")};
+  text-align: center;
 `;
 
 const LoginWrap = styled.div`
@@ -167,6 +240,7 @@ const LoginWrap = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
 const ContinueWrap = styled.div`
   display: flex;
   align-items: center;
@@ -182,5 +256,4 @@ const ContinueText = styled.span`
   width: 400px;
   margin: 0px 25px;
 `;
-
 export default Signup;

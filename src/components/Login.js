@@ -14,8 +14,9 @@ const Login = () => {
     userEmail: "",
     password: "",
   });
+
   const [showPwInput, setShowPwInput] = useState(false);
-  const [showSignIn, setSignIn] = useState(false);
+  const [showSignIn, setShowSignIn] = useState(false);
   const { userEmail, password } = loginValue;
 
   const navigate = useNavigate();
@@ -74,7 +75,6 @@ const Login = () => {
       <LoginStyle>
         <LoginWrap>
           <LoginTitle>{title}</LoginTitle>
-
           <EmailWrap>
             <FormWrap onSubmit={handleSubmit}>
               {!showPwInput ? (
@@ -110,13 +110,11 @@ const Login = () => {
               </div>
             </FormWrap>
           </EmailWrap>
-
           <ContinueWrap>
             <Divider />
             <ContinueText>or continue with</ContinueText>
             <Divider />
           </ContinueWrap>
-
           <SocialLogin />
         </LoginWrap>
       </LoginStyle>
@@ -129,11 +127,7 @@ const Login = () => {
 
   return (
     <LoginBackGround>
-      {!showSignIn ? (
-        loginBox("Sign in", "이메일 주소", "JOIN US")
-      ) : (
-        <div>회원가입해</div>
-      )}
+      {loginBox("Sign In", "이메일 주소", "JOIN US")}
     </LoginBackGround>
   );
 };

@@ -13,7 +13,7 @@ const Board = () => {
     category: "",
     workSpaceName: "",
   });
-  console.log(data);
+
   const [workSpaceName, setWorkSpaceName] = useState({ workSpaceName: "" });
 
   const handleChange = (e) => {
@@ -40,11 +40,12 @@ const Board = () => {
     setDatas({ ...data, workSpaceName: getItemFromLs("workspace") });
   }, []);
 
+  const endodedURL = encodeURIComponent(getItemFromLs("myToken"));
+
   useEffect(() => {
     axios({
       method: "post",
-      url: "http://13.209.3.168:3001/api/post/workSpaceName/all",
-      data: { workSpaceName: `${getItemFromLs("workspace")}` },
+      url: `http://13.209.3.168:3001/api/post/${endodedURL}`,
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,
       },
@@ -52,6 +53,19 @@ const Board = () => {
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   }, []);
+
+  // useEffect(() => {
+  //   axios({
+  //     method: "post",
+  //     url: "http://13.209.3.168:3001/api/post/workSpaceName/all",
+  //     data: { workSpaceName: `${getItemFromLs("workspace")}` },
+  //     headers: {
+  //       Authorization: `Bearer ${getItemFromLs("myToken")}`,
+  //     },
+  //   })
+  //     .then((res) => console.log(res))
+  //     .catch((err) => console.log(err));
+  // }, []);
 
   return (
     <BoardStyle>
@@ -82,7 +96,6 @@ const Board = () => {
 };
 
 const BoardStyle = styled.div`
-  background-color: aqua;
   width: 100%;
 `;
 
