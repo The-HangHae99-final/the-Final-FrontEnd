@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Divider from "../elements/Divider";
@@ -14,10 +14,18 @@ const Signup = () => {
     confirmPassword: "",
   });
 
+  // 오류메시지 상태 저장
+  const [nameMessage, setNameMessage] = useState("이름을 입력해주세요.");
+  const [emailMessage, setEmailMessage] = useState("이메일을 입력해주세요");
+  const [passwordMessage, setPasswordMessage] =
+    useState("비밀번호를 입력해주세요");
+  const [passwordConfirmMessage, setPasswordConfirmMessage] =
+    useState("비밀번호를 한번 더 입력해주세요");
+
   const inputRef = useRef();
+  const navigate = useNavigate();
 
   const { userEmail, userName, password, confirmPassword } = signupValue;
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,14 +41,12 @@ const Signup = () => {
         if (response.data.success) {
           alert("로그인에 성공하였습니다!");
           navigate("/");
-        } else {
-          alert("이메일 혹은 비밀번호가 틀렸습니다!");
         }
       })
       .catch((error) => console.log(error));
   };
 
-  const signupBox = (title, sub, join) => {
+  const signupBox = (title) => {
     return (
       <SignupStyle>
         <LoginWrap>
@@ -53,10 +59,14 @@ const Signup = () => {
                   type="text"
                   name="userName"
                   value={userName || ""}
+                  userName={userName}
                   onChange={handleChange}
                   placeholder="5글자 이내로 입력해주세요."
                   ref={inputRef}
                 />
+                {userName === "" && (
+                  <span className="help-message">{nameMessage}</span>
+                )}
               </div>
 
               <div className="formbox">
@@ -69,6 +79,9 @@ const Signup = () => {
                   placeholder="사용 가능한 이메일주소를 입력해주세요."
                   ref={inputRef}
                 />
+                {userEmail === "" && (
+                  <span className="help-message">{emailMessage}</span>
+                )}
               </div>
 
               <div className="formbox">
@@ -81,6 +94,9 @@ const Signup = () => {
                   placeholder="6글자 이상 입력해주세요."
                   ref={inputRef}
                 />
+                {password === "" && (
+                  <span className="help-message">{passwordMessage}</span>
+                )}
               </div>
               <div className="formbox">
                 <EmailLabel>비밀번호 확인</EmailLabel>
@@ -92,8 +108,17 @@ const Signup = () => {
                   placeholder="비밀번호를 확인해주세요."
                   ref={inputRef}
                 />
+                {confirmPassword === "" && (
+                  <span className="help-message">{passwordConfirmMessage}</span>
+                )}
               </div>
-              <EmailSubmit type="submit" userEmail={userEmail}>
+              <EmailSubmit
+                type="submit"
+                confirmPassword={confirmPassword}
+                password={password}
+                userName={userName}
+                userEmail={userEmail}
+              >
                 회원가입하기
               </EmailSubmit>
             </FormWrap>
@@ -102,11 +127,8 @@ const Signup = () => {
       </SignupStyle>
     );
   };
-  return (
-    <LoginBackGround>
-      {signupBox("Join Us", "이메일 주소", "JOIN US")}
-    </LoginBackGround>
-  );
+
+  return <LoginBackGround>{signupBox("Join Us")}</LoginBackGround>;
 };
 
 const LoginBackGround = styled.div`
@@ -173,20 +195,17 @@ const FormWrap = styled.form`
 
   .formbox {
     position: relative;
-    .message {
-      font-weight: 500;
-      font-size: 1.6rem;
-      line-height: 24px;
+    transition: all 0.3s linear;
+
+    .help-message {
+      margin-top: 4px;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 17px;
       letter-spacing: -1px;
       position: absolute;
-      bottom: -10px;
       left: 0;
-      👉 &.success {
-        color: #8f8c8b;
-      }
-      👉 &.error {
-        color: #ff2727;
-      }
+      color: #f06767;
     }
   }
 `;
@@ -200,7 +219,8 @@ const EmailLabel = styled.div`
 
 const EmailInput = styled.input`
   all: unset;
-  border-bottom: 1px solid var(--FEFEFE);
+  border-bottom: ${(props) =>
+    props.value === "" ? "1px solid #F06767" : "1px solid #FFFFFF"};
   width: 100%;
   height: 20px;
   padding: 10px 10px 10px 0px;
@@ -220,7 +240,12 @@ const EmailSubmit = styled.button`
   width: 100px;
   height: 40px;
   background: ${(props) =>
-    props.userEmail === "" ? "rgba(247, 247, 247, 0.5)" : "#7d8bdb"};
+    props.userEmail === "" &&
+    props.userName === "" &&
+    props.password === "" &&
+    props.confirmPassword === ""
+      ? "rgba(247, 247, 247, 0.5)"
+      : "#7d8bdb"};
   transition: all 0.2s linear;
   border-radius: 5px;
   cursor: pointer;
