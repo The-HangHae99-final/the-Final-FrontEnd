@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { getItemFromLs, removeItemFromLs, setItemToLs } from "../localStorage";
 
 // module
-import styles from "../../pages/Main/main.module.css";
 import UserAvatar from "../../elements/UserAvatar";
 import vector from "../../public/img/Vector1.png";
 import sunIcon from "../../public/img/sun.png";
@@ -72,7 +71,7 @@ const Header = () => {
 
   useEffect(() => {
     axios
-      .get("http://13.209.3.168:3001/api/workSpace/workSpaceList", {
+      .get("http://13.209.3.168:3001/api/workSpace/list", {
         headers: {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },
