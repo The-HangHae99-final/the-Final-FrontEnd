@@ -19,6 +19,7 @@ import Ellipse103 from "../public/img/Ellipse103.png";
 import Ellipse106 from "../public/img/Ellipse106.png";
 import leftArrow from "../public/img/left-arrow.png";
 import rightArrow from "../public/img/right-arrow.png";
+import WeakCalendar from "./calendar/WeakCalendar";
 
 const PrivateMain = () => {
   const [workspaceName, setWorkspaceName] = useState("");
@@ -184,7 +185,9 @@ const PrivateMain = () => {
               </NoticeScreenTime>
             </div>
           </LeftTop>
-          <div className="leftBottom">일주일 치 달력</div>
+          <div>
+            <WeakCalendar />
+          </div>
         </PrivateMainLeft>
         <PrivateMainRight>
           <ContactWrap>
