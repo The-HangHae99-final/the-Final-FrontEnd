@@ -27,3 +27,10 @@ jobs:                                # Job 설정
       - name: npm install
         run: |
           npm install
+          
+      - name: Deploy                  # Upload build file to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+        run: |
+          aws s3 cp --recursive --region ap-northeast-2 build arn:aws:s3:::teamnote-dev
