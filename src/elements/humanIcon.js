@@ -3,7 +3,7 @@ import human04 from "../public/img/human04.png";
 
 import styled from "styled-components";
 
-export const Human03 = ({ size, position, top, right, left }) => {
+export const Human03 = ({ size, position, top, right, left, bottom }) => {
   return (
     <>
       <HumanImg
@@ -17,13 +17,14 @@ export const Human03 = ({ size, position, top, right, left }) => {
           top: top,
           right: right,
           left: left,
+          bottom: bottom,
         }}
       />
     </>
   );
 };
 
-export const Human04 = ({ size, position, top, right, left }) => {
+export const Human04 = ({ size, position, top, right, left, bottom }) => {
   return (
     <>
       <HumanImg
@@ -37,6 +38,7 @@ export const Human04 = ({ size, position, top, right, left }) => {
           top: top,
           right: right,
           left: left,
+          bottom: bottom,
         }}
       />
     </>

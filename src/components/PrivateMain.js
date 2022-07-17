@@ -17,6 +17,8 @@ import goldCrown from "../public/img/goldCrown.png";
 import commentIcon from "../public/img/commentIcon.png";
 import Ellipse103 from "../public/img/Ellipse103.png";
 import Ellipse106 from "../public/img/Ellipse106.png";
+import leftArrow from "../public/img/left-arrow.png";
+import rightArrow from "../public/img/right-arrow.png";
 
 const PrivateMain = () => {
   const [workspaceName, setWorkspaceName] = useState("");
@@ -110,8 +112,8 @@ const PrivateMain = () => {
                     <Human04
                       size={50}
                       position="absolute"
-                      top="-25px"
-                      left="-25px"
+                      bottom="-30px"
+                      left="-20px"
                     />
                   </li>
                   <li className="notification-item notification-item_mine">
@@ -122,8 +124,8 @@ const PrivateMain = () => {
                     <Human04
                       size={50}
                       position="absolute"
-                      top="-25px"
-                      left="-25px"
+                      bottom="-20px"
+                      left="-20px"
                     />
                   </li>
                 </ul>
@@ -186,7 +188,7 @@ const PrivateMain = () => {
         </PrivateMainLeft>
         <PrivateMainRight>
           <ContactWrap>
-            <div className="contact-title">Contact</div>
+            <div className="right-wrap-title contact-title">Contact</div>
             <div className="contact-screen">
               <div className="contact-card">
                 <div className="contact-card_profile">
@@ -277,6 +279,23 @@ const PrivateMain = () => {
               </div>
             </div>
           </ContactWrap>
+          <MemoWrap>
+            <div className="right-wrap-title memo-title">Note</div>
+            <div className="note-screen">바다</div>
+            <div className="note-navi-buttons">
+              <img
+                src={leftArrow}
+                alt="leftArrow"
+                className="note-arrow leftArrow"
+              />
+              <span className="note-category-title">Team</span>
+              <img
+                src={rightArrow}
+                alt="rightArrow"
+                className="note-arrow rightArrow"
+              />
+            </div>
+          </MemoWrap>
         </PrivateMainRight>
       </PrivateMainContainer>
       <ModalPortal>
@@ -295,6 +314,18 @@ const PrivateMain = () => {
 const PrivateMainStyle = styled.div`
   width: 100%;
   box-sizing: border-box;
+  .right-wrap-title {
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 33px;
+    color: #7d8bdb;
+  }
+  .contact-title {
+    margin-bottom: 20px;
+  }
+  .memo-title {
+    margin-bottom: 13px;
+  }
 `;
 
 const PrivateMainContainer = styled.div`
@@ -307,7 +338,6 @@ const PrivateMainContainer = styled.div`
 const MainHeader = styled.div`
   width: 100%;
   height: 10%;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -429,8 +459,6 @@ const NoticeScreen = styled.div`
   border-radius: 5px;
   height: 91%;
   padding: 45px 20px;
-  display: Flex;
-  flex-direction: column;
   position: relative;
 
   .notification-list {
@@ -438,6 +466,9 @@ const NoticeScreen = styled.div`
     display: flex;
     flex-direction: column;
     gap: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .notification-item {
@@ -459,11 +490,9 @@ const NoticeScreen = styled.div`
   }
 
   .notification-item_yours {
-    align-self: flex-start;
   }
 
   .notification-item_mine {
-    align-self: flex-end;
   }
 
   .notice-input {
@@ -493,7 +522,6 @@ const NoticeScreen = styled.div`
 
 const PrivateMainRight = styled.div`
   width: 480px;
-  background-color: teal;
 `;
 
 const ContactWrap = styled.div`
@@ -502,14 +530,6 @@ const ContactWrap = styled.div`
   background: #ffffff;
   border: 1px solid #ecedf1;
   border-radius: 5px;
-
-  .contact-title {
-    font-weight: 600;
-    font-size: 22px;
-    line-height: 33px;
-    color: #7d8bdb;
-    margin-bottom: 20px;
-  }
 
   .contact-screen {
     display: flex;
@@ -560,8 +580,45 @@ const ContactWrap = styled.div`
   }
 `;
 
-// const PrivateMainStyle = styled.div`
-// `;
+const MemoWrap = styled.div`
+  padding: 20px 30px 38px 30px;
+  width: 100%;
+  height: 100%;
+
+  .note-screen {
+    width: 100%;
+    height: 319px;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 220, 36, 0.5) 0%,
+      rgba(240, 187, 0, 0.5) 100%
+    );
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .note-navi-buttons {
+    display: Flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .note-category-title {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 27px;
+    text-align: center;
+    color: #353841;
+  }
+
+  .memo-title {
+    margin-top: 13px;
+  }
+
+  .note-arrow {
+    cursor: pointer;
+  }
+`;
 // const PrivateMainStyle = styled.div`
 // `;
 // const PrivateMainStyle = styled.div`
