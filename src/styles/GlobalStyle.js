@@ -21,9 +21,11 @@ const GlobalStyle = createGlobalStyle`
     *{
         margin: 0;
   box-sizing: border-box;
-    };
-    body{
-        padding: 0;
+};
+body{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Poppins', sans-serif;
+    padding: 0;
         margin: 0;
         width:100vw;
     };
