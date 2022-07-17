@@ -1,8 +1,9 @@
 import human03 from "../public/img/human03.png";
+import human04 from "../public/img/human04.png";
+
 import styled from "styled-components";
 
-export const Human03 = ({ size }) => {
-  console.log(size);
+export const Human03 = ({ size, position, top, right, left }) => {
   return (
     <>
       <HumanImg
@@ -12,8 +13,31 @@ export const Human03 = ({ size }) => {
         style={{
           width: size,
           height: size,
+          position: position,
+          top: top,
+          right: right,
+          left: left,
         }}
-        className="human03"
+      />
+    </>
+  );
+};
+
+export const Human04 = ({ size, position, top, right, left }) => {
+  return (
+    <>
+      <HumanImg
+        src={human04}
+        alt="human04"
+        size={size}
+        style={{
+          width: size,
+          height: size,
+          position: position,
+          top: top,
+          right: right,
+          left: left,
+        }}
       />
     </>
   );

@@ -6,7 +6,8 @@ import AddMemberModal from "./Modal/AddMemberModal";
 import ModalPortal from "../elements/Portal/ModalPortal";
 import axios from "axios";
 
-import { Human03 } from "../elements/humanIcon";
+import { Human03, Human04 } from "../elements/humanIcon";
+
 import thunder from "../public/img/thunder.png";
 import addMemberIcon from "../public/img/addMemberIcon.png";
 import submitVector from "../public/img/submitVector.png";
@@ -63,8 +64,6 @@ const PrivateMain = () => {
     setWorkspaceName(getWorkSpaceName);
   }, [getWorkSpaceName]);
 
-  console.log(getWorkSpaceName);
-
   return (
     <PrivateMainStyle>
       <MainHeader className="MainHeader">
@@ -90,16 +89,45 @@ const PrivateMain = () => {
                 <h3 className="main-wrap-title">Notice</h3>
               </div>
               <NoticeScreen>
+                <ul className="notification-list">
+                  <li className="notification-item notification-item_yours">
+                    <div className="notification-content">
+                      공지사항 등록하는 공간입니다 공지사항 등록자만 수정가능
+                      삭제는 각자 워크스페이스 내에서 가능
+                    </div>
+                    <Human03
+                      size={50}
+                      position="absolute"
+                      top="-25px"
+                      right="-25px"
+                    />
+                  </li>
+                  <li className="notification-item notification-item_mine">
+                    <div className="notification-content">
+                      공지사항 등록하는 공간입니다 공지사항 등록자만 수정가능
+                      삭제는 각자 워크스페이스 내에서 가능
+                    </div>
+                    <Human04
+                      size={50}
+                      position="absolute"
+                      top="-25px"
+                      left="-25px"
+                    />
+                  </li>
+                  <li className="notification-item notification-item_mine">
+                    <div className="notification-content">
+                      공지사항 등록하는 공간입니다 공지사항 등록자만 수정가능
+                      삭제는 각자 워크스페이스 내에서 가능
+                    </div>
+                    <Human04
+                      size={50}
+                      position="absolute"
+                      top="-25px"
+                      left="-25px"
+                    />
+                  </li>
+                </ul>
                 <div className="input-wrap">
-                  <ul className="notification-list">
-                    <li className="notification-item">
-                      <div className="notification-content">
-                        공지사항 등록하는 공간입니다 공지사항 등록자만 수정가능
-                        삭제는 각자 워크스페이스 내에서 가능
-                      </div>
-                      <Human03 size={50} />
-                    </li>
-                  </ul>
                   <input type="text" className="notice-input" />
                   <img
                     src={submitVector}
@@ -400,10 +428,43 @@ const NoticeScreen = styled.div`
   border: 1px solid #ecedf1;
   border-radius: 5px;
   height: 91%;
-  padding: 45px 10px;
+  padding: 45px 20px;
   display: Flex;
   flex-direction: column;
   position: relative;
+
+  .notification-list {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+  }
+
+  .notification-item {
+    padding: 13px 20px;
+    background: #f8f8f9;
+    border: 1px solid #7d8bdb;
+    border-radius: 20px;
+    height: 86px;
+    position: relative;
+    width: 94%;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.02em;
+
+    /* light/text */
+
+    color: #353841;
+  }
+
+  .notification-item_yours {
+    align-self: flex-start;
+  }
+
+  .notification-item_mine {
+    align-self: flex-end;
+  }
 
   .notice-input {
     background: rgba(247, 247, 247, 0.5);
@@ -419,6 +480,7 @@ const NoticeScreen = styled.div`
     height: 52px;
     position: absolute;
     bottom: 10px;
+    right: 10px;
   }
 
   .submitVector {
