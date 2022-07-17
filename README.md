@@ -15,9 +15,7 @@ redux말고 툴킷 쓴 이유
 **Portal**
 
 선정이유
-💡 처음엔 컴포넌트 안에서 Modal이라는 div를 따로 만들고, z-index를 높여서 현재 페이지의 화면을 덮도록 만들었습니다.
-
-그런데 이번 프로젝트에서 새로운 페이지를 여는 것 대신 모달을 많이 쓰게 될 것 같아 사용성이 높고 조금 더 쓰기 편한 방식으로 모달을 쓸 순 없을까 고민해보다가, portal은 z-index 같은 부모-자식 간의 제약을 넘어서 dom노드에서 실제론 부모-자식관계이지만 자식이 부모로부터 독립적인 위치에 있을 수 있게 한다는 글을 보고 portal로 모달을 구현해보았습니다.
+💡 처음엔 컴포넌트 안에서 Modal이라는 div를 따로 만들고, z-index를 높여서 현재 페이지의 화면을 덮도록 만들었습니다. 그런데 이번 프로젝트에서 새로운 페이지를 여는 것 대신 모달을 많이 쓰게 될 것 같아 사용성이 높고 조금 더 쓰기 편한 방식으로 모달을 쓸 순 없을까 고민해보다가, portal은 z-index 같은 부모-자식 간의 제약을 넘어서 dom노드에서 실제론 부모-자식관계이지만 자식이 부모로부터 독립적인 위치에 있을 수 있게 한다는 글을 보고 portal로 모달을 구현해보았습니다.
 
 **socket.io-client**
 
@@ -81,9 +79,7 @@ MIT &copy; [NoHack](mailto:lbjp114@gmail.com)
 ### 1. [프로젝트 소개](#-프로젝트-소개)
 
 실용적이고, 매력적인 UI로 협업에서 받는 스트레스를 줄여 드립니다!
-
 함께 프로젝트를 하는 사람들과 일정을 공유하고, 정리하고, 대화를 나눠보세요!
-
 Share your task ~!
 
 ### 2. [팀 구성](#-팀-구성)
@@ -215,6 +211,7 @@ Share your task ~!
 ## 최종 성과
 
 <img src="https://user-images.githubusercontent.com/86486778/144451851-c3a4a905-f7ab-4003-8028-6ccf611ae58e.png" width="300px">
+
 <img src ="https://user-images.githubusercontent.com/86486778/144452071-7ad6e083-e561-4eeb-8647-89ede8ac650e.png" width="300px" height="200px">
 
 <img src="https://user-images.githubusercontent.com/86486778/144451657-7d34f9fa-27b1-4b5d-8a96-a541c363e9ad.png" width="300px">
@@ -278,17 +275,17 @@ Share your task ~!
 
 - **어떤 문제점을 겪었는가?**
 
-  워크스페이스 리스트에 데이터를 추가하는 요청을 보내고, 새로 업데이트된리스트를 가져오는 GET요청을 보내는 과정에서 무한루프 현상이 발생했다.
+  워크스페이스 리스트에 데이터를 추가하는 요청을 보내고, 새로 업데이트 된 리스트를 가져오는 GET요청을 보내는 과정에서 무한루프 현상이 발생했다.
 
 - **왜 이런 문제가 발생했는가?**
 
-  문제는 데이터가 생성 될 때(POST 요청 시) 업데이트되는 state값을useEffect의 두번째 인자값으로 넣었다.
+  문제는 데이터가 생성 될 때(POST 요청 시) 업데이트되는 state값을 useEffect의 두번째 인자값으로 넣었다.
   그런데 useEffect 콜백함수 내에도 데이터 set함수를 썼기때문에 무한루프가발생했다.
   POST요청 -> setState() -> GET 요청(useEffect 내) -> setStat() -> GET 요청(useEffect 내) -> setState() ..
 
 - **어떻게 해결했는가?**
 
-  post 요청이 성공하면 서버로부터 data가 담긴 response 값을 받아state값으로 append해준다.
+  post 요청이 성공하면 서버로부터 data가 담긴 response 값을 받아 state값으로 append해준다.
 
   로그인 한 뒤 처음 렌더링 할 때도 워크스페이스 리스트를 가져와야 하므로 빈배열을 두 번째 인자로 담은 useEffect에 get요청을 하는 코드를 담는다.
 
