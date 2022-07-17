@@ -6,6 +6,7 @@ import AddMemberModal from "./Modal/AddMemberModal";
 import ModalPortal from "../elements/Portal/ModalPortal";
 import axios from "axios";
 
+import { Human03 } from "../elements/humanIcon";
 import thunder from "../public/img/thunder.png";
 import addMemberIcon from "../public/img/addMemberIcon.png";
 import submitVector from "../public/img/submitVector.png";
@@ -82,6 +83,7 @@ const PrivateMain = () => {
       <PrivateMainContainer>
         <PrivateMainLeft>
           <LeftTop>
+            {/* 공지 컨테이너 */}
             <div className="notice-wrap">
               <div className="wrap-header">
                 <img src={thunder} alt="thunder" className="thunder-icon" />
@@ -89,6 +91,15 @@ const PrivateMain = () => {
               </div>
               <NoticeScreen>
                 <div className="input-wrap">
+                  <ul className="notification-list">
+                    <li className="notification-item">
+                      <div className="notification-content">
+                        공지사항 등록하는 공간입니다 공지사항 등록자만 수정가능
+                        삭제는 각자 워크스페이스 내에서 가능
+                      </div>
+                      <Human03 size={50} />
+                    </li>
+                  </ul>
                   <input type="text" className="notice-input" />
                   <img
                     src={submitVector}
@@ -98,6 +109,8 @@ const PrivateMain = () => {
                 </div>
               </NoticeScreen>
             </div>
+
+            {/* 타임 랭킹 컨테이너 */}
             <div className="time_tasking-wrap">
               <div className="wrap-header">
                 <img src={thunder} alt="thunder" className="thunder-icon" />
@@ -141,6 +154,7 @@ const PrivateMain = () => {
               </NoticeScreenTime>
             </div>
           </LeftTop>
+          <div className="leftBottom">일주일 치 달력</div>
         </PrivateMainLeft>
         <PrivateMainRight>
           <ContactWrap>
@@ -355,7 +369,6 @@ const LeftTop = styled.div`
   .notice-wrap {
     width: 300px;
     height: 476px;
-    background-color: red;
   }
 
   .wrap-header {
@@ -390,6 +403,7 @@ const NoticeScreen = styled.div`
   padding: 45px 10px;
   display: Flex;
   flex-direction: column;
+  position: relative;
 
   .notice-input {
     background: rgba(247, 247, 247, 0.5);
@@ -404,6 +418,7 @@ const NoticeScreen = styled.div`
     width: 280px;
     height: 52px;
     position: absolute;
+    bottom: 10px;
   }
 
   .submitVector {

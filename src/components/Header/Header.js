@@ -45,7 +45,7 @@ const Header = () => {
   const addNewWorkSpace = (e) => {
     axios
       .post(
-        "http://13.209.3.168:3001/api/workSpace/create",
+        "http://13.209.3.168:3001/api/workSpace",
         { name: workspaceName },
         {
           headers: {
