@@ -4,12 +4,20 @@ import reset from "styled-reset";
 const GlobalStyle = createGlobalStyle`
     ${reset};
     :root{
+        /* Regular */
+        --white: #FFFFFF;
+        --balck: #090909;
+        
+        /* Point */
         --point-main: #7D8BDB;
-        --FEFEFE: #FEFEFE;
+        --point-inactive: #BBC4F6;
+        --error: #F06767;
+        --left-menu: #889AFF;
 
-        /* grey */
-        --main-grey: #7A858E;
-    }
+        /* Light */
+        --light-text: #353841;
+        --light-bg: #F8F8F9;
+    }   --middle-text: #7A858E;
     *{
         margin: 0;
   box-sizing: border-box;

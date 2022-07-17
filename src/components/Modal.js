@@ -88,7 +88,7 @@ const EmailLabel = styled.div`
   font-weight: 300;
   font-size: 14px;
   line-height: 17px;
-  color: var(--main-grey);
+  color: var(--middle-text);
 `;
 
 const EmailInput = styled.input`
@@ -115,7 +115,7 @@ const EmailSubmit = styled.div`
   justify-self: flex-end;
   margin-top: 19px;
   margin-bottom: 64px;
-  color: var(--main-grey);
+  color: var(--middle-text);
   position: position;
 `;
 

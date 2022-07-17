@@ -250,7 +250,7 @@ const EmailSubmit = styled.button`
   border-radius: 5px;
   cursor: pointer;
   margin-top: 40px;
-  color: var(--main-grey);
+  color: var(--middle-text);
   position: position;
   font-weight: 400;
   font-size: 14px;
