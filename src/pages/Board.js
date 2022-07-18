@@ -29,7 +29,7 @@ function CreateBox({
           name="title"
           placeholder="해야 할 일정이 있나요?"
           onChange={handleChange}
-          maxlength="20"
+          maxLength="20"
         />
         <span> {titleCharacter}/20</span>
       </div>
@@ -46,25 +46,19 @@ function CreateBox({
 
         <div className="label-wrap">
           <div className="label" onClick={handleLabelClick}>
-            업무
+            꽤나중요
           </div>
           <div className="label" onClick={handleLabelClick}>
-            회의
+            조금중요
           </div>
           <div className="label" onClick={handleLabelClick}>
-            업무 외
+            핵중요
           </div>
           <div className="label" onClick={handleLabelClick}>
-            업무 외
+            살짝중요
           </div>
           <div className="label" onClick={handleLabelClick}>
-            업무 외
-          </div>
-          <div className="label" onClick={handleLabelClick}>
-            업무 외
-          </div>
-          <div className="label" onClick={handleLabelClick}>
-            업무 외
+            살짝조금중요
           </div>
         </div>
         {/* <div className="arrow-btns">
@@ -94,17 +88,43 @@ function CreateBox({
 }
 
 const Board = () => {
-  const [data, setDatas] = useState({
+  const [data, setData] = useState({
     title: "",
     desc: "",
     label: "",
     assignees: "",
     workSpaceName: "",
   });
-  console.log("data: ", data);
   const [isShown, setIsShown] = useState(false);
   const [allBoard, setAllBoard] = useState([]);
   const [titleCharacter, setTitleCharacter] = useState(0);
+
+  // Create board
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios({
+      method: "post",
+      url: "http://54.180.29.68/api/post",
+      data: data,
+      headers: {
+        Authorization: `Bearer ${getItemFromLs("myToken")}`,
+      },
+    })
+      .then((res) => {
+        setAllBoard([...allBoard, res.data.result]);
+        setIsShown(false);
+      })
+      .catch((err) => console.log(err));
+  };
+  console.log(allBoard);
+
+  useEffect(() => {
+    setData({
+      ...data,
+      workSpaceName: getItemFromLs("workspace"),
+      assignees: getItemFromLs("userName"),
+    });
+  }, []);
 
   // Delete board
   const removeBoard = (postId) => {
@@ -141,49 +161,26 @@ const Board = () => {
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setDatas(() => {
-      if (e.target.name === "title") {
-        setTitleCharacter(e.target.value.length);
-      }
-      return { ...data, [name]: value };
-    });
-  };
-
+  // Choice label
   const handleLabelClick = (e) => {
-    console.log(e.target.innerText);
+    const label = e.target.innerText;
+    setData({ ...data, label: label });
   };
 
   const showCreateBox = () => {
     setIsShown(!isShown);
   };
 
-  // board 생성
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios({
-      method: "post",
-      url: "http://54.180.29.68/api/post",
-      data: data,
-      headers: {
-        Authorization: `Bearer ${getItemFromLs("myToken")}`,
-      },
-    })
-      .then((res) => {
-        setAllBoard([...allBoard, res.data.posts]);
-        setIsShown(false);
-      })
-      .catch((err) => console.log(err));
-  };
-  console.log("allBoard: ", allBoard);
-  useEffect(() => {
-    setDatas({
-      ...data,
-      workSpaceName: getItemFromLs("workspace"),
-      assignees: getItemFromLs("userName"),
+  // Detect input value
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData(() => {
+      if (e.target.name === "title") {
+        setTitleCharacter(e.target.value.length);
+      }
+      return { ...data, [name]: value };
     });
-  }, []);
+  };
 
   useEffect(() => {
     axios
@@ -201,7 +198,6 @@ const Board = () => {
       .then((res) => setAllBoard(res.data.posts))
       .catch((err) => console.log(err));
   }, []);
-
   return (
     <BoardStyle>
       <BoardContainer>
