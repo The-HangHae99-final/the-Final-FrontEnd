@@ -106,20 +106,8 @@ const Board = () => {
       },
     })
       .then((res) => {
-        axios
-          .post(
-            "http://54.180.29.68/api/post/all",
-            {
-              workSpaceName: getItemFromLs("workspace"),
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${getItemFromLs("myToken")}`,
-              },
-            }
-          )
-          .then((res) => setAllBoard(res.data.posts))
-          .catch((err) => console.log(err));
+        setAllBoard([...allBoard, res.data.posts]);
+        setIsShown(false);
       })
       .catch((err) => console.log(err));
   };
