@@ -14,7 +14,7 @@ const BoardCard = ({ board, removeBoard }) => {
         <div className="card_label">{label}</div>
         <div className="card-action-buttons">
           <div className="action_edit">
-            <img src={edit} alt="edit" />
+            <img src={edit} alt="edit" onClick={() => {}} />
           </div>
           <div className="action_delete" onClick={() => removeBoard(postId)}>
             <img src={remove} alt="remove" />

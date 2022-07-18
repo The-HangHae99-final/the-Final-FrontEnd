@@ -10,25 +10,36 @@ import createBtn from "../public/img/createBtn.png";
 import { Human03 } from "../elements/humanIcon";
 import { useLocation } from "react-router-dom";
 
-function CreateBox({ handleSubmit, handleChange, showCreateBox }) {
+function CreateBox({
+  handleSubmit,
+  handleChange,
+  showCreateBox,
+  titleCharacter,
+}) {
   return (
     <CreateBoxStyle onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="title"
-        placeholder="해야 할 일정이 있나요?"
-        onChange={handleChange}
-      />
+      <div className="create-box_title">
+        <input
+          type="text"
+          name="title"
+          placeholder="해야 할 일정이 있나요?"
+          onChange={handleChange}
+          maxlength="20"
+        />
+        <span> {titleCharacter}/20</span>
+      </div>
+      <div className="create-box_label">
+        <input
+          type="text"
+          name="label"
+          placeholder="label"
+          onChange={handleChange}
+        />
+      </div>
       <input
         type="text"
         name="desc"
         placeholder="설명을 적어주세요"
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="label"
-        placeholder="label"
         onChange={handleChange}
       />
       <button onClick={showCreateBox}>취소하기</button>
@@ -49,6 +60,7 @@ const Board = () => {
   console.log("data: ", data);
   const [isShown, setIsShown] = useState(false);
   const [allBoard, setAllBoard] = useState([]);
+  const [titleCharacter, setTitleCharacter] = useState(0);
 
   // Delete board
   const removeBoard = (postId) => {
@@ -87,7 +99,10 @@ const Board = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setDatas({ ...data, [name]: value });
+    setDatas(() => {
+      setTitleCharacter(e.target.value.length);
+      return { ...data, [name]: value };
+    });
   };
 
   const showCreateBox = () => {
@@ -151,6 +166,7 @@ const Board = () => {
                   handleSubmit={handleSubmit}
                   handleChange={handleChange}
                   showCreateBox={showCreateBox}
+                  titleCharacter={titleCharacter}
                 />
               ) : (
                 <div className="create-box">
@@ -295,6 +311,32 @@ const CreateBoxStyle = styled.form`
   background-color: red;
   display: flex;
   flex-direction: column;
+
+  .create-box_title {
+    padding: 3px 0px;
+    position: relative;
+
+    & > input {
+      all: unset;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 24px;
+      color: #353841;
+      width: 100%;
+      border-bottom: 1px solid #ecedf1;
+    }
+
+    & > span {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 21px;
+      color: #7a858e;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
 `;
 
 // const BoardStyle = styled.div`
