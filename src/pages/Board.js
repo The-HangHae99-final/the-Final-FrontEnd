@@ -4,18 +4,48 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { getItemFromLs } from "../components/localStorage";
 import styled from "styled-components";
-import BoardCard from "../components/BoardCard";
+import BoardCard from "../components/Card/BoardCard";
 
 // Icon
 import createBtn from "../public/img/createBtn.png";
+import { Human03 } from "../elements/humanIcon";
+
+function CreateBox({ handleSubmit, handleChange, showCreateBox }) {
+  return (
+    <CreateBoxStyle onSubmit={handleSubmit}>
+      <input
+        type="text"
+        name="title"
+        placeholder="해야 할 일정이 있나요?"
+        onChange={handleChange}
+      />
+      <input
+        type="text"
+        name="content"
+        placeholder="설명을 적어주세요"
+        onChange={handleChange}
+      />
+      <input
+        type="text"
+        name="label"
+        placeholder="label"
+        onChange={handleChange}
+      />
+      <button onClick={showCreateBox}>취소하기</button>
+      <button type="submit">일정 공유하기</button>
+      <Human03 size="50px" />
+    </CreateBoxStyle>
+  );
+}
 
 const Board = () => {
   const [data, setDatas] = useState({
     title: "",
     content: "",
-    category: "",
+    label: "",
     workSpaceName: "",
   });
+  const [isShown, setIsShown] = useState(false);
 
   const [workSpaceName, setWorkSpaceName] = useState({ workSpaceName: "" });
 
@@ -24,9 +54,12 @@ const Board = () => {
     setDatas({ ...data, [name]: value });
   };
 
+  const showCreateBox = () => {
+    setIsShown(!isShown);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("hihi");
     axios({
       method: "post",
       url: "http://13.209.3.168:3001/api/post/workSpaceName",
@@ -51,14 +84,27 @@ const Board = () => {
             <span className="section-top_title">To Do</span>
           </div>
           <div className="section-cards-wrap">
-            {/* <BoardCard /> */}
-            <div className="create-box">
-              <div className="createBtn-wrap">
-                <img src={createBtn} alt="createBtn" className="createBtn" />
+            {isShown ? (
+              <CreateBox
+                handleSubmit={handleSubmit}
+                handleChange={handleChange}
+                showCreateBox={showCreateBox}
+              />
+            ) : (
+              <div className="create-box">
+                <div className="createBtn-wrap">
+                  <img
+                    src={createBtn}
+                    alt="createBtn"
+                    className="createBtn"
+                    onClick={showCreateBox}
+                  />
+                </div>
+                <div className="createBtn-title">일정을 추가 해보세요</div>
               </div>
-              <div className="createBtn-title">일정을 추가 해보세요</div>
-            </div>
+            )}
           </div>
+          <BoardCard />
         </SectionWrap>
         <SectionWrap>
           <div className="section-top">
@@ -95,6 +141,9 @@ const BoardContainer = styled.div`
 const SectionWrap = styled.div`
   min-width: 341px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 
   .section-top {
     height: 50px;
@@ -162,9 +211,16 @@ const NoteWrap = styled.div`
     color: #7d8bdb;
   }
 `;
-// const BoardStyle = styled.div`
-//   width: 100%;
-// `;
+
+// CreateBox style
+
+const CreateBoxStyle = styled.div`
+  width: 100%;
+  background-color: red;
+  display: flex;
+  flex-direction: column;
+`;
+
 // const BoardStyle = styled.div`
 //   width: 100%;
 // `;

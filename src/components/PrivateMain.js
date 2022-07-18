@@ -420,7 +420,6 @@ const NoticeScreenTime = styled.div`
 const PrivateMainLeft = styled.div`
   max-width: 820px;
   height: 100%;
-  background-color: steelblue;
 `;
 
 const LeftTop = styled.div`
