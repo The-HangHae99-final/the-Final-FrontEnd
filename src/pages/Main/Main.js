@@ -126,13 +126,33 @@ const LeftSide = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
     gap: 48px;
   }
 
   .buttonWrap {
+    width: 100%;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    height: 64px;
+    position: relative;
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+    :hover {
+      background: #687cec;
+    }
+
+    :hover.buttonWrap::before {
+      content: "";
+      width: 10px;
+      height: 100%;
+      background: #4357c9;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
   }
 `;
 
