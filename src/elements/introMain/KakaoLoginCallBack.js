@@ -21,7 +21,7 @@ const KakaoLoginCallback = () => {
     const code = location.search.split("=")[1];
     // 인가 코드 서버로 전송
     axios
-      .post(`http://13.209.3.168:3001/api/auth/login/kakao/callback`, {
+      .post(`http://54.180.29.68/api/auth/login/kakao/callback`, {
         code: code,
       })
       .then((res) => {
@@ -30,7 +30,7 @@ const KakaoLoginCallback = () => {
 
         // 서버가 받아온 유저 정보 조회
         axios
-          .post(`http://13.209.3.168:3001/api/kakao/member`, {
+          .post(`http://54.180.29.68/api/kakao/member`, {
             token,
           })
           .then((res) => {
@@ -43,7 +43,7 @@ const KakaoLoginCallback = () => {
             );
 
             axios
-              .post(`http://13.209.3.168:3001/api/kakao/parsing`, {
+              .post(`http://54.180.29.68/api/kakao/parsing`, {
                 user_email,
                 user_name,
               })

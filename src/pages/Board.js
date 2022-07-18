@@ -62,7 +62,7 @@ const Board = () => {
     e.preventDefault();
     axios({
       method: "post",
-      url: "http://13.209.3.168:3001/api/post/workSpaceName",
+      url: "http://54.180.29.68/api/post/workSpaceName",
       data: data,
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,

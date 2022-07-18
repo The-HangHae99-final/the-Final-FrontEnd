@@ -45,7 +45,7 @@ const Header = () => {
   const addNewWorkSpace = (e) => {
     axios
       .post(
-        "http://13.209.3.168:3001/api/workSpace",
+        "http://54.180.29.68/api/workSpace",
         { name: workspaceName },
         {
           headers: {
@@ -71,7 +71,7 @@ const Header = () => {
 
   useEffect(() => {
     axios
-      .get("http://13.209.3.168:3001/api/workSpace/list", {
+      .get("http://54.180.29.68/api/workSpace/list", {
         headers: {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },
