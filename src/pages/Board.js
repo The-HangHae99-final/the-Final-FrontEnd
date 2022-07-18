@@ -7,14 +7,19 @@ import BoardCard from "../components/Card/BoardCard";
 
 // Icon
 import createBtn from "../public/img/createBtn.png";
+import textD from "../public/img/D.png";
+import label from "../public/img/label.png";
+import leftArrpw from "../public/img/left-arrow.png";
+import rightArrow from "../public/img/right-arrow.png";
+
 import { Human03 } from "../elements/humanIcon";
-import { useLocation } from "react-router-dom";
 
 function CreateBox({
   handleSubmit,
   handleChange,
   showCreateBox,
   titleCharacter,
+  handleLabelClick,
 }) {
   return (
     <CreateBoxStyle onSubmit={handleSubmit}>
@@ -29,12 +34,47 @@ function CreateBox({
         <span> {titleCharacter}/20</span>
       </div>
       <div className="create-box_label">
-        <input
+        <div className="labelIcon-wrap">
+          <img src={label} alt="label" className="labelIcon" />
+        </div>
+        {/* <input
           type="text"
           name="label"
           placeholder="label"
           onChange={handleChange}
-        />
+        /> */}
+
+        <div className="label-wrap">
+          <div className="label" onClick={handleLabelClick}>
+            업무
+          </div>
+          <div className="label" onClick={handleLabelClick}>
+            회의
+          </div>
+          <div className="label" onClick={handleLabelClick}>
+            업무 외
+          </div>
+          <div className="label" onClick={handleLabelClick}>
+            업무 외
+          </div>
+          <div className="label" onClick={handleLabelClick}>
+            업무 외
+          </div>
+          <div className="label" onClick={handleLabelClick}>
+            업무 외
+          </div>
+          <div className="label" onClick={handleLabelClick}>
+            업무 외
+          </div>
+        </div>
+        {/* <div className="arrow-btns">
+          <button className="arrow-btn prev">
+            <img src={leftArrpw} alt="leftArrpw" />
+          </button>
+          <button className="arrow-btn next">
+            <img src={rightArrow} alt="rightArrow" />
+          </button>
+        </div> */}
       </div>
       <input
         type="text"
@@ -105,6 +145,10 @@ const Board = () => {
     });
   };
 
+  const handleLabelClick = (e) => {
+    console.log(e.target.innerText);
+  };
+
   const showCreateBox = () => {
     setIsShown(!isShown);
   };
@@ -167,6 +211,7 @@ const Board = () => {
                   handleChange={handleChange}
                   showCreateBox={showCreateBox}
                   titleCharacter={titleCharacter}
+                  handleLabelClick={handleLabelClick}
                 />
               ) : (
                 <div className="create-box">
@@ -308,13 +353,17 @@ const NoteWrap = styled.div`
 
 const CreateBoxStyle = styled.form`
   width: 100%;
-  background-color: red;
   display: flex;
   flex-direction: column;
+  padding: 30px 25px 22px 25px;
+  background: #ffffff;
+  border: 1px solid #ecedf1;
+  border-radius: 5px;
 
   .create-box_title {
     padding: 3px 0px;
     position: relative;
+    margin-bottom: 17px;
 
     & > input {
       all: unset;
@@ -335,6 +384,61 @@ const CreateBoxStyle = styled.form`
       right: 0;
       top: 50%;
       transform: translateY(-50%);
+    }
+  }
+
+  .create-box_label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+
+    & > .labelIcon-wrap {
+      width: 8%;
+      margin-right: 12px;
+      .labelIcon {
+        width: 17px;
+        height: 20.58px;
+      }
+    }
+
+    & > .label-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 5px;
+      width: 92%;
+      overflow: scroll;
+      overflow: auto;
+      white-space: nowrap;
+
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      ::scroll-behavior {
+        scroll-behavior: smooth;
+      }
+
+      .label {
+        text-align: center;
+        padding: 5px 8px;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 20px;
+        color: #353841;
+        width: 90px;
+        background: rgba(247, 247, 247, 0.5);
+        border: 1px solid #ecedf1;
+        border-radius: 5px;
+      }
+    }
+
+    & > .arrow-btns {
+      display: Flex;
+
+      .arrow-btn {
+        all: unset;
+        cursor: pointer;
+      }
     }
   }
 `;
