@@ -1,6 +1,5 @@
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
-
 const GlobalStyle = createGlobalStyle`
     ${reset};
     :root{
@@ -25,6 +24,7 @@ const GlobalStyle = createGlobalStyle`
 body{
     font-family: 'Noto Sans KR', sans-serif;
     font-family: 'Poppins', sans-serif;
+
     padding: 0;
         margin: 0;
         width:100vw;

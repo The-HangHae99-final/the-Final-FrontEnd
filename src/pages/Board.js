@@ -76,15 +76,19 @@ function CreateBox({
           </button>
         </div> */}
       </div>
-      <input
+      <textarea
         type="text"
         name="desc"
+        className="create-box_desc"
         placeholder="설명을 적어주세요"
         onChange={handleChange}
+        rows="4"
       />
-      <button onClick={showCreateBox}>취소하기</button>
-      <button type="submit">일정 공유하기</button>
-      <Human03 size="50px" />
+      <button type="submit" className="submitBtn">
+        <span>일정 공유하기</span>
+      </button>
+      {/* <button onClick={showCreateBox}>취소하기</button> */}
+      {/* <Human03 size="50px" /> */}
     </CreateBoxStyle>
   );
 }
@@ -140,7 +144,9 @@ const Board = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setDatas(() => {
-      setTitleCharacter(e.target.value.length);
+      if (e.target.name === "title") {
+        setTitleCharacter(e.target.value.length);
+      }
       return { ...data, [name]: value };
     });
   };
@@ -373,6 +379,13 @@ const CreateBoxStyle = styled.form`
       color: #353841;
       width: 100%;
       border-bottom: 1px solid #ecedf1;
+
+      ::placeholder {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+        color: #cbcbd7;
+      }
     }
 
     & > span {
@@ -439,6 +452,43 @@ const CreateBoxStyle = styled.form`
         all: unset;
         cursor: pointer;
       }
+    }
+  }
+
+  .create-box_desc {
+    background: rgba(247, 247, 247, 0.5);
+    border: 1px solid #ecedf1;
+    border-radius: 5px;
+    width: 100%;
+    resize: none;
+    padding: 6px 15px;
+    margin-bottom: 15px;
+
+    :focus {
+      outline: none;
+    }
+
+    ::placeholder {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 17px;
+      letter-spacing: -0.02em;
+      color: #cbcbd7;
+    }
+  }
+
+  .submitBtn {
+    all: unset;
+    padding: 15px 0px;
+    background: #889aff;
+    border-radius: 5px;
+    text-align: center;
+
+    & > span {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+      color: #ffffff;
     }
   }
 `;
