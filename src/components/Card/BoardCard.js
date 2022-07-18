@@ -4,8 +4,8 @@ import { Human04 } from "../../elements/humanIcon";
 import edit from "../..//public/img/edit.png";
 import remove from "../../public/img/remove.png";
 
-const BoardCard = ({ board }) => {
-  const { title, desc, label, assignees } = board;
+const BoardCard = ({ board, removeBoard }) => {
+  const { title, desc, label, assignees, postId } = board;
   return (
     <BoardCardStyle>
       <div className="card_title">{title}</div>
@@ -16,7 +16,7 @@ const BoardCard = ({ board }) => {
           <div className="action_edit">
             <img src={edit} alt="edit" />
           </div>
-          <div className="action_delete">
+          <div className="action_delete" onClick={() => removeBoard(postId)}>
             <img src={remove} alt="remove" />
           </div>
         </div>

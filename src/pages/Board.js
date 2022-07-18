@@ -50,6 +50,41 @@ const Board = () => {
   const [isShown, setIsShown] = useState(false);
   const [allBoard, setAllBoard] = useState([]);
 
+  // Delete board
+  const removeBoard = (postId) => {
+    if (
+      window.confirm(
+        "해당 게시물을 삭제하시겠습니까?\n삭제된 데이터는 복구 할 수 없습니다."
+      )
+    ) {
+      axios
+        .delete(`http://54.180.29.68/api/post/${postId}`, {
+          headers: {
+            Authorization: `Bearer ${getItemFromLs("myToken")}`,
+          },
+        })
+        .then((res) => {
+          if (res.data.success) {
+            axios
+              .post(
+                "http://54.180.29.68/api/post/all",
+                {
+                  workSpaceName: getItemFromLs("workspace"),
+                },
+                {
+                  headers: {
+                    Authorization: `Bearer ${getItemFromLs("myToken")}`,
+                  },
+                }
+              )
+              .then((res) => setAllBoard(res.data.posts))
+              .catch((err) => console.log(err));
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setDatas({ ...data, [name]: value });
@@ -97,10 +132,22 @@ const Board = () => {
     });
   }, []);
 
-  // READ board list
-  // useEffect(() => {
-  //   handleSubmit(e)
-  // }, []);
+  useEffect(() => {
+    axios
+      .post(
+        "http://54.180.29.68/api/post/all",
+        {
+          workSpaceName: getItemFromLs("workspace"),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${getItemFromLs("myToken")}`,
+          },
+        }
+      )
+      .then((res) => setAllBoard(res.data.posts))
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <BoardStyle>
@@ -133,7 +180,13 @@ const Board = () => {
             </div>
             {allBoard &&
               allBoard.map((board, idx) => {
-                return <BoardCard key={idx} board={board} />;
+                return (
+                  <BoardCard
+                    key={idx}
+                    board={board}
+                    removeBoard={removeBoard}
+                  />
+                );
               })}
           </div>
         </SectionWrap>
