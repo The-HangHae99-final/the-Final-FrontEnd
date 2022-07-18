@@ -1,5 +1,4 @@
 // Board 페이지 입니다
-
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { getItemFromLs } from "../components/localStorage";
@@ -9,6 +8,7 @@ import BoardCard from "../components/Card/BoardCard";
 // Icon
 import createBtn from "../public/img/createBtn.png";
 import { Human03 } from "../elements/humanIcon";
+import { useLocation } from "react-router-dom";
 
 function CreateBox({ handleSubmit, handleChange, showCreateBox }) {
   return (
@@ -21,7 +21,7 @@ function CreateBox({ handleSubmit, handleChange, showCreateBox }) {
       />
       <input
         type="text"
-        name="content"
+        name="desc"
         placeholder="설명을 적어주세요"
         onChange={handleChange}
       />
@@ -41,13 +41,14 @@ function CreateBox({ handleSubmit, handleChange, showCreateBox }) {
 const Board = () => {
   const [data, setDatas] = useState({
     title: "",
-    content: "",
+    desc: "",
     label: "",
+    assignees: "",
     workSpaceName: "",
   });
+  console.log("data: ", data);
   const [isShown, setIsShown] = useState(false);
-
-  const [workSpaceName, setWorkSpaceName] = useState({ workSpaceName: "" });
+  const [allBoard, setAllBoard] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,23 +59,48 @@ const Board = () => {
     setIsShown(!isShown);
   };
 
+  // board 생성
   const handleSubmit = (e) => {
     e.preventDefault();
     axios({
       method: "post",
-      url: "http://54.180.29.68/api/post/workSpaceName",
+      url: "http://54.180.29.68/api/post",
       data: data,
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,
       },
     })
-      .then((res) => console.log(res))
+      .then((res) => {
+        axios
+          .post(
+            "http://54.180.29.68/api/post/all",
+            {
+              workSpaceName: getItemFromLs("workspace"),
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${getItemFromLs("myToken")}`,
+              },
+            }
+          )
+          .then((res) => setAllBoard(res.data.posts))
+          .catch((err) => console.log(err));
+      })
       .catch((err) => console.log(err));
   };
-
+  console.log("allBoard: ", allBoard);
   useEffect(() => {
-    setDatas({ ...data, workSpaceName: getItemFromLs("workspace") });
+    setDatas({
+      ...data,
+      workSpaceName: getItemFromLs("workspace"),
+      assignees: getItemFromLs("userName"),
+    });
   }, []);
+
+  // READ board list
+  // useEffect(() => {
+  //   handleSubmit(e)
+  // }, []);
 
   return (
     <BoardStyle>
@@ -83,28 +109,33 @@ const Board = () => {
           <div className="section-top">
             <span className="section-top_title">To Do</span>
           </div>
-          <div className="section-cards-wrap">
-            {isShown ? (
-              <CreateBox
-                handleSubmit={handleSubmit}
-                handleChange={handleChange}
-                showCreateBox={showCreateBox}
-              />
-            ) : (
-              <div className="create-box">
-                <div className="createBtn-wrap">
-                  <img
-                    src={createBtn}
-                    alt="createBtn"
-                    className="createBtn"
-                    onClick={showCreateBox}
-                  />
+          <div className="section-cards-screen">
+            <div className="section-cards-wrap">
+              {isShown ? (
+                <CreateBox
+                  handleSubmit={handleSubmit}
+                  handleChange={handleChange}
+                  showCreateBox={showCreateBox}
+                />
+              ) : (
+                <div className="create-box">
+                  <div className="createBtn-wrap">
+                    <img
+                      src={createBtn}
+                      alt="createBtn"
+                      className="createBtn"
+                      onClick={showCreateBox}
+                    />
+                  </div>
+                  <div className="createBtn-title">일정을 추가 해보세요</div>
                 </div>
-                <div className="createBtn-title">일정을 추가 해보세요</div>
-              </div>
-            )}
+              )}
+            </div>
+            {allBoard &&
+              allBoard.map((board, idx) => {
+                return <BoardCard key={idx} board={board} />;
+              })}
           </div>
-          <BoardCard />
         </SectionWrap>
         <SectionWrap>
           <div className="section-top">
@@ -164,6 +195,10 @@ const SectionWrap = styled.div`
     color: #7d8bdb;
   }
 
+  .section-cards-screen {
+    overflow: scroll;
+  }
+
   .section-cards-wrap {
     display: flex;
     flex-direction: column;
@@ -214,7 +249,7 @@ const NoteWrap = styled.div`
 
 // CreateBox style
 
-const CreateBoxStyle = styled.div`
+const CreateBoxStyle = styled.form`
   width: 100%;
   background-color: red;
   display: flex;

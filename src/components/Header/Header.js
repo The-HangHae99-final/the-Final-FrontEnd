@@ -69,6 +69,7 @@ const Header = () => {
     setWorkspaceName(e.target.value);
   };
 
+  // 내가 속한 모든 워크스페이스 목록 조회
   useEffect(() => {
     axios
       .get("http://54.180.29.68/api/workSpace/list", {

@@ -4,15 +4,14 @@ import { Human04 } from "../../elements/humanIcon";
 import edit from "../..//public/img/edit.png";
 import remove from "../../public/img/remove.png";
 
-const BoardCard = () => {
+const BoardCard = ({ board }) => {
+  const { title, desc, label, assignees } = board;
   return (
     <BoardCardStyle>
-      <div className="card_title">title : 캘린더 뷰 제작</div>
-      <div className="card_content">
-        desc : 캘린터페이지 디자인 가이드 설정 필요
-      </div>
+      <div className="card_title">{title}</div>
+      <div className="card_desc">{desc}</div>
       <div className="card_author">
-        <div className="card_label">label : making</div>
+        <div className="card_label">{label}</div>
         <div className="card-action-buttons">
           <div className="action_edit">
             <img src={edit} alt="edit" />
@@ -22,8 +21,8 @@ const BoardCard = () => {
           </div>
         </div>
         <div className="author-info-wrap">
-          <div className="author_text">assignee:</div>
-          <div className="author_name">김하연</div>
+          <div className="author_text">일정 등록자</div>
+          <div className="author_name">{assignees}</div>
         </div>
         <Human04 size="50px" />
       </div>
