@@ -18,18 +18,18 @@ const Main = () => {
   const id = params.id;
   console.log(id);
   return (
-    <MainStyle className={styles.main}>
-      <LeftSide className={styles.leftSide}>
+    <MainStyle>
+      <LeftSide>
         <div
-          className={styles.logo}
+          className="logo"
           onClick={() => {
             id !== "undefined"
               ? navigate(`/main`)
               : navigate(`/main/${id}/private`);
           }}
         ></div>
-        <div className={styles.buttons}>
-          <div className={styles.buttonWrap}>
+        <div className="buttons">
+          <div className="buttonWrap">
             <div
               onClick={() => {
                 navigate(`/main/${id}/board`);
@@ -39,7 +39,7 @@ const Main = () => {
               <img src={boardIcon} alt="boardcon" className="boardcon" />
             </div>
           </div>
-          <div className={styles.buttonWrap}>
+          <div className="buttonWrap">
             <div
               className="page-navigate-button"
               onClick={() => navigate(`/main/${id}/calendar`)}
@@ -51,7 +51,7 @@ const Main = () => {
               />
             </div>
           </div>
-          <div className={styles.buttonWrap}>
+          <div className="buttonWrap">
             <div
               className="page-navigate-button"
               onClick={() => navigate(`/main/${id}/message`)}
@@ -62,9 +62,9 @@ const Main = () => {
         </div>
       </LeftSide>
 
-      <RightSide className={styles.rightSide}>
+      <RightSide>
         <Header />
-        <main className={styles.mainStyle}>
+        <main className="mainStyle">
           {id !== "undefined" ? (
             <>
               <Outlet />
@@ -112,12 +112,51 @@ const LeftSide = styled.div`
     width: 34px;
     height: 34px;
   }
+
+  .logo {
+    width: 60px;
+    height: 60px;
+    background-color: white;
+    border-radius: 50%;
+  }
+
+  .buttons {
+    margin-top: 121px;
+    display: Flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 48px;
+  }
+
+  .buttonWrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const RightSide = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: #ecedf1;
+  padding: 20px 20px 0px 20px;
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
+
+  .mainStyle {
+    width: 100%;
+    height: 100%;
+    background-color: #ecedf1;
+    padding: 20px 20px 0px 20px;
+    display: flex;
+    gap: 20px;
+    overflow: hidden;
+  }
 `;
 // const SectionWrap = styled.div``;
 // const SectionWrap = styled.div``;
