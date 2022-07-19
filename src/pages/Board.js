@@ -116,7 +116,6 @@ const Board = () => {
       })
       .catch((err) => console.log(err));
   };
-  console.log(allBoard);
 
   useEffect(() => {
     setData({
@@ -198,6 +197,7 @@ const Board = () => {
       .then((res) => setAllBoard(res.data.posts))
       .catch((err) => console.log(err));
   }, []);
+
   return (
     <BoardStyle>
       <BoardContainer>
