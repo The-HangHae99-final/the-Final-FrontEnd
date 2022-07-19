@@ -97,16 +97,14 @@ const Board = () => {
     workSpaceName: "",
     category: "todo",
   });
-
-  const [isShown, setIsShown] = useState(false);
   const [allBoard, setAllBoard] = useState([]);
-  const [titleCharacter, setTitleCharacter] = useState(0);
   const [todoBoardList, setTodoBoardList] = useState([]);
   console.log("todoBoardList: ", todoBoardList);
   const [inProgressList, setInProgressList] = useState([]);
-  console.log("inProgressList: ", inProgressList);
   const [doneList, setDoneList] = useState([]);
-  console.log("doneList: ", doneList);
+
+  const [isShown, setIsShown] = useState(false);
+  const [titleCharacter, setTitleCharacter] = useState(0);
 
   // Create board
   const handleSubmit = (e) => {
@@ -120,7 +118,8 @@ const Board = () => {
       },
     })
       .then((res) => {
-        setAllBoard([...allBoard, res.data.result]);
+        console.log(res.data);
+        setTodoBoardList([...todoBoardList, res.data.result]);
         setIsShown(false);
       })
       .catch((err) => console.log(err));
@@ -148,22 +147,7 @@ const Board = () => {
           },
         })
         .then((res) => {
-          if (res.data.success) {
-            axios
-              .post(
-                "http://52.79.251.110:3001/api/post/all",
-                {
-                  workSpaceName: getItemFromLs("workspace"),
-                },
-                {
-                  headers: {
-                    Authorization: `Bearer ${getItemFromLs("myToken")}`,
-                  },
-                }
-              )
-              .then((res) => setAllBoard(res.data.posts))
-              .catch((err) => console.log(err));
-          }
+          console.log(res);
         })
         .catch((err) => console.log(err));
     }
@@ -205,26 +189,30 @@ const Board = () => {
         }
       )
       .then((res) => {
-        const allBoard = res.data.posts;
+        const allBoardList = res.data.posts;
 
-        // Classify all board data by the category
-        allBoard.map((board) => {
+        console.log(allBoardList);
+        // Categorize all board data by the 3 categories
+        allBoardList.map((board) => {
           switch (board.category) {
             case "todo":
+              console.log("---todo 카테고리---");
               setTodoBoardList([...todoBoardList, board]);
               break;
             case "inProgress":
+              console.log("---inProgress 카테고리---");
+
               setInProgressList([...inProgressList, board]);
               break;
             case "done":
+              console.log("---done 카테고리---");
+
               setDoneList([...doneList, board]);
               break;
             default:
               console.log("데이터를 불러오는데 실패했습니다.");
           }
         });
-
-        setAllBoard(res.data.posts);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -232,8 +220,6 @@ const Board = () => {
   const onDragEnd = () => {
     console.log("드래그");
   };
-
-  const category_title = ["To Do", "In Progress", "Done"];
 
   return (
     <BoardStyle>
@@ -274,13 +260,13 @@ const Board = () => {
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                   >
-                    {allBoard &&
-                      allBoard.map((board, index) => {
+                    {todoBoardList &&
+                      todoBoardList.map((board, index) => {
                         return (
                           <Draggable
                             draggableId={index.toString()}
                             index={index}
-                            key={board.postId}
+                            key={index}
                           >
                             {(provided) => (
                               <div
@@ -319,6 +305,32 @@ const Board = () => {
                       {...provided.droppableProps}
                       ref={provided.innerRef}
                     >
+                      {inProgressList &&
+                        inProgressList.map((board, index) => {
+                          return (
+                            <Draggable
+                              draggableId={index.toString()}
+                              index={index}
+                              key={board.postId}
+                            >
+                              {(provided) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                >
+                                  <BoardCard
+                                    draggableId={index.toString()}
+                                    board={board}
+                                    removeBoard={removeBoard}
+                                    index={index}
+                                    key={board.postId}
+                                  />
+                                </div>
+                              )}
+                            </Draggable>
+                          );
+                        })}
                       {provided.placeholder}
                     </div>
                   )}
@@ -331,7 +343,45 @@ const Board = () => {
               <span className="section-top_title">Done</span>
             </div>
             <div className="section-cards-wrap">
-              <div className="section-cards-wrap"></div>
+              <div className="section-cards-wrap">
+                <Droppable droppableId="Done">
+                  {(provided) => (
+                    <div
+                      className="boards-list"
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                    >
+                      {doneList &&
+                        doneList.map((board, index) => {
+                          return (
+                            <Draggable
+                              draggableId={index.toString()}
+                              index={index}
+                              key={board.postId}
+                            >
+                              {(provided) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                >
+                                  <BoardCard
+                                    draggableId={index.toString()}
+                                    board={board}
+                                    removeBoard={removeBoard}
+                                    index={index}
+                                    key={board.postId}
+                                  />
+                                </div>
+                              )}
+                            </Draggable>
+                          );
+                        })}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </div>
             </div>
           </SectionWrap>
           <NoteWrap>
@@ -353,6 +403,10 @@ const BoardContainer = styled.div`
   display: Flex;
   flex-wrap: nowrap;
   gap: 20px;
+
+  .boards-list {
+    height: 100%;
+  }
 
   .boards-list-wrap {
     display: flex;
@@ -391,6 +445,7 @@ const SectionWrap = styled.div`
 
   .section-cards-screen {
     overflow: scroll;
+    height: 100%;
   }
 
   .section-cards-wrap {
