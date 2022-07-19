@@ -98,8 +98,8 @@ const Board = () => {
     category: "todo",
   });
   const [allBoard, setAllBoard] = useState([]);
+  console.log("allBoard: ", allBoard);
   const [todoBoardList, setTodoBoardList] = useState([]);
-  console.log("todoBoardList: ", todoBoardList);
   const [inProgressList, setInProgressList] = useState([]);
   const [doneList, setDoneList] = useState([]);
 
@@ -147,7 +147,52 @@ const Board = () => {
           },
         })
         .then((res) => {
-          console.log(res);
+          axios
+            .post(
+              "http://52.79.251.110:3001/api/post/all",
+              {
+                workSpaceName: getItemFromLs("workspace"),
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${getItemFromLs("myToken")}`,
+                },
+              }
+            )
+            .then((res) => {
+              const allBoardList = res.data.posts;
+              setAllBoard(() => {
+                return [...allBoardList];
+              });
+              // Categorize all board data by the 3 categories
+              allBoardList.map((board) => {
+                switch (board.category) {
+                  case "todo":
+                    console.log("---todo 카테고리---");
+                    setTodoBoardList((prevState) => {
+                      return [...prevState, board];
+                    });
+                    break;
+                  case "inProgress":
+                    console.log("---inProgress 카테고리---");
+
+                    setInProgressList((prevState) => {
+                      return [...inProgressList, board];
+                    });
+                    break;
+                  case "done":
+                    console.log("---done 카테고리---");
+
+                    setDoneList((prevState) => {
+                      return [...doneList, board];
+                    });
+                    break;
+                  default:
+                    console.log("데이터를 불러오는데 실패했습니다.");
+                }
+              });
+            })
+            .catch((err) => console.log(err));
         })
         .catch((err) => console.log(err));
     }
@@ -190,24 +235,32 @@ const Board = () => {
       )
       .then((res) => {
         const allBoardList = res.data.posts;
-
+        setAllBoard(() => {
+          return [...allBoardList];
+        });
         console.log(allBoardList);
         // Categorize all board data by the 3 categories
         allBoardList.map((board) => {
           switch (board.category) {
             case "todo":
               console.log("---todo 카테고리---");
-              setTodoBoardList([...todoBoardList, board]);
+              setTodoBoardList((prevState) => {
+                return [...prevState, board];
+              });
               break;
             case "inProgress":
               console.log("---inProgress 카테고리---");
 
-              setInProgressList([...inProgressList, board]);
+              setInProgressList((prevState) => {
+                return [...inProgressList, board];
+              });
               break;
             case "done":
               console.log("---done 카테고리---");
 
-              setDoneList([...doneList, board]);
+              setDoneList((prevState) => {
+                return [...doneList, board];
+              });
               break;
             default:
               console.log("데이터를 불러오는데 실패했습니다.");
