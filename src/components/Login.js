@@ -33,7 +33,7 @@ const Login = () => {
     if (e.target.innerText.includes("이메일")) {
       // 등록된 이메일인지 확인
       axios
-        .post("http://54.180.29.68/api/users/email", {
+        .post("http://52.79.251.110:3001/api/users/email", {
           userEmail: loginValue.userEmail,
         })
         .then((response) => {
@@ -47,7 +47,7 @@ const Login = () => {
     } else {
       // 입력한 비밀번호가 앞서 입력한 이메일과 매칭되는지 확인
       axios
-        .post("http://54.180.29.68/api/users/password", {
+        .post("http://52.79.251.110:3001/api/users/password", {
           userEmail: loginValue.userEmail,
           password: loginValue.password,
         })

@@ -18,7 +18,7 @@ import BubbleBox from "../../components/BubbleBox";
 import axios from "axios";
 
 const Message = () => {
-  const socket = io.connect("http://54.180.29.68/");
+  const socket = io.connect("http://52.79.251.110:3001/");
   const [DataForJoin, setDataForJoin] = useState({
     opponent: "",
     workspace: "",

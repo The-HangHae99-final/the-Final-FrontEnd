@@ -45,7 +45,7 @@ const Header = () => {
   const addNewWorkSpace = (e) => {
     axios
       .post(
-        "http://54.180.29.68/api/workSpace",
+        "http://52.79.251.110:3001/api/workSpace",
         { name: workspaceName },
         {
           headers: {
@@ -72,7 +72,7 @@ const Header = () => {
   // 내가 속한 모든 워크스페이스 목록 조회
   useEffect(() => {
     axios
-      .get("http://54.180.29.68/api/workSpace/list", {
+      .get("http://52.79.251.110:3001/api/workSpace/list", {
         headers: {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },

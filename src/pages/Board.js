@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { getItemFromLs } from "../components/localStorage";
 import styled from "styled-components";
 import BoardCard from "../components/Card/BoardCard";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 // Icon
 import createBtn from "../public/img/createBtn.png";
@@ -94,17 +95,25 @@ const Board = () => {
     label: "",
     assignees: "",
     workSpaceName: "",
+    category: "todo",
   });
+
   const [isShown, setIsShown] = useState(false);
   const [allBoard, setAllBoard] = useState([]);
   const [titleCharacter, setTitleCharacter] = useState(0);
+  const [todoBoardList, setTodoBoardList] = useState([]);
+  console.log("todoBoardList: ", todoBoardList);
+  const [inProgressList, setInProgressList] = useState([]);
+  console.log("inProgressList: ", inProgressList);
+  const [doneList, setDoneList] = useState([]);
+  console.log("doneList: ", doneList);
 
   // Create board
   const handleSubmit = (e) => {
     e.preventDefault();
     axios({
       method: "post",
-      url: "http://54.180.29.68/api/post",
+      url: "http://52.79.251.110:3001/api/post",
       data: data,
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,
@@ -133,7 +142,7 @@ const Board = () => {
       )
     ) {
       axios
-        .delete(`http://54.180.29.68/api/post/${postId}`, {
+        .delete(`http://52.79.251.110:3001/api/post/${postId}`, {
           headers: {
             Authorization: `Bearer ${getItemFromLs("myToken")}`,
           },
@@ -142,7 +151,7 @@ const Board = () => {
           if (res.data.success) {
             axios
               .post(
-                "http://54.180.29.68/api/post/all",
+                "http://52.79.251.110:3001/api/post/all",
                 {
                   workSpaceName: getItemFromLs("workspace"),
                 },
@@ -181,10 +190,11 @@ const Board = () => {
     });
   };
 
+  // Read all boards
   useEffect(() => {
     axios
       .post(
-        "http://54.180.29.68/api/post/all",
+        "http://52.79.251.110:3001/api/post/all",
         {
           workSpaceName: getItemFromLs("workspace"),
         },
@@ -194,69 +204,141 @@ const Board = () => {
           },
         }
       )
-      .then((res) => setAllBoard(res.data.posts))
+      .then((res) => {
+        const allBoard = res.data.posts;
+
+        // Classify all board data by the category
+        allBoard.map((board) => {
+          switch (board.category) {
+            case "todo":
+              setTodoBoardList([...todoBoardList, board]);
+              break;
+            case "inProgress":
+              setInProgressList([...inProgressList, board]);
+              break;
+            case "done":
+              setDoneList([...doneList, board]);
+              break;
+            default:
+              console.log("데이터를 불러오는데 실패했습니다.");
+          }
+        });
+
+        setAllBoard(res.data.posts);
+      })
       .catch((err) => console.log(err));
   }, []);
 
+  const onDragEnd = () => {
+    console.log("드래그");
+  };
+
+  const category_title = ["To Do", "In Progress", "Done"];
+
   return (
     <BoardStyle>
-      <BoardContainer>
-        <SectionWrap>
-          <div className="section-top">
-            <span className="section-top_title">To Do</span>
-          </div>
-          <div className="section-cards-screen">
-            <div className="section-cards-wrap">
-              {isShown ? (
-                <CreateBox
-                  handleSubmit={handleSubmit}
-                  handleChange={handleChange}
-                  showCreateBox={showCreateBox}
-                  titleCharacter={titleCharacter}
-                  handleLabelClick={handleLabelClick}
-                />
-              ) : (
-                <div className="create-box">
-                  <div className="createBtn-wrap">
-                    <img
-                      src={createBtn}
-                      alt="createBtn"
-                      className="createBtn"
-                      onClick={showCreateBox}
-                    />
-                  </div>
-                  <div className="createBtn-title">일정을 추가 해보세요</div>
-                </div>
-              )}
+      <DragDropContext onDragEnd={onDragEnd}>
+        <BoardContainer>
+          <SectionWrap>
+            <div className="section-top">
+              <span className="section-top_title">To Do</span>
             </div>
-            {allBoard &&
-              allBoard.map((board, idx) => {
-                return (
-                  <BoardCard
-                    key={idx}
-                    board={board}
-                    removeBoard={removeBoard}
+            <div className="section-cards-screen">
+              <div className="section-cards-wrap">
+                {isShown ? (
+                  <CreateBox
+                    handleSubmit={handleSubmit}
+                    handleChange={handleChange}
+                    showCreateBox={showCreateBox}
+                    titleCharacter={titleCharacter}
+                    handleLabelClick={handleLabelClick}
                   />
-                );
-              })}
-          </div>
-        </SectionWrap>
-        <SectionWrap>
-          <div className="section-top">
-            <span className="section-top_title">In Progress</span>
-          </div>
-          <div className="section-cards-wrap"></div>
-        </SectionWrap>
-        <SectionWrap>
-          <div className="section-top">
-            <span className="section-top_title">Done</span>
-          </div>
-          <div className="section-cards-wrap"></div>
-        </SectionWrap>
-        <NoteWrap>
-          <div className="noteWrap-top">Note</div>
-        </NoteWrap>
-      </BoardContainer>
+                ) : (
+                  <div className="create-box">
+                    <div className="createBtn-wrap">
+                      <img
+                        src={createBtn}
+                        alt="createBtn"
+                        className="createBtn"
+                        onClick={showCreateBox}
+                      />
+                    </div>
+                    <div className="createBtn-title">일정을 추가 해보세요</div>
+                  </div>
+                )}
+              </div>
+              <Droppable droppableId="Todo">
+                {(provided) => (
+                  <div
+                    className="boards-list"
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                  >
+                    {allBoard &&
+                      allBoard.map((board, index) => {
+                        return (
+                          <Draggable
+                            draggableId={index.toString()}
+                            index={index}
+                            key={board.postId}
+                          >
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <BoardCard
+                                  draggableId={index.toString()}
+                                  board={board}
+                                  removeBoard={removeBoard}
+                                  index={index}
+                                  key={board.postId}
+                                />
+                              </div>
+                            )}
+                          </Draggable>
+                        );
+                      })}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </div>
+          </SectionWrap>
+          <SectionWrap>
+            <div className="section-top">
+              <span className="section-top_title">In Progress</span>
+            </div>
+            <div className="section-cards-screen">
+              <div className="section-cards-wrap">
+                <Droppable droppableId="InProgress">
+                  {(provided) => (
+                    <div
+                      className="boards-list"
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                    >
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </div>
+            </div>
+          </SectionWrap>
+          <SectionWrap>
+            <div className="section-top">
+              <span className="section-top_title">Done</span>
+            </div>
+            <div className="section-cards-wrap">
+              <div className="section-cards-wrap"></div>
+            </div>
+          </SectionWrap>
+          <NoteWrap>
+            <div className="noteWrap-top">Note</div>
+          </NoteWrap>
+        </BoardContainer>
+      </DragDropContext>
     </BoardStyle>
   );
 };
@@ -271,10 +353,18 @@ const BoardContainer = styled.div`
   display: Flex;
   flex-wrap: nowrap;
   gap: 20px;
+
+  .boards-list-wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
+    gap: 10px;
+  }
 `;
 
 const SectionWrap = styled.div`
-  min-width: 341px;
+  width: 33%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -334,7 +424,7 @@ const SectionWrap = styled.div`
   }
 `;
 const NoteWrap = styled.div`
-  width: 100%;
+  width: 27%;
   background-color: red;
   background: #ffffff;
   border: 1px solid #7d8bdb;
@@ -354,7 +444,6 @@ const NoteWrap = styled.div`
 // CreateBox style
 
 const CreateBoxStyle = styled.form`
-  width: 100%;
   display: flex;
   flex-direction: column;
   padding: 30px 25px 22px 25px;
