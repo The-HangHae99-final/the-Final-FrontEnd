@@ -4,11 +4,11 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/userReducer";
-import { setItemToLs } from "./localStorage";
+import { setItemToLs } from "../utils/localStorage";
 import Divider from "../elements/Divider";
 import loginbg from "../public/img/loginBg.png";
 import SocialLogin from "./SocialLogin";
-import Spinner from "./Spinner";
+import Spinner from "../elements/Spinner";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);

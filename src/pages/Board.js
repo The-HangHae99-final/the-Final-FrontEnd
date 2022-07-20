@@ -1,7 +1,7 @@
 // Board 페이지 입니다
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { getItemFromLs } from "../components/localStorage";
+import { getItemFromLs } from "../utils/localStorage";
 import styled from "styled-components";
 import BoardCard from "../components/Card/BoardCard";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";

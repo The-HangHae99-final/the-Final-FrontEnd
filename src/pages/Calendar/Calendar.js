@@ -6,11 +6,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./calendar.css";
 
 // file
-import BigCalendar from "../../components/BigCalendar";
-import SmallCalendar from "../../components/SmallCalendar";
+import BigCalendar from "../../components/Calendar/BigCalendar";
+import SmallCalendar from "../../components/Calendar/SmallCalendar";
 import ModalPortal from "../../elements/Portal/ModalPortal";
 import CalendarModal from "../../components/Modal/CalendarModal";
-import { getItemFromLs } from "../../components/localStorage";
+import { getItemFromLs } from "../../utils/localStorage";
 import axios from "axios";
 
 const Calender = () => {

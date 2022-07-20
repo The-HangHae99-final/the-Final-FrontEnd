@@ -5,8 +5,8 @@ import { getCookie, setCookie } from "../../shared/cookie";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/userReducer";
-import { setItemToLs } from "../../components/localStorage";
-import Spinner from "../../components/Spinner";
+import { setItemToLs } from "../../utils/localStorage";
+import Spinner from "../Spinner";
 import loginbg from "../../public/img/loginBg.png";
 import styled from "styled-components";
 

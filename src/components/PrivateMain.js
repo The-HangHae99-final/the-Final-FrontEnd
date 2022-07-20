@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { getItemFromLs } from "./localStorage";
+import { getItemFromLs } from "../utils/localStorage";
 import AddMemberModal from "./Modal/AddMemberModal";
 import ModalPortal from "../elements/Portal/ModalPortal";
 import axios from "axios";
@@ -19,7 +19,7 @@ import Ellipse103 from "../public/img/Ellipse103.png";
 import Ellipse106 from "../public/img/Ellipse106.png";
 import leftArrow from "../public/img/left-arrow.png";
 import rightArrow from "../public/img/right-arrow.png";
-import WeakCalendar from "./calendar/WeakCalendar";
+import WeakCalendar from "./Calendar/WeakCalendar";
 
 const PrivateMain = () => {
   const [workspaceName, setWorkspaceName] = useState("");

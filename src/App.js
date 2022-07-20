@@ -14,7 +14,7 @@ import NaverLoginCallBack from "./elements/introMain/NaverLoginCallBack";
 import KakaoLoginCallback from "./elements/introMain/KakaoLoginCallBack";
 import PrivateMain from "./components/PrivateMain";
 import PrivateRoute from "./components/PrivateRoute";
-import { getItemFromLs } from "./components/localStorage";
+import { getItemFromLs } from "./utils/localStorage";
 import ScreenForNewbie from "./components/ScreenForNewbie";
 import { useSelector } from "react-redux";
 
@@ -23,8 +23,14 @@ const App = () => {
   const access = getItemFromLs("myToken");
 
   const user = useSelector((state) => state.user.value);
+  // console.log(user);
   // 리스트가 차있는지 비었는지에 따라 다른 화면을 보여줄 데이터
-  const isNewbie = user.workSpaceList.length >= 1;
+  const isNewbie = user.workSpaceList.length;
+  console.log(isNewbie);
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
   return (
     <div>
       <GlobalStyle />
@@ -32,10 +38,12 @@ const App = () => {
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         {/* <Route path="/main" element={<Main />} /> */}
-        <Route
-          path="/main"
-          element={<PrivateRoute component={<Main />} isNewbie={isNewbie} />}
-        />
+        {isNewbie && (
+          <Route
+            path="/main"
+            element={<PrivateRoute component={<Main />} isNewbie={isNewbie} />}
+          />
+        )}
         <Route path="/board" element={<Board />} />
         <Route path="/calendar" element={<Calender />} />
         <Route path="/message" element={<Message />} />

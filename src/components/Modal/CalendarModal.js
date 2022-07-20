@@ -12,7 +12,7 @@ import hamburger from "../../public/img/hamburger.png";
 import Vector3 from "../../public/img/Vector3.png";
 import { TextareaAutosize } from "@mui/base";
 import ko from "date-fns/locale/ko";
-import { getItemFromLs } from "../localStorage";
+import { getItemFromLs } from "../../utils/localStorage";
 
 registerLocale("ko", ko);
 

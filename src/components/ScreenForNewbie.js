@@ -22,7 +22,7 @@ const ScreenForNewbie = () => {
     <ScreenForNewbieStyle>
       <div className="create-box-container">
         <div className="create-box-wrap">
-          <h3 className="create-box_title">New Work Space</h3>
+          <div className="create-box_title">New Work Space</div>
           <div className="create-box_subtitle">
             워크스페이스의 이름을 지어주세요.
           </div>

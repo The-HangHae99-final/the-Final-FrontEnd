@@ -4,8 +4,8 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/userReducer";
-import { getItemFromLs, setItemToLs } from "../../components/localStorage";
-import Spinner from "../../components/Spinner";
+import { getItemFromLs, setItemToLs } from "../../utils/localStorage";
+import Spinner from "../Spinner";
 import loginbg from "../../public/img/loginBg.png";
 import styled from "styled-components";
 
