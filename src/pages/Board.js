@@ -471,7 +471,7 @@ const BoardContainer = styled.div`
 `;
 
 const SectionWrap = styled.div`
-  width: 33%;
+  width: 341px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -508,6 +508,7 @@ const SectionWrap = styled.div`
   }
 
   .create-box {
+    width: 341px;
     background-color: red;
     padding: 25px 0px 19px 0px;
     display: flex;
@@ -531,8 +532,9 @@ const SectionWrap = styled.div`
     cursor: pointer;
   }
 `;
+
 const NoteWrap = styled.div`
-  width: 27%;
+  width: 15%;
   background-color: red;
   background: #ffffff;
   border: 1px solid #7d8bdb;

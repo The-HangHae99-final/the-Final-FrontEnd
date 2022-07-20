@@ -16,28 +16,26 @@ import PrivateMain from "./components/PrivateMain";
 import PrivateRoute from "./components/PrivateRoute";
 import { getItemFromLs } from "./components/localStorage";
 import ScreenForNewbie from "./components/ScreenForNewbie";
+import { useSelector } from "react-redux";
 
 const App = () => {
   const [restriced, setRestriced] = useState(false);
-  const hasWorkspace = getItemFromLs("workspace");
   const access = getItemFromLs("myToken");
 
+  const user = useSelector((state) => state.user.value);
+  // 리스트가 차있는지 비었는지에 따라 다른 화면을 보여줄 데이터
+  const isNewbie = user.workSpaceList.length >= 1;
   return (
     <div>
       <GlobalStyle />
-
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/main" element={<Main />} />
-        {/* <Route
+        {/* <Route path="/main" element={<Main />} /> */}
+        <Route
           path="/main"
-          element={
-            <PrivateRoute
-              component={<ScreenForNewbie />}
-            />
-          }
-        /> */}
+          element={<PrivateRoute component={<Main />} isNewbie={isNewbie} />}
+        />
         <Route path="/board" element={<Board />} />
         <Route path="/calendar" element={<Calender />} />
         <Route path="/message" element={<Message />} />

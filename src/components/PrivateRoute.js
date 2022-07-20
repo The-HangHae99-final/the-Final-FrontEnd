@@ -1,7 +1,10 @@
 import React from "react";
+import ScreenForNewbie from "./ScreenForNewbie";
 
-const PrivateRoute = ({ hasWorkspace, component: Component }) => {
-  return <>{/* {hasWorkspace ? Component : } */}</>;
+const PrivateRoute = ({ isNewbie, component: Component }) => {
+  console.log(isNewbie);
+
+  return <> {isNewbie ? Component : <ScreenForNewbie />}</>;
 };
 
 export default PrivateRoute;

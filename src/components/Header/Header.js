@@ -62,6 +62,12 @@ const Header = () => {
       .then((res) => {
         console.log(res);
         const newWorkSpaceFullName = res.data.createdWorkSpace.name;
+        dispatch(
+          getWorkSpaceList({
+            ...user,
+            workSpaceList: [...workspaceList, newWorkSpaceFullName],
+          })
+        );
         // const newWorkSpace = res.data.result.name.split("+")[1];
         setWorkspaceName("");
         setModalOn(!modalOn);
@@ -70,7 +76,7 @@ const Header = () => {
         alert("새로운 워크스페이스가 만들어졌어요");
       });
   };
-  //
+  console.log(user);
 
   const handleChange = (e) => {
     setWorkspaceName(e.target.value);
@@ -86,9 +92,6 @@ const Header = () => {
       })
       .then((res) => {
         console.log(res);
-        dispatch(
-          getWorkSpaceList({ ...user, workSpaceList: [...workspaceList, "hi"] })
-        );
         const wsInfoList = res.data.includedList;
         const wsList = wsInfoList.map((a, idx) => a.name);
         setWorkspaceList(wsList);
