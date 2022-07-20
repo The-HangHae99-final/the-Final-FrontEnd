@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getItemFromLs, removeItemFromLs, setItemToLs } from "../localStorage";
+import { getItemFromLs, removeItemFromLs } from "../localStorage";
 
 // module
 import UserAvatar from "../../elements/UserAvatar";
@@ -12,6 +12,7 @@ import sunIcon from "../../public/img/sun.png";
 import bellIcon from "../../public/img/bell.png";
 import ModalPortal from "../../elements/Portal/ModalPortal";
 import WorkspaceModal from "../Modal/WorkspaceModal";
+import { getWorkSpaceList } from "../../redux/userReducer";
 
 const Header = () => {
   const [openDropdown, setOpenDropdown] = useState(false);
@@ -19,8 +20,12 @@ const Header = () => {
   const [workspaceName, setWorkspaceName] = useState("");
   const [modalOn, setModalOn] = useState(false);
   const dropdownRef = useRef(null);
+
   const username = getItemFromLs("userName");
   const userEmail = getItemFromLs("userEmail");
+  const user = useSelector((state) => state.user.value);
+
+  const dispatch = useDispatch();
 
   const handleModal = (e) => {
     setModalOn(!modalOn);
@@ -80,10 +85,13 @@ const Header = () => {
         },
       })
       .then((res) => {
-        console.log(res);
-        const wsInfoList = res.data.includedList;
-        const wsList = wsInfoList.map((a, idx) => a.name);
-        setWorkspaceList(wsList);
+        // console.log(res);
+        dispatch(
+          getWorkSpaceList({ ...user, workSpaceList: [...workspaceList, "hi"] })
+        );
+        // const wsInfoList = res.data.includedList;
+        // const wsList = wsInfoList.map((a, idx) => a.name);
+        // setWorkspaceList(wsList);
       })
       .catch((error) => {
         console.log(error);
@@ -140,8 +148,9 @@ const Header = () => {
                 <span className="edit_account">| 편집하기</span>
               </div>
               <WorkspaceList>
-                {workspaceList &&
+                {/* {workspaceList &&
                   workspaceList.map((item, idx) => {
+                    console.log(item);
                     return (
                       <li
                         key={idx}
@@ -160,7 +169,7 @@ const Header = () => {
                         </div>
                       </li>
                     );
-                  })}
+                  })} */}
               </WorkspaceList>
             </li>
             <li className="nav-item">

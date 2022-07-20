@@ -4,6 +4,7 @@ const initialState = {
   user_name: "",
   user_email: "",
   isLoggedIn: false,
+  workSpaceList: [],
 };
 
 export const userSlice = createSlice({
@@ -15,9 +16,13 @@ export const userSlice = createSlice({
     login: (state, action) => {
       state.value = action.payload;
     },
+    getWorkSpaceList: (state, action) => {
+      console.log(action);
+      state.value = action.payload;
+    },
   },
 });
 
-export const { login } = userSlice.actions;
+export const { login, getWorkSpaceList } = userSlice.actions;
 
 export default userSlice.reducer;
