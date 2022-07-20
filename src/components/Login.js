@@ -47,6 +47,8 @@ const Login = () => {
         .catch((error) => console.log(error));
     } else {
       // 입력한 비밀번호가 앞서 입력한 이메일과 매칭되는지 확인
+      setLoading(true);
+
       axios
         .post("http://52.79.251.110:3001/api/users/password", {
           userEmail: loginValue.userEmail,
@@ -59,12 +61,13 @@ const Login = () => {
           // response 값이 success라면 토큰 저장, 리디렉션, 유저 정보 저장
           if (response.data.success) {
             const token = response.data.token;
-            alert("로그인에 성공하였습니다!");
             setItemToLs("myToken", token);
             setItemToLs("userName", user_name);
             setItemToLs("userEmail", user_email);
-            setLoading(false);
-            navigate("/main");
+            setTimeout(() => {
+              setLoading(false);
+              navigate("/main");
+            }, 3000);
             dispatch(login({ user_email: user_email, user_name: user_name }));
           }
         })
@@ -119,7 +122,6 @@ const Login = () => {
           </ContinueWrap>
           <SocialLogin />
         </LoginWrap>
-        {loading && <Spinner />}
       </LoginStyle>
     );
   };
@@ -130,7 +132,7 @@ const Login = () => {
 
   return (
     <LoginBackGround>
-      {loginBox("Sign In", "이메일 주소", "JOIN US")}
+      {loading ? <Spinner /> : loginBox("Sign In", "이메일 주소", "JOIN US")}
     </LoginBackGround>
   );
 };

@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 import { login } from "../../redux/userReducer";
 import { setItemToLs } from "../../components/localStorage";
 import Spinner from "../../components/Spinner";
+import loginbg from "../../public/img/loginBg.png";
+import styled from "styled-components";
 
 const KakaoLoginCallback = () => {
   const [loading, setLoading] = useState(false);
@@ -61,7 +63,20 @@ const KakaoLoginCallback = () => {
     setLoading(true);
   }, []);
 
-  return <>{loading && <Spinner />}</>;
+  return <LoginBackGround>{loading && <Spinner />}</LoginBackGround>;
 };
+
+const LoginBackGround = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-image: url(${loginbg});
+  background-size: cover;
+  background-position: center;
+`;
 
 export default KakaoLoginCallback;
