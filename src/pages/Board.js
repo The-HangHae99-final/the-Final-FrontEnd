@@ -110,7 +110,7 @@ const Board = () => {
     e.preventDefault();
     axios({
       method: "post",
-      url: "http://52.79.251.110:3001/api/post",
+      url: "https://0jun.shop/api/post",
       data: data,
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,
@@ -140,7 +140,7 @@ const Board = () => {
       )
     ) {
       axios
-        .delete(`http://52.79.251.110:3001/api/post/${postId}`, {
+        .delete(`https://0jun.shop/api/post/${postId}`, {
           headers: {
             Authorization: `Bearer ${getItemFromLs("myToken")}`,
           },
@@ -148,7 +148,7 @@ const Board = () => {
         .then((res) => {
           axios
             .post(
-              "http://52.79.251.110:3001/api/post/all",
+              "https://0jun.shop/api/post/all",
               {
                 workSpaceName: getItemFromLs("workspace"),
               },
@@ -223,7 +223,7 @@ const Board = () => {
   useEffect(() => {
     axios
       .post(
-        "http://52.79.251.110:3001/api/post/all",
+        "https://0jun.shop/api/post/all",
         {
           workSpaceName: getItemFromLs("workspace"),
         },

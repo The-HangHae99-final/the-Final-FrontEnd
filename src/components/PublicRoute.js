@@ -1,14 +1,16 @@
-// import React from 'react'
-// import { Route } from "react-router-dom";
+import React from "react";
+import { Route, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
-// const PublicRoute = ({component : Component, restricted, ...rest}) => {
-//   return (
-//     <Route
-//     {...rest}
-//     render={(props) => ( hasWSOver1() ? <Redirect to="/" /> : <Component {...props} />)}
-//   />
+const PublicRoute = ({ component: Component, hasWorkspace, ...rest }) => {
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        hasWorkspace ? <Navigate to="/" /> : <Component {...props} />
+      }
+    />
+  );
+};
 
-//   )
-// }
-
-// export default PublicRoute
+export default PublicRoute;

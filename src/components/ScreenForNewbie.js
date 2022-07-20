@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import topArrow from "../public/img/top-arrow.png";
+import topArrowActive from "../public/img/top-arrow-active.png";
 
 const ScreenForNewbie = () => {
+  let [titleCharacter, setTitleCharacter] = useState(0);
+  const [workSpaceName, setWorkSpaceName] = useState("");
+  console.log("workSpaceName: ", workSpaceName);
+
+  const handleChange = (e) => {
+    const inputValue = e.target.value;
+    setWorkSpaceName(() => {
+      if (inputValue.length <= 11) {
+        setTitleCharacter(inputValue.length);
+      }
+      return `${inputValue}`;
+    });
+  };
+
   return (
     <ScreenForNewbieStyle>
       <div className="create-box-container">
@@ -16,10 +31,22 @@ const ScreenForNewbie = () => {
               type="text"
               className="create-box_input"
               placeholder="10글자 내외로 작성해주세요."
+              name="workSpaceName"
+              value={workSpaceName || ""}
+              onChange={(e) => handleChange(e)}
+              maxLength="10"
             />
             <div className="input-actions">
-              <span className="input-max-length">0/10</span>
-              <img src={topArrow} alt="topArrow" className="topArrow" />
+              <div className="input-max-length">{titleCharacter}/10</div>
+              {titleCharacter >= 1 ? (
+                <img
+                  src={topArrowActive}
+                  alt="topArrowActive"
+                  className="topArrow"
+                />
+              ) : (
+                <img src={topArrow} alt="topArrow" className="topArrow" />
+              )}
             </div>
           </div>
           <div className="add-later">나중에 할래요</div>
@@ -108,7 +135,7 @@ const ScreenForNewbieStyle = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 60px;
+    width: 75px;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -117,6 +144,7 @@ const ScreenForNewbieStyle = styled.div`
   }
 
   .input-max-length {
+    width: 50px;
     font-weight: 400;
     font-size: 14px;
     line-height: 20px;

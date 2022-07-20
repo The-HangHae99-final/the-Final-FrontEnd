@@ -46,7 +46,7 @@ const PrivateMain = () => {
     e.preventDefault();
     axios({
       method: "put",
-      url: "http://52.79.251.110:3001/api/workSpace/memberAdd/workSpaceName",
+      url: "https://0jun.shop/api/workSpace/memberAdd/workSpaceName",
       data: newMember,
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,

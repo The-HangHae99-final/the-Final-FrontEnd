@@ -23,9 +23,7 @@ const Main = () => {
         <div
           className="logo"
           onClick={() => {
-            id !== "undefined"
-              ? navigate(`/main`)
-              : navigate(`/main/${id}/private`);
+            navigate(`/main`);
           }}
         ></div>
         <div className="buttons">

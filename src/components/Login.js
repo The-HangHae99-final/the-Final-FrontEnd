@@ -16,12 +16,12 @@ const Login = () => {
     userEmail: "",
     password: "",
   });
-
   const [showPwInput, setShowPwInput] = useState(false);
   const { userEmail, password } = loginValue;
 
-  const navigate = useNavigate();
+  const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const inputRef = useRef();
 
   const handleChange = (e) => {
@@ -34,7 +34,7 @@ const Login = () => {
     if (e.target.innerText.includes("이메일")) {
       // 등록된 이메일인지 확인
       axios
-        .post("http://52.79.251.110:3001/api/users/email", {
+        .post("https://0jun.shop/api/users/email", {
           userEmail: loginValue.userEmail,
         })
         .then((response) => {
@@ -49,7 +49,7 @@ const Login = () => {
       setLoading(true);
 
       axios
-        .post("http://52.79.251.110:3001/api/users/password", {
+        .post("https://0jun.shop/api/users/password", {
           userEmail: loginValue.userEmail,
           password: loginValue.password,
         })

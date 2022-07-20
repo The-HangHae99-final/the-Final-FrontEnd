@@ -17,7 +17,6 @@ export const userSlice = createSlice({
       state.value = action.payload;
     },
     getWorkSpaceList: (state, action) => {
-      console.log(action);
       state.value = action.payload;
     },
   },

@@ -3,7 +3,7 @@ import axios from "axios";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getItemFromLs, removeItemFromLs } from "../localStorage";
+import { getItemFromLs, removeItemFromLs, setItemToLs } from "../localStorage";
 
 // module
 import UserAvatar from "../../elements/UserAvatar";
@@ -47,10 +47,11 @@ const Header = () => {
     setOpenDropdown(!openDropdown);
   };
 
+  // Add workspace
   const addNewWorkSpace = (e) => {
     axios
       .post(
-        "http://52.79.251.110:3001/api/workSpace",
+        "https://0jun.shop/api/workSpace",
         { name: workspaceName },
         {
           headers: {
@@ -60,7 +61,7 @@ const Header = () => {
       )
       .then((res) => {
         console.log(res);
-        const newWorkSpaceFullName = res.data.result.name;
+        const newWorkSpaceFullName = res.data.createdWorkSpace.name;
         // const newWorkSpace = res.data.result.name.split("+")[1];
         setWorkspaceName("");
         setModalOn(!modalOn);
@@ -75,23 +76,22 @@ const Header = () => {
     setWorkspaceName(e.target.value);
   };
 
-  // 내가 속한 모든 워크스페이스 목록 조회
+  // Get all workspaces i belong to
   useEffect(() => {
-    console.log(getItemFromLs("myToken"));
     axios
-      .get("http://52.79.251.110:3001/api/workSpace/list", {
+      .get("https://0jun.shop/api/workSpace/list", {
         headers: {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },
       })
       .then((res) => {
-        // console.log(res);
+        console.log(res);
         dispatch(
           getWorkSpaceList({ ...user, workSpaceList: [...workspaceList, "hi"] })
         );
-        // const wsInfoList = res.data.includedList;
-        // const wsList = wsInfoList.map((a, idx) => a.name);
-        // setWorkspaceList(wsList);
+        const wsInfoList = res.data.includedList;
+        const wsList = wsInfoList.map((a, idx) => a.name);
+        setWorkspaceList(wsList);
       })
       .catch((error) => {
         console.log(error);
@@ -148,9 +148,8 @@ const Header = () => {
                 <span className="edit_account">| 편집하기</span>
               </div>
               <WorkspaceList>
-                {/* {workspaceList &&
+                {workspaceList &&
                   workspaceList.map((item, idx) => {
-                    console.log(item);
                     return (
                       <li
                         key={idx}
@@ -169,7 +168,7 @@ const Header = () => {
                         </div>
                       </li>
                     );
-                  })} */}
+                  })}
               </WorkspaceList>
             </li>
             <li className="nav-item">
