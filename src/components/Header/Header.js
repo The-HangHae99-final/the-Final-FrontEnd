@@ -54,6 +54,7 @@ const Header = () => {
         }
       )
       .then((res) => {
+        console.log(res);
         const newWorkSpaceFullName = res.data.result.name;
         // const newWorkSpace = res.data.result.name.split("+")[1];
         setWorkspaceName("");
@@ -78,6 +79,7 @@ const Header = () => {
         },
       })
       .then((res) => {
+        console.log(res);
         const wsInfoList = res.data.includedList;
         const wsList = wsInfoList.map((a, idx) => a.name);
         setWorkspaceList(wsList);

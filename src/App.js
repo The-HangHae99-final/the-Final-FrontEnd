@@ -26,11 +26,11 @@ const App = () => {
         <Route path="/board" element={<Board />} />
         <Route path="/calendar" element={<Calender />} />
         <Route path="/message" element={<Message />} />
-        <Route path="auth/login/callback" element={<NaverLoginCallBack />} />
         <Route
-          path="auth/login/kakao/callback"
-          element={<KakaoLoginCallback />}
+          path="/api/auth/login/naver/callback"
+          element={<NaverLoginCallBack />}
         />
+        <Route path="/oauth/kakao/callback" element={<KakaoLoginCallback />} />
         <Route path="/main/:id" element={<Main />}>
           <Route path="private" element={<PrivateMain />} />
           <Route path="board" element={<Board />} />

@@ -12,7 +12,6 @@ import textD from "../public/img/D.png";
 import label from "../public/img/label.png";
 import leftArrpw from "../public/img/left-arrow.png";
 import rightArrow from "../public/img/right-arrow.png";
-
 import { Human03 } from "../elements/humanIcon";
 
 function CreateBox({
@@ -95,7 +94,7 @@ const Board = () => {
     label: "",
     assignees: "",
     workSpaceName: "",
-    category: "todo",
+    category: "done",
   });
   const [allBoard, setAllBoard] = useState([]);
   console.log("allBoard: ", allBoard);

@@ -62,8 +62,11 @@ const Calender = () => {
   // 전체 팀 일정 조회
   const fetchTeamTasks = () => {
     axios({
-      method: "get",
-      url: "http://52.79.251.110:3001/api/task/team/workSpaceName",
+      method: "post",
+      url: "http://52.79.251.110:3001/api/task/team/workSpaceName/all",
+      data: {
+        workSpaceName: `${getItemFromLs("workspace")}`,
+      },
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,
       },
