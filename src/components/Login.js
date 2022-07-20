@@ -64,7 +64,6 @@ const Login = () => {
             setItemToLs("userName", user_name);
             setItemToLs("userEmail", user_email);
             setLoading(false);
-            setTimeout(())
             navigate("/main");
             dispatch(login({ user_email: user_email, user_name: user_name }));
           }
