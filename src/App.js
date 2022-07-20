@@ -8,14 +8,16 @@ import Main from "./pages/Main/Main";
 import Board from "./pages/Board";
 import Message from "./pages/Message/Message";
 import Calender from "./pages/Calendar/Calendar";
-import Storage from "./pages/Storage";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import NaverLoginCallBack from "./elements/introMain/NaverLoginCallBack";
 import KakaoLoginCallback from "./elements/introMain/KakaoLoginCallBack";
 import PrivateMain from "./components/PrivateMain";
+import PrivateRoute from "./components/PrivateRoute";
 
 const App = () => {
+  const [restriced, setRestriced] = useState(false);
+
   return (
     <div>
       <GlobalStyle />
@@ -31,7 +33,8 @@ const App = () => {
           element={<NaverLoginCallBack />}
         />
         <Route path="/oauth/kakao/callback" element={<KakaoLoginCallback />} />
-        <Route path="/main/:id" element={<PrivateMain />}>
+        <Route path="/main/:id" element={<Main />}>
+          <Route path="private" element={<PrivateMain />} />
           <Route path="board" element={<Board />} />
           <Route path="calendar" element={<Calender />} />
           <Route path="message" element={<Message />} />
