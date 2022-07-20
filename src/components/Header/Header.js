@@ -64,7 +64,6 @@ const Header = () => {
         }
       )
       .then((res) => {
-        console.log(res);
         const newWorkSpaceFullName = res.data.createdWorkSpace.name;
         dispatch(
           getWorkSpaceList({

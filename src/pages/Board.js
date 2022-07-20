@@ -234,11 +234,12 @@ const Board = () => {
         }
       )
       .then((res) => {
+        // 요청 성공 시
         const allBoardList = res.data.posts;
         setAllBoard(() => {
           return [...allBoardList];
         });
-        console.log(allBoardList);
+
         // Categorize all board data by the 3 categories
         allBoardList.map((board) => {
           switch (board.category) {
@@ -273,6 +274,10 @@ const Board = () => {
   const onDragEnd = () => {
     console.log("드래그");
   };
+
+  useEffect(() => {
+    console.log("다시 돌아왔다");
+  }, []);
 
   return (
     <BoardStyle>

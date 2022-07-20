@@ -4,7 +4,7 @@ import ScreenForNewbie from "./ScreenForNewbie";
 const PrivateRoute = ({ isNewbie, component: Component }) => {
   console.log(isNewbie);
 
-  return <> {isNewbie ? Component : <ScreenForNewbie />}</>;
+  return <> {true ? Component : <ScreenForNewbie />}</>;
 };
 
 export default PrivateRoute;
