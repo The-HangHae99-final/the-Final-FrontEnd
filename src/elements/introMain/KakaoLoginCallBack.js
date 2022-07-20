@@ -5,8 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/userReducer";
 import { setItemToLs } from "../../components/localStorage";
+import Spinner from "../../components/Spinner";
 
 const KakaoLoginCallback = () => {
+  const [loading, setLoading] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -45,7 +48,7 @@ const KakaoLoginCallback = () => {
                 setItemToLs("myToken", token);
                 setItemToLs("userName", user_name);
                 setItemToLs("userEmail", user_email);
-                alert("카카오로 로그인 완료!");
+                setLoading(false);
                 navigate("/main");
               });
           });
@@ -55,9 +58,10 @@ const KakaoLoginCallback = () => {
 
   useEffect(() => {
     getKakaoToken();
+    setLoading(true);
   }, []);
 
-  return <div>카카오 콜백페이지 입니다.</div>;
+  return <>{loading && <Spinner />}</>;
 };
 
 export default KakaoLoginCallback;

@@ -6,8 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/userReducer";
 import { setItemToLs } from "../../components/localStorage";
+import Spinner from "../../components/Spinner";
 
 const NaverLoginCallBack = () => {
+  const [loading, setLoading] = useState(false);
   const [userInfo, setUserInfo] = useState({
     user_email: "",
     user_name: "",
@@ -60,13 +62,14 @@ const NaverLoginCallBack = () => {
                 user_email,
                 user_id,
                 user_name,
+                token,
               })
               .then((res) => {
                 setItemToLs("myToken", token);
                 setItemToLs("userName", user_name);
                 setItemToLs("userEmail", user_email);
+                setLoading(false);
                 localStorage.setItem("myToken", token);
-                alert("네이버로 로그인 완료!");
                 navigate("/main");
               });
           })
@@ -78,9 +81,10 @@ const NaverLoginCallBack = () => {
 
   useEffect(() => {
     getNaverToken();
+    setLoading(true);
   }, []);
 
-  return <div>네이버 콜백페이지입니다</div>;
+  return <>{loading && <Spinner />}</>;
 };
 
 export default NaverLoginCallBack;
