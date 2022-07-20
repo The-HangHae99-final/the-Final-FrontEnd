@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/userReducer";
-import { setItemToLs } from "../../components/localStorage";
+import { getItemFromLs, setItemToLs } from "../../components/localStorage";
 import Spinner from "../../components/Spinner";
 import loginbg from "../../public/img/loginBg.png";
 import styled from "styled-components";
@@ -30,9 +30,17 @@ const KakaoLoginCallback = () => {
         const token = res.data;
         // 서버가 받아온 유저 정보 조회
         axios
-          .post(`http://52.79.251.110:3001/api/kakao/member`, {
-            token,
-          })
+          .post(
+            `http://52.79.251.110:3001/api/kakao/member`,
+            {
+              token,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
           .then((res) => {
             const user_email = res.data.kakao_account.email;
             const user_id = res.data.id;
@@ -42,12 +50,21 @@ const KakaoLoginCallback = () => {
             );
 
             axios
-              .post(`http://52.79.251.110:3001/api/kakao/parsing`, {
-                user_email,
-                user_name,
-              })
+              .post(
+                `http://52.79.251.110:3001/api/kakao/parsing`,
+                {
+                  user_email,
+                  user_name,
+                },
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
               .then((res) => {
-                setItemToLs("myToken", token);
+                const newToken = res.data.token;
+                setItemToLs("myToken", newToken);
                 setItemToLs("userName", user_name);
                 setItemToLs("userEmail", user_email);
                 setLoading(false);

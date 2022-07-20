@@ -31,8 +31,7 @@ const App = () => {
           element={<NaverLoginCallBack />}
         />
         <Route path="/oauth/kakao/callback" element={<KakaoLoginCallback />} />
-        <Route path="/main/:id" element={<Main />}>
-          <Route path="private" element={<PrivateMain />} />
+        <Route path="/main/:id" element={<PrivateMain />}>
           <Route path="board" element={<Board />} />
           <Route path="calendar" element={<Calender />} />
           <Route path="message" element={<Message />} />

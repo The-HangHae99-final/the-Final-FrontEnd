@@ -94,7 +94,7 @@ const Board = () => {
     label: "",
     assignees: "",
     workSpaceName: "",
-    category: "done",
+    category: "todo",
   });
   const [allBoard, setAllBoard] = useState([]);
   console.log("allBoard: ", allBoard);
@@ -118,7 +118,7 @@ const Board = () => {
     })
       .then((res) => {
         console.log(res.data);
-        setTodoBoardList([...todoBoardList, res.data.result]);
+        setTodoBoardList((prevState) => [...prevState, res.data.result]);
         setIsShown(false);
       })
       .catch((err) => console.log(err));
@@ -163,6 +163,7 @@ const Board = () => {
               setAllBoard(() => {
                 return [...allBoardList];
               });
+
               // Categorize all board data by the 3 categories
               allBoardList.map((board) => {
                 switch (board.category) {
@@ -176,14 +177,14 @@ const Board = () => {
                     console.log("---inProgress 카테고리---");
 
                     setInProgressList((prevState) => {
-                      return [...inProgressList, board];
+                      return [...prevState, board];
                     });
                     break;
                   case "done":
                     console.log("---done 카테고리---");
 
                     setDoneList((prevState) => {
-                      return [...doneList, board];
+                      return [...prevState, board];
                     });
                     break;
                   default:

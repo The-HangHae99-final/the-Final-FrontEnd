@@ -72,6 +72,7 @@ const Header = () => {
 
   // 내가 속한 모든 워크스페이스 목록 조회
   useEffect(() => {
+    console.log(getItemFromLs("myToken"));
     axios
       .get("http://52.79.251.110:3001/api/workSpace/list", {
         headers: {
@@ -216,7 +217,6 @@ const HeaderStyle = styled.div`
   .menuItems {
     display: flex;
     align-items: center;
-    margin-right: 45px;
     margin-left: 205px;
   }
 
@@ -316,7 +316,7 @@ const WorkspaceList = styled.ul`
 `;
 
 const AboutUser = styled.div`
-  width: 140px;
+  width: 160px;
   margin-left: 42px;
   display: flex;
   align-items: center;

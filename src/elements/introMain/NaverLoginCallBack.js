@@ -12,22 +12,9 @@ import styled from "styled-components";
 
 const NaverLoginCallBack = () => {
   const [loading, setLoading] = useState(false);
-  const [userInfo, setUserInfo] = useState({
-    user_email: "",
-    user_name: "",
-    userId: "",
-  });
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const [data, setDatas] = useState({
-    title: "",
-    content: "",
-    category: "",
-    userId: "",
-  });
-  console.log(data);
 
   const getNaverToken = () => {
     const code = location.search.split("=")[1].split("&")[0];

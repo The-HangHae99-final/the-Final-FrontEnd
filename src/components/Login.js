@@ -18,7 +18,6 @@ const Login = () => {
   });
 
   const [showPwInput, setShowPwInput] = useState(false);
-  const [showSignIn, setShowSignIn] = useState(false);
   const { userEmail, password } = loginValue;
 
   const navigate = useNavigate();
@@ -58,7 +57,6 @@ const Login = () => {
           const user_name = response.data.name;
           const user_email = response.data.email;
 
-          // response 값이 success라면 토큰 저장, 리디렉션, 유저 정보 저장
           if (response.data.success) {
             const token = response.data.token;
             setItemToLs("myToken", token);
