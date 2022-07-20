@@ -3,7 +3,11 @@ import axios from "axios";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getItemFromLs, removeItemFromLs, setItemToLs } from "../localStorage";
+import {
+  getItemFromLs,
+  removeItemFromLs,
+  setItemToLs,
+} from "../../utils/localStorage";
 
 // module
 import UserAvatar from "../../elements/UserAvatar";
@@ -16,9 +20,9 @@ import { getWorkSpaceList } from "../../redux/userReducer";
 
 const Header = () => {
   const [openDropdown, setOpenDropdown] = useState(false);
-  const [workspaceList, setWorkspaceList] = useState([]);
   const [workspaceName, setWorkspaceName] = useState("");
   const [modalOn, setModalOn] = useState(false);
+  const [workSpaceNameMessage, setWorkSpaceNameMessage] = useState("");
   const dropdownRef = useRef(null);
 
   const username = getItemFromLs("userName");
@@ -65,20 +69,21 @@ const Header = () => {
         dispatch(
           getWorkSpaceList({
             ...user,
-            workSpaceList: [...workspaceList, newWorkSpaceFullName],
+            workSpaceList: [...user.workSpaceList, newWorkSpaceFullName],
           })
         );
         // const newWorkSpace = res.data.result.name.split("+")[1];
         setWorkspaceName("");
         setModalOn(!modalOn);
-        console.log(newWorkSpaceFullName);
-        setWorkspaceList([...workspaceList, newWorkSpaceFullName]);
         alert("새로운 워크스페이스가 만들어졌어요");
       });
   };
   console.log(user);
 
   const handleChange = (e) => {
+    if (workspaceName.length >= 10) {
+      setWorkSpaceNameMessage("10글자 이내로 지어주세요!");
+    }
     setWorkspaceName(e.target.value);
   };
 
@@ -94,7 +99,12 @@ const Header = () => {
         console.log(res);
         const wsInfoList = res.data.includedList;
         const wsList = wsInfoList.map((a, idx) => a.name);
-        setWorkspaceList(wsList);
+        dispatch(
+          getWorkSpaceList({
+            ...user,
+            workSpaceList: [...wsList],
+          })
+        );
       })
       .catch((error) => {
         console.log(error);
@@ -151,8 +161,8 @@ const Header = () => {
                 <span className="edit_account">| 편집하기</span>
               </div>
               <WorkspaceList>
-                {workspaceList &&
-                  workspaceList.map((item, idx) => {
+                {user.workSpaceList &&
+                  user.workSpaceList.map((item, idx) => {
                     return (
                       <li
                         key={idx}
@@ -193,6 +203,7 @@ const Header = () => {
               workspaceName={workspaceName}
               addNewWorkSpace={addNewWorkSpace}
               onClose={handleModal}
+              workSpaceNameMessage={workSpaceNameMessage}
             />
           )}
         </ModalPortal>
