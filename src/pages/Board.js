@@ -234,6 +234,7 @@ const Board = () => {
         }
       )
       .then((res) => {
+        console.log(res);
         // 요청 성공 시
         const allBoardList = res.data.posts;
         setAllBoard(() => {
@@ -271,8 +272,13 @@ const Board = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  const onDragEnd = () => {
-    console.log("드래그");
+  const onDragEnd = (res) => {
+    //드래그 하는 sourced의 index
+    const sourceOrderNo = res.source.index;
+    console.log("sourceOrderNo: ", sourceOrderNo);
+    //드래그 해서 내려놓은 destination의 index
+    const destinationOrderNo = res.destination.index;
+    console.log("destinationOrderNo: ", destinationOrderNo);
   };
 
   useEffect(() => {

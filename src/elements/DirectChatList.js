@@ -6,7 +6,6 @@ import axios from "axios";
 
 const DirectChatList = ({ joinRoom, setDataForJoin }) => {
   const [membeList, setMemberList] = useState([]);
-  console.log("membeList: ", membeList);
 
   const workSpaceName = getItemFromLs("workspace");
   const userName = getItemFromLs("userName");
@@ -21,8 +20,12 @@ const DirectChatList = ({ joinRoom, setDataForJoin }) => {
     })
       .then((res) => {
         console.log(res);
+        const exceptMe = res.data.result.filter(
+          (item) => item.memberName !== userName
+        );
+        console.log(exceptMe);
         setMemberList(() => {
-          return [...res.data.result];
+          return [...exceptMe];
         });
       })
       .catch((error) => {

@@ -1,48 +1,60 @@
 // module, library
 import io from "socket.io-client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
-import style from "./message.module.css";
 import { useDispatch, useSelector } from "react-redux";
 
 // import files
 import UserProfile from "../../elements/UserProfile";
 import DirectChatList from "../../elements/DirectChatList";
 import BubbleBox from "../../components/BubbleBox";
-import axios from "axios";
 
 const Message = () => {
   const socket = io.connect("https://0jun.shop/");
+
   const [DataForJoin, setDataForJoin] = useState({
     opponent: "",
     workspace: "",
   });
-  const [currentChatList, setCurrentChatList] = useState([]);
+
+  const [messageList, setMessageList] = useState([]);
   const [showChat, setShowChat] = useState(false);
-
+  const [roomName, setRoomName] = useState("");
   const dispatch = useDispatch();
-  const { opponent, workspace } = DataForJoin;
 
-  // JOIN event
+  // 개인 채팅방 입장
   const joinRoom = (opponent, workspace) => {
+    //   // 방이름 = "(접속한 유저의 이름)" + "(상대 유저의 이름)" => 가나다순 정렬
     const temp = [opponent, workspace];
     temp.sort();
-    const roomId = temp[0] + temp[1];
-    console.log(roomId);
-    // if (opponent !== "" && workspace !== "") {
-    //   // 상대방 이름과 워크스페이스 이름을 join_room 이벤트로 보낸다
-    //   socket.emit("join_room", opponent, workspace);
+    const roomName = temp[0] + temp[1];
+    setRoomName(() => roomName);
 
-    //   setShowChat(true);
-    //   // 서버로부터 채팅리스트를 받는다
-    //   // 방이름 = "(접속한 유저의 이름)" + "(상대 유저의 이름)" => 가나다순 정렬
-    //   socket.on("chat_list", (chat_list) => {
-    //     console.log(chat_list);
-    //   });
-    // }
+    // 상대방 이름과 워크스페이스 이름을 join_room 이벤트로 보낸다
+    socket.emit("join_room", roomName);
+
+    // 서버로부터 채팅리스트를 받는다
+    socket.on("chat_list", (chat_list) => {
+      setMessageList([...chat_list]);
+      setShowChat(true);
+    });
   };
 
-  // useEffect(() => {}, [DataForJoin]);
+  //버튼을 클릭했을 때 send message이벤트 발생
+  const buttonHandler = () => {
+    console.log("hi");
+    // socket.emit("send message", { name: chat.name, message: chat.message });
+  };
+
+  // useEffect(() => {
+  //   socket.on("chat_list", (chat_list) => {
+  //     setMessageList((list) => [...chat_list]);
+  //     setShowChat(true);
+  //   });
+  // }, [socket]);
+
+  console.log("hello");
+  console.log("hi");
 
   return (
     <ChatStyle>
@@ -107,16 +119,15 @@ const Message = () => {
 
           {/* 채팅 화면 */}
           <ChattingScreen className="ChattingScreen">
-            {currentChatList && <BubbleBox showChat={showChat} />}
+            {showChat && (
+              <BubbleBox
+                messageList={messageList}
+                socket={socket}
+                roomName={roomName}
+                setMessageList={setMessageList}
+              />
+            )}
           </ChattingScreen>
-
-          {/* 채팅 화면의 인풋 섹션*/}
-          <div className={style.inputWrap}>
-            <div className={style.emojiBtn}></div>
-            <div className={style.fileSubmitBtn}></div>
-            <div className={style.submitBtn}></div>
-            <input className={style.chatInput} type="text"></input>
-          </div>
         </ChatSection>
       </RightSection>
     </ChatStyle>
@@ -225,6 +236,8 @@ const ChattingScreen = styled.div`
   flex-direction: column;
   gap: 20px;
   margin-top: 19px;
+  overflow: scroll;
+  height: 80%;
 `;
 
 const LeftBubble = styled.div`

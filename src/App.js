@@ -43,19 +43,16 @@ const App = () => {
   // console.log(user);
   useEffect(() => {
     if (!isLoading) {
-      console.log(isLoading + "바뀜!");
-      setIsLoading(true);
+      setIsLoading(() => true);
       setTimeout(() => {
-        console.log(user);
         const workSpaceListLength = user.workSpaceList.length >= 1;
         setIsNewbie(() => {
           setIsLoading(false);
           return workSpaceListLength;
         });
-      }, 3000);
+      }, 1000);
     }
   }, []);
-  console.log(isNewbie);
   return (
     <div>
       <GlobalStyle />

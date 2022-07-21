@@ -77,7 +77,6 @@ const Header = () => {
         alert("새로운 워크스페이스가 만들어졌어요");
       });
   };
-  console.log(user);
 
   const handleChange = (e) => {
     if (workspaceName.length >= 10) {
@@ -95,7 +94,6 @@ const Header = () => {
         },
       })
       .then((res) => {
-        console.log(res);
         const wsInfoList = res.data.includedList;
         const wsList = wsInfoList.map((a, idx) => a.name);
         dispatch(
