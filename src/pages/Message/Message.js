@@ -150,13 +150,19 @@ const Message = () => {
           <RightSection className="rightSection">
             <ChatSection className="ChatSection">
               {/* 채팅 화면 상단 바 */}
+
               <BarTop className="BarTop">
-                <UserProfile
-                  text="전영준"
-                  name="전영준"
-                  online={true}
-                  alignItems={"center"}
-                />
+                <div className="user-state">
+                  <UserProfile
+                    online={true}
+                    alignItems={"center"}
+                    size="50px"
+                  />
+                  <div className="user-state_content">
+                    <div className="user-name">전영준</div>
+                    <div className="recent-active">4분전 활동</div>
+                  </div>
+                </div>
               </BarTop>
 
               {/* 채팅 화면 */}
@@ -256,6 +262,27 @@ const BarTop = styled.div`
   z-index: 99;
   display: flex;
   align-items: center;
+
+  .user-state {
+    display: flex;
+    align-items: center;
+  }
+
+  .user-name {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+    letter-spacing: -0.02em;
+    color: #353841;
+  }
+
+  .recent-active {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: -0.02em;
+    color: #7a858e;
+  }
 `;
 
 const ChattingScreen = styled.div`
