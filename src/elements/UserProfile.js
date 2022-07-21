@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 const UserProfile = ({
   text,
-  name,
+  oppenent,
   workspace,
   online,
   marginRight,
@@ -22,8 +22,8 @@ const UserProfile = ({
       alignItems={alignItems}
       onClick={(e) => {
         setDataForJoin(() => {
-          joinRoom(name, workspace);
-          return { opponent: name, workspace: workspace };
+          joinRoom(oppenent, workspace);
+          return { opponent: oppenent, workspace: workspace };
         });
       }}
     >

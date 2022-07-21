@@ -1,53 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import UserProfile from "./UserProfile";
 import styled from "styled-components";
+import { getItemFromLs } from "../utils/localStorage";
+import axios from "axios";
 
 const DirectChatList = ({ joinRoom, setDataForJoin }) => {
+  const [membeList, setMemberList] = useState([]);
+  console.log("membeList: ", membeList);
+
+  const workSpaceName = getItemFromLs("workspace");
+  const userName = getItemFromLs("userName");
+
+  useEffect(() => {
+    axios({
+      url: `https://0jun.shop/api/member/${workSpaceName}`,
+      method: "get",
+      headers: {
+        Authorization: `Bearer ${getItemFromLs("myToken")}`,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        setMemberList(() => {
+          return [...res.data.result];
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   return (
     <>
       <MyChatList>
-        <UserProfile
-          text="이형섭"
-          name="이형섭"
-          workspace="1조팀노트"
-          online={true}
-          alignItems={"center"}
-          setDataForJoin={setDataForJoin}
-          joinRoom={joinRoom}
-        />
-        <UserProfile
-          text="전영준"
-          name="전영준"
-          workspace="1조팀노트"
-          online={true}
-          alignItems={"center"}
-          setDataForJoin={setDataForJoin}
-          joinRoom={joinRoom}
-        />
-        <UserProfile
-          text="김하연"
-          name="김하연"
-          workspace="1조"
-          online={false}
-          alignItems={"center"}
-          setDataForJoin={setDataForJoin}
-        />
-        <UserProfile
-          text="정연욱"
-          name="정연욱"
-          workspace="1조"
-          online={false}
-          alignItems={"center"}
-          setDataForJoin={setDataForJoin}
-        />
-        <UserProfile
-          text="김규림"
-          name="김규림"
-          workspace="1조"
-          online={false}
-          alignItems={"center"}
-          setDataForJoin={setDataForJoin}
-        />
+        {membeList &&
+          membeList.map((member, idx) => {
+            return (
+              <UserProfile
+                key={idx}
+                text={member.memberName}
+                oppenent={member.memberName}
+                workspace={userName}
+                online={true}
+                alignItems={"center"}
+                setDataForJoin={setDataForJoin}
+                joinRoom={joinRoom}
+              />
+            );
+          })}
       </MyChatList>
     </>
   );
