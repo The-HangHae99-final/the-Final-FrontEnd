@@ -7,6 +7,8 @@ import ScrollToBottom, {
   useScrollToBottom,
   useSticky,
 } from "react-scroll-to-bottom";
+import topArrow from "../public/img/top-arrow.png";
+import camera from "../public/img/camera.png";
 
 const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
   const [currentMessage, setCurrentMessage] = useState("");
@@ -14,7 +16,6 @@ const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
   const bottomRef = useRef(null);
   const scrollToBottom = useScrollToBottom();
   const [sticky] = useSticky();
-  console.log(socket);
   const sendMessage = async () => {
     scrollToBottom();
     if (currentMessage !== "") {
@@ -58,26 +59,32 @@ const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
                 return (
                   <div className="bubble bubble_right" key={idx}>
                     <BubbleContent className="ubbleContent">
-                      <SendTimeforRightBubble className="SendTime">
+                      <SendTimeforRightBubble className="created-time created-time-right">
                         {message.time}
                       </SendTimeforRightBubble>
-                      <YourMessage bg={"#EEF1FF"} className="YourMessage">
+                      <div
+                        bg={"#EEF1FF"}
+                        className="bubble_msg bubble_msg-right"
+                      >
                         {message.message}
-                      </YourMessage>
+                      </div>
                     </BubbleContent>
                   </div>
                 );
               } else {
                 return (
-                  <div className="bubble left-bubble" key={idx}>
+                  <div className="bubble bubble_left" key={idx}>
                     <UserProfile marginRight="10px" toTop="-15px" />
                     <ContentBox className="ContentBox">
                       <YourName className="YourName">{message.author}</YourName>
                       <BubbleContent className="BubbleContent">
-                        <YourMessage bg={"#F8F8F9"} className="YourMessage">
+                        <div
+                          bg={"#F8F8F9"}
+                          className="bubble_msg bubble_msg-left"
+                        >
                           {message.message}
-                        </YourMessage>
-                        <SendTimeforLeftBubble className="SendTime">
+                        </div>
+                        <SendTimeforLeftBubble className="created-time created-time-left">
                           {message.time}
                         </SendTimeforLeftBubble>
                       </BubbleContent>
@@ -95,8 +102,6 @@ const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
 
       {/* 채팅 화면의 인풋 섹션*/}
       <Inputwrap>
-        <div className="emogi-button"></div>
-        <div className="file-submit-button"></div>
         <input
           className="chat-input"
           type="text"
@@ -107,16 +112,23 @@ const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
           onKeyPress={(e) => {
             e.key === "Enter" && sendMessage();
           }}
-        ></input>
-        <button className="submit-button" onClick={sendMessage}>
-          보내기
-        </button>
+        />
+        <ButtonsWrap>
+          <button className="submit-button submit-button_file">
+            <img src={camera} alt="camera" className="camera" />
+          </button>
+          <button
+            className="submit-button submit-button_text"
+            onClick={sendMessage}
+          >
+            <img src={topArrow} alt="topArrow" className="topArrow" />
+          </button>
+        </ButtonsWrap>
       </Inputwrap>
     </BubbleBoxStyle>
   );
 };
 const BubbleBoxStyle = styled.div`
-  background-color: red;
   height: 86%;
   overflow: scroll;
 
@@ -128,10 +140,11 @@ const BubbleBoxStyle = styled.div`
     padding: 30px 42px 30px 55px;
   }
 
-  .react-scroll-to-bottom--css-cdhvl-1n7m0yu {
+  .react-scroll-to-bottom--css-tmgdc-1n7m0yu {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    padding: 20px 0px;
   }
 
   .bubble {
@@ -139,19 +152,65 @@ const BubbleBoxStyle = styled.div`
     display: flex;
   }
 
-  .bubble_right {
+  .bubble_msg {
+    max-width: 726px;
+    background-color: ${(props) =>
+      props.bg === "#F8F8F9" ? "#F8F8F9" : "#EEF1FF"};
+    padding: 13px 20px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.02em;
+    color: #353841;
+  }
+
+  .bubble.bubble_right {
     justify-content: flex-end;
   }
 
-  .left-bubble {
+  .bubble.bubble_left {
     justify-content: flex-start;
+  }
+
+  .bubble_msg {
+    font-size: 16px;
+    line-height: 24px;
+    text-align: right;
+    letter-spacing: -0.02em;
+    color: #353841;
+  }
+
+  .bubble_msg-right {
+    border-radius: 20px 0px 20px 20px;
+    background: #eef1ff;
+  }
+
+  .bubble_msg-left {
+    border-radius: 0px 20px 20px 20px;
+    background: #f8f8f9;
+  }
+
+  .created-time {
+    align-self: flex-end;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: right;
+    letter-spacing: -0.02em;
+    color: #7a858e;
+  }
+
+  .created-time-right {
+    margin-right: 6px;
+  }
+
+  .created-time-left {
+    margin-left: 6px;
   }
 `;
 
 const BubbleContent = styled.div`
   display: Flex;
-  background: #f8f8f9;
-  border-radius: 0px 20px 20px 20px;
 `;
 
 const ContentBox = styled.div`
@@ -167,18 +226,6 @@ const YourName = styled.div`
   color: #353841;
 `;
 
-const YourMessage = styled.div`
-  max-width: 726px;
-  background-color: ${(props) =>
-    props.bg === "#F8F8F9" ? "#F8F8F9" : "#EEF1FF"};
-  border-radius: 5px;
-  padding: 13px 20px;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: -0.02em;
-  color: #353841;
-`;
 const SendTimeforLeftBubble = styled.div`
   align-self: flex-end;
   margin-left: 6px;
@@ -186,14 +233,12 @@ const SendTimeforLeftBubble = styled.div`
 
 const SendTimeforRightBubble = styled.div`
   align-self: flex-end;
-  margin-right: 6px;
 `;
 
 const Inputwrap = styled.div`
   width: 100%;
   height: 100px;
-  background-color: red;
-  /* background-color: #f8f8f9; */
+  background-color: #f8f8f9;
   border: 1px solid #ecedf1;
   border-radius: 0px 0px 5px 5px;
   position: absolute;
@@ -222,7 +267,30 @@ const Inputwrap = styled.div`
   }
 `;
 
-// const ContentBox = styled.div`
-// `;
+const ButtonsWrap = styled.div`
+  display: flex;
+  gap: 22px;
+  position: absolute;
+  top: 47%;
+  right: 75px;
+  transform: translateY(-50%);
+
+  .submit-button {
+    all: unset;
+    height: 30px;
+    cursor: pointer;
+    padding: 5px;
+  }
+
+  .camera {
+    width: 20px;
+    height: 18.64px;
+  }
+
+  .topArrow {
+    width: 30px;
+    height: 30px;
+  }
+`;
 
 export default BubbleBox;

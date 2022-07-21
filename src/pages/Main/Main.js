@@ -162,14 +162,13 @@ const RightSide = styled.div`
   background-color: #ecedf1;
   padding: 20px 20px 0px 20px;
   display: flex;
-  gap: 20px;
   overflow: hidden;
 
   .mainStyle {
     width: 100%;
     height: 100%;
     background-color: #ecedf1;
-    padding: 20px 20px 0px 20px;
+    padding: 20px;
     display: flex;
     gap: 20px;
     overflow: hidden;

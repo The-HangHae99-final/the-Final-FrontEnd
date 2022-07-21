@@ -14,6 +14,7 @@ const UserProfile = ({
   moveRoom,
   newRoomName,
   roomName,
+  size,
 }) => {
   return (
     <OnlineUser
@@ -34,10 +35,11 @@ const UserProfile = ({
         className="online-user-profile"
         src={human01}
         marginRight={marginRight}
+        size={size}
       ></OnlineUserProfile>
       {text && <UserName>{text}</UserName>}
       {online == true || online == false ? (
-        <StatusOnline online={online}></StatusOnline>
+        <StatusOnline size={size} online={online}></StatusOnline>
       ) : null}
     </OnlineUser>
   );
@@ -54,8 +56,8 @@ const OnlineUser = styled.div`
 `;
 
 const OnlineUserProfile = styled.img`
-  width: 55px;
-  height: 55px;
+  width: ${({ size }) => (size ? size : "55px")};
+  height: ${({ size }) => (size ? size : "55px")};
   border-radius: 50%;
   margin-right: ${({ marginRight }) => (marginRight ? marginRight : "15px")};
   font-weight: 500;
@@ -72,8 +74,8 @@ const StatusOnline = styled.div`
   background: ${({ online }) =>
     online ? `url(${Ellipse106})` : `url(${Ellipse103})`};
   position: absolute;
-  left: 40px;
-  top: 40px;
+  left: ${({ size }) => (size ? "38px" : "40px")};
+  top: ${({ size }) => (size ? "38px" : "40px")};
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.18);
 `;
 

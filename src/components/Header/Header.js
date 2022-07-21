@@ -215,7 +215,6 @@ const HeaderStyle = styled.div`
   display: flex;
   box-sizing: border-box;
   justify-content: flex-end;
-  padding: 15px 0px;
   position: relative;
 
   .menuBtns {
