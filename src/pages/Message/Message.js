@@ -11,9 +11,13 @@ import BubbleBox from "../../components/BubbleBox";
 import { getItemFromLs } from "../../utils/localStorage";
 import TeamChatList from "../../elements/TeamChatList";
 
-const socket = io.connect("https://0jun.shop");
+import socketIOClient from "socket.io-client";
+import Spinner from "../../elements/Spinner";
+
+const socket = socketIOClient("https://0jun.shop");
 
 const Message = () => {
+  const [currentSocket, setCurrentSocket] = useState();
   const [DataForJoin, setDataForJoin] = useState({
     opponent: "",
     workspace: "",
@@ -66,73 +70,89 @@ const Message = () => {
     socket.emit("leave_room", roomName);
   };
 
+  // 훅을 이용해 소켓 관리
+  useEffect(() => {
+    setCurrentSocket(socketIOClient("https://0jun.shop"));
+  }, []);
+
   return (
     <ChatStyle>
-      {/* 왼쪽 섹션 */}
-      <LeftSection className="leftSection">
-        {/* Online User */}
-        <OnlineBox className="online-box">
-          <BoxHeader className="box-header">
-            <BoxTitle className="box-title">Online User</BoxTitle>
-            <OnlineUserCount className="online-user-count">5</OnlineUserCount>
-          </BoxHeader>
-          <OnlineList className="user-list">
-            <UserProfile online={true} marginRight="10px" />
-            <UserProfile online={true} marginRight="10px" />
-            <UserProfile online={true} marginRight="10px" />
-            <UserProfile online={true} marginRight="10px" />
-            <UserProfile online={true} marginRight="10px" />
-          </OnlineList>
-        </OnlineBox>
+      {currentSocket ? (
+        <>
+          {/* 왼쪽 섹션 */}
+          <LeftSection className="leftSection">
+            {/* Online User */}
+            <OnlineBox className="online-box">
+              <BoxHeader className="box-header">
+                <BoxTitle className="box-title">Online User</BoxTitle>
+                <OnlineUserCount className="online-user-count">
+                  5
+                </OnlineUserCount>
+              </BoxHeader>
+              <OnlineList className="user-list">
+                <UserProfile online={true} marginRight="10px" />
+                <UserProfile online={true} marginRight="10px" />
+                <UserProfile online={true} marginRight="10px" />
+                <UserProfile online={true} marginRight="10px" />
+                <UserProfile online={true} marginRight="10px" />
+              </OnlineList>
+            </OnlineBox>
 
-        {/* Team Chat */}
-        <TeamchatBox className="teamchat-box">
-          <BoxHeader className="box-header">
-            <BoxTitle className="box-title">Team Chat</BoxTitle>
-          </BoxHeader>
+            {/* Team Chat */}
+            <TeamchatBox className="teamchat-box">
+              <BoxHeader className="box-header">
+                <BoxTitle className="box-title">Team Chat</BoxTitle>
+              </BoxHeader>
 
-          {/* 단체 메시지 유저 리스트 */}
-          <TeamChatList
-            setDataForJoin={setDataForJoin}
-            joinTeamRoom={joinTeamRoom}
-          ></TeamChatList>
-        </TeamchatBox>
+              {/* 단체 메시지 유저 리스트 */}
+              <TeamChatList
+                setDataForJoin={setDataForJoin}
+                joinTeamRoom={joinTeamRoom}
+              ></TeamChatList>
+            </TeamchatBox>
 
-        {/* My Chat */}
-        <MyChatBox className="myChat-box">
-          <BoxHeader className="box-header">
-            <BoxTitle className="box-title">My Chat</BoxTitle>
-          </BoxHeader>
+            {/* My Chat */}
+            <MyChatBox className="myChat-box">
+              <BoxHeader className="box-header">
+                <BoxTitle className="box-title">My Chat</BoxTitle>
+              </BoxHeader>
 
-          {/* 개인 메시지 유저 리스트 */}
-          <DirectChatList setDataForJoin={setDataForJoin} joinRoom={joinRoom} />
-        </MyChatBox>
-      </LeftSection>
+              {/* 개인 메시지 유저 리스트 */}
+              <DirectChatList
+                setDataForJoin={setDataForJoin}
+                joinRoom={joinRoom}
+              />
+            </MyChatBox>
+          </LeftSection>
 
-      {/* 오른쪽 섹션 */}
-      <RightSection className="rightSection">
-        <ChatSection className="ChatSection">
-          {/* 채팅 화면 상단 바 */}
-          <BarTop className="BarTop">
-            <UserProfile
-              text="전영준"
-              name="전영준"
-              online={true}
-              alignItems={"center"}
-            />
-          </BarTop>
+          {/* 오른쪽 섹션 */}
+          <RightSection className="rightSection">
+            <ChatSection className="ChatSection">
+              {/* 채팅 화면 상단 바 */}
+              <BarTop className="BarTop">
+                <UserProfile
+                  text="전영준"
+                  name="전영준"
+                  online={true}
+                  alignItems={"center"}
+                />
+              </BarTop>
 
-          {/* 채팅 화면 */}
-          {showChat && (
-            <BubbleBox
-              messageList={messageList}
-              socket={socket}
-              roomName={roomName}
-              setMessageList={setMessageList}
-            />
-          )}
-        </ChatSection>
-      </RightSection>
+              {/* 채팅 화면 */}
+              {showChat && (
+                <BubbleBox
+                  messageList={messageList}
+                  socket={socket}
+                  roomName={roomName}
+                  setMessageList={setMessageList}
+                />
+              )}
+            </ChatSection>
+          </RightSection>
+        </>
+      ) : (
+        <Spinner />
+      )}
     </ChatStyle>
   );
 };
