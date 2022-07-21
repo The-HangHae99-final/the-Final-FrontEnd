@@ -7,27 +7,26 @@ import { useSelector } from "react-redux";
 
 const UserProfile = ({
   text,
-  oppenent,
-  userName,
   online,
   marginRight,
   toTop,
   alignItems,
-  setDataForJoin,
-  joinRoom,
-  joinTeamRoom,
+  moveRoom,
+  newRoomName,
+  roomName,
 }) => {
   return (
     <OnlineUser
       toTop={toTop}
       alignItems={alignItems}
-      onClick={(e) => {
-        joinTeamRoom
-          ? joinTeamRoom()
-          : setDataForJoin(() => {
-              joinRoom(oppenent, userName);
-              return { opponent: oppenent, userName: userName };
-            });
+      onClick={() => {
+        moveRoom(roomName, newRoomName);
+        // joinTeamRoom
+        //   ? joinTeamRoom()
+        //   : setDataForJoin(() => {
+        //       moveRoom(oppenent, userName);
+        //       return { opponent: oppenent, userName: userName };
+        //     });
       }}
     >
       <OnlineUserProfile

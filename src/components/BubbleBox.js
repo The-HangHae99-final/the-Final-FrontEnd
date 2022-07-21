@@ -14,7 +14,7 @@ const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
   const bottomRef = useRef(null);
   const scrollToBottom = useScrollToBottom();
   const [sticky] = useSticky();
-
+  console.log(socket);
   const sendMessage = async () => {
     scrollToBottom();
     if (currentMessage !== "") {
@@ -43,8 +43,8 @@ const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
     });
   }, [socket]);
 
+  // 새로운 메시지로 자동 스크롤
   useEffect(() => {
-    // 메시지
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messageList]);
 

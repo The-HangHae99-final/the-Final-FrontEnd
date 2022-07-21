@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { getItemFromLs } from "../utils/localStorage";
 import axios from "axios";
 
-const DirectChatList = ({ joinRoom, setDataForJoin }) => {
+const DirectChatList = ({ moveRoom, roomName }) => {
   const [membeList, setMemberList] = useState([]);
   const workSpaceName = getItemFromLs("workspace");
   const userName = getItemFromLs("userName");
@@ -36,16 +36,18 @@ const DirectChatList = ({ joinRoom, setDataForJoin }) => {
       <MyChatList>
         {membeList &&
           membeList.map((member, idx) => {
+            const temp = [member.memberName, userName];
+            temp.sort();
+            const newRoomName = temp[0] + temp[1];
             return (
               <UserProfile
                 key={idx}
                 text={member.memberName}
-                oppenent={member.memberName}
-                userName={userName}
+                roomName={roomName}
+                newRoomName={newRoomName}
                 online={true}
                 alignItems={"center"}
-                setDataForJoin={setDataForJoin}
-                joinRoom={joinRoom}
+                moveRoom={moveRoom}
               />
             );
           })}
