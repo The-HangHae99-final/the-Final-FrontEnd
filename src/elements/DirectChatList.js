@@ -6,10 +6,10 @@ import axios from "axios";
 
 const DirectChatList = ({ joinRoom, setDataForJoin }) => {
   const [membeList, setMemberList] = useState([]);
-
   const workSpaceName = getItemFromLs("workspace");
   const userName = getItemFromLs("userName");
 
+  // 본인을 제외한 유저목록 반환
   useEffect(() => {
     axios({
       url: `https://0jun.shop/api/member/${workSpaceName}`,
@@ -19,11 +19,9 @@ const DirectChatList = ({ joinRoom, setDataForJoin }) => {
       },
     })
       .then((res) => {
-        console.log(res);
         const exceptMe = res.data.result.filter(
           (item) => item.memberName !== userName
         );
-        console.log(exceptMe);
         setMemberList(() => {
           return [...exceptMe];
         });
@@ -43,7 +41,7 @@ const DirectChatList = ({ joinRoom, setDataForJoin }) => {
                 key={idx}
                 text={member.memberName}
                 oppenent={member.memberName}
-                workspace={userName}
+                userName={userName}
                 online={true}
                 alignItems={"center"}
                 setDataForJoin={setDataForJoin}

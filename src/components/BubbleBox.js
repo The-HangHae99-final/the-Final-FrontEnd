@@ -28,7 +28,6 @@ const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
           ":" +
           new Date(Date.now()).getMinutes(),
       };
-      console.log(messageData);
       // 소켓 명령어와 함께 메시지 데이터를 보낸다
       await socket.emit("send_message", messageData);
       setMessageList((list) => [...list, messageData]);
@@ -57,8 +56,8 @@ const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
             {messageList.map((message, idx) => {
               if (message.author === username) {
                 return (
-                  <RightBubble className="RightBubble" key={idx}>
-                    <BubbleContent className="BubbleContent">
+                  <div className="bubble bubble_right" key={idx}>
+                    <BubbleContent className="ubbleContent">
                       <SendTimeforRightBubble className="SendTime">
                         {message.time}
                       </SendTimeforRightBubble>
@@ -66,11 +65,11 @@ const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
                         {message.message}
                       </YourMessage>
                     </BubbleContent>
-                  </RightBubble>
+                  </div>
                 );
               } else {
                 return (
-                  <LeftBubble className="LeftBubble" key={idx}>
+                  <div className="bubble left-bubble" key={idx}>
                     <UserProfile marginRight="10px" toTop="-15px" />
                     <ContentBox className="ContentBox">
                       <YourName className="YourName">{message.author}</YourName>
@@ -83,7 +82,7 @@ const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
                         </SendTimeforLeftBubble>
                       </BubbleContent>
                     </ContentBox>
-                  </LeftBubble>
+                  </div>
                 );
               }
             })}
@@ -121,24 +120,38 @@ const BubbleBoxStyle = styled.div`
   height: 86%;
   overflow: scroll;
 
-  .message-container {
+  ::-webkit-scrollbar {
+    display: none;
   }
 
-  .react-scroll-to-bottom--css-pcepz-1n7m0yu {
+  .message-container {
+    padding: 30px 42px 30px 55px;
+  }
+
+  .react-scroll-to-bottom--css-cdhvl-1n7m0yu {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding: 30px 42px 30px 55px;
   }
-`;
 
-const LeftBubble = styled.div`
-  display: flex;
-  align-self: flex-start;
+  .bubble {
+    width: 100%;
+    display: flex;
+  }
+
+  .bubble_right {
+    justify-content: flex-end;
+  }
+
+  .left-bubble {
+    justify-content: flex-start;
+  }
 `;
 
 const BubbleContent = styled.div`
   display: Flex;
+  background: #f8f8f9;
+  border-radius: 0px 20px 20px 20px;
 `;
 
 const ContentBox = styled.div`
@@ -174,10 +187,6 @@ const SendTimeforLeftBubble = styled.div`
 const SendTimeforRightBubble = styled.div`
   align-self: flex-end;
   margin-right: 6px;
-`;
-
-const RightBubble = styled.div`
-  align-self: flex-end;
 `;
 
 const Inputwrap = styled.div`

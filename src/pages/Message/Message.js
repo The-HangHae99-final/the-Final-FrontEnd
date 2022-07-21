@@ -11,6 +11,8 @@ import BubbleBox from "../../components/BubbleBox";
 import { getItemFromLs } from "../../utils/localStorage";
 import TeamChatList from "../../elements/TeamChatList";
 
+const socket = io.connect("https://0jun.shop");
+
 const Message = () => {
   const [DataForJoin, setDataForJoin] = useState({
     opponent: "",
@@ -20,7 +22,6 @@ const Message = () => {
   const [showChat, setShowChat] = useState(false);
   const [roomName, setRoomName] = useState("");
 
-  const socket = io.connect("https://0jun.shop/");
   const teamChatRoomName = getItemFromLs("workspace");
 
   // 개인 채팅방 입장
@@ -29,16 +30,27 @@ const Message = () => {
     // 같은 이름의 방에 입장시키기 위해 가나다순으로 이름 정렬해준다
     const temp = [opponent, userName];
     temp.sort();
-    const roomName = temp[0] + temp[1];
-    setRoomName(() => roomName);
-    socket.emit("join_room", roomName);
+    const newRoomName = temp[0] + temp[1];
+    console.log(newRoomName);
+    if (newRoomName !== roomName) {
+      console.log("다른 방에 접속했습니다.");
+    }
+    setRoomName(() => {
+      return newRoomName;
+    });
+    socket.emit("join_room", newRoomName);
 
     // 서버로부터 채팅리스트를 받는다
     socket.on("chat_list", (chat_list) => {
       setMessageList([...chat_list]);
       setShowChat(true);
     });
+
+    if (roomName) {
+      socket.emit("leave_room", roomName);
+    }
   };
+  console.log(roomName);
 
   // 공지방 입장
   const joinTeamRoom = () => {
@@ -51,6 +63,7 @@ const Message = () => {
       setMessageList([...chat_list]);
       setShowChat(true);
     });
+    socket.emit("leave_room", roomName);
   };
 
   return (
