@@ -16,65 +16,39 @@ import Spinner from "../../elements/Spinner";
 
 const Message = () => {
   const [currentSocket, setCurrentSocket] = useState();
+  console.log("currentSocket: ", currentSocket);
   const [DataForJoin, setDataForJoin] = useState({
     opponent: "",
     workspace: "",
   });
   const [messageList, setMessageList] = useState([]);
-  console.log("messageList: ", messageList);
   const [showChat, setShowChat] = useState(false);
   const [roomName, setRoomName] = useState("");
+  const [oppenent, setOppenent] = useState("");
 
   const teamChatRoomName = getItemFromLs("workspace");
 
+  // 퇴장 + 채팅리스트 삭제
   const leaveRoom = (oldRoom) => {
     currentSocket.emit("leave_room", oldRoom);
     currentSocket.off("chat_list");
   };
 
-  // 개인 채팅방 입장 + 퇴장
-  const moveRoom = (oldRoom, newRoom) => {
+  // 개인 채팅방 입장 + 퇴장 + 채팅 목록 불러오기
+  const moveRoom = (oldRoom, newRoom, name) => {
     currentSocket.emit("join_room", newRoom);
     leaveRoom(oldRoom);
     setRoomName(() => {
       return newRoom;
     });
+    setOppenent(() => name);
 
-    // 이슈1
-    // 방을 이동할 때마다 받아온 chat_list가 계속 쌓인다.
     currentSocket.on("chat_list", (chat_list) => {
       console.log("chat_list: ", chat_list);
       setMessageList([...chat_list]);
       setShowChat(true);
     });
   };
-
-  // 개인 채팅방 입장
-  // const joinRoom = (opponent, userName) => {
-  //   // 개인 채팅방 이름 = 워크스페이스 이름(작성자 이메일+워크스페이스 이름) + 채팅 할 상대의 이름
-  //   // 같은 이름의 방에 입장시키기 위해 가나다순으로 이름 정렬해준다
-  //   const temp = [opponent, userName];
-  //   temp.sort();
-  //   const newRoomName = temp[0] + temp[1];
-  //   console.log(newRoomName);
-  //   if (newRoomName !== roomName) {
-  //     console.log("다른 방에 접속했습니다.");
-  //   }
-  //   setRoomName(() => {
-  //     return newRoomName;
-  //   });
-  //   socket.emit("join_room", newRoomName);
-
-  //   // 서버로부터 채팅리스트를 받는다
-  //   socket.on("chat_list", (chat_list) => {
-  //     setMessageList([...chat_list]);
-  //     setShowChat(true);
-  //   });
-
-  //   if (roomName) {
-  //     socket.emit("leave_room", roomName);
-  //   }
-  // };
 
   // 공지방 입장
   const joinTeamRoom = () => {
@@ -92,7 +66,7 @@ const Message = () => {
 
   // 훅을 이용해 소켓 관리
   useEffect(() => {
-    setCurrentSocket(socketIOClient("https://0jun.shop"));
+    setCurrentSocket(socketIOClient("https://0jun.shop/chat"));
   }, []);
 
   return (
@@ -159,7 +133,9 @@ const Message = () => {
                     size="50px"
                   />
                   <div className="user-state_content">
-                    <div className="user-name">전영준</div>
+                    <div className="user-name">
+                      {oppenent ? oppenent : "????"}
+                    </div>
                     <div className="recent-active">4분전 활동</div>
                   </div>
                 </div>
