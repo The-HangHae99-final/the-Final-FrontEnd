@@ -33,6 +33,7 @@ const Header = () => {
 
   const handleModal = (e) => {
     setModalOn(!modalOn);
+    setOpenDropdown(false);
   };
 
   const navigate = useNavigate();

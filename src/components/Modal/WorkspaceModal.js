@@ -61,6 +61,8 @@ const WorkspaceModalBg = styled.div`
   top: 0;
   text-align: center;
   font-size: 50px;
+  backdrop-filter: blur(10px);
+  z-index: 999;
 `;
 
 const WorkspaceModalStyle = styled.div`
@@ -103,7 +105,6 @@ const WorkspaceModalStyle = styled.div`
     border: none;
     padding: 15px;
     width: 100%;
-    background: red;
     border-radius: 5px;
     outline: none;
     font-weight: 400;
