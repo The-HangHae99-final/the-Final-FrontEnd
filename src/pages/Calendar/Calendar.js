@@ -50,7 +50,7 @@ const Calender = () => {
   const fetchMyTasks = () => {
     axios({
       method: "get",
-      url: "https://0jun.shop/api/mytask",
+      url: "http://43.200.170.45/api/mytask",
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,
       },
@@ -63,7 +63,7 @@ const Calender = () => {
   const fetchTeamTasks = () => {
     axios({
       method: "post",
-      url: "https://0jun.shop/api/task/team/workSpaceName/all",
+      url: "http://43.200.170.45/api/task/team/workSpaceName/all",
       data: {
         workSpaceName: `${getItemFromLs("workspace")}`,
       },

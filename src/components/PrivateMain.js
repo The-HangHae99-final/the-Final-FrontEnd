@@ -27,11 +27,11 @@ const PrivateMain = () => {
     workSpaceName: "",
     userEmail: "",
   });
+  const [userEmail, setUserEmail] = useState("");
   const [modalOn, setModalOn] = useState(false);
-
   const getWorkSpaceName = getItemFromLs("workspace");
 
-  const handleAddMember = () => {
+  const handleAddMemberModal = () => {
     setModalOn(!modalOn);
   };
 
@@ -39,14 +39,19 @@ const PrivateMain = () => {
     setNewMember({ ...newMember, userEmail: e.target.value });
   };
 
+  const handleUserEmail = (e) => {
+    setUserEmail(e.target.value);
+  };
+
   const closeModal = (e) => {
     setModalOn(!modalOn);
   };
+
   const getNewMember = (e) => {
     e.preventDefault();
     axios({
-      method: "put",
-      url: "https://0jun.shop/api/workSpace/memberAdd/workSpaceName",
+      method: "get",
+      url: "http://43.200.170.45/api/workSpaceInviting",
       data: newMember,
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,
@@ -77,7 +82,7 @@ const PrivateMain = () => {
             <h1>워크스페이스를 선택해주세요!</h1>
           )}
         </div>
-        <button className="main-header-addBtn" onClick={handleAddMember}>
+        <button className="main-header-addBtn" onClick={handleAddMemberModal}>
           <img src={addMemberIcon} alt="addMemberIcon" className="addBtn-img" />
           <span className="addBtn-name">멤버 추가하기</span>
         </button>
@@ -304,9 +309,9 @@ const PrivateMain = () => {
       <ModalPortal>
         {modalOn && (
           <AddMemberModal
-            handleChange={handleChange}
-            onClose={closeModal}
             getNewMember={getNewMember}
+            handleUserEmail={handleUserEmail}
+            onClose={closeModal}
           />
         )}
       </ModalPortal>

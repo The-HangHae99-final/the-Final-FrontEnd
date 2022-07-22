@@ -34,7 +34,7 @@ const Login = () => {
     if (e.target.innerText.includes("이메일")) {
       // 등록된 이메일인지 확인
       axios
-        .post("https://0jun.shop/api/users/email", {
+        .post("http://43.200.170.45/api/users/email", {
           userEmail: loginValue.userEmail,
         })
         .then((response) => {
@@ -49,7 +49,7 @@ const Login = () => {
       setLoading(true);
 
       axios
-        .post("https://0jun.shop/api/users/password", {
+        .post("http://43.200.170.45/api/users/password", {
           userEmail: loginValue.userEmail,
           password: loginValue.password,
         })

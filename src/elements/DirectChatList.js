@@ -12,7 +12,7 @@ const DirectChatList = ({ moveRoom, roomName }) => {
   // 본인을 제외한 유저목록 반환
   useEffect(() => {
     axios({
-      url: `https://0jun.shop/api/member/${workSpaceName}`,
+      url: `http://43.200.170.45/api/member/${workSpaceName}`,
       method: "get",
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,

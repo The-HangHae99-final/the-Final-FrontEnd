@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import ModalPortal from "../../elements/Portal/ModalPortal";
 
-const AddMemberModal = ({ handleChange, getNewMember, onClose }) => {
+const AddMemberModal = ({ handleUserEmail, onClose }) => {
   return (
     <ModalPortal>
       <WorkspaceModalBg>
@@ -12,7 +12,8 @@ const AddMemberModal = ({ handleChange, getNewMember, onClose }) => {
             <div className="input-wrap">
               <input
                 type="text"
-                onChange={handleChange}
+                onChange={(e) => handleUserEmail(e)}
+                // value={addUserEmail}
                 className="create-box_input"
                 placeholder="새로운 팀원을 추가해주세요."
                 name="workSpaceName"

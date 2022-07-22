@@ -74,7 +74,10 @@ const App = () => {
           path="/api/auth/login/naver/callback"
           element={<NaverLoginCallBack />}
         />
-        <Route path="/oauth/kakao/callback" element={<KakaoLoginCallback />} />
+        <Route
+          path="/api/oauth/login/kakao/callback"
+          element={<KakaoLoginCallback />}
+        />
         <Route path="/main/:id" element={<Main />}>
           <Route path="newbie" element={<ScreenForNewbie />} />
           <Route path="private" element={<PrivateMain />} />

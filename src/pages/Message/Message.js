@@ -66,7 +66,7 @@ const Message = () => {
 
   // 훅을 이용해 소켓 관리
   useEffect(() => {
-    setCurrentSocket(socketIOClient("https://0jun.shop/chat"));
+    setCurrentSocket(socketIOClient("http://43.200.170.45/chat"));
   }, []);
 
   return (

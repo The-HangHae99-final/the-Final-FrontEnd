@@ -11,27 +11,27 @@ import styled from "styled-components";
 
 const KakaoLoginCallback = () => {
   const [loading, setLoading] = useState(false);
-
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const getKakaoToken = () => {
     const code = location.search.split("=")[1];
+    console.log(code);
 
     // 인가 코드 서버로 전송
     axios
-      .post(`https://0jun.shop/api/auth/login/kakao/callback`, {
+      .post(`http://43.200.170.45/api/auth/login/kakao/callback`, {
         code: code,
       })
-
       .then((res) => {
         console.log(res);
         const token = res.data;
+
         // 서버가 받아온 유저 정보 조회
         axios
           .post(
-            `https://0jun.shop/api/kakao/member`,
+            `http://43.200.170.45/api/kakao/member`,
             {
               token,
             },
@@ -51,7 +51,7 @@ const KakaoLoginCallback = () => {
 
             axios
               .post(
-                `https://0jun.shop/api/kakao/parsing`,
+                `http://43.200.170.45/api/kakao/parsing`,
                 {
                   user_email,
                   user_name,
