@@ -105,7 +105,7 @@ const Board = () => {
   const [isShown, setIsShown] = useState(false);
   const [titleCharacter, setTitleCharacter] = useState(0);
 
-  // Create board
+  // 보드 생성
   const handleSubmit = (e) => {
     e.preventDefault();
     axios({
@@ -198,7 +198,6 @@ const Board = () => {
     }
   };
 
-  // Choice label
   const handleLabelClick = (e) => {
     const label = e.target.innerText;
     setData({ ...data, label: label });
@@ -208,7 +207,6 @@ const Board = () => {
     setIsShown(!isShown);
   };
 
-  // Detect input value
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData(() => {
@@ -219,7 +217,7 @@ const Board = () => {
     });
   };
 
-  // Read all boards
+  // 보드 리스트 가져오기
   useEffect(() => {
     axios
       .post(
@@ -235,6 +233,7 @@ const Board = () => {
       )
       .then((res) => {
         console.log(res);
+
         // 요청 성공 시
         const allBoardList = res.data.posts;
         setAllBoard(() => {
@@ -259,7 +258,6 @@ const Board = () => {
               break;
             case "done":
               console.log("---done 카테고리---");
-
               setDoneList((prevState) => {
                 return [...doneList, board];
               });

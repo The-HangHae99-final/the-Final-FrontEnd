@@ -21,7 +21,7 @@ const UserProfile = ({
       toTop={toTop}
       alignItems={alignItems}
       onClick={() => {
-        moveRoom(roomName, newRoomName);
+        moveRoom(roomName, newRoomName, text);
         // joinTeamRoom
         //   ? joinTeamRoom()
         //   : setDataForJoin(() => {

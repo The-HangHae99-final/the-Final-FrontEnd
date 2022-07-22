@@ -2,11 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import UserProfile from "../elements/UserProfile";
 import { getItemFromLs } from "../utils/localStorage";
-import { useSelector } from "react-redux";
-import ScrollToBottom, {
-  useScrollToBottom,
-  useSticky,
-} from "react-scroll-to-bottom";
 import topArrow from "../public/img/top-arrow.png";
 import camera from "../public/img/camera.png";
 
@@ -14,10 +9,9 @@ const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
   const [currentMessage, setCurrentMessage] = useState("");
   const username = getItemFromLs("userName");
   const bottomRef = useRef(null);
-  const scrollToBottom = useScrollToBottom();
-  const [sticky] = useSticky();
+
+  // 메시지 보내기
   const sendMessage = async () => {
-    scrollToBottom();
     if (currentMessage !== "") {
       // 접속한 방 이름, 유저이름, 작성한 메시지, 시간을 담은 data 객체
       const messageData = {
@@ -39,19 +33,18 @@ const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
   useEffect(() => {
     // 서버에서 클라로 전송할 데이터 있을 시 그 데이터를 받아 차곡차곡 쌓는다
     socket.on("receive_message", (data) => {
-      console.log(data);
       setMessageList((list) => [...list, data]);
     });
   }, [socket]);
 
-  // 새로운 메시지로 자동 스크롤
   useEffect(() => {
+    // 채팅 목록이 업데이트 될 때마다 스크롤을 내린다
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messageList]);
 
   return (
     <BubbleBoxStyle>
-      <ScrollToBottom className="message-container">
+      <div className="message-container">
         {messageList.length >= 1 ? (
           <>
             {messageList.map((message, idx) => {
@@ -97,8 +90,8 @@ const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
         ) : (
           <div>채팅을 시작해보세요!</div>
         )}
-        <div ref={bottomRef} />
-      </ScrollToBottom>
+      </div>
+      <div ref={bottomRef} />
 
       {/* 채팅 화면의 인풋 섹션*/}
       <Inputwrap>
@@ -128,6 +121,7 @@ const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
     </BubbleBoxStyle>
   );
 };
+
 const BubbleBoxStyle = styled.div`
   height: 86%;
   overflow: scroll;
@@ -137,14 +131,10 @@ const BubbleBoxStyle = styled.div`
   }
 
   .message-container {
-    padding: 30px 42px 30px 55px;
-  }
-
-  .react-scroll-to-bottom--css-tmgdc-1n7m0yu {
+    padding: 15px 48px 70px 48px;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding: 20px 0px;
   }
 
   .bubble {
