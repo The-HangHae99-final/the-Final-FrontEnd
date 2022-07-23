@@ -1,10 +1,10 @@
 import React from "react";
 import ScreenForNewbie from "./ScreenForNewbie";
 
-const PrivateRoute = ({ isNewbie, component: Component }) => {
-  console.log(isNewbie);
+const PrivateRoute = ({ appState, component: Component }) => {
+  console.log(appState);
 
-  return <> {true ? Component : <ScreenForNewbie />}</>;
+  return <> {appState ? Component : <ScreenForNewbie />}</>;
 };
 
 export default PrivateRoute;

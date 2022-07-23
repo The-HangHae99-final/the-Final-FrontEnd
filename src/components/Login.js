@@ -66,7 +66,9 @@ const Login = () => {
               setLoading(false);
               navigate("/main");
             }, 3000);
-            dispatch(login({ user_email: user_email, user_name: user_name }));
+            dispatch(
+              login({ ...user, user_email: user_email, user_name: user_name })
+            );
           }
         })
         .catch((error) => console.log(error));

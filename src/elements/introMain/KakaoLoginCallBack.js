@@ -3,17 +3,19 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { login } from "../../redux/userReducer";
+import { getWorkSpaceList, login } from "../../redux/userReducer";
 import { getItemFromLs, setItemToLs } from "../../utils/localStorage";
 import Spinner from "../Spinner";
 import loginbg from "../../public/img/loginBg.png";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 const KakaoLoginCallback = () => {
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.value);
 
   const getKakaoToken = () => {
     const code = location.search.split("=")[1];

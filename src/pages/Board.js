@@ -37,12 +37,6 @@ function CreateBox({
         <div className="labelIcon-wrap">
           <img src={label} alt="label" className="labelIcon" />
         </div>
-        {/* <input
-          type="text"
-          name="label"
-          placeholder="label"
-          onChange={handleChange}
-        /> */}
 
         <div className="label-wrap">
           <div className="label" onClick={handleLabelClick}>
@@ -81,8 +75,6 @@ function CreateBox({
       <button type="submit" className="submitBtn">
         <span>일정 공유하기</span>
       </button>
-      {/* <button onClick={showCreateBox}>취소하기</button> */}
-      {/* <Human03 size="50px" /> */}
     </CreateBoxStyle>
   );
 }
@@ -132,7 +124,7 @@ const Board = () => {
     });
   }, []);
 
-  // Delete board
+  // 보드 삭제
   const removeBoard = (postId) => {
     if (
       window.confirm(
@@ -164,7 +156,7 @@ const Board = () => {
                 return [...allBoardList];
               });
 
-              // Categorize all board data by the 3 categories
+              // todo, in progress, done 카테고리로 나눠 state에 저장하기
               allBoardList.map((board) => {
                 switch (board.category) {
                   case "todo":
@@ -217,7 +209,7 @@ const Board = () => {
     });
   };
 
-  // 보드 리스트 가져오기
+  // 전체 보드 리스트 가져오기
   useEffect(() => {
     axios
       .post(

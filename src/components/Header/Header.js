@@ -52,11 +52,11 @@ const Header = () => {
     setOpenDropdown(!openDropdown);
   };
 
-  // Add workspace
+  //워크스페이스 추가
   const addNewWorkSpace = (e) => {
     axios
       .post(
-        "http://43.200.170.45/api/workSpace",
+        "https://0jun.shop/api/workSpace",
         { name: workspaceName },
         {
           headers: {
@@ -86,15 +86,16 @@ const Header = () => {
     setWorkspaceName(e.target.value);
   };
 
-  // Get all workspaces i belong to
+  // 유저가 속한 워크스페이스 조회
   useEffect(() => {
     axios
-      .get("http://43.200.170.45/api/workSpace/list", {
+      .get("https://0jun.shop/api/workSpace/list", {
         headers: {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },
       })
       .then((res) => {
+        console.log(res);
         const wsInfoList = res.data.includedList;
         const wsList = wsInfoList.map((a, idx) => a.name);
         dispatch(

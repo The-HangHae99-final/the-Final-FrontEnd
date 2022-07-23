@@ -11,11 +11,17 @@ import styled from "styled-components";
 import boardIcon from "../../public/img/image27.png";
 import calendarIcon from "../../public/img/image25.png";
 import chatIcon from "../../public/img/image26.png";
+import ScreenForNewbie from "../../components/ScreenForNewbie";
 
-const Main = () => {
+// import APP_USER_STATE from './어딘지 모름';
+
+const Main = ({ isNewbieUser }) => {
+  console.log("isNewbieUser: ", isNewbieUser);
   const navigate = useNavigate();
   const params = useParams();
   const id = params.id;
+
+  const REQUIRED_ID = id === undefined || !Number(id);
 
   return (
     <MainStyle>
@@ -38,22 +44,16 @@ const Main = () => {
             </div>
           </div>
           <div className="buttonWrap">
-            <div
-              className="page-navigate-button"
-              onClick={() => navigate(`/main/${id}/calendar`)}
-            >
+            <a className="page-navigate-button" href={`/main/${id}/calendar`}>
               <img
                 src={calendarIcon}
                 alt="calendarIcon"
                 className="calendarIcon"
               />
-            </div>
+            </a>
           </div>
           <div className="buttonWrap">
-            <div
-              className="page-navigate-button"
-              onClick={() => navigate(`/main/${id}/message`)}
-            >
+            <div className="page-navigate-button" href={`/main/${id}/calendar`}>
               <img src={chatIcon} alt="chatIcon" className="chatIcon" />
             </div>
           </div>
@@ -63,12 +63,12 @@ const Main = () => {
       <RightSide>
         <Header />
         <main className="mainStyle">
-          {id !== "undefined" ? (
+          {isNewbieUser ? (
+            <ScreenForNewbie />
+          ) : (
             <>
               <Outlet />
             </>
-          ) : (
-            <div>워크 스페이스에 입장해주세요!</div>
           )}
         </main>
       </RightSide>
