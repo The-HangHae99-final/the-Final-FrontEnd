@@ -17,11 +17,12 @@ import KakaoLoginCallback from "./elements/introMain/KakaoLoginCallBack";
 import PrivateMain from "./components/PrivateMain";
 import ScreenForNewbie from "./components/ScreenForNewbie";
 import Spinner from "./elements/Spinner";
-import isLogin from "./utils/isLogin";
+// import isLogin from "./utils/isLogin";
 import { Navigate } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 import axios from "axios";
 import { getItemFromLs } from "./utils/localStorage";
+import isLogin from "./utils/isLogin";
 
 export const APP_USER_STATE = {
   // NOT_AUTH: "로그인되지 않은 상태",
@@ -32,71 +33,63 @@ export const APP_USER_STATE = {
 
 const App = () => {
   const [appState, setAppState] = useState(APP_USER_STATE.UNKNOWN);
+  console.log("appState: ", appState);
   const isLoading = appState === APP_USER_STATE.UNKNOWN;
   const isNewbieUser = appState === APP_USER_STATE.NEWBIE;
 
+  const token = localStorage.getItem("myToken");
+  console.log("token: ", token);
   const user = useSelector((state) => state.user.value);
   console.log("user: ", user);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setTimeout(() => {
-      try {
-        axios
-          .get("https://0jun.shop/api/work-spaces/lists", {
-            headers: {
-              Authorization: `Bearer ${getItemFromLs("myToken")}`,
-            },
-          })
-          .then((res) => {
-            if (res.data.success) {
-              const wsInfoList = res.data.includedList;
-              const wsList = wsInfoList.map((ws) => ws.name);
-              dispatch(
-                getWorkSpaceList({
-                  ...user,
-                  workSpaceList: [...user.workSpaceList, ...wsList],
-                })
-              );
-              setAppState(
-                wsList.length !== 0
-                  ? APP_USER_STATE.USER
-                  : APP_USER_STATE.NEWBIE
-              );
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } catch {
-        alert(" 불러오는 도중 에러가 발생했습니다 :(");
-      }
-    }, 2000);
-  }, []);
+    if (!user) return;
+    setAppState(() => {
+      return user.workSpaceList.length === 0
+        ? APP_USER_STATE.NEWBIE
+        : APP_USER_STATE.USER;
+    });
+  }, [user]);
 
   return (
     <div>
       <GlobalStyle />
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        {isLogin() ? (
+        <Route
+          path="/"
+          element={
+            isLoading ? <Spinner /> : <Main isNewbieUser={isNewbieUser} />
+          }
+        />
+        <Route path="/main/:id" element={<PrivateMain />}>
+          <Route path="board" element={<Board />} />
+          <Route path="calendar" element={<Calender />} />
+          <Route path="message" element={<Message />} />
+        </Route>
+        <Route path="*" element={<div>No one here..</div>} />
+        {/* <AuthRoute path="/main" element={<Main />}/> */}
+        {/* {isLogin() ? (
           <Route
             path="/main"
             element={
-              isLoading ? (
-                <Spinner />
-              ) : (
-                <PrivateRoute
-                  isNewbieUser={isNewbieUser}
-                  component={<Main />}
-                />
-              )
+              <Main />
+              // isLoading ? (
+              //   <Spinner />
+              // ) : (
+              //   <PrivateRoute
+              //     setAppState={setAppState}
+              //     isNewbieUser={isNewbieUser}
+              //     component={<Main />}
+              //   />
+              // )
             }
           />
         ) : (
-          <Navigate to="/login" />
-        )}
+          <Route path="/main" element={<Spinner />} />
+        )} */}
         {/* // <Navigate to="/login"></Navigate> */}
         {/* <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
