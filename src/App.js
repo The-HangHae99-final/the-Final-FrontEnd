@@ -32,49 +32,48 @@ export const APP_USER_STATE = {
 
 const App = () => {
   const [appState, setAppState] = useState(APP_USER_STATE.UNKNOWN);
-  console.log("appState: ", appState);
-  // const user = useSelector((state) => state.user.value);
-
-  // 앱이 켜진 상태(로그인되지 않은 상태)
-  // 로그인을 시켜줘야 되잖아요 자동으로 해줘야 하니까 (false) -> 렌더링 하지 않음 아무것도 or 로딩
-  // 로그인 데이터 서버에 보내서 로그인 성공 시키고 store 에도 디스패치 하면서 workspaceList 배열 업데이트
-  //
-
-  // 뉴비인지 기존유저인지, 확인 중 상태인지에 따라 true or false
   const isLoading = appState === APP_USER_STATE.UNKNOWN;
-  console.log("isLoading: ", isLoading);
   const isNewbieUser = appState === APP_USER_STATE.NEWBIE;
 
+  const user = useSelector((state) => state.user.value);
+  console.log("user: ", user);
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    axios
-      .get("https://0jun.shop/api/work-spaces/lists", {
-        headers: {
-          Authorization: `Bearer ${getItemFromLs("myToken")}`,
-        },
-      })
-      .then((res) => {
-        if (res.data.success) {
-          const wsInfoList = res.data.includedList;
-          const wsList = wsInfoList.map((ws) => ws.name);
-          console.log("wsList: ", wsList);
-          setAppState(
-            wsList.length !== 0 ? APP_USER_STATE.USER : APP_USER_STATE.NEWBIE
-          );
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    setTimeout(() => {
+      try {
+        axios
+          .get("https://0jun.shop/api/work-spaces/lists", {
+            headers: {
+              Authorization: `Bearer ${getItemFromLs("myToken")}`,
+            },
+          })
+          .then((res) => {
+            if (res.data.success) {
+              const wsInfoList = res.data.includedList;
+              const wsList = wsInfoList.map((ws) => ws.name);
+              dispatch(
+                getWorkSpaceList({
+                  ...user,
+                  workSpaceList: [...user.workSpaceList, ...wsList],
+                })
+              );
+              setAppState(
+                wsList.length !== 0
+                  ? APP_USER_STATE.USER
+                  : APP_USER_STATE.NEWBIE
+              );
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } catch {
+        alert(" 불러오는 도중 에러가 발생했습니다 :(");
+      }
+    }, 2000);
   }, []);
 
-  //   axios.get();
-  //   setTimeout(() => {
-  //     return setAppState(
-  //       user.workSpaceList.length ? APP_USER_STATE.USER : APP_USER_STATE.NEWBIE
-  //     );
-  //   }, 2000);
-  // }, [user, user.initial]);
-  console.log(`isLogin : ${isLogin()}`);
   return (
     <div>
       <GlobalStyle />
