@@ -16,7 +16,7 @@ import sunIcon from "../../public/img/sun.png";
 import bellIcon from "../../public/img/bell.png";
 import ModalPortal from "../../elements/Portal/ModalPortal";
 import WorkspaceModal from "../Modal/WorkspaceModal";
-import { getWorkSpaceList } from "../../redux/userReducer";
+import { getWorkSpaceList, userLogout } from "../../redux/userReducer";
 
 const Header = () => {
   const [openDropdown, setOpenDropdown] = useState(false);
@@ -43,7 +43,7 @@ const Header = () => {
     removeItemFromLs("userName");
     removeItemFromLs("userEmail");
     removeItemFromLs("workspace");
-
+    dispatch(userLogout());
     alert("로그아웃 되었습니다");
     navigate("/");
   };

@@ -19,6 +19,7 @@ export const userSlice = createSlice({
         initial: true,
       };
     },
+    userLogout: () => initialState,
     getWorkSpaceList: (state, action) => {
       state.value = {
         ...action.payload,
@@ -28,6 +29,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { login, getWorkSpaceList } = userSlice.actions;
+export const { login, userLogout, getWorkSpaceList } = userSlice.actions;
 
 export default userSlice.reducer;
