@@ -87,28 +87,27 @@ const Header = () => {
   };
 
   // 유저가 속한 워크스페이스 조회
-  useEffect(() => {
-    axios
-      .get("https://0jun.shop/api/workSpace/list", {
-        headers: {
-          Authorization: `Bearer ${getItemFromLs("myToken")}`,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        const wsInfoList = res.data.includedList;
-        const wsList = wsInfoList.map((a, idx) => a.name);
-        dispatch(
-          getWorkSpaceList({
-            ...user,
-            workSpaceList: [...wsList],
-          })
-        );
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("https://0jun.shop/api/work-spaces/lists", {
+  //       headers: {
+  //         Authorization: `Bearer ${getItemFromLs("myToken")}`,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       const wsInfoList = res.data.includedList;
+  //       const wsList = wsInfoList.map((a, idx) => a.name);
+  //       dispatch(
+  //         getWorkSpaceList({
+  //           ...user,
+  //           workSpaceList: [...wsList],
+  //         })
+  //       );
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
 
   return (
     <>

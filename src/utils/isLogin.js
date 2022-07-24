@@ -1,4 +1,4 @@
-import { getItemFromLs } from "../components/localStorage";
+import { getItemFromLs } from "./localStorage";
 
 const isLogin = () => !!getItemFromLs("myToken");
 

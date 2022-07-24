@@ -6,7 +6,6 @@ import topArrowActive from "../public/img/top-arrow-active.png";
 const ScreenForNewbie = () => {
   let [titleCharacter, setTitleCharacter] = useState(0);
   const [workSpaceName, setWorkSpaceName] = useState("");
-  console.log("workSpaceName: ", workSpaceName);
 
   const handleChange = (e) => {
     const inputValue = e.target.value;

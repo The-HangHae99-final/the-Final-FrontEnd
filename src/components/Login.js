@@ -62,13 +62,13 @@ const Login = () => {
             setItemToLs("myToken", token);
             setItemToLs("userName", user_name);
             setItemToLs("userEmail", user_email);
-            setTimeout(() => {
-              setLoading(false);
-              navigate("/main");
-            }, 3000);
-            dispatch(
-              login({ ...user, user_email: user_email, user_name: user_name })
-            );
+            navigate("/main");
+            // setTimeout(() => {
+            //   setLoading(false);
+            // }, 3000);
+            // dispatch(
+            //   login({ ...user, user_email: user_email, user_name: user_name })
+            // );
           }
         })
         .catch((error) => console.log(error));

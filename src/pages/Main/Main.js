@@ -12,6 +12,7 @@ import boardIcon from "../../public/img/image27.png";
 import calendarIcon from "../../public/img/image25.png";
 import chatIcon from "../../public/img/image26.png";
 import ScreenForNewbie from "../../components/ScreenForNewbie";
+import ScreenForUser from "../../components/ScreenForUser";
 
 // import APP_USER_STATE from './어딘지 모름';
 
@@ -20,8 +21,10 @@ const Main = ({ isNewbieUser }) => {
   const navigate = useNavigate();
   const params = useParams();
   const id = params.id;
+  console.log("id: ", id);
 
-  const REQUIRED_ID = id === undefined || !Number(id);
+  const REQUIRED_ID = id === undefined;
+  console.log("REQUIRED_ID: ", REQUIRED_ID);
 
   return (
     <MainStyle>
@@ -67,7 +70,8 @@ const Main = ({ isNewbieUser }) => {
             <ScreenForNewbie />
           ) : (
             <>
-              <Outlet />
+              <ScreenForUser REQUIRED_ID={REQUIRED_ID} />
+              {/* <Outlet /> */}
             </>
           )}
         </main>
