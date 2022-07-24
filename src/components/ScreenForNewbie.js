@@ -2,10 +2,19 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import topArrow from "../public/img/top-arrow.png";
 import topArrowActive from "../public/img/top-arrow-active.png";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { getWorkSpaceList } from "../redux/userReducer";
+import { getItemFromLs } from "../utils/localStorage";
+import { useNavigate } from "react-router-dom";
 
 const ScreenForNewbie = () => {
-  let [titleCharacter, setTitleCharacter] = useState(0);
+  const [titleCharacter, setTitleCharacter] = useState(0);
   const [workSpaceName, setWorkSpaceName] = useState("");
+
+  const user = useSelector((state) => state.user.value);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const inputValue = e.target.value;
@@ -15,6 +24,30 @@ const ScreenForNewbie = () => {
       }
       return `${inputValue}`;
     });
+  };
+
+  const makeNewWorkSpace = () => {
+    if (workSpaceName !== "") {
+      axios
+        .post(
+          "https://0jun.shop/api/work-spaces",
+          { name: workSpaceName },
+          {
+            headers: {
+              Authorization: `Bearer ${getItemFromLs("myToken")}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          // const newWorkSpaceFullName = res.data.createdWorkSpace.name;
+          navigate("/");
+          // const newWorkSpace = res.data.result.name.split("+")[1];
+          setWorkSpaceName("");
+          setTitleCharacter(0);
+          // alert("새로운 워크스페이스가 만들어졌어요");
+        });
+    }
   };
 
   return (
@@ -34,15 +67,20 @@ const ScreenForNewbie = () => {
               value={workSpaceName || ""}
               onChange={(e) => handleChange(e)}
               maxLength="10"
+              onKeyPress={(e) => {
+                e.key === "Enter" && makeNewWorkSpace();
+              }}
             />
             <div className="input-actions">
               <div className="input-max-length">{titleCharacter}/10</div>
               {titleCharacter >= 1 ? (
-                <img
-                  src={topArrowActive}
-                  alt="topArrowActive"
-                  className="topArrow"
-                />
+                <div className="submit-button">
+                  <img
+                    src={topArrowActive}
+                    alt="topArrowActive"
+                    className="topArrow"
+                  />
+                </div>
               ) : (
                 <img src={topArrow} alt="topArrow" className="topArrow" />
               )}

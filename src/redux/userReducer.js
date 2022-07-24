@@ -21,10 +21,12 @@ export const userSlice = createSlice({
     },
     userLogout: () => initialState,
     getWorkSpaceList: (state, action) => {
-      state.value = {
-        ...action.payload,
-        initial: true,
-      };
+      console.log(action);
+      state.value = action.payload;
+      // {
+      //   ...action.payload,
+      //   initial: true,
+      // };
     },
   },
 });

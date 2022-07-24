@@ -62,13 +62,7 @@ const Login = () => {
             setItemToLs("myToken", token);
             setItemToLs("userName", user_name);
             setItemToLs("userEmail", user_email);
-            navigate("/main");
-            // setTimeout(() => {
-            //   setLoading(false);
-            // }, 3000);
-            // dispatch(
-            //   login({ ...user, user_email: user_email, user_name: user_name })
-            // );
+            navigate("/");
           }
         })
         .catch((error) => console.log(error));
@@ -129,6 +123,13 @@ const Login = () => {
   useEffect(() => {
     inputRef.current.vlaue = "";
   }, [showPwInput]);
+
+  // 로그인 페이지 올떄마다 ls에 저장된 값들을 비워준다
+  useEffect(() => {
+    setItemToLs("myToken", "");
+    setItemToLs("userName", "");
+    setItemToLs("userEmail", "");
+  }, []);
 
   return (
     <LoginBackGround>

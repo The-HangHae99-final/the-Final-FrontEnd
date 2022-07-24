@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import styles from "./main.module.css";
 import Header from "../../components/Header/Header";
 import { Outlet, useParams } from "react-router-dom";
@@ -7,6 +6,9 @@ import Modal from "../../components/Modal";
 import { useNavigate } from "react-router-dom";
 import PrivateMain from "../../components/PrivateMain";
 import styled from "styled-components";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getWorkSpaceList } from "../../redux/userReducer";
 
 import boardIcon from "../../public/img/image27.png";
 import calendarIcon from "../../public/img/image25.png";
@@ -14,17 +16,75 @@ import chatIcon from "../../public/img/image26.png";
 import ScreenForNewbie from "../../components/ScreenForNewbie";
 import ScreenForUser from "../../components/ScreenForUser";
 
-// import APP_USER_STATE from './어딘지 모름';
+import axios from "axios";
+import { getItemFromLs } from "../../utils/localStorage";
 
 const Main = ({ isNewbieUser }) => {
-  console.log("isNewbieUser: ", isNewbieUser);
   const navigate = useNavigate();
   const params = useParams();
   const id = params.id;
-  console.log("id: ", id);
-
   const REQUIRED_ID = id === undefined;
-  console.log("REQUIRED_ID: ", REQUIRED_ID);
+  const user = useSelector((state) => state.user.value);
+  const dispatch = useDispatch();
+  const [workSpaceList, setWorkSpaceList] = useState([]);
+
+  const [workspaceName, setWorkspaceName] = useState("");
+  console.log("workspaceName: ", workspaceName);
+  const [modalOn, setModalOn] = useState(false);
+  console.log("modalOn: ", modalOn);
+
+  const handleWorkSpaceName = (e) => {
+    setWorkspaceName(e.target.value);
+  };
+
+  //워크스페이스 추가
+  const addNewWorkSpace = (e) => {
+    axios
+      .post(
+        "https://0jun.shop/api/work-spaces",
+        { name: workspaceName },
+        {
+          headers: {
+            Authorization: `Bearer ${getItemFromLs("myToken")}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        setWorkspaceName("");
+        setModalOn(!modalOn);
+        alert("새로운 워크스페이스가 만들어졌어요");
+      });
+  };
+  console.log("modalOn: ", modalOn);
+
+  // 소속된 워크스페이스 전체 조회
+  useEffect(() => {
+    try {
+      axios
+        .get("https://0jun.shop/api/work-spaces/lists", {
+          headers: {
+            Authorization: `Bearer ${getItemFromLs("myToken")}`,
+          },
+        })
+        .then((res) => {
+          console.log("res: ", res);
+          if (res.data.success) {
+            const wsInfoList = res.data.includedList;
+            const wsList = wsInfoList.map((ws) => ws.name);
+            setWorkSpaceList([...wsList]);
+            dispatch(
+              getWorkSpaceList({
+                ...user,
+                workSpaceList: [...wsList],
+              })
+            );
+          }
+        });
+    } catch {
+      alert(" 불러오는 도중 에러가 발생했습니다 :(");
+    }
+  }, []);
 
   return (
     <MainStyle>
@@ -64,7 +124,15 @@ const Main = ({ isNewbieUser }) => {
       </LeftSide>
 
       <RightSide>
-        <Header />
+        <Header
+          workSpaceList={workSpaceList}
+          addNewWorkSpace={addNewWorkSpace}
+          workspaceName={workspaceName}
+          setWorkspaceName={setWorkspaceName}
+          handleWorkSpaceName={handleWorkSpaceName}
+          modalOn={modalOn}
+          setModalOn={setModalOn}
+        />
         <main className="mainStyle">
           {isNewbieUser ? (
             <ScreenForNewbie />
@@ -84,6 +152,7 @@ const MainStyle = styled.div`
   height: 100vh;
   display: flex;
 `;
+
 const LeftSide = styled.div`
   background-color: #889aff;
   height: 100%;

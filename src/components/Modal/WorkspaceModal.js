@@ -5,11 +5,11 @@ import ModalPortal from "../../elements/Portal/ModalPortal";
 import { getItemFromLs } from "../../utils/localStorage";
 
 const WorkspaceModal = ({
-  handleChange,
   onClose,
-  workspaceName,
   addNewWorkSpace,
+  workspaceName,
   workSpaceNameMessage,
+  handleWorkSpaceName,
 }) => {
   return (
     <ModalPortal>
@@ -25,7 +25,7 @@ const WorkspaceModal = ({
                 placeholder="워크스페이스 이름을 지어주세요"
                 name="workSpaceName"
                 value={workspaceName || ""}
-                onChange={handleChange}
+                onChange={handleWorkSpaceName}
                 maxLength="10"
               />
               {workSpaceNameMessage !== "" ? (

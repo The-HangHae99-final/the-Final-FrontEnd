@@ -18,16 +18,20 @@ import ModalPortal from "../../elements/Portal/ModalPortal";
 import WorkspaceModal from "../Modal/WorkspaceModal";
 import { getWorkSpaceList, userLogout } from "../../redux/userReducer";
 
-const Header = () => {
+const Header = ({
+  workSpaceList,
+  addNewWorkSpace,
+  workspaceName,
+  setWorkspaceName,
+  handleWorkSpaceName,
+  modalOn,
+  setModalOn,
+}) => {
   const [openDropdown, setOpenDropdown] = useState(false);
-  const [workspaceName, setWorkspaceName] = useState("");
-  const [modalOn, setModalOn] = useState(false);
-  const [workSpaceNameMessage, setWorkSpaceNameMessage] = useState("");
   const dropdownRef = useRef(null);
 
   const username = getItemFromLs("userName");
   const userEmail = getItemFromLs("userEmail");
-  const user = useSelector((state) => state.user.value);
 
   const dispatch = useDispatch();
 
@@ -45,70 +49,20 @@ const Header = () => {
     removeItemFromLs("workspace");
     dispatch(userLogout());
     alert("로그아웃 되었습니다");
-    navigate("/");
+    navigate("/login");
   };
 
   const getWorkspaceList = () => {
     setOpenDropdown(!openDropdown);
   };
 
-  //워크스페이스 추가
-  const addNewWorkSpace = (e) => {
-    axios
-      .post(
-        "https://0jun.shop/api/workSpace",
-        { name: workspaceName },
-        {
-          headers: {
-            Authorization: `Bearer ${getItemFromLs("myToken")}`,
-          },
-        }
-      )
-      .then((res) => {
-        const newWorkSpaceFullName = res.data.createdWorkSpace.name;
-        dispatch(
-          getWorkSpaceList({
-            ...user,
-            workSpaceList: [...user.workSpaceList, newWorkSpaceFullName],
-          })
-        );
-        // const newWorkSpace = res.data.result.name.split("+")[1];
-        setWorkspaceName("");
-        setModalOn(!modalOn);
-        alert("새로운 워크스페이스가 만들어졌어요");
-      });
-  };
-
-  const handleChange = (e) => {
-    if (workspaceName.length >= 10) {
-      setWorkSpaceNameMessage("10글자 이내로 지어주세요!");
-    }
-    setWorkspaceName(e.target.value);
-  };
-
-  // 유저가 속한 워크스페이스 조회
-  // useEffect(() => {
-  //   axios
-  //     .get("https://0jun.shop/api/work-spaces/lists", {
-  //       headers: {
-  //         Authorization: `Bearer ${getItemFromLs("myToken")}`,
-  //       },
-  //     })
-  //     .then((res) => {
-  //       const wsInfoList = res.data.includedList;
-  //       const wsList = wsInfoList.map((a, idx) => a.name);
-  //       dispatch(
-  //         getWorkSpaceList({
-  //           ...user,
-  //           workSpaceList: [...wsList],
-  //         })
-  //       );
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
-
+  // const handleChange = (e) => {
+  //   if (workspaceName.length >= 10) {
+  //     setWorkSpaceNameMessage("10글자 이내로 지어주세요!");
+  //   }
+  //   setWorkSpaceNameMessage("");
+  //   setWorkspaceName(e.target.value);
+  // };
   return (
     <>
       <HeaderStyle>
@@ -159,15 +113,15 @@ const Header = () => {
                 <span className="edit_account">| 편집하기</span>
               </div>
               <WorkspaceList>
-                {user.workSpaceList &&
-                  user.workSpaceList.map((item, idx) => {
+                {workSpaceList &&
+                  workSpaceList.map((item, idx) => {
                     return (
                       <li
                         key={idx}
                         className="workspace-item"
                         onClick={() => {
                           setItemToLs("workspace", item);
-                          navigate(`/main/${idx}/private`);
+                          navigate(`/main/${idx}`);
                           setOpenDropdown(false);
                         }}
                       >
@@ -197,11 +151,13 @@ const Header = () => {
         <ModalPortal>
           {modalOn && (
             <WorkspaceModal
-              handleChange={handleChange}
-              workspaceName={workspaceName}
-              addNewWorkSpace={addNewWorkSpace}
               onClose={handleModal}
-              workSpaceNameMessage={workSpaceNameMessage}
+              addNewWorkSpace={addNewWorkSpace}
+              workspaceName={workspaceName}
+              setWorkspaceName={setWorkspaceName}
+              handleWorkSpaceName={handleWorkSpaceName}
+              modalOn={modalOn}
+              setModalOn={setModalOn}
             />
           )}
         </ModalPortal>
