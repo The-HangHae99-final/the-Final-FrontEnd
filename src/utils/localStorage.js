@@ -1,5 +1,5 @@
-export const setItemToLs = (key, value) => {
-  return localStorage.setItem(key, value);
+export const setItemToLs = async (key, value) => {
+  return await localStorage.setItem(key, value);
 };
 
 export const getItemFromLs = (key) => {

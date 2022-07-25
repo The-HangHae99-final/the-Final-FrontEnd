@@ -62,7 +62,7 @@ const Login = () => {
             setItemToLs("myToken", token);
             setItemToLs("userName", user_name);
             setItemToLs("userEmail", user_email);
-            navigate("/");
+            navigate("/main");
           }
         })
         .catch((error) => console.log(error));

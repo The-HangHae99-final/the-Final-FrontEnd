@@ -17,6 +17,7 @@ import bellIcon from "../../public/img/bell.png";
 import ModalPortal from "../../elements/Portal/ModalPortal";
 import WorkspaceModal from "../Modal/WorkspaceModal";
 import { getWorkSpaceList, userLogout } from "../../redux/userReducer";
+import { getWorkSpaceData } from "../../redux/workSpaceReducer";
 
 const Header = ({
   workSpaceList,
@@ -29,9 +30,13 @@ const Header = ({
 }) => {
   const [openDropdown, setOpenDropdown] = useState(false);
   const dropdownRef = useRef(null);
-
   const username = getItemFromLs("userName");
   const userEmail = getItemFromLs("userEmail");
+  // const [workSpaceName, setWorkSpaceName] = useState(
+  //   getItemFromLs("workspace")
+  // );
+  const worksapce = useSelector((state) => state.workSpace.value);
+  console.log("workSpace_name: ", worksapce);
 
   const dispatch = useDispatch();
 
@@ -63,6 +68,7 @@ const Header = ({
   //   setWorkSpaceNameMessage("");
   //   setWorkspaceName(e.target.value);
   // };
+
   return (
     <>
       <HeaderStyle>
@@ -120,9 +126,15 @@ const Header = ({
                         key={idx}
                         className="workspace-item"
                         onClick={() => {
-                          setItemToLs("workspace", item);
-                          navigate(`/main/${idx}`);
+                          // setItemToLs("workspace", item);
+                          // navigate(`/main/${idx}`);
+                          // setWorkSpaceName(item.split("+")[1]);
                           setOpenDropdown(false);
+                          dispatch(
+                            getWorkSpaceData({
+                              workSpace_name: item.split("+")[1],
+                            })
+                          );
                         }}
                       >
                         <div className="workspace_avatar">

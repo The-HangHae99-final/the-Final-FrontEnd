@@ -34,9 +34,8 @@ const getAlldate = (today, lastDayInThisMonth) => {
   return dates;
 };
 
-const WeakCalendar = () => {
+const WeekCalendar = () => {
   const [dayList, setDayList] = useState();
-  console.log("dayList: ", dayList);
 
   const now = new Date();
   const todayWeak = now.getDay(); // 오늘 요일을 나타낸 숫자
@@ -53,7 +52,7 @@ const WeakCalendar = () => {
     setDayList(getAlldate(today, lastDayInThisMonth));
   }, []);
 
-  return <div>WeakCalendar</div>;
+  return <div>WeekCalendar</div>;
 };
 
-export default WeakCalendar;
+export default WeekCalendar;

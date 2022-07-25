@@ -59,7 +59,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route
-          path="/"
+          path="/main"
           element={
             isLoading ? <Spinner /> : <Main isNewbieUser={isNewbieUser} />
           }

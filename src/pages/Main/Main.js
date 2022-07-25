@@ -138,8 +138,9 @@ const Main = ({ isNewbieUser }) => {
             <ScreenForNewbie />
           ) : (
             <>
-              <ScreenForUser REQUIRED_ID={REQUIRED_ID} />
+              {/* <ScreenForUser REQUIRED_ID={REQUIRED_ID} /> */}
               {/* <Outlet /> */}
+              <PrivateMain />
             </>
           )}
         </main>

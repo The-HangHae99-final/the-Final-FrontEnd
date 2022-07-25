@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-
-import { getItemFromLs } from "../utils/localStorage";
 import AddMemberModal from "./Modal/AddMemberModal";
 import ModalPortal from "../elements/Portal/ModalPortal";
 import axios from "axios";
+import { getItemFromLs, setItemToLs } from "../utils/localStorage";
+import { Outlet, useParams } from "react-router-dom";
+import Header from "./Header/Header";
 
+// 이미지
 import { Human03, Human04 } from "../elements/humanIcon";
-
 import thunder from "../public/img/thunder.png";
 import addMemberIcon from "../public/img/addMemberIcon.png";
 import submitVector from "../public/img/submitVector.png";
@@ -15,21 +16,23 @@ import human01 from "../public/img/human01.png";
 import human02 from "../public/img/human02.png";
 import goldCrown from "../public/img/goldCrown.png";
 import commentIcon from "../public/img/commentIcon.png";
-import Ellipse103 from "../public/img/Ellipse103.png";
 import Ellipse106 from "../public/img/Ellipse106.png";
 import leftArrow from "../public/img/left-arrow.png";
 import rightArrow from "../public/img/right-arrow.png";
-import WeakCalendar from "./Calendar/WeakCalendar";
+import WeekCalendar from "./Calendar/WeekCalendar";
+import { useSelector } from "react-redux";
 
 const PrivateMain = () => {
-  const [workspaceName, setWorkspaceName] = useState("");
   const [newMember, setNewMember] = useState({
     workSpaceName: "",
     userEmail: "",
   });
+  const worksapce = useSelector((state) => state.workSpace.value);
+  console.log("user: ", worksapce.workSpace_name);
   const [userEmail, setUserEmail] = useState("");
   const [modalOn, setModalOn] = useState(false);
-  const getWorkSpaceName = getItemFromLs("workspace");
+  const params = useParams();
+  const id = params.id;
 
   const handleAddMemberModal = () => {
     setModalOn(!modalOn);
@@ -68,16 +71,12 @@ const PrivateMain = () => {
     });
   }, []);
 
-  useEffect(() => {
-    setWorkspaceName(getWorkSpaceName);
-  }, [getWorkSpaceName]);
-
   return (
     <PrivateMainStyle>
       <MainHeader className="MainHeader">
         <div className="main-header-workspace-name">
-          {workspaceName ? (
-            workspaceName.split("+")[1]
+          {worksapce.workSpace_name ? (
+            worksapce.workSpace_name
           ) : (
             <h1>워크스페이스를 선택해주세요!</h1>
           )}
@@ -191,7 +190,7 @@ const PrivateMain = () => {
             </div>
           </LeftTop>
           <div>
-            <WeakCalendar />
+            <WeekCalendar />
           </div>
         </PrivateMainLeft>
         <PrivateMainRight>
