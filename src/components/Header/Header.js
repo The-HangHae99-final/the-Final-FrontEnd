@@ -36,7 +36,9 @@ const Header = ({
   //   getItemFromLs("workspace")
   // );
   const worksapce = useSelector((state) => state.workSpace.value);
-  console.log("workSpace_name: ", worksapce);
+  console.log("worksapce: ", worksapce);
+  const user = useSelector((state) => state.user.value);
+  console.log("user: ", user);
 
   const dispatch = useDispatch();
 
@@ -54,7 +56,7 @@ const Header = ({
     removeItemFromLs("workspace");
     dispatch(userLogout());
     alert("로그아웃 되었습니다");
-    navigate("/login");
+    navigate("/");
   };
 
   const getWorkspaceList = () => {
@@ -119,8 +121,8 @@ const Header = ({
                 <span className="edit_account">| 편집하기</span>
               </div>
               <WorkspaceList>
-                {workSpaceList &&
-                  workSpaceList.map((item, idx) => {
+                {user?.workSpaceList &&
+                  user?.workSpaceList.map((item, idx) => {
                     return (
                       <li
                         key={idx}

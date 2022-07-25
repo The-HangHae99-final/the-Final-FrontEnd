@@ -1,5 +1,5 @@
 // modules
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import GlobalStyle from "./styles/GlobalStyle";
 import { Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,12 +33,23 @@ export const APP_USER_STATE = {
 };
 
 const App = () => {
+  console.log("렌더링");
+  const user = useSelector((state) => state.user.value);
   const [appState, setAppState] = useState(APP_USER_STATE.UNKNOWN);
   const isLoggedIn = appState === APP_USER_STATE.NOT_AUTH;
   const isLoading = appState === APP_USER_STATE.UNKNOWN;
   const isNewbieUser = appState === APP_USER_STATE.NEWBIE;
 
-  const user = useSelector((state) => state.user.value);
+  // lessUpdateAppstate();
+  // const isNewbieUser = useMemo(() => {
+  //   return appState === APP_USER_STATE.NEWBIE;
+  // }, [user?.workSpaceList]);
+
+  console.log("isNewbieUser: ", isNewbieUser);
+  console.log("user: ", user);
+
+  // 유저 값이 업데이트 되야만 isnewbieUser를 바꿔준다.
+  //
 
   useEffect(() => {
     setTimeout(() => {
@@ -64,7 +75,19 @@ const App = () => {
             isLoading ? <Spinner /> : <Main isNewbieUser={isNewbieUser}></Main>
           }
         />
-
+        <Route patj="/main/:id/*" element={<Main />}>
+          {/* <Route path="board" element={<Board />} />
+          <Route path="calendar" element={<Calender />} />
+          <Route path="message" element={<Message />} /> */}
+        </Route>
+        <Route
+          path="/api/auth/login/naver/callback"
+          element={<NaverLoginCallBack />}
+        />
+        <Route
+          path="/api/oauth/login/kakao/callback"
+          element={<KakaoLoginCallback />}
+        />
         {/* <Route path="/board" element={<Board />} />
     <Route path="/calendar" element={<Calender />} />
     <Route path="/message" element={<Message />} />

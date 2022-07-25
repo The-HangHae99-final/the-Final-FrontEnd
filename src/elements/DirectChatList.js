@@ -2,17 +2,20 @@ import React, { useEffect, useState } from "react";
 import UserProfile from "./UserProfile";
 import styled from "styled-components";
 import { getItemFromLs } from "../utils/localStorage";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 const DirectChatList = ({ moveRoom, roomName }) => {
   const [membeList, setMemberList] = useState([]);
-  const workSpaceName = getItemFromLs("workspace");
   const userName = getItemFromLs("userName");
+  const user = useSelector((state) => state.user.value);
+  const worksapce = useSelector((state) => state.workSpace.value);
+  console.log("worksapce: ", worksapce);
 
   // 본인을 제외한 유저목록 반환
   useEffect(() => {
     axios({
-      url: `http://43.200.170.45/api/member/${workSpaceName}`,
+      url: `http://43.200.170.45/api/members/${worksapce.workSpace_name}`,
       method: "get",
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,

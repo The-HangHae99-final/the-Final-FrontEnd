@@ -38,6 +38,8 @@ const Login = () => {
           userEmail: loginValue.userEmail,
         })
         .then((response) => {
+          console.log("response: ", response);
+
           if (response.data.success) {
             setShowPwInput(true);
             inputRef.current.focus();
@@ -54,9 +56,9 @@ const Login = () => {
           password: loginValue.password,
         })
         .then((response) => {
-          const user_name = response.data.name;
-          const user_email = response.data.email;
-
+          console.log("response: ", response);
+          const user_name = response.data.userName;
+          const user_email = response.data.userEmail;
           if (response.data.success) {
             const token = response.data.token;
             setItemToLs("myToken", token);

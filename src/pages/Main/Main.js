@@ -6,7 +6,7 @@ import Modal from "../../components/Modal";
 import { useNavigate } from "react-router-dom";
 import PrivateMain from "../../components/PrivateMain";
 import styled from "styled-components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getWorkSpaceList } from "../../redux/userReducer";
 import { Routes, Route } from "react-router-dom";
@@ -36,6 +36,7 @@ const Main = ({ isNewbieUser, match }) => {
   const user = useSelector((state) => state.user.value);
   const workSpace = useSelector((state) => state.workSpace.value);
   const dispatch = useDispatch();
+  const {} = useParams();
 
   const handleWorkSpaceName = (e) => {
     setWorkspaceName(e.target.value);
@@ -105,7 +106,7 @@ const Main = ({ isNewbieUser, match }) => {
           <div className="buttonWrap">
             <div
               onClick={() => {
-                navigate(`/main/${workSpace.workSpace_name}/board`);
+                navigate(`/main/${encodeURI(workSpace.workSpace_name)}/board`);
               }}
               className="page-navigate-button"
             >
@@ -149,16 +150,26 @@ const Main = ({ isNewbieUser, match }) => {
           modalOn={modalOn}
           setModalOn={setModalOn}
         />
+
         <main className="mainStyle">
           {isNewbieUser ? (
-            <ScreenForNewbie />
+            <ScreenForNewbie
+              // onClose={handleModal}
+              addNewWorkSpace={addNewWorkSpace}
+              workspaceName={workspaceName}
+              setWorkspaceName={setWorkspaceName}
+              handleWorkSpaceName={handleWorkSpaceName}
+              modalOn={modalOn}
+              setModalOn={setModalOn}
+            />
           ) : (
             <>
-              <Route path="/main/:workspaceName" element={<Main />}>
+              <PrivateMain />
+              <Routes>
                 <Route path="board" element={<Board />} />
                 <Route path="calendar" element={<Calender />} />
                 <Route path="message" element={<Message />} />
-              </Route>
+              </Routes>
             </>
           )}
         </main>

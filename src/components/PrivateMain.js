@@ -27,8 +27,7 @@ const PrivateMain = () => {
     workSpaceName: "",
     userEmail: "",
   });
-  const worksapce = useSelector((state) => state.workSpace.value);
-  console.log("user: ", worksapce.workSpace_name);
+  const workSpace = useSelector((state) => state.workSpace.value);
   const [userEmail, setUserEmail] = useState("");
   const [modalOn, setModalOn] = useState(false);
   const params = useParams();
@@ -75,8 +74,8 @@ const PrivateMain = () => {
     <PrivateMainStyle>
       <MainHeader className="MainHeader">
         <div className="main-header-workspace-name">
-          {worksapce.workSpace_name ? (
-            worksapce.workSpace_name
+          {workSpace.workSpace_name ? (
+            workSpace.workSpace_name
           ) : (
             <h1>워크스페이스를 선택해주세요!</h1>
           )}

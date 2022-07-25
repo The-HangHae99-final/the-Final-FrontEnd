@@ -68,7 +68,9 @@ const Message = () => {
   useEffect(() => {
     setCurrentSocket(socketIOClient("http://43.200.170.45/chat"));
   }, []);
-
+  useEffect(() => {
+    console.log(getItemFromLs("workSpace"));
+  }, []);
   return (
     <ChatStyle>
       {currentSocket ? (

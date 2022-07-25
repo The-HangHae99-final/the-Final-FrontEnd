@@ -21,7 +21,6 @@ export const userSlice = createSlice({
     },
     userLogout: () => initialState,
     getWorkSpaceList: (state, action) => {
-      console.log(action);
       state.value = action.payload;
       // {
       //   ...action.payload,

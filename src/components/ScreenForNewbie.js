@@ -7,6 +7,7 @@ import axios from "axios";
 import { getWorkSpaceList } from "../redux/userReducer";
 import { getItemFromLs } from "../utils/localStorage";
 import { useNavigate } from "react-router-dom";
+import ModalPortal from "../elements/Portal/ModalPortal";
 
 const ScreenForNewbie = () => {
   const [titleCharacter, setTitleCharacter] = useState(0);
@@ -51,60 +52,74 @@ const ScreenForNewbie = () => {
   };
 
   return (
-    <ScreenForNewbieStyle>
-      <div className="create-box-container">
-        <div className="create-box-wrap">
-          <div className="create-box_title">New Work Space</div>
-          <div className="create-box_subtitle">
-            워크스페이스의 이름을 지어주세요.
-          </div>
-          <div className="input-wrap">
-            <input
-              type="text"
-              className="create-box_input"
-              placeholder="10글자 내외로 작성해주세요."
-              name="workSpaceName"
-              value={workSpaceName || ""}
-              onChange={(e) => handleChange(e)}
-              maxLength="10"
-              onKeyPress={(e) => {
-                e.key === "Enter" && makeNewWorkSpace();
-              }}
-            />
-            <div className="input-actions">
-              <div className="input-max-length">{titleCharacter}/10</div>
-              {titleCharacter >= 1 ? (
-                <div className="submit-button">
-                  <img
-                    src={topArrowActive}
-                    alt="topArrowActive"
-                    className="topArrow"
-                  />
-                </div>
-              ) : (
-                <img src={topArrow} alt="topArrow" className="topArrow" />
-              )}
+    <WorkspaceModalBg>
+      <WorkspaceModalStyle>
+        <div className="create-box-container">
+          <div className="create-box-wrap">
+            <div className="create-box_title">New Work Space</div>
+            <div className="create-box_subtitle">
+              워크스페이스의 이름을 지어주세요.
             </div>
+            <div className="input-wrap">
+              <input
+                type="text"
+                className="create-box_input"
+                placeholder="10글자 내외로 작성해주세요."
+                name="workSpaceName"
+                value={workSpaceName || ""}
+                onChange={(e) => handleChange(e)}
+                maxLength="10"
+                onKeyPress={(e) => {
+                  e.key === "Enter" && makeNewWorkSpace();
+                }}
+              />
+              <div className="input-actions">
+                <div className="input-max-length">{titleCharacter}/10</div>
+                {titleCharacter >= 1 ? (
+                  <div className="submit-button">
+                    <img
+                      src={topArrowActive}
+                      alt="topArrowActive"
+                      className="topArrow"
+                    />
+                  </div>
+                ) : (
+                  <img src={topArrow} alt="topArrow" className="topArrow" />
+                )}
+              </div>
+            </div>
+            <div className="add-later">나중에 할래요</div>
           </div>
-          <div className="add-later">나중에 할래요</div>
         </div>
-      </div>
-    </ScreenForNewbieStyle>
+      </WorkspaceModalStyle>
+    </WorkspaceModalBg>
   );
 };
 
-const ScreenForNewbieStyle = styled.div`
+const WorkspaceModalBg = styled.div`
   height: 100%;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   text-align: center;
-  z-index: 999;
+  font-size: 50px;
   backdrop-filter: blur(10px);
+  z-index: 999;
+`;
+
+const WorkspaceModalStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 541px;
+  height: 228px;
+  background: #ffffff;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 30px 100px;
 
   .create-box-container {
     width: 434px;
@@ -119,23 +134,23 @@ const ScreenForNewbieStyle = styled.div`
     .create-box-wrap {
       width: 100%;
     }
-  }
 
-  .create-box_title {
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 27px;
-    letter-spacing: -0.02em;
-    color: var(--point-main);
-  }
+    .create-box_title {
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 27px;
+      letter-spacing: -0.02em;
+      color: var(--point-main);
+    }
 
-  .create-box_subtitle {
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: -0.02em;
-    color: #7a858e;
-    margin-bottom: 28px;
+    .create-box_subtitle {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: -0.02em;
+      color: #7a858e;
+      margin-bottom: 28px;
+    }
   }
 
   .input-wrap {
@@ -207,5 +222,20 @@ const ScreenForNewbieStyle = styled.div`
     cursor: pointer;
   }
 `;
+
+/* const ScreenForNewbieStyle = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  top: 0;
+  text-align: center;
+  z-index: 999;
+  backdrop-filter: blur(10px);
+  }
+`; */
 
 export default ScreenForNewbie;
