@@ -1,27 +1,26 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Header from "../components/Header/Header";
-import Signup from "../components/Signup";
-import Login from "../components/Login";
 import Main from "../pages/Main/Main";
 import Board from "../pages/Board";
 import Calender from "../pages/Calendar/Calendar";
 import Message from "../pages/Message/Message";
 import NaverLoginCallBack from "../elements/introMain/NaverLoginCallBack";
 import KakaoLoginCallback from "../elements/introMain/KakaoLoginCallBack";
+import Login from "../components/Login";
+import PrivateMain from "../components/PrivateMain";
 
 const Router = () => {
   return (
     <div>
-      <Header />
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/main/" element={<Main />} />
-        <Route path="/main/:id" element={<Main />} />
-        <Route path="/main/:id/board" element={<Board />} />
-        <Route path="/main/:id/calendar" element={<Calender />} />
-        <Route path="/main/:id/message" element={<Message />} />{" "}
+        {/* <Route path="/main" element={<Main />} /> */}
+        <Route path="/main/:id" element={<Main />}>
+          <Route path="board" element={<Board />} />
+          <Route path="calendar" element={<Calender />} />
+          <Route path="message" element={<Message />} />
+        </Route>
         <Route
           path="/api/auth/login/naver/callback/*"
           element={<NaverLoginCallBack />}

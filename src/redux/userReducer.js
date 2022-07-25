@@ -4,7 +4,7 @@ const initialState = {
   user_name: "",
   user_email: "",
   workSpaceList: [],
-  initial: false,
+  loaded: false,
 };
 
 export const userSlice = createSlice({

@@ -38,8 +38,6 @@ const Login = () => {
           userEmail: loginValue.userEmail,
         })
         .then((response) => {
-          console.log("response: ", response);
-
           if (response.data.success) {
             setShowPwInput(true);
             inputRef.current.focus();
@@ -56,7 +54,6 @@ const Login = () => {
           password: loginValue.password,
         })
         .then((response) => {
-          console.log("response: ", response);
           const user_name = response.data.userName;
           const user_email = response.data.userEmail;
           if (response.data.success) {

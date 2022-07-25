@@ -22,21 +22,29 @@ import Calender from "../Calendar/Calendar";
 
 import axios from "axios";
 import { getItemFromLs, setItemToLs } from "../../utils/localStorage";
+import Spinner from "../../elements/Spinner";
 
-const Main = ({ isNewbieUser, match }) => {
-  console.log("match: ", match);
-  const [workSpaceList, setWorkSpaceList] = useState([]);
+const APP_USER_STATE = {
+  NOT_AUTH: "로그인되지 않은 상태",
+  UNKNOWN: "모름",
+  NEWBIE: "워크스페이스가_없는_유저",
+  USER: "워크스페이스가_있는_유저",
+};
+
+const Main = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [workspaceName, setWorkspaceName] = useState("");
   const [modalOn, setModalOn] = useState(false);
+  const [workSpaceList, setWorkSpaceList] = useState([]);
+  console.log("isLoading: ", isLoading);
 
   const navigate = useNavigate();
   const params = useParams();
   const id = params.id;
-  const REQUIRED_ID = id === undefined;
+  // const REQUIRED_ID = id === undefined;
   const user = useSelector((state) => state.user.value);
   const workSpace = useSelector((state) => state.workSpace.value);
   const dispatch = useDispatch();
-  const {} = useParams();
 
   const handleWorkSpaceName = (e) => {
     setWorkspaceName(e.target.value);
@@ -80,6 +88,7 @@ const Main = ({ isNewbieUser, match }) => {
               getWorkSpaceList({
                 ...user,
                 workSpaceList: [...wsList],
+                loaded: true,
               })
             );
           }
@@ -92,6 +101,12 @@ const Main = ({ isNewbieUser, match }) => {
   useEffect(() => {
     setItemToLs("workSpace", workSpace.workSpace_name);
   }, [workSpace]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, [user?.loaded]);
 
   return (
     <MainStyle>
@@ -106,7 +121,7 @@ const Main = ({ isNewbieUser, match }) => {
           <div className="buttonWrap">
             <div
               onClick={() => {
-                navigate(`/main/${encodeURI(workSpace.workSpace_name)}/board`);
+                navigate(`/main/${workSpace.workSpace_name}/board`);
               }}
               className="page-navigate-button"
             >
@@ -150,9 +165,9 @@ const Main = ({ isNewbieUser, match }) => {
           modalOn={modalOn}
           setModalOn={setModalOn}
         />
-
         <main className="mainStyle">
-          {isNewbieUser ? (
+          {isLoading ? <Spinner /> : <Outlet />}
+          {/* {isNewbieUser ? (
             <ScreenForNewbie
               // onClose={handleModal}
               addNewWorkSpace={addNewWorkSpace}
@@ -171,7 +186,7 @@ const Main = ({ isNewbieUser, match }) => {
                 <Route path="message" element={<Message />} />
               </Routes>
             </>
-          )}
+          )} */}
         </main>
       </RightSide>
     </MainStyle>

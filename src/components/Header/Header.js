@@ -36,9 +36,7 @@ const Header = ({
   //   getItemFromLs("workspace")
   // );
   const worksapce = useSelector((state) => state.workSpace.value);
-  console.log("worksapce: ", worksapce);
   const user = useSelector((state) => state.user.value);
-  console.log("user: ", user);
 
   const dispatch = useDispatch();
 
@@ -132,11 +130,13 @@ const Header = ({
                           // navigate(`/main/${idx}`);
                           // setWorkSpaceName(item.split("+")[1]);
                           setOpenDropdown(false);
+                          setOpenDropdown(false);
                           dispatch(
                             getWorkSpaceData({
                               workSpace_name: item.split("+")[1],
                             })
                           );
+                          navigate(`/main/${idx}`);
                         }}
                       >
                         <div className="workspace_avatar">
