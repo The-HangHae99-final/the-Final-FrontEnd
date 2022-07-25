@@ -41,7 +41,7 @@ const ScreenForNewbie = () => {
         .then((res) => {
           console.log(res);
           // const newWorkSpaceFullName = res.data.createdWorkSpace.name;
-          navigate("/");
+          window.location.reload();
           // const newWorkSpace = res.data.result.name.split("+")[1];
           setWorkSpaceName("");
           setTitleCharacter(0);

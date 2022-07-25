@@ -9,29 +9,33 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getWorkSpaceList } from "../../redux/userReducer";
+import { Routes, Route } from "react-router-dom";
 
 import boardIcon from "../../public/img/image27.png";
 import calendarIcon from "../../public/img/image25.png";
 import chatIcon from "../../public/img/image26.png";
 import ScreenForNewbie from "../../components/ScreenForNewbie";
 import ScreenForUser from "../../components/ScreenForUser";
+import Message from "../Message/Message";
+import Board from "../Board";
+import Calender from "../Calendar/Calendar";
 
 import axios from "axios";
-import { getItemFromLs } from "../../utils/localStorage";
+import { getItemFromLs, setItemToLs } from "../../utils/localStorage";
 
-const Main = ({ isNewbieUser }) => {
+const Main = ({ isNewbieUser, match }) => {
+  console.log("match: ", match);
+  const [workSpaceList, setWorkSpaceList] = useState([]);
+  const [workspaceName, setWorkspaceName] = useState("");
+  const [modalOn, setModalOn] = useState(false);
+
   const navigate = useNavigate();
   const params = useParams();
   const id = params.id;
   const REQUIRED_ID = id === undefined;
   const user = useSelector((state) => state.user.value);
+  const workSpace = useSelector((state) => state.workSpace.value);
   const dispatch = useDispatch();
-  const [workSpaceList, setWorkSpaceList] = useState([]);
-
-  const [workspaceName, setWorkspaceName] = useState("");
-  console.log("workspaceName: ", workspaceName);
-  const [modalOn, setModalOn] = useState(false);
-  console.log("modalOn: ", modalOn);
 
   const handleWorkSpaceName = (e) => {
     setWorkspaceName(e.target.value);
@@ -56,7 +60,6 @@ const Main = ({ isNewbieUser }) => {
         alert("새로운 워크스페이스가 만들어졌어요");
       });
   };
-  console.log("modalOn: ", modalOn);
 
   // 소속된 워크스페이스 전체 조회
   useEffect(() => {
@@ -72,7 +75,6 @@ const Main = ({ isNewbieUser }) => {
           if (res.data.success) {
             const wsInfoList = res.data.includedList;
             const wsList = wsInfoList.map((ws) => ws.name);
-            setWorkSpaceList([...wsList]);
             dispatch(
               getWorkSpaceList({
                 ...user,
@@ -85,6 +87,10 @@ const Main = ({ isNewbieUser }) => {
       alert(" 불러오는 도중 에러가 발생했습니다 :(");
     }
   }, []);
+
+  useEffect(() => {
+    setItemToLs("workSpace", workSpace.workSpace_name);
+  }, [workSpace]);
 
   return (
     <MainStyle>
@@ -99,7 +105,7 @@ const Main = ({ isNewbieUser }) => {
           <div className="buttonWrap">
             <div
               onClick={() => {
-                navigate(`/main/${id}/board`);
+                navigate(`/main/${workSpace.workSpace_name}/board`);
               }}
               className="page-navigate-button"
             >
@@ -107,16 +113,26 @@ const Main = ({ isNewbieUser }) => {
             </div>
           </div>
           <div className="buttonWrap">
-            <a className="page-navigate-button" href={`/main/${id}/calendar`}>
+            <div
+              className="page-navigate-button"
+              onClick={() =>
+                navigate(`/main/${workSpace.workSpace_name}/calendar`)
+              }
+            >
               <img
                 src={calendarIcon}
                 alt="calendarIcon"
                 className="calendarIcon"
               />
-            </a>
+            </div>
           </div>
           <div className="buttonWrap">
-            <div className="page-navigate-button" href={`/main/${id}/calendar`}>
+            <div
+              className="page-navigate-button"
+              onClick={() =>
+                navigate(`/main/${workSpace.workSpace_name}/message`)
+              }
+            >
               <img src={chatIcon} alt="chatIcon" className="chatIcon" />
             </div>
           </div>
@@ -138,9 +154,11 @@ const Main = ({ isNewbieUser }) => {
             <ScreenForNewbie />
           ) : (
             <>
-              {/* <ScreenForUser REQUIRED_ID={REQUIRED_ID} /> */}
-              {/* <Outlet /> */}
-              <PrivateMain />
+              <Route path="/main/:workspaceName" element={<Main />}>
+                <Route path="board" element={<Board />} />
+                <Route path="calendar" element={<Calender />} />
+                <Route path="message" element={<Message />} />
+              </Route>
             </>
           )}
         </main>
@@ -249,10 +267,5 @@ const RightSide = styled.div`
     overflow: hidden;
   }
 `;
-// const SectionWrap = styled.div``;
-// const SectionWrap = styled.div``;
-// const SectionWrap = styled.div``;
-// const SectionWrap = styled.div``;
-// const SectionWrap = styled.div``;
 
 export default Main;
