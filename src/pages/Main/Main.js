@@ -1,6 +1,6 @@
 import styles from "./main.module.css";
 import Header from "../../components/Header/Header";
-import { Outlet, useParams } from "react-router-dom";
+import { Link, Outlet, useParams } from "react-router-dom";
 import LoginModal from "../../elements/LoginModal";
 import Modal from "../../components/Modal";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +19,7 @@ import ScreenForUser from "../../components/ScreenForUser";
 import Message from "../Message/Message";
 import Board from "../Board";
 import Calender from "../Calendar/Calendar";
+import logo from "../../public/img/Main/logo_white.png";
 
 import axios from "axios";
 import { getItemFromLs, setItemToLs } from "../../utils/localStorage";
@@ -32,7 +33,7 @@ const APP_USER_STATE = {
 };
 
 const Main = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [workspaceName, setWorkspaceName] = useState("");
   const [workSpaceList, setWorkSpaceList] = useState([]);
 
@@ -77,20 +78,18 @@ const Main = () => {
   }, [workSpace]);
 
   useEffect(() => {
+    setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
-  }, [user?.loaded]);
+  }, []);
 
   return (
     <MainStyle>
       <LeftSide>
-        <div
-          className="logo"
-          onClick={() => {
-            navigate(`/main`);
-          }}
-        ></div>
+        <Link to="/main">
+          <img src={logo} alt="logo" className="logo" />
+        </Link>
         <div className="buttons">
           <div className="buttonWrap">
             <div
@@ -130,8 +129,15 @@ const Main = () => {
       </LeftSide>
 
       <RightSide>
+        <Header />
         <main className="mainStyle">
-          {isLoading ? <Spinner /> : <PrivateMain />}
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            <>
+              <Outlet />
+            </>
+          )}
           {/* {isNewbieUser ? (
             <ScreenForNewbie
               // onClose={handleModal}
@@ -172,11 +178,8 @@ const LeftSide = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px 0px;
+  padding: 20px 0px;
   box-sizing: border-box;
-  position: absolute;
-  left: 0;
-  top: 0;
 
   .page-navigate-button {
     cursor: pointer;
@@ -198,9 +201,8 @@ const LeftSide = styled.div`
   }
 
   .logo {
-    width: 60px;
-    height: 60px;
-    background-color: white;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
   }
 
