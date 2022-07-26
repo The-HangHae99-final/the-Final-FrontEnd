@@ -3,7 +3,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getWorkSpaceList, login } from "../../redux/userReducer";
+import { getUserInfo, login } from "../../redux/userReducer";
 import { getItemFromLs, setItemToLs } from "../../utils/localStorage";
 import Spinner from "../Spinner";
 import loginbg from "../../public/img/loginBg.png";

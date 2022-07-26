@@ -4,7 +4,7 @@ import topArrow from "../public/img/top-arrow.png";
 import topArrowActive from "../public/img/top-arrow-active.png";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { getWorkSpaceList } from "../redux/userReducer";
+import { getUserInfo } from "../redux/userReducer";
 import { getItemFromLs } from "../utils/localStorage";
 import { useNavigate } from "react-router-dom";
 import ModalPortal from "../elements/Portal/ModalPortal";

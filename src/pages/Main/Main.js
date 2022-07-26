@@ -8,7 +8,7 @@ import PrivateMain from "../../components/PrivateMain";
 import styled from "styled-components";
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getWorkSpaceList } from "../../redux/userReducer";
+import { getUserInfo } from "../../redux/userReducer";
 import { Routes, Route } from "react-router-dom";
 
 import boardIcon from "../../public/img/image27.png";
@@ -59,7 +59,7 @@ const Main = () => {
             const wsList = wsInfoList.map((ws) => ws.workSpace);
             console.log("wsList: ", wsList);
             dispatch(
-              getWorkSpaceList({
+              getUserInfo({
                 ...user,
                 workSpaceList: [...wsList],
                 loaded: true,

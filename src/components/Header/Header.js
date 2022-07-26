@@ -16,13 +16,14 @@ import sunIcon from "../../public/img/sun.png";
 import bellIcon from "../../public/img/bell.png";
 import ModalPortal from "../../elements/Portal/ModalPortal";
 import WorkspaceModal from "../Modal/WorkspaceModal";
-import { getWorkSpaceList, userLogout } from "../../redux/userReducer";
+import { getUserInfo, userLogout } from "../../redux/userReducer";
 import { getWorkSpaceData } from "../../redux/workSpaceReducer";
 
 const Header = () => {
   const [workSpaceName, setWorkSpaceName] = useState("");
   const [modalOn, setModalOn] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
+  const [openNoti, setOpenNoti] = useState(false);
   const dropdownRef = useRef(null);
   const username = getItemFromLs("userName");
   const userEmail = getItemFromLs("userEmail");
@@ -42,14 +43,14 @@ const Header = () => {
     removeItemFromLs("myToken");
     removeItemFromLs("userName");
     removeItemFromLs("userEmail");
-    removeItemFromLs("workspace");
+    removeItemFromLs("workSpace");
     dispatch(userLogout());
     setOpenDropdown(false);
     alert("로그아웃 되었습니다");
     navigate("/");
   };
 
-  const getWorkspaceList = () => {
+  const getUserInfo = () => {
     setOpenDropdown(!openDropdown);
   };
 
@@ -85,6 +86,8 @@ const Header = () => {
       });
   };
 
+  const openNotificationModal = () => {};
+
   return (
     <>
       <HeaderStyle>
@@ -93,7 +96,7 @@ const Header = () => {
             <button className="menuBtn">
               <img src={sunIcon} alt="sun icon" />
             </button>
-            <button className="menuBtn">
+            <button className="menuBtn" onClick={openNotificationModal}>
               <img src={bellIcon} alt="sun icon" />
             </button>
           </div>
@@ -109,7 +112,7 @@ const Header = () => {
                   className={`vector-img-wrap ${
                     openDropdown ? "toBottom" : "toTop"
                   }`}
-                  onClick={getWorkspaceList}
+                  onClick={getUserInfo}
                 >
                   <img src={vector} alt="vector" className="vector-img"></img>
                 </div>

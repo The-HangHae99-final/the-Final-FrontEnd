@@ -4,6 +4,7 @@ const initialState = {
   user_name: "",
   user_email: "",
   workSpaceList: [],
+  invitation: [],
   loaded: false,
 };
 
@@ -20,7 +21,7 @@ export const userSlice = createSlice({
       };
     },
     userLogout: () => initialState,
-    getWorkSpaceList: (state, action) => {
+    getUserInfo: (state, action) => {
       state.value = action.payload;
       // {
       //   ...action.payload,
@@ -30,6 +31,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { login, userLogout, getWorkSpaceList } = userSlice.actions;
+export const { login, userLogout, getUserInfo } = userSlice.actions;
 
 export default userSlice.reducer;
