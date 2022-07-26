@@ -19,6 +19,7 @@ import WorkspaceModal from "../Modal/WorkspaceModal";
 import { getUserInfo, userLogout } from "../../redux/userReducer";
 import { getWorkSpaceData } from "../../redux/workSpaceReducer";
 import reset from "../../redux/workSpaceReducer";
+import NotificationModal from "../Modal/NotificationModal";
 
 const Header = () => {
   const [workSpaceName, setWorkSpaceName] = useState("");
@@ -36,9 +37,13 @@ const Header = () => {
   const worksapce = useSelector((state) => state.workSpace.value);
   console.log("worksapce: ", worksapce);
 
-  const handleModal = (e) => {
+  const handleModal = () => {
     setModalOn(!modalOn);
     setOpenDropdown(false);
+  };
+
+  const closeNoti = () => {
+    setOpenNoti(false);
   };
 
   const logout = () => {
@@ -88,8 +93,8 @@ const Header = () => {
       });
   };
 
-  const openNotificationModal = () => {
-    setOpenNoti(!openNoti);
+  const openNotiModal = () => {
+    setOpenNoti(true);
   };
 
   return (
@@ -100,9 +105,10 @@ const Header = () => {
             <button className="menuBtn">
               <img src={sunIcon} alt="sun icon" />
             </button>
-            <button className="menuBtn" onClick={openNotificationModal}>
+            <button className="menuBtn" onClick={openNotiModal}>
               <img src={bellIcon} alt="sun icon" />
             </button>
+            {openNoti && <NotificationModal onClose={closeNoti} />}
           </div>
           <AboutUser>
             <UserAvatar size="big" width={50} height={50} />
@@ -184,7 +190,7 @@ const Header = () => {
             </li>
           </ul>
         </nav>
-        <ModalPortal>
+        {/* <ModalPortal>
           {modalOn && (
             <WorkspaceModal
               onClose={handleModal}
@@ -196,8 +202,7 @@ const Header = () => {
               setModalOn={setModalOn}
             />
           )}
-          {openNoti && <WorkspaceModal />}
-        </ModalPortal>
+        </ModalPortal> */}
       </HeaderStyle>
     </>
   );

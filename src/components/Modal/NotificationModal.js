@@ -3,55 +3,36 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ModalPortal from "../../elements/Portal/ModalPortal";
 import { getItemFromLs } from "../../utils/localStorage";
+import { useSelector } from "react-redux";
 
-const WorkspaceModal = ({
-  onClose,
-  addNewWorkSpace,
-  setWorkSpaceName,
-  workSpaceNameMessage,
-  handleWorkSpaceName,
-  workSpaceName,
-}) => {
+const NotificationModal = ({ onClose }) => {
+  const user = useSelector((state) => state.user.value);
+  const invitations = user.invitation;
   return (
-    <ModalPortal>
-      <WorkspaceModalBg>
-        <WorkspaceModalStyle>
-          <div className="workspace-create-box-wrap">
-            <div className="workspace-name">New Work Space</div>
-
-            <div className="input-wrap">
-              <input
-                type="text"
-                className="create-box_input"
-                placeholder="워크스페이스 이름을 지어주세요"
-                name="workSpaceName"
-                value={workSpaceName || ""}
-                onChange={handleWorkSpaceName}
-                maxLength="10"
-              />
-              {workSpaceNameMessage !== "" ? (
-                <span className="help-message">{workSpaceNameMessage}</span>
-              ) : null}
-            </div>
-            <div className="active-buttons">
-              <button className="active-button cancel" onClick={onClose}>
-                취소하기
-              </button>
-              <button
-                className="active-button submit"
-                onClick={addNewWorkSpace}
-              >
-                등록하기
-              </button>
-            </div>
+    <NotificationModalBg>
+      <WorkspaceModalStyle>
+        <div className="workspace-create-box-wrap">
+          <div className="workspace-name">Notification</div>
+          <ul>
+            {invitations.map((item, idx) => (
+              <li key={idx} className="noti">
+                From. {item}
+              </li>
+            ))}
+          </ul>
+          <div className="active-buttons">
+            <button className="active-button cancel" onClick={onClose}>
+              뒤로가기
+            </button>
+            <button className="active-button submit">수락하기</button>
           </div>
-        </WorkspaceModalStyle>
-      </WorkspaceModalBg>
-    </ModalPortal>
+        </div>
+      </WorkspaceModalStyle>
+    </NotificationModalBg>
   );
 };
 
-const WorkspaceModalBg = styled.div`
+const NotificationModalBg = styled.div`
   height: 100%;
   width: 100%;
   display: flex;
@@ -127,6 +108,7 @@ const WorkspaceModalStyle = styled.div`
     display: flex;
     justify-content: center;
     gap: 10px;
+    margin-top: 20px;
 
     & > .active-button {
       all: unset;
@@ -148,6 +130,10 @@ const WorkspaceModalStyle = styled.div`
       width: 58%;
     }
   }
+
+  .noti {
+    font-size: 18px;
+  }
 `;
 
-export default WorkspaceModal;
+export default NotificationModal;
