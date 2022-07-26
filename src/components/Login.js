@@ -16,11 +16,10 @@ const Login = () => {
     userEmail: "",
     password: "",
   });
+  console.log("loginValue: ", loginValue);
   const [showPwInput, setShowPwInput] = useState(false);
   const { userEmail, password } = loginValue;
 
-  const user = useSelector((state) => state.user.value);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const inputRef = useRef();
 
@@ -43,17 +42,20 @@ const Login = () => {
             inputRef.current.focus();
           }
         })
-        .catch((error) => console.log(error));
+        .catch((err) => {
+          alert(err.response.data.errorMessage);
+          inputRef.current.focus();
+          setLoginValue({ ...loginValue, userEmail: "" });
+        });
     } else {
       // 입력한 비밀번호가 앞서 입력한 이메일과 매칭되는지 확인
-      setLoading(true);
-
       axios
         .post("http://43.200.170.45/api/users/password", {
           userEmail: loginValue.userEmail,
           password: loginValue.password,
         })
         .then((response) => {
+          console.log("response: ", response);
           const user_name = response.data.userName;
           const user_email = response.data.userEmail;
           if (response.data.success) {
@@ -64,7 +66,11 @@ const Login = () => {
             navigate("/main");
           }
         })
-        .catch((error) => console.log(error));
+        .catch((err) => {
+          alert(err.response.data.errorMessage);
+          inputRef.current.focus();
+          setLoginValue({ ...loginValue, password: "" });
+        });
     }
   };
 
@@ -120,7 +126,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    inputRef.current.vlaue = "";
+    inputRef.current.value = "";
   }, [showPwInput]);
 
   // 로그인 페이지 올떄마다 ls에 저장된 값들을 비워준다
