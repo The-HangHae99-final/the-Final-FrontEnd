@@ -19,33 +19,24 @@ import WorkspaceModal from "../Modal/WorkspaceModal";
 import { getWorkSpaceList, userLogout } from "../../redux/userReducer";
 import { getWorkSpaceData } from "../../redux/workSpaceReducer";
 
-const Header = ({
-  workSpaceList,
-  addNewWorkSpace,
-  workspaceName,
-  setWorkspaceName,
-  handleWorkSpaceName,
-  modalOn,
-  setModalOn,
-}) => {
+const Header = () => {
+  const [workSpaceName, setWorkSpaceName] = useState("");
+  const [modalOn, setModalOn] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
   const dropdownRef = useRef(null);
   const username = getItemFromLs("userName");
   const userEmail = getItemFromLs("userEmail");
-  // const [workSpaceName, setWorkSpaceName] = useState(
-  //   getItemFromLs("workspace")
-  // );
-  const worksapce = useSelector((state) => state.workSpace.value);
-  const user = useSelector((state) => state.user.value);
+  const navigate = useNavigate();
 
+  const user = useSelector((state) => state.user.value);
+  console.log("user: ", user);
   const dispatch = useDispatch();
+  const worksapce = useSelector((state) => state.workSpace.value);
 
   const handleModal = (e) => {
     setModalOn(!modalOn);
     setOpenDropdown(false);
   };
-
-  const navigate = useNavigate();
 
   const logout = () => {
     removeItemFromLs("myToken");
@@ -53,12 +44,17 @@ const Header = ({
     removeItemFromLs("userEmail");
     removeItemFromLs("workspace");
     dispatch(userLogout());
+    setOpenDropdown(false);
     alert("로그아웃 되었습니다");
     navigate("/");
   };
 
   const getWorkspaceList = () => {
     setOpenDropdown(!openDropdown);
+  };
+
+  const handleWorkSpaceName = (e) => {
+    setWorkSpaceName(e.target.value);
   };
 
   // const handleChange = (e) => {
@@ -68,6 +64,26 @@ const Header = ({
   //   setWorkSpaceNameMessage("");
   //   setWorkspaceName(e.target.value);
   // };
+
+  //워크스페이스 추가
+  const addNewWorkSpace = (e) => {
+    axios
+      .post(
+        "https://0jun.shop/api/work-spaces",
+        { workSpaceName: `${getItemFromLs("userEmail")}+${workSpaceName}` },
+        {
+          headers: {
+            Authorization: `Bearer ${getItemFromLs("myToken")}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        setWorkSpaceName("");
+        setModalOn(!modalOn);
+        alert("새로운 워크스페이스가 만들어졌어요");
+      });
+  };
 
   return (
     <>
@@ -130,10 +146,9 @@ const Header = ({
                           // navigate(`/main/${idx}`);
                           // setWorkSpaceName(item.split("+")[1]);
                           setOpenDropdown(false);
-                          setOpenDropdown(false);
                           dispatch(
                             getWorkSpaceData({
-                              workSpace_name: item.split("+")[1],
+                              current_workSpace: item,
                             })
                           );
                           navigate(`/main/${idx}`);
@@ -142,7 +157,7 @@ const Header = ({
                         <div className="workspace_avatar">
                           {item.split("+")[1][0]}
                         </div>
-                        <div className="workspace_name">
+                        <div className="current_workSpace">
                           {item.split("+")[1]}
                         </div>
                       </li>
@@ -167,8 +182,8 @@ const Header = ({
             <WorkspaceModal
               onClose={handleModal}
               addNewWorkSpace={addNewWorkSpace}
-              workspaceName={workspaceName}
-              setWorkspaceName={setWorkspaceName}
+              workSpaceName={workSpaceName}
+              setWorkSpaceName={setWorkSpaceName}
               handleWorkSpaceName={handleWorkSpaceName}
               modalOn={modalOn}
               setModalOn={setModalOn}
@@ -294,7 +309,7 @@ const WorkspaceList = styled.ul`
     color: #7d8bdb;
   }
 
-  .workspace_name {
+  .current_workSpace {
     cursor: pointer;
     font-weight: 400;
     font-size: 14px;

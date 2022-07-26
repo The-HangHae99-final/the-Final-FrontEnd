@@ -89,7 +89,6 @@ const Board = () => {
     category: "todo",
   });
   const [allBoard, setAllBoard] = useState([]);
-  console.log("allBoard: ", allBoard);
   const [todoBoardList, setTodoBoardList] = useState([]);
   const [inProgressList, setInProgressList] = useState([]);
   const [doneList, setDoneList] = useState([]);
@@ -102,7 +101,7 @@ const Board = () => {
     e.preventDefault();
     axios({
       method: "post",
-      url: "http://43.200.170.45/api/post",
+      url: "http://43.200.170.45/api/posts",
       data: data,
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,
@@ -213,7 +212,7 @@ const Board = () => {
   useEffect(() => {
     axios
       .post(
-        "http://43.200.170.45/api/post/all",
+        "http://43.200.170.45/api/posts",
         {
           workSpaceName: getItemFromLs("workspace"),
         },
@@ -228,36 +227,37 @@ const Board = () => {
 
         // 요청 성공 시
         const allBoardList = res.data.posts;
-        setAllBoard(() => {
-          return [...allBoardList];
-        });
+        console.log("allBoardList: ", allBoardList);
+        // setAllBoard(() => {
+        //   return [...allBoardList];
+        // });
 
         // Categorize all board data by the 3 categories
-        allBoardList.map((board) => {
-          switch (board.category) {
-            case "todo":
-              console.log("---todo 카테고리---");
-              setTodoBoardList((prevState) => {
-                return [...prevState, board];
-              });
-              break;
-            case "inProgress":
-              console.log("---inProgress 카테고리---");
+        // allBoardList.map((board) => {
+        //   switch (board.category) {
+        //     case "todo":
+        //       console.log("---todo 카테고리---");
+        //       setTodoBoardList((prevState) => {
+        //         return [...prevState, board];
+        //       });
+        //       break;
+        //     case "inProgress":
+        //       console.log("---inProgress 카테고리---");
 
-              setInProgressList((prevState) => {
-                return [...inProgressList, board];
-              });
-              break;
-            case "done":
-              console.log("---done 카테고리---");
-              setDoneList((prevState) => {
-                return [...doneList, board];
-              });
-              break;
-            default:
-              console.log("데이터를 불러오는데 실패했습니다.");
-          }
-        });
+        //       setInProgressList((prevState) => {
+        //         return [...inProgressList, board];
+        //       });
+        //       break;
+        //     case "done":
+        //       console.log("---done 카테고리---");
+        //       setDoneList((prevState) => {
+        //         return [...doneList, board];
+        //       });
+        //       break;
+        //     default:
+        //       console.log("데이터를 불러오는데 실패했습니다.");
+        //   }
+        // });
       })
       .catch((err) => console.log(err));
   }, []);

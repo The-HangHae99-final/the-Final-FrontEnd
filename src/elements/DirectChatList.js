@@ -15,7 +15,7 @@ const DirectChatList = ({ moveRoom, roomName }) => {
   // 본인을 제외한 유저목록 반환
   useEffect(() => {
     axios({
-      url: `http://43.200.170.45/api/members/${worksapce.workSpace_name}`,
+      url: `http://43.200.170.45/api/members/${worksapce.current_workSpace}`,
       method: "get",
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,

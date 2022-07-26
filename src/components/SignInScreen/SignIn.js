@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
+import logo from "../../public/img/Main/logo.";
+
 const SignIn = () => {
   return (
     <SignInStyle>
@@ -8,8 +10,10 @@ const SignIn = () => {
       <SingInScreen>
         <div className="signin-screen-wrap">
           <div className="signin-top">
-            <div className="logo"></div>
-            <div className="title"></div>
+            <div className="logo">
+              <img src={logo} alt="logo" className="logo" />
+            </div>
+            <div className="title">Sign In</div>
           </div>
         </div>
       </SingInScreen>

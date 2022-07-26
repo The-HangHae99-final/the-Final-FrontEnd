@@ -34,47 +34,20 @@ const APP_USER_STATE = {
 const Main = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [workspaceName, setWorkspaceName] = useState("");
-  const [modalOn, setModalOn] = useState(false);
   const [workSpaceList, setWorkSpaceList] = useState([]);
-  console.log("isLoading: ", isLoading);
 
   const navigate = useNavigate();
   const params = useParams();
-  const id = params.id;
   // const REQUIRED_ID = id === undefined;
   const user = useSelector((state) => state.user.value);
   const workSpace = useSelector((state) => state.workSpace.value);
   const dispatch = useDispatch();
 
-  const handleWorkSpaceName = (e) => {
-    setWorkspaceName(e.target.value);
-  };
-
-  //워크스페이스 추가
-  const addNewWorkSpace = (e) => {
-    axios
-      .post(
-        "https://0jun.shop/api/work-spaces",
-        { name: workspaceName },
-        {
-          headers: {
-            Authorization: `Bearer ${getItemFromLs("myToken")}`,
-          },
-        }
-      )
-      .then((res) => {
-        console.log(res);
-        setWorkspaceName("");
-        setModalOn(!modalOn);
-        alert("새로운 워크스페이스가 만들어졌어요");
-      });
-  };
-
   // 소속된 워크스페이스 전체 조회
   useEffect(() => {
     try {
       axios
-        .get("https://0jun.shop/api/work-spaces/lists", {
+        .get("https://0jun.shop/api/members/spaceLists", {
           headers: {
             Authorization: `Bearer ${getItemFromLs("myToken")}`,
           },
@@ -83,7 +56,8 @@ const Main = () => {
           console.log("res: ", res);
           if (res.data.success) {
             const wsInfoList = res.data.includedList;
-            const wsList = wsInfoList.map((ws) => ws.name);
+            const wsList = wsInfoList.map((ws) => ws.workSpace);
+            console.log("wsList: ", wsList);
             dispatch(
               getWorkSpaceList({
                 ...user,
@@ -99,7 +73,7 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
-    setItemToLs("workSpace", workSpace.workSpace_name);
+    setItemToLs("workSpace", workSpace.current_workSpace);
   }, [workSpace]);
 
   useEffect(() => {
@@ -121,7 +95,7 @@ const Main = () => {
           <div className="buttonWrap">
             <div
               onClick={() => {
-                navigate(`/main/${workSpace.workSpace_name}/board`);
+                navigate(`/main/${workSpace.current_workSpace}/board`);
               }}
               className="page-navigate-button"
             >
@@ -132,7 +106,7 @@ const Main = () => {
             <div
               className="page-navigate-button"
               onClick={() =>
-                navigate(`/main/${workSpace.workSpace_name}/calendar`)
+                navigate(`/main/${workSpace.current_workSpace}/calendar`)
               }
             >
               <img
@@ -146,7 +120,7 @@ const Main = () => {
             <div
               className="page-navigate-button"
               onClick={() =>
-                navigate(`/main/${workSpace.workSpace_name}/message`)
+                navigate(`/main/${workSpace.current_workSpace}/message`)
               }
             >
               <img src={chatIcon} alt="chatIcon" className="chatIcon" />
@@ -156,17 +130,8 @@ const Main = () => {
       </LeftSide>
 
       <RightSide>
-        <Header
-          workSpaceList={workSpaceList}
-          addNewWorkSpace={addNewWorkSpace}
-          workspaceName={workspaceName}
-          setWorkspaceName={setWorkspaceName}
-          handleWorkSpaceName={handleWorkSpaceName}
-          modalOn={modalOn}
-          setModalOn={setModalOn}
-        />
         <main className="mainStyle">
-          {isLoading ? <Spinner /> : <Outlet />}
+          {isLoading ? <Spinner /> : <PrivateMain />}
           {/* {isNewbieUser ? (
             <ScreenForNewbie
               // onClose={handleModal}

@@ -7,9 +7,10 @@ import { getItemFromLs } from "../../utils/localStorage";
 const WorkspaceModal = ({
   onClose,
   addNewWorkSpace,
-  workspaceName,
+  setWorkSpaceName,
   workSpaceNameMessage,
   handleWorkSpaceName,
+  workSpaceName,
 }) => {
   return (
     <ModalPortal>
@@ -24,7 +25,7 @@ const WorkspaceModal = ({
                 className="create-box_input"
                 placeholder="워크스페이스 이름을 지어주세요"
                 name="workSpaceName"
-                value={workspaceName || ""}
+                value={workSpaceName || ""}
                 onChange={handleWorkSpaceName}
                 maxLength="10"
               />

@@ -9,18 +9,19 @@ import NaverLoginCallBack from "../elements/introMain/NaverLoginCallBack";
 import KakaoLoginCallback from "../elements/introMain/KakaoLoginCallBack";
 import Login from "../components/Login";
 import PrivateMain from "../components/PrivateMain";
+import ScreenForNewbie from "../components/ScreenForNewbie";
 
 const Router = () => {
   return (
     <div>
+      <Header />
       <Routes>
         <Route path="/" element={<Login />} />
-        {/* <Route path="/main" element={<Main />} /> */}
-        <Route path="/main/:id" element={<Main />}>
-          <Route path="board" element={<Board />} />
-          <Route path="calendar" element={<Calender />} />
-          <Route path="message" element={<Message />} />
-        </Route>
+        <Route path="/main" element={<ScreenForNewbie />} />
+        <Route path="/main/:workSpaceName" element={<Main />} />
+        <Route path="/main/:workSpaceName/board" element={<Board />} />
+        <Route path="/main/:workSpaceName/calendar" element={<Calender />} />
+        <Route path="/main/:workSpaceName/message" element={<Message />} />
         <Route
           path="/api/auth/login/naver/callback/*"
           element={<NaverLoginCallBack />}

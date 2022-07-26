@@ -23,12 +23,14 @@ import WeekCalendar from "./Calendar/WeekCalendar";
 import { useSelector } from "react-redux";
 
 const PrivateMain = () => {
+  const currentWorkSpace = useSelector((state) => state.workSpace.value);
+  console.log("currentWorkSpace: ", currentWorkSpace.current_workSpace);
+  const workSpace = useSelector((state) => state.workSpace.value);
   const [newMember, setNewMember] = useState({
-    workSpaceName: "",
+    workSpaceName: currentWorkSpace.current_workSpace,
     userEmail: "",
   });
-  const workSpace = useSelector((state) => state.workSpace.value);
-  const [userEmail, setUserEmail] = useState("");
+  console.log("newMember: ", newMember);
   const [modalOn, setModalOn] = useState(false);
   const params = useParams();
   const id = params.id;
@@ -37,47 +39,45 @@ const PrivateMain = () => {
     setModalOn(!modalOn);
   };
 
-  const handleChange = (e) => {
-    setNewMember({ ...newMember, userEmail: e.target.value });
-  };
-
-  const handleUserEmail = (e) => {
-    setUserEmail(e.target.value);
-  };
-
   const closeModal = (e) => {
     setModalOn(!modalOn);
   };
 
-  const getNewMember = (e) => {
-    e.preventDefault();
+  const addNewMember = () => {
     axios({
-      method: "get",
-      url: "http://43.200.170.45/api/workSpaceInviting",
+      method: "post",
+      url: "http://43.200.170.45/api/members/inviting",
       data: newMember,
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,
       },
     })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+      .then((res) => {
+        if (res.data.success) {
+          alert(`${newMember.userEmail}님에게 초대메시지를 보냈습니다`);
+          setModalOn(false);
+        } else {
+          alert(`${res.data.errorMessage}`);
+        }
+      })
+      .catch((err) => alert(`${err.response.data.errorMessage}`));
   };
 
   useEffect(() => {
     setNewMember({
       ...newMember,
-      workSpaceName: `${getItemFromLs("workspace")}`,
+      workSpaceName: currentWorkSpace.current_workSpace,
     });
-  }, []);
+  }, [currentWorkSpace?.current_workSpace]);
 
   return (
     <PrivateMainStyle>
       <MainHeader className="MainHeader">
         <div className="main-header-workspace-name">
-          {workSpace.workSpace_name ? (
-            workSpace.workSpace_name
+          {workSpace.current_workSpace ? (
+            workSpace.current_workSpace.split("+")[1]
           ) : (
-            <h1>워크스페이스를 선택해주세요!</h1>
+            <h1>워크 스페이스를 선택해주세요</h1>
           )}
         </div>
         <button className="main-header-addBtn" onClick={handleAddMemberModal}>
@@ -307,9 +307,10 @@ const PrivateMain = () => {
       <ModalPortal>
         {modalOn && (
           <AddMemberModal
-            getNewMember={getNewMember}
-            handleUserEmail={handleUserEmail}
+            newMember={newMember}
+            setNewMember={setNewMember}
             onClose={closeModal}
+            addNewMember={addNewMember}
           />
         )}
       </ModalPortal>

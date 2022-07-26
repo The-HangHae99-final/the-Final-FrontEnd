@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { getItemFromLs } from "../utils/localStorage";
 
 const initialState = {
-  workSpace_name: "",
+  current_workSpace: "",
 };
 
 export const workSpaceSlice = createSlice({
