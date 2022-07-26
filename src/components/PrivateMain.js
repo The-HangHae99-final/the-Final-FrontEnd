@@ -251,9 +251,7 @@ const PrivateMain = () => {
             </div>
           </LeftTop>
 
-          <div>
-            <WeekCalendar />
-          </div>
+          <WeekCalendar />
         </PrivateMainLeft>
         <PrivateMainRight>
           <ContactWrap>
@@ -603,6 +601,7 @@ const NoticeScreen = styled.div`
   border-radius: 5px;
   height: 91%;
   position: relative;
+  background: #ffffff;
 
   .notification-list {
     height: 100%;
@@ -744,7 +743,6 @@ const ContactWrap = styled.div`
 const MemoWrap = styled.div`
   padding: 20px 30px 38px 30px;
   width: 100%;
-  height: 100%;
 
   .note-screen {
     width: 100%;

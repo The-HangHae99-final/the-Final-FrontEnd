@@ -1,58 +1,133 @@
 import React, { useEffect, useState } from "react";
-
-const getAlldate = (today, lastDayInThisMonth) => {
-  // **일주일 날짜 가져오기**
-  // 1. 일주일 날짜를 넣을 배열을 만들기
-  // 2. 오늘 날짜에서 +6일 까지 보여주기
-  // 3. 마지막날에 닿으면 today를 1로 초기화 시키기
-  // 4. 그게 아니면 그냥 +1일 +2일 ... +6일 한 날짜를 배열에 더하기
-
-  // 오늘(today)이 달의 마지막날(lastDayInThisMonth)보다 커졌을 때 today를 1로 초기화
-  // 예) 오늘이 28일이고 마지막 날짜는 31일인 상황 가정
-  // i = 1 )  28
-  // i = 2 )  29
-  // i = 3 )  30
-  // i = 4 )  31
-  // i = 5 )  32 => 1 (1로 변환!)
-  // i = 6 )  2
-  // [28,29,30,31,32 => 1, 2] 이런 식!
-
-  let dates = [];
-  dates[0] = today;
-  for (let i = 1; i <= 6; i++) {
-    today++;
-
-    if (today > lastDayInThisMonth) {
-      today = 1;
-      // +1일을 한 값이 i가 6이 될 때까지 뒤에 추가된다
-      dates[i] = today;
-    } else {
-      dates[i] = today;
-    }
-  }
-  //  오늘 기준 일주일의 날짜가 담긴 배열을 리턴한다
-  return dates;
-};
+import styled from "styled-components";
 
 const WeekCalendar = () => {
-  const [dayList, setDayList] = useState();
+  const [weekData, setweekData] = useState({
+    date: "",
+    week: [],
+  });
+  const { date, week } = weekData;
 
-  const now = new Date();
-  const todayWeak = now.getDay(); // 오늘 요일을 나타낸 숫자
-  const today = now.getDate(); // 오늘 날짜
-  const month = now.getMonth();
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "March",
+    "April",
+    "May",
+    "Jun",
+    "July",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
 
-  const lastDayInThisMonth = new Date(
-    now.getFullYear(),
-    now.getMonth() + 1,
-    0
-  ).getDate(); // 이번 달 마지막 날짜
+  const M = new Date();
+  const month = M.getMonth();
+  const currentMonth = monthNames[month];
+
+  const makeWeekArr = (date) => {
+    let day = date.getDay();
+    let week = [];
+    for (let i = 0; i < 7; i++) {
+      let newDate = new Date(date.valueOf() + 86400000 * (i - day));
+      week.push([i, newDate]);
+    }
+    return week;
+  };
 
   useEffect(() => {
-    setDayList(getAlldate(today, lastDayInThisMonth));
+    let now = new Date();
+    let date = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    let week = makeWeekArr(date);
+    setweekData({ date, week });
   }, []);
 
-  return <div>WeekCalendar</div>;
+  return (
+    <WeekCalendarStyle>
+      <div className="weekCalendar-container">
+        <div className="calendar-header">
+          <div className="header-month">{currentMonth}</div>
+        </div>
+        <div className="calendar-main">
+          <ul className="week">
+            {week.map((day, idx) => {
+              const d = JSON.stringify(day[1]).split("T")[0].split("-")[2];
+              return (
+                <li
+                  key={idx}
+                  className={
+                    "date-wrap" +
+                    (day[0] === 0 || day[0] === 6 ? " date-weekend" : "")
+                  }
+                >
+                  <div className="date">{d}</div>
+                  <div className="date-content">오늘의 일정</div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
+    </WeekCalendarStyle>
+  );
 };
+
+const WeekCalendarStyle = styled.div`
+  height: 33%;
+  padding: 20px 30px;
+  box-sizing: border-box;
+  background: #ffffff;
+
+  .header-month {
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 33px;
+    margin-bottom: 13px;
+    color: #7d8bdb;
+  }
+
+  .weekCalendar-container {
+    height: 100%;
+  }
+
+  .calendar-main {
+    height: 100%;
+  }
+
+  .week {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    height: 100%;
+    width: 100%;
+  }
+
+  .date-wrap {
+    display: Flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+  .date-weekend {
+    width: 43px;
+  }
+
+  .date {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    color: #353841;
+    text-align: center;
+  }
+
+  .date-content {
+    background: #ffffff;
+    border: 1px solid #ecedf1;
+    height: 100%;
+  }
+`;
 
 export default WeekCalendar;

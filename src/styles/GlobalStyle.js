@@ -24,11 +24,21 @@ const GlobalStyle = createGlobalStyle`
 body{
     font-family: 'Noto Sans KR', sans-serif;
     font-family: 'Poppins', sans-serif;
-
     padding: 0;
         margin: 0;
-        width:100vw;
+        width:100%;
+  box-sizing: border-box;
+  background-color: green;
+
     };
+
+body, html{
+    html,
+      body {
+        width: 100vw;
+        height: 100vh;
+      }
+}
 `;
 
 export default GlobalStyle;
