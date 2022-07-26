@@ -25,7 +25,7 @@ import axios from "axios";
 import { getItemFromLs, setItemToLs } from "../../utils/localStorage";
 import Spinner from "../../elements/Spinner";
 
-const APP_USER_STATE = {
+export const APP_USER_STATE = {
   NOT_AUTH: "로그인되지 않은 상태",
   UNKNOWN: "모름",
   NEWBIE: "워크스페이스가_없는_유저",
@@ -33,13 +33,11 @@ const APP_USER_STATE = {
 };
 
 const Main = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [workspaceName, setWorkspaceName] = useState("");
-  const [workSpaceList, setWorkSpaceList] = useState([]);
-
+  const [appstate, setAppState] = useState(APP_USER_STATE.UNKNOWN);
+  console.log("appstate: ", appstate);
+  const isLoading = appstate === APP_USER_STATE.UNKNOWN;
+  const [openNewbieModal, setOpenNewbieModal] = useState(false);
   const navigate = useNavigate();
-  const params = useParams();
-  // const REQUIRED_ID = id === undefined;
   const user = useSelector((state) => state.user.value);
   const workSpace = useSelector((state) => state.workSpace.value);
   const dispatch = useDispatch();
@@ -54,11 +52,15 @@ const Main = () => {
           },
         })
         .then((res) => {
-          console.log("res: ", res);
           if (res.data.success) {
             const wsInfoList = res.data.includedList;
             const wsList = wsInfoList.map((ws) => ws.workSpace);
-            console.log("wsList: ", wsList);
+            if (wsList.length === 0) {
+              setAppState(APP_USER_STATE.NEWBIE);
+              setOpenNewbieModal(true);
+            } else {
+              setAppState(APP_USER_STATE.USER);
+            }
             dispatch(
               getUserInfo({
                 ...user,
@@ -76,13 +78,6 @@ const Main = () => {
   useEffect(() => {
     setItemToLs("workSpace", workSpace.current_workSpace);
   }, [workSpace]);
-
-  useEffect(() => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  }, []);
 
   return (
     <MainStyle>
@@ -135,7 +130,13 @@ const Main = () => {
             <Spinner />
           ) : (
             <>
-              <Outlet />
+              {appstate === APP_USER_STATE.USER ? (
+                <PrivateMain />
+              ) : (
+                <ScreenForNewbie setAppState={setAppState} />
+              )}
+              {/* Params 값의 유무에 따라 Outlet 렌더링 */}
+              {/* <Outlet /> */}
             </>
           )}
           {/* {isNewbieUser ? (
