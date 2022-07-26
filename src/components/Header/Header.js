@@ -32,10 +32,8 @@ const Header = () => {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user.value);
-  console.log("user: ", user);
   const dispatch = useDispatch();
   const worksapce = useSelector((state) => state.workSpace.value);
-  console.log("worksapce: ", worksapce);
 
   const handleModal = () => {
     setModalOn(!modalOn);

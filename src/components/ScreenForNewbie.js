@@ -8,6 +8,8 @@ import { getUserInfo } from "../redux/userReducer";
 import { getItemFromLs } from "../utils/localStorage";
 import { useNavigate } from "react-router-dom";
 import ModalPortal from "../elements/Portal/ModalPortal";
+
+// 이미지
 import clap from "../public/img/Main/clap.png";
 
 const ScreenForNewbie = () => {

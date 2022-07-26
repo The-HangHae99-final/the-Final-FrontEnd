@@ -1,10 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import AddMemberModal from "./Modal/AddMemberModal";
 import ModalPortal from "../elements/Portal/ModalPortal";
 import axios from "axios";
 import { getItemFromLs, setItemToLs } from "../utils/localStorage";
 import { Outlet, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserInfo } from "../redux/userReducer";
+import WeekCalendar from "./Calendar/WeekCalendar";
 
 // 이미지
 import { Human03, Human04 } from "../elements/humanIcon";
@@ -18,9 +21,7 @@ import commentIcon from "../public/img/commentIcon.png";
 import Ellipse106 from "../public/img/Ellipse106.png";
 import leftArrow from "../public/img/left-arrow.png";
 import rightArrow from "../public/img/right-arrow.png";
-import WeekCalendar from "./Calendar/WeekCalendar";
-import { useDispatch, useSelector } from "react-redux";
-import { getUserInfo } from "../redux/userReducer";
+import commentWhite from "../public/img/Main/comment-white.png";
 
 const PrivateMain = () => {
   const [newMember, setNewMember] = useState({
@@ -29,7 +30,7 @@ const PrivateMain = () => {
   });
   const [modalOn, setModalOn] = useState(false);
   const params = useParams();
-  const id = params.id;
+  const hasParams = !!params.workSpace;
 
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
@@ -122,47 +123,56 @@ const PrivateMain = () => {
             <div className="notice-wrap">
               <div className="wrap-header">
                 <img src={thunder} alt="thunder" className="thunder-icon" />
-                <h3 className="main-wrap-title">Notice</h3>
+                <h3 className="main-wrap-title">공지사항</h3>
               </div>
               <NoticeScreen>
-                <ul className="notification-list">
-                  <li className="notification-item notification-item_yours">
-                    <div className="notification-content">
-                      공지사항 등록하는 공간입니다 공지사항 등록자만 수정가능
-                      삭제는 각자 워크스페이스 내에서 가능
+                {hasParams ? (
+                  <ul className="notification-list">
+                    <li className="notification-item notification-item_yours">
+                      <div className="notification-content">
+                        공지사항 등록하는 공간입니다 공지사항 등록자만 수정가능
+                        삭제는 각자 워크스페이스 내에서 가능
+                      </div>
+                      <Human03
+                        size={50}
+                        position="absolute"
+                        top="-25px"
+                        right="-25px"
+                      />
+                    </li>
+                    <li className="notification-item notification-item_mine">
+                      <div className="notification-content">
+                        공지사항 등록하는 공간입니다 공지사항 등록자만 수정가능
+                        삭제는 각자 워크스페이스 내에서 가능
+                      </div>
+                      <Human04
+                        size={50}
+                        position="absolute"
+                        bottom="-30px"
+                        left="-20px"
+                      />
+                    </li>
+                    <li className="notification-item notification-item_mine">
+                      <div className="notification-content">
+                        공지사항 등록하는 공간입니다 공지사항 등록자만 수정가능
+                        삭제는 각자 워크스페이스 내에서 가능
+                      </div>
+                      <Human04
+                        size={50}
+                        position="absolute"
+                        bottom="-20px"
+                        left="-20px"
+                      />
+                    </li>
+                  </ul>
+                ) : (
+                  <div className="notification-list notification-list_none-params">
+                    <div className="alarm top13">
+                      팀원들에게
+                      <br /> 알릴 내용이 있나요?
                     </div>
-                    <Human03
-                      size={50}
-                      position="absolute"
-                      top="-25px"
-                      right="-25px"
-                    />
-                  </li>
-                  <li className="notification-item notification-item_mine">
-                    <div className="notification-content">
-                      공지사항 등록하는 공간입니다 공지사항 등록자만 수정가능
-                      삭제는 각자 워크스페이스 내에서 가능
-                    </div>
-                    <Human04
-                      size={50}
-                      position="absolute"
-                      bottom="-30px"
-                      left="-20px"
-                    />
-                  </li>
-                  <li className="notification-item notification-item_mine">
-                    <div className="notification-content">
-                      공지사항 등록하는 공간입니다 공지사항 등록자만 수정가능
-                      삭제는 각자 워크스페이스 내에서 가능
-                    </div>
-                    <Human04
-                      size={50}
-                      position="absolute"
-                      bottom="-20px"
-                      left="-20px"
-                    />
-                  </li>
-                </ul>
+                  </div>
+                )}
                 <div className="input-wrap">
                   <input type="text" className="notice-input" />
                   <img
@@ -178,46 +188,69 @@ const PrivateMain = () => {
             <div className="time_tasking-wrap">
               <div className="wrap-header">
                 <img src={thunder} alt="thunder" className="thunder-icon" />
-                <h3 className="main-wrap-title">Time Tasking</h3>
+                <h3 className="main-wrap-title">타임 랭킹</h3>
               </div>
-              <NoticeScreenTime>
-                <div className="time-ranking-card">
-                  <div className="time-ranking-profile">
-                    <img src={goldCrown} alt="goldCrown" className="crown" />
-                    <img src={human01} alt="human01" className="human01" />
-                    <div className="time-ranking_name">김하연</div>
-                  </div>
-                  <div className="time-ranking-text">
-                    일주일 동안 24:53 : 45 시간만큼 접속했어요!
-                  </div>
-                </div>
-              </NoticeScreenTime>
-              <NoticeScreenTime>
-                <div className="time-ranking-card">
-                  <div className="time-ranking-profile">
-                    <img src={goldCrown} alt="goldCrown" className="crown" />
-                    <img src={human01} alt="human01" className="human01" />
-                    <div className="time-ranking_name">김하연</div>
-                  </div>
-                  <div className="time-ranking-text">
-                    일주일 동안 24:53 : 45 시간만큼 접속했어요!
-                  </div>
-                </div>
-              </NoticeScreenTime>
-              <NoticeScreenTime>
-                <div className="time-ranking-card">
-                  <div className="time-ranking-profile">
-                    <img src={goldCrown} alt="goldCrown" className="crown" />
-                    <img src={human01} alt="human01" className="human01" />
-                    <div className="time-ranking_name">김하연</div>
-                  </div>
-                  <div className="time-ranking-text">
-                    일주일 동안 24:53 : 45 시간만큼 접속했어요!
-                  </div>
-                </div>
-              </NoticeScreenTime>
+              <TimeTaskingScreen>
+                {hasParams ? (
+                  <>
+                    <NoticeScreenTime>
+                      <div className="time-ranking-card">
+                        <div className="time-ranking-profile">
+                          <img
+                            src={goldCrown}
+                            alt="goldCrown"
+                            className="crown"
+                          />
+                          <img
+                            src={human01}
+                            alt="human01"
+                            className="human01"
+                          />
+                          <div className="time-ranking_name">김하연</div>
+                        </div>
+                        <div className="time-ranking-text">
+                          일주일 동안 24:53 : 45 시간만큼 접속했어요!
+                        </div>
+                      </div>
+                    </NoticeScreenTime>
+                    <NoticeScreenTime>
+                      <div className="time-ranking-card">
+                        <div className="time-ranking-profile">
+                          <img
+                            src={goldCrown}
+                            alt="goldCrown"
+                            className="crown"
+                          />
+                          <img
+                            src={human01}
+                            alt="human01"
+                            className="human01"
+                          />
+                          <div className="time-ranking_name">김하연</div>
+                        </div>
+                        <div className="time-ranking-text">
+                          일주일 동안 24:53 : 45 시간만큼 접속했어요!
+                        </div>
+                      </div>
+                    </NoticeScreenTime>
+                  </>
+                ) : (
+                  <>
+                    <NoticeScreenTime hasParams={hasParams}>
+                      <div className="alarm">이번주 타임 랭커는?</div>
+                    </NoticeScreenTime>
+                    <NoticeScreenTime hasParams={hasParams}>
+                      <div className="alarm">이번주 타임 랭커는?</div>
+                    </NoticeScreenTime>
+                    <NoticeScreenTime hasParams={hasParams}>
+                      <div className="alarm">이번주 타임 랭커는?</div>
+                    </NoticeScreenTime>
+                  </>
+                )}
+              </TimeTaskingScreen>
             </div>
           </LeftTop>
+
           <div>
             <WeekCalendar />
           </div>
@@ -225,99 +258,134 @@ const PrivateMain = () => {
         <PrivateMainRight>
           <ContactWrap>
             <div className="right-wrap-title contact-title">Contact</div>
-            <div className="contact-screen">
-              <div className="contact-card">
-                <div className="contact-card_profile">
-                  <div className="profile">
-                    <img src={human02} alt="human02" className="human02" />
-                    <img src={Ellipse106} alt="Ellipse106" className="online" />
-                  </div>
-                  <div className="contact-card_name">이형섭</div>
-                </div>
+            <div className="contact-screen" hasparams="false">
+              {hasParams ? (
+                <>
+                  <div className="contact-card">
+                    <div className="contact-card_profile">
+                      <div className="profile">
+                        <img src={human02} alt="human02" className="human02" />
+                        <img
+                          src={Ellipse106}
+                          alt="Ellipse106"
+                          className="online"
+                        />
+                      </div>
+                      <div className="contact-card_name">이형섭</div>
+                    </div>
 
-                <div className="contact-card-toDirect">
-                  다이렉트 채팅하기
-                  <img
-                    src={commentIcon}
-                    alt="commentIcon"
-                    className="commentIcon"
-                  />
-                </div>
-              </div>
-              <div className="contact-card">
-                <div className="contact-card_profile">
-                  <div className="profile">
-                    <img src={human02} alt="human02" className="human02" />
-                    <img src={Ellipse106} alt="Ellipse106" className="online" />
+                    <div className="contact-card-toDirect">
+                      다이렉트 채팅하기
+                      <img
+                        src={commentIcon}
+                        alt="commentIcon"
+                        className="commentIcon"
+                      />
+                    </div>
                   </div>
-                  <div className="contact-card_name">이형섭</div>
-                </div>
+                  <div className="contact-card">
+                    <div className="contact-card_profile">
+                      <div className="profile">
+                        <img src={human02} alt="human02" className="human02" />
+                        <img
+                          src={Ellipse106}
+                          alt="Ellipse106"
+                          className="online"
+                        />
+                      </div>
+                      <div className="contact-card_name">이형섭</div>
+                    </div>
 
-                <div className="contact-card-toDirect">
-                  다이렉트 채팅하기
-                  <img
-                    src={commentIcon}
-                    alt="commentIcon"
-                    className="commentIcon"
-                  />
-                </div>
-              </div>
-              <div className="contact-card">
-                <div className="contact-card_profile">
-                  <div className="profile">
-                    <img src={human02} alt="human02" className="human02" />
-                    <img src={Ellipse106} alt="Ellipse106" className="online" />
+                    <div className="contact-card-toDirect">
+                      다이렉트 채팅하기
+                      <img
+                        src={commentIcon}
+                        alt="commentIcon"
+                        className="commentIcon"
+                      />
+                    </div>
                   </div>
-                  <div className="contact-card_name">이형섭</div>
-                </div>
-                <div className="contact-card-toDirect">
-                  다이렉트 채팅하기
-                  <img
-                    src={commentIcon}
-                    alt="commentIcon"
-                    className="commentIcon"
-                  />
-                </div>
-              </div>
-              <div className="contact-card">
-                <div className="contact-card_profile">
-                  <div className="profile">
-                    <img src={human02} alt="human02" className="human02" />
-                    <img src={Ellipse106} alt="Ellipse106" className="online" />
+                  <div className="contact-card">
+                    <div className="contact-card_profile">
+                      <div className="profile">
+                        <img src={human02} alt="human02" className="human02" />
+                        <img
+                          src={Ellipse106}
+                          alt="Ellipse106"
+                          className="online"
+                        />
+                      </div>
+                      <div className="contact-card_name">이형섭</div>
+                    </div>
+                    <div className="contact-card-toDirect">
+                      다이렉트 채팅하기
+                      <img
+                        src={commentIcon}
+                        alt="commentIcon"
+                        className="commentIcon"
+                      />
+                    </div>
                   </div>
-                  <div className="contact-card_name">이형섭</div>
-                </div>
-                <div className="contact-card-toDirect">
-                  다이렉트 채팅하기
-                  <img
-                    src={commentIcon}
-                    alt="commentIcon"
-                    className="commentIcon"
-                  />
-                </div>
-              </div>
-              <div className="contact-card">
-                <div className="contact-card_profile">
-                  <div className="profile">
-                    <img src={human02} alt="human02" className="human02" />
-                    <img src={Ellipse106} alt="Ellipse106" className="online" />
+                  <div className="contact-card">
+                    <div className="contact-card_profile">
+                      <div className="profile">
+                        <img src={human02} alt="human02" className="human02" />
+                        <img
+                          src={Ellipse106}
+                          alt="Ellipse106"
+                          className="online"
+                        />
+                      </div>
+                      <div className="contact-card_name">이형섭</div>
+                    </div>
+                    <div className="contact-card-toDirect">
+                      다이렉트 채팅하기
+                      <img
+                        src={commentIcon}
+                        alt="commentIcon"
+                        className="commentIcon"
+                      />
+                    </div>
                   </div>
-                  <div className="contact-card_name">이형섭</div>
-                </div>
-                <div className="contact-card-toDirect">
-                  다이렉트 채팅하기
+                  <div className="contact-card">
+                    <div className="contact-card_profile">
+                      <div className="profile">
+                        <img src={human02} alt="human02" className="human02" />
+                        <img
+                          src={Ellipse106}
+                          alt="Ellipse106"
+                          className="online"
+                        />
+                      </div>
+                      <div className="contact-card_name">이형섭</div>
+                    </div>
+                    <div className="contact-card-toDirect">
+                      다이렉트 채팅하기
+                      <img
+                        src={commentIcon}
+                        alt="commentIcon"
+                        className="commentIcon"
+                      />
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
                   <img
-                    src={commentIcon}
-                    alt="commentIcon"
-                    className="commentIcon"
+                    src={commentWhite}
+                    alt="commentWhite"
+                    className="commentWhite"
                   />
-                </div>
-              </div>
+                  <div className="alarm">
+                    함께 하는 팀원의 활동상태를 볼 수 있어요
+                  </div>
+                </>
+              )}
             </div>
           </ContactWrap>
           <MemoWrap>
             <div className="right-wrap-title memo-title">Note</div>
-            <div className="note-screen">바다</div>
+            <div className="note-screen"></div>
             <div className="note-navi-buttons">
               <img
                 src={leftArrow}
@@ -362,6 +430,19 @@ const PrivateMainStyle = styled.div`
   }
   .memo-title {
     margin-bottom: 13px;
+  }
+
+  .alarm {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 26px;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: #cbcbd7;
+  }
+
+  .top13 {
+    transform: translateY(-13px);
   }
 `;
 
@@ -414,6 +495,13 @@ const MainHeader = styled.div`
   }
 `;
 
+const TimeTaskingScreen = styled.div`
+  height: 91%;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+`;
+
 const NoticeScreenTime = styled.div`
   display: flex;
   background: #ffffff;
@@ -422,6 +510,17 @@ const NoticeScreenTime = styled.div`
   padding: 9px 24px;
   margin-bottom: 10px;
   height: 137px;
+
+  ${({ hasparams }) => {
+    if (!hasparams) {
+      return css`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      `;
+    }
+  }}
+
   .time-ranking-card {
     display: flex;
     align-items: center;
@@ -448,6 +547,15 @@ const NoticeScreenTime = styled.div`
 
   .time-ranking_name {
     margin-top: 6px;
+  }
+
+  .time-ranking-text {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: right;
+    letter-spacing: -0.02em;
+    color: #353841;
   }
 `;
 
@@ -494,7 +602,6 @@ const NoticeScreen = styled.div`
   border: 1px solid #ecedf1;
   border-radius: 5px;
   height: 91%;
-  padding: 45px 20px;
   position: relative;
 
   .notification-list {
@@ -505,6 +612,11 @@ const NoticeScreen = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 10px;
+  }
+
+  .notification-list_none-params {
+    justify-content: center;
   }
 
   .notification-item {
@@ -519,9 +631,6 @@ const NoticeScreen = styled.div`
     font-size: 14px;
     line-height: 20px;
     letter-spacing: -0.02em;
-
-    /* light/text */
-
     color: #353841;
   }
 
@@ -574,6 +683,16 @@ const ContactWrap = styled.div`
     height: 221px;
     gap: 13px;
     overflow: scroll;
+
+    ${({ hasParams }) => {
+      if (!hasParams) {
+        return css`
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        `;
+      }
+    }}
   }
 
   .contact-card {
@@ -613,6 +732,12 @@ const ContactWrap = styled.div`
 
   .contact-card_name {
     margin-left: 30px;
+    opacity: 0.5;
+  }
+
+  .commentWhite {
+    width: 34px;
+    height: 32px;
   }
 `;
 
@@ -655,9 +780,4 @@ const MemoWrap = styled.div`
     cursor: pointer;
   }
 `;
-// const PrivateMainStyle = styled.div`
-// `;
-// const PrivateMainStyle = styled.div`
-// `;
-
 export default PrivateMain;

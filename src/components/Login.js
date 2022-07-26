@@ -16,7 +16,6 @@ const Login = () => {
     userEmail: "",
     password: "",
   });
-  console.log("loginValue: ", loginValue);
   const [showPwInput, setShowPwInput] = useState(false);
   const { userEmail, password } = loginValue;
 

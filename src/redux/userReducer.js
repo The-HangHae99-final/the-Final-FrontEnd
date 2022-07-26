@@ -5,7 +5,6 @@ const initialState = {
   user_email: "",
   workSpaceList: [],
   invitation: [],
-  loaded: false,
 };
 
 export const userSlice = createSlice({
