@@ -18,6 +18,7 @@ import ModalPortal from "../../elements/Portal/ModalPortal";
 import WorkspaceModal from "../Modal/WorkspaceModal";
 import { getUserInfo, userLogout } from "../../redux/userReducer";
 import { getWorkSpaceData } from "../../redux/workSpaceReducer";
+import reset from "../../redux/workSpaceReducer";
 
 const Header = () => {
   const [workSpaceName, setWorkSpaceName] = useState("");
@@ -33,6 +34,7 @@ const Header = () => {
   console.log("user: ", user);
   const dispatch = useDispatch();
   const worksapce = useSelector((state) => state.workSpace.value);
+  console.log("worksapce: ", worksapce);
 
   const handleModal = (e) => {
     setModalOn(!modalOn);
@@ -44,7 +46,7 @@ const Header = () => {
     removeItemFromLs("userName");
     removeItemFromLs("userEmail");
     removeItemFromLs("workSpace");
-    dispatch(userLogout());
+    dispatch(reset);
     setOpenDropdown(false);
     alert("로그아웃 되었습니다");
     navigate("/");
@@ -86,7 +88,9 @@ const Header = () => {
       });
   };
 
-  const openNotificationModal = () => {};
+  const openNotificationModal = () => {
+    setOpenNoti(!openNoti);
+  };
 
   return (
     <>
@@ -192,6 +196,7 @@ const Header = () => {
               setModalOn={setModalOn}
             />
           )}
+          {openNoti && <WorkspaceModal />}
         </ModalPortal>
       </HeaderStyle>
     </>

@@ -5,6 +5,10 @@ const initialState = {
   current_workSpace: "",
 };
 
+const rootState = {
+  current_workSpace: "",
+};
+
 export const workSpaceSlice = createSlice({
   name: "workSpace",
   initialState: {
@@ -14,9 +18,12 @@ export const workSpaceSlice = createSlice({
     getWorkSpaceData: (state, action) => {
       state.value = action.payload;
     },
+    reset: (state, action) => {
+      state.value = rootState;
+    },
   },
 });
 
-export const { getWorkSpaceData } = workSpaceSlice.actions;
+export const { getWorkSpaceData, reset } = workSpaceSlice.actions;
 
 export default workSpaceSlice.reducer;
