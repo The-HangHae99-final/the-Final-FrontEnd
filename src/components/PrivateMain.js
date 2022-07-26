@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import AddMemberModal from "./Modal/AddMemberModal";
 import ModalPortal from "../elements/Portal/ModalPortal";
 import axios from "axios";
 import { getItemFromLs, setItemToLs } from "../utils/localStorage";
 import { Outlet, useParams } from "react-router-dom";
-import Header from "./Header/Header";
 
 // 이미지
 import { Human03, Human04 } from "../elements/humanIcon";
@@ -20,20 +19,22 @@ import Ellipse106 from "../public/img/Ellipse106.png";
 import leftArrow from "../public/img/left-arrow.png";
 import rightArrow from "../public/img/right-arrow.png";
 import WeekCalendar from "./Calendar/WeekCalendar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserInfo } from "../redux/userReducer";
 
 const PrivateMain = () => {
-  const currentWorkSpace = useSelector((state) => state.workSpace.value);
-  console.log("currentWorkSpace: ", currentWorkSpace.current_workSpace);
-  const workSpace = useSelector((state) => state.workSpace.value);
   const [newMember, setNewMember] = useState({
-    workSpaceName: currentWorkSpace.current_workSpace,
+    workSpaceName: "",
     userEmail: "",
   });
-  console.log("newMember: ", newMember);
   const [modalOn, setModalOn] = useState(false);
   const params = useParams();
   const id = params.id;
+
+  const user = useSelector((state) => state.user.value);
+  const dispatch = useDispatch();
+  const currentWorkSpace = useSelector((state) => state.workSpace.value);
+  const workSpace = useSelector((state) => state.workSpace.value);
 
   const handleAddMemberModal = () => {
     setModalOn(!modalOn);
@@ -43,6 +44,7 @@ const PrivateMain = () => {
     setModalOn(!modalOn);
   };
 
+  // 멤버 추가하기
   const addNewMember = () => {
     axios({
       method: "post",
@@ -53,6 +55,7 @@ const PrivateMain = () => {
       },
     })
       .then((res) => {
+        console.log("res: ", res);
         if (res.data.success) {
           alert(`${newMember.userEmail}님에게 초대메시지를 보냈습니다`);
           setModalOn(false);
@@ -63,12 +66,39 @@ const PrivateMain = () => {
       .catch((err) => alert(`${err.response.data.errorMessage}`));
   };
 
+  // 본인에게 온 초대 여부 조회
+  useEffect(() => {
+    axios
+      .get(
+        `http://43.200.170.45/api/members/inviting/${getItemFromLs(
+          "userEmail"
+        )}`,
+        {
+          headers: {
+            Authorization: `Bearer ${getItemFromLs("myToken")}`,
+          },
+        }
+      )
+      .then((res) => {
+        if (res.data.success) {
+          dispatch(
+            getUserInfo({
+              ...user,
+              invitation: [...user.invitation, res.data.result],
+            })
+          );
+        }
+      })
+      .catch((err) => console.log(err));
+  }, [currentWorkSpace, currentWorkSpace?.current_workSpace]);
+
+  // 워크스페이스 바꾸면 바로 새 멤버 생성을 위한 데이터 업데이트
   useEffect(() => {
     setNewMember({
       ...newMember,
       workSpaceName: currentWorkSpace.current_workSpace,
     });
-  }, [currentWorkSpace?.current_workSpace]);
+  }, [currentWorkSpace, currentWorkSpace?.current_workSpace]);
 
   return (
     <PrivateMainStyle>

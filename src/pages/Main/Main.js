@@ -174,6 +174,9 @@ const LeftSide = styled.div`
   align-items: center;
   padding: 10px 0px;
   box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  top: 0;
 
   .page-navigate-button {
     cursor: pointer;

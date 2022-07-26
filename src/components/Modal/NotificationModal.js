@@ -18,6 +18,7 @@ const WorkspaceModal = ({
         <WorkspaceModalStyle>
           <div className="workspace-create-box-wrap">
             <div className="workspace-name">New Work Space</div>
+
             <div className="input-wrap">
               <input
                 type="text"
