@@ -31,7 +31,9 @@ const Router = () => {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+
           <Route path="/main" element={<Main />} />
+
           <Route path="/main/:workSpaceName/*" element={<Main />}>
             <Route path="" element={<PrivateMain />} />
             <Route path="board" element={<Board />} />
@@ -55,7 +57,7 @@ const Router = () => {
 };
 
 const RouterStyle = styled.div`
-  width: 1380px;
+  width: 100%;
 `;
 
 export default Router;

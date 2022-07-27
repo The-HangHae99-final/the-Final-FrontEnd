@@ -122,7 +122,7 @@ const PrivateMain = () => {
               </div>
               <NoticeScreen>
                 {hasParams ? (
-                  <ul className="notification-list">
+                  <ul className="notification-list notification-list_has-params">
                     <li className="notification-item notification-item_yours">
                       <div className="notification-content">
                         공지사항 등록하는 공간입니다 공지사항 등록자만 수정가능
@@ -131,7 +131,7 @@ const PrivateMain = () => {
                       <Human03
                         size={50}
                         position="absolute"
-                        top="-25px"
+                        bottom="-25px"
                         right="-25px"
                       />
                     </li>
@@ -144,18 +144,6 @@ const PrivateMain = () => {
                         size={50}
                         position="absolute"
                         bottom="-30px"
-                        left="-20px"
-                      />
-                    </li>
-                    <li className="notification-item notification-item_mine">
-                      <div className="notification-content">
-                        공지사항 등록하는 공간입니다 공지사항 등록자만 수정가능
-                        삭제는 각자 워크스페이스 내에서 가능
-                      </div>
-                      <Human04
-                        size={50}
-                        position="absolute"
-                        bottom="-20px"
                         left="-20px"
                       />
                     </li>
@@ -370,9 +358,9 @@ const PrivateMainStyle = styled.div`
 
 const PrivateMainContainer = styled.div`
   width: 100%;
-  height: 100%;
   display: Flex;
   gap: 20px;
+  height: 100%;
 `;
 
 const MainHeader = styled.div`
@@ -484,6 +472,9 @@ const NoticeScreenTime = styled.div`
 const PrivateMainLeft = styled.div`
   max-width: 820px;
   height: 100%;
+  display: Flex;
+  flex-direction: column;
+  gap: 20px;
 `;
 
 const LeftTop = styled.div`
@@ -528,15 +519,21 @@ const NoticeScreen = styled.div`
   background: #ffffff;
   border: 1px solid #ecedf1;
 
+  .notice-screen-main {
+    background-color: red;
+  }
+
   .notification-list {
     height: 100%;
     display: flex;
     flex-direction: column;
     gap: 35px;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    padding: 10px;
+    padding: 15px 10px;
+  }
+
+  .notification-list_has-params {
   }
 
   .notification-list_none-params {
@@ -544,33 +541,36 @@ const NoticeScreen = styled.div`
   }
 
   .notification-item {
-    padding: 13px 20px;
+    padding: 13px 15px 13px 17px;
     background: #f8f8f9;
     border: 1px solid #7d8bdb;
     border-radius: 20px;
     height: 86px;
     position: relative;
-    width: 94%;
+    width: 83%;
     font-weight: 400;
     font-size: 14px;
     line-height: 20px;
     letter-spacing: -0.02em;
     color: #353841;
+    position: relative;
   }
 
   .notification-item_yours {
+    right: 7px;
   }
 
   .notification-item_mine {
   }
 
   .notice-input {
-    background: rgba(247, 247, 247, 0.5);
+    background: #ecedf1;
     border: 1px solid #ecedf1;
     border-radius: 5px;
     width: 100%;
     height: 100%;
     padding-left: 22px;
+    outline: none;
   }
 
   .input-wrap {

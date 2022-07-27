@@ -464,7 +464,6 @@ const BoardContainer = styled.div`
   width: 100%;
   height: 100%;
   display: Flex;
-  flex-wrap: nowrap;
   gap: 20px;
 
   .boards-list {

@@ -216,6 +216,7 @@ const HeaderStyle = styled.div`
   box-sizing: border-box;
   justify-content: flex-end;
   position: relative;
+  background: #ffffff;
 
   .menuBtns {
     display: flex;

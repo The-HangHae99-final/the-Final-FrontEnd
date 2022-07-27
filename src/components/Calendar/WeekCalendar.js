@@ -63,7 +63,7 @@ const WeekCalendar = () => {
                   }
                 >
                   <div className="date">{d}</div>
-                  <div className="date-content"></div>
+                  <div className="date-content">qweq</div>
                 </li>
               );
             })}
@@ -75,7 +75,6 @@ const WeekCalendar = () => {
 };
 
 const WeekCalendarStyle = styled.div`
-  height: 33%;
   padding: 20px 30px;
   box-sizing: border-box;
   background: #ffffff;
@@ -109,6 +108,7 @@ const WeekCalendarStyle = styled.div`
     flex-direction: column;
     gap: 10px;
     width: 100%;
+    height: 100%;
   }
   .date-weekend {
     width: 43px;
