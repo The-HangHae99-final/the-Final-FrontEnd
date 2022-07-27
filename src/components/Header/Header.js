@@ -32,6 +32,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user.value);
+  console.log("user: ", user);
   const dispatch = useDispatch();
   const worksapce = useSelector((state) => state.workSpace.value);
 
@@ -49,10 +50,11 @@ const Header = () => {
     removeItemFromLs("userName");
     removeItemFromLs("userEmail");
     removeItemFromLs("workSpace");
-    dispatch(reset);
-    setOpenDropdown(false);
-    alert("로그아웃 되었습니다");
-    navigate("/");
+    window.location.replace("/");
+    // dispatch(reset);
+    // setOpenDropdown(false);
+    // alert("로그아웃 되었습니다");
+    // navigate("/");
   };
 
   const getUserInfo = () => {
@@ -84,9 +86,19 @@ const Header = () => {
         }
       )
       .then((res) => {
-        console.log(res);
+        console.log("res: ", res);
+        console.log("res: ", res.data.addedOwner.memberEmail);
+        dispatch(
+          getUserInfo({
+            ...user,
+            workSpaceList: [
+              ...user.workSpaceList,
+              res.data.createdWorkSpace.name,
+            ],
+          })
+        );
         setWorkSpaceName("");
-        setModalOn(!modalOn);
+        window.location.reload();
         alert("새로운 워크스페이스가 만들어졌어요");
       });
   };
@@ -148,6 +160,7 @@ const Header = () => {
               <WorkspaceList>
                 {user?.workSpaceList &&
                   user?.workSpaceList.map((item, idx) => {
+                    console.log("item: ", item?.split("+")[1][0]);
                     return (
                       <li
                         key={idx}
@@ -166,10 +179,10 @@ const Header = () => {
                         }}
                       >
                         <div className="workspace_avatar">
-                          {item.split("+")[1][0]}
+                          {item?.split("+")[1][0]}
                         </div>
                         <div className="current_workSpace">
-                          {item.split("+")[1]}
+                          {item?.split("+")[1]}
                         </div>
                       </li>
                     );
@@ -188,7 +201,7 @@ const Header = () => {
             </li>
           </ul>
         </nav>
-        {/* <ModalPortal>
+        <ModalPortal>
           {modalOn && (
             <WorkspaceModal
               onClose={handleModal}
@@ -200,7 +213,7 @@ const Header = () => {
               setModalOn={setModalOn}
             />
           )}
-        </ModalPortal> */}
+        </ModalPortal>
       </HeaderStyle>
     </>
   );

@@ -70,17 +70,13 @@ const PrivateMain = () => {
   // 본인에게 온 초대 여부 조회
   useEffect(() => {
     axios
-      .get(
-        `http://43.200.170.45/api/members/inviting/${getItemFromLs(
-          "userEmail"
-        )}`,
-        {
-          headers: {
-            Authorization: `Bearer ${getItemFromLs("myToken")}`,
-          },
-        }
-      )
+      .get(`http://43.200.170.45/api/members/inviting`, {
+        headers: {
+          Authorization: `Bearer ${getItemFromLs("myToken")}`,
+        },
+      })
       .then((res) => {
+        console.log("res: ", res);
         if (res.data.success) {
           dispatch(
             getUserInfo({
@@ -602,6 +598,7 @@ const NoticeScreen = styled.div`
   height: 91%;
   position: relative;
   background: #ffffff;
+  border: 1px solid #ecedf1;
 
   .notification-list {
     height: 100%;

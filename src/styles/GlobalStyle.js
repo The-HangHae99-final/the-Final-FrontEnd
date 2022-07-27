@@ -21,6 +21,12 @@ const GlobalStyle = createGlobalStyle`
         margin: 0;
   box-sizing: border-box;
 };
+
+    html,
+      body {
+        width: 100vw;
+        height: 100vh;
+      }
 body{
     font-family: 'Noto Sans KR', sans-serif;
     font-family: 'Poppins', sans-serif;
@@ -28,17 +34,8 @@ body{
         margin: 0;
         width:100%;
   box-sizing: border-box;
-  background-color: green;
 
     };
-
-body, html{
-    html,
-      body {
-        width: 100vw;
-        height: 100vh;
-      }
-}
 `;
 
 export default GlobalStyle;

@@ -22,6 +22,7 @@ const ScreenForNewbie = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // 워크스페이스 생성
   const addNewWorkSpace = () => {
     setShowCreateBox(false);
     setIsLoading(true);
@@ -38,10 +39,18 @@ const ScreenForNewbie = () => {
         )
         .then((res) => {
           console.log("res: ", res);
-          const newWorkSpace = res.data.createdWorkSpace.name.split("+")[1];
           setTimeout(() => {
-            navigate(`/main/${newWorkSpace}`);
             setIsLoading(false);
+            dispatch(
+              getUserInfo({
+                ...user,
+                workSpaceList: [
+                  ...user.workSpaceList,
+                  res.data.createdWorkSpace.name,
+                ],
+              })
+            );
+            window.location.reload();
           }, 2000);
         })
         .catch((err) => console.log(err));

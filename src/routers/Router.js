@@ -11,6 +11,8 @@ import Login from "../components/Login";
 import PrivateMain from "../components/PrivateMain";
 import ScreenForNewbie from "../components/ScreenForNewbie";
 import Spinner from "../elements/Spinner";
+import Signup from "../components/Signup";
+import styled from "styled-components";
 
 const Router = () => {
   const [loading, setLoading] = useState(false);
@@ -22,12 +24,13 @@ const Router = () => {
     }, 1500);
   }, []);
   return (
-    <>
+    <RouterStyle>
       {loading ? (
         <Spinner />
       ) : (
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/main" element={<Main />} />
           <Route path="/main/:workSpaceName/*" element={<Main />}>
             {/* workspace 접속 후 보여질 컴포넌트 workspaceIntro */}
@@ -48,8 +51,12 @@ const Router = () => {
           <Route path="*" element={<div>There's nothing here!</div>} />
         </Routes>
       )}
-    </>
+    </RouterStyle>
   );
 };
+
+const RouterStyle = styled.div`
+  width: 1380px;
+`;
 
 export default Router;

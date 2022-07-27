@@ -18,7 +18,7 @@ const NaverLoginCallBack = () => {
   const getNaverToken = () => {
     const code = location.search.split("=")[1].split("&")[0];
     console.log("-------------1------------code: ", code);
-
+    setLoading(true);
     // 인가 코드 서버로 전송
     axios
       .post(`http://43.200.170.45/api/naver`, {
@@ -53,23 +53,27 @@ const NaverLoginCallBack = () => {
                 token,
               })
               .then((res) => {
-                setItemToLs("myToken", token);
-                setItemToLs("userName", user_name);
-                setItemToLs("userEmail", user_email);
-                setLoading(false);
-                localStorage.setItem("myToken", token);
-                navigate("/main");
-              });
+                if (res.data.success) {
+                  setItemToLs("myToken", token);
+                  setItemToLs("userName", user_name);
+                  setItemToLs("userEmail", user_email);
+                  setLoading(false);
+                  navigate("/main");
+                }
+              })
+              .catch((err) => console.log(err));
           })
 
           .catch((error) => console.log(error));
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
     getNaverToken();
-    setLoading(true);
   }, []);
 
   return <LoginBackGround>{loading && <Spinner />}</LoginBackGround>;

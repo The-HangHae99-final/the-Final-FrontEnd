@@ -36,9 +36,11 @@ const Main = () => {
   const [appstate, setAppState] = useState(APP_USER_STATE.UNKNOWN);
   console.log("appstate: ", appstate);
   const isLoading = appstate === APP_USER_STATE.UNKNOWN;
+  console.log("isLoading: ", isLoading);
   const [openNewbieModal, setOpenNewbieModal] = useState(false);
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.value);
+  console.log("user: ", user);
   const workSpace = useSelector((state) => state.workSpace.value);
   const dispatch = useDispatch();
 
@@ -65,7 +67,6 @@ const Main = () => {
               getUserInfo({
                 ...user,
                 workSpaceList: [...wsList],
-                loaded: true,
               })
             );
           }
@@ -131,34 +132,14 @@ const Main = () => {
           ) : (
             <>
               {appstate === APP_USER_STATE.USER ? (
-                <PrivateMain />
+                <PrivateMain setAppState={setAppState} />
               ) : (
-                <ScreenForNewbie setAppState={setAppState} />
+                <ScreenForNewbie />
               )}
               {/* Params 값의 유무에 따라 Outlet 렌더링 */}
               {/* <Outlet /> */}
             </>
           )}
-          {/* {isNewbieUser ? (
-            <ScreenForNewbie
-              // onClose={handleModal}
-              addNewWorkSpace={addNewWorkSpace}
-              workspaceName={workspaceName}
-              setWorkspaceName={setWorkspaceName}
-              handleWorkSpaceName={handleWorkSpaceName}
-              modalOn={modalOn}
-              setModalOn={setModalOn}
-            />
-          ) : (
-            <>
-              <PrivateMain />
-              <Routes>
-                <Route path="board" element={<Board />} />
-                <Route path="calendar" element={<Calender />} />
-                <Route path="message" element={<Message />} />
-              </Routes>
-            </>
-          )} */}
         </main>
       </RightSide>
     </MainStyle>
