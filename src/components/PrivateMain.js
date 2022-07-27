@@ -255,9 +255,9 @@ const PrivateMain = () => {
               {hasParams ? (
                 <>
                   {memberList &&
-                    memberList?.map((member) => {
+                    memberList?.map((member, idx) => {
                       return (
-                        <div className="contact-card">
+                        <div className="contact-card" key={idx}>
                           <div className="contact-card_profile">
                             <div className="profile">
                               <img

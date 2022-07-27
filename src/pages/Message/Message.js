@@ -21,6 +21,10 @@ const Message = () => {
     opponent: "",
     workspace: "",
   });
+  const dispatch = useDispatch();
+  const workspace = useSelector((state) => state.workSpace.value);
+  console.log("workspace: ", workspace);
+
   const [messageList, setMessageList] = useState([]);
   const [showChat, setShowChat] = useState(false);
   const [roomName, setRoomName] = useState("");
