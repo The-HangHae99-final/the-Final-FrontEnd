@@ -20,7 +20,8 @@ export const userSlice = createSlice({
     },
     userLogout: () => initialState,
     getUserInfo: (state, action) => {
-      state.value = { ...action.payload };
+      console.log("action: ", action);
+      state.value = action.payload;
     },
   },
 });

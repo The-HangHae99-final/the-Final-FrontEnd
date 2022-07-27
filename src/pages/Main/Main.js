@@ -57,50 +57,40 @@ const Main = () => {
           console.log("res: ", res);
           if (res.data.success) {
             const wsInfoList = res.data.includedList;
-            const wsList = wsInfoList.map((ws) => ws.workSpace);
-            if (wsList.length === 0) {
+            console.log("wsInfoList: ", wsInfoList);
+            const workSpaceFullname = wsInfoList.map((ws) => {
+              return ws.workSpace;
+            });
+            if (wsInfoList.length === 0) {
               setAppState(APP_USER_STATE.NEWBIE);
               setOpenNewbieModal(true);
             } else {
               setAppState(APP_USER_STATE.USER);
             }
-            dispatch(
-              getUserInfo({
-                ...user,
-                workSpaceList: [...wsInfoList],
+
+            axios
+              .get(`http://43.200.170.45/api/members/inviting`, {
+                headers: {
+                  Authorization: `Bearer ${getItemFromLs("myToken")}`,
+                },
               })
-            );
+              .then((res) => {
+                console.log("res: ", res);
+                if (res.data.success) {
+                  dispatch(
+                    getUserInfo({
+                      workSpaceList: [...workSpaceFullname],
+                      invitation: [...res.data.result],
+                    })
+                  );
+                }
+              })
+              .catch((err) => console.log(err));
           }
         });
     } catch {
       alert(" 불러오는 도중 에러가 발생했습니다 :(");
     }
-  }, []);
-
-  useEffect(() => {
-    setItemToLs("workSpace", workSpace.current_workSpace);
-  }, [workSpace]);
-
-  // 본인에게 온 초대 여부 조회
-  useEffect(() => {
-    axios
-      .get(`http://43.200.170.45/api/members/inviting`, {
-        headers: {
-          Authorization: `Bearer ${getItemFromLs("myToken")}`,
-        },
-      })
-      .then((res) => {
-        console.log("res: ", res);
-        if (res.data.success) {
-          dispatch(
-            getUserInfo({
-              ...user,
-              invitation: [...res.data.result],
-            })
-          );
-        }
-      })
-      .catch((err) => console.log(err));
   }, []);
 
   return (

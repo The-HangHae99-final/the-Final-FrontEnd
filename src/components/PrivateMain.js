@@ -100,7 +100,7 @@ const PrivateMain = () => {
       <MainHeader className="MainHeader">
         <div className="main-header-workspace-name">
           {currentParams ? (
-            currentParams.split("+")[1]
+            currentParams
           ) : (
             <h1>워크 스페이스를 선택해주세요</h1>
           )}

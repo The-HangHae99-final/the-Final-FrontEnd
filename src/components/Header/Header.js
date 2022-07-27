@@ -156,7 +156,7 @@ const Header = () => {
               <WorkspaceList>
                 {user?.workSpaceList &&
                   user?.workSpaceList.map((item, idx) => {
-                    console.log("item: ", item);
+                    const wsName = item.split("+")[1];
                     return (
                       <li
                         key={idx}
@@ -166,18 +166,14 @@ const Header = () => {
                           dispatch(
                             getWorkSpaceData({
                               ...workspace,
-                              current_workSpace: item.workSpace,
+                              current_workSpace: item,
                             })
                           );
-                          navigate(`/main/${item.workSpace}`);
+                          navigate(`/main/${item}`);
                         }}
                       >
-                        <div className="workspace_avatar">
-                          {item?.workSpace?.split("+")[1][0]}
-                        </div>
-                        <div className="current_workSpace">
-                          {item?.workSpace?.split("+")[1]}
-                        </div>
+                        <div className="workspace_avatar">{wsName[0]}</div>
+                        <div className="current_workSpace">{wsName}</div>
                       </li>
                     );
                   })}
