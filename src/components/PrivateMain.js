@@ -23,7 +23,8 @@ import leftArrow from "../public/img/left-arrow.png";
 import rightArrow from "../public/img/right-arrow.png";
 import commentWhite from "../public/img/Main/comment-white.png";
 
-const PrivateMain = () => {
+const PrivateMain = ({ currentParams }) => {
+  console.log("currentParams: ", currentParams);
   const [newMember, setNewMember] = useState({
     workSpaceName: "",
     userEmail: "",
@@ -101,8 +102,8 @@ const PrivateMain = () => {
     <PrivateMainStyle>
       <MainHeader className="MainHeader">
         <div className="main-header-workspace-name">
-          {workSpace.current_workSpace ? (
-            workSpace.current_workSpace.split("+")[1]
+          {currentParams ? (
+            currentParams.split("+")[1]
           ) : (
             <h1>워크 스페이스를 선택해주세요</h1>
           )}

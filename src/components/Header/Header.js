@@ -160,7 +160,6 @@ const Header = () => {
               <WorkspaceList>
                 {user?.workSpaceList &&
                   user?.workSpaceList.map((item, idx) => {
-                    console.log("item: ", item?.split("+")[1][0]);
                     return (
                       <li
                         key={idx}
@@ -175,7 +174,7 @@ const Header = () => {
                               current_workSpace: item,
                             })
                           );
-                          navigate(`/main/${idx}`);
+                          navigate(`/main/${item}`);
                         }}
                       >
                         <div className="workspace_avatar">

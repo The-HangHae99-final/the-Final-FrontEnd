@@ -34,15 +34,14 @@ export const APP_USER_STATE = {
 
 const Main = () => {
   const [appstate, setAppState] = useState(APP_USER_STATE.UNKNOWN);
-  console.log("appstate: ", appstate);
   const isLoading = appstate === APP_USER_STATE.UNKNOWN;
-  console.log("isLoading: ", isLoading);
   const [openNewbieModal, setOpenNewbieModal] = useState(false);
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.value);
-  console.log("user: ", user);
   const workSpace = useSelector((state) => state.workSpace.value);
   const dispatch = useDispatch();
+  const params = useParams();
+  const currentParams = params.workSpaceName;
 
   // 소속된 워크스페이스 전체 조회
   useEffect(() => {
@@ -132,7 +131,7 @@ const Main = () => {
           ) : (
             <>
               {appstate === APP_USER_STATE.USER ? (
-                <PrivateMain setAppState={setAppState} />
+                <PrivateMain currentParams={currentParams} />
               ) : (
                 <ScreenForNewbie />
               )}
