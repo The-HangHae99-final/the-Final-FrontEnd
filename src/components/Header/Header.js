@@ -57,7 +57,7 @@ const Header = () => {
     // navigate("/");
   };
 
-  const getUserInfo = () => {
+  const handleDrowdown = () => {
     setOpenDropdown(!openDropdown);
   };
 
@@ -97,8 +97,8 @@ const Header = () => {
             ],
           })
         );
+        setModalOn(false);
         setWorkSpaceName("");
-        window.location.reload();
         alert("새로운 워크스페이스가 만들어졌어요");
       });
   };
@@ -132,7 +132,7 @@ const Header = () => {
                   className={`vector-img-wrap ${
                     openDropdown ? "toBottom" : "toTop"
                   }`}
-                  onClick={getUserInfo}
+                  onClick={handleDrowdown}
                 >
                   <img src={vector} alt="vector" className="vector-img"></img>
                 </div>
