@@ -38,22 +38,23 @@ const Main = () => {
   const [openNewbieModal, setOpenNewbieModal] = useState(false);
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.value);
+  console.log("user: ", user);
   const workSpace = useSelector((state) => state.workSpace.value);
   const dispatch = useDispatch();
   const params = useParams();
   const currentParams = params.workSpaceName;
-  console.log("currentParams: ", currentParams);
 
   // 소속된 워크스페이스 전체 조회
   useEffect(() => {
     try {
       axios
-        .get("https://0jun.shop/api/members/spaceLists", {
+        .get("http://43.200.170.45/api/members/spaceLists", {
           headers: {
             Authorization: `Bearer ${getItemFromLs("myToken")}`,
           },
         })
         .then((res) => {
+          console.log("res: ", res);
           if (res.data.success) {
             const wsInfoList = res.data.includedList;
             const wsList = wsInfoList.map((ws) => ws.workSpace);
@@ -66,7 +67,7 @@ const Main = () => {
             dispatch(
               getUserInfo({
                 ...user,
-                workSpaceList: [...wsList],
+                workSpaceList: [...wsInfoList],
               })
             );
           }
@@ -79,6 +80,28 @@ const Main = () => {
   useEffect(() => {
     setItemToLs("workSpace", workSpace.current_workSpace);
   }, [workSpace]);
+
+  // 본인에게 온 초대 여부 조회
+  useEffect(() => {
+    axios
+      .get(`http://43.200.170.45/api/members/inviting`, {
+        headers: {
+          Authorization: `Bearer ${getItemFromLs("myToken")}`,
+        },
+      })
+      .then((res) => {
+        console.log("res: ", res);
+        if (res.data.success) {
+          dispatch(
+            getUserInfo({
+              ...user,
+              invitation: [...res.data.result],
+            })
+          );
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <MainStyle>

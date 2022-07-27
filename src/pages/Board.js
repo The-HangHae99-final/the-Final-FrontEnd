@@ -13,6 +13,7 @@ import label from "../public/img/label.png";
 import leftArrpw from "../public/img/left-arrow.png";
 import rightArrow from "../public/img/right-arrow.png";
 import { Human03 } from "../elements/humanIcon";
+import { useOutletContext } from "react-router-dom";
 
 function CreateBox({
   handleSubmit,
@@ -80,6 +81,9 @@ function CreateBox({
 }
 
 const Board = () => {
+  const { currentParams } = useOutletContext();
+  console.log("currentParams: ", currentParams);
+
   const [data, setData] = useState({
     title: "",
     desc: "",
@@ -101,7 +105,7 @@ const Board = () => {
     e.preventDefault();
     axios({
       method: "post",
-      url: "http://43.200.170.45/api/posts",
+      url: "http://43.200.170.45/api/boards",
       data: data,
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,
@@ -213,6 +217,11 @@ const Board = () => {
     axios
       .post(
         "http://43.200.170.45/api/posts",
+        {
+          body: {
+            workSpaceName: currentParams,
+          },
+        },
         {
           workSpaceName: getItemFromLs("workspace"),
         },

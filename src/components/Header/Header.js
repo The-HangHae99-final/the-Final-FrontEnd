@@ -32,8 +32,9 @@ const Header = () => {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user.value);
+  console.log("user: ", user);
   const dispatch = useDispatch();
-  const worksapce = useSelector((state) => state.workSpace.value);
+  const workspace = useSelector((state) => state.workSpace.value);
 
   const handleModal = () => {
     setModalOn(!modalOn);
@@ -50,7 +51,7 @@ const Header = () => {
     removeItemFromLs("userEmail");
     removeItemFromLs("workSpace");
     window.location.replace("/");
-    // dispatch(reset);
+    dispatch(reset);
     // setOpenDropdown(false);
     // alert("로그아웃 되었습니다");
     // navigate("/");
@@ -76,7 +77,7 @@ const Header = () => {
   const addNewWorkSpace = (e) => {
     axios
       .post(
-        "https://0jun.shop/api/work-spaces",
+        "http://43.200.170.45/api/work-spaces",
         { workSpaceName: `${getItemFromLs("userEmail")}+${workSpaceName}` },
         {
           headers: {
@@ -86,14 +87,10 @@ const Header = () => {
       )
       .then((res) => {
         console.log("res: ", res);
-        console.log("res: ", res.data.addedOwner.memberEmail);
         dispatch(
           getUserInfo({
             ...user,
-            workSpaceList: [
-              ...user.workSpaceList,
-              res.data.createdWorkSpace.name,
-            ],
+            workSpaceList: [...user.workSpaceList, res.data.addedOwner],
           })
         );
         setModalOn(false);
@@ -159,28 +156,27 @@ const Header = () => {
               <WorkspaceList>
                 {user?.workSpaceList &&
                   user?.workSpaceList.map((item, idx) => {
+                    console.log("item: ", item);
                     return (
                       <li
                         key={idx}
                         className="workspace-item"
                         onClick={() => {
-                          // setItemToLs("workspace", item);
-                          // navigate(`/main/${idx}`);
-                          // setWorkSpaceName(item.split("+")[1]);
                           setOpenDropdown(false);
                           dispatch(
                             getWorkSpaceData({
-                              current_workSpace: item,
+                              ...workspace,
+                              current_workSpace: item.workSpace,
                             })
                           );
-                          navigate(`/main/${item}`);
+                          navigate(`/main/${item.workSpace}`);
                         }}
                       >
                         <div className="workspace_avatar">
-                          {item?.split("+")[1][0]}
+                          {item?.workSpace?.split("+")[1][0]}
                         </div>
                         <div className="current_workSpace">
-                          {item?.split("+")[1]}
+                          {item?.workSpace?.split("+")[1]}
                         </div>
                       </li>
                     );

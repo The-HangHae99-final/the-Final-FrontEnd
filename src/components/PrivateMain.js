@@ -22,6 +22,7 @@ import Ellipse106 from "../public/img/Ellipse106.png";
 import leftArrow from "../public/img/left-arrow.png";
 import rightArrow from "../public/img/right-arrow.png";
 import commentWhite from "../public/img/Main/comment-white.png";
+import { getMemberList } from "../redux/workSpaceReducer";
 
 const PrivateMain = () => {
   const [newMember, setNewMember] = useState({
@@ -29,15 +30,14 @@ const PrivateMain = () => {
     userEmail: "",
   });
   const { currentParams } = useOutletContext();
-  console.log("currentParams: ", currentParams);
   const [modalOn, setModalOn] = useState(false);
   const params = useParams();
-  const hasParams = !!params.workSpace;
+  const hasParams = params.workSpaceName;
 
-  const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
-  const currentWorkSpace = useSelector((state) => state.workSpace.value);
-  const workSpace = useSelector((state) => state.workSpace.value);
+  const workspace = useSelector((state) => state.workSpace.value);
+  console.log("workspace: ", workspace);
+  const memberList = workspace.member_list;
 
   const handleAddMemberModal = () => {
     setModalOn(!modalOn);
@@ -58,7 +58,6 @@ const PrivateMain = () => {
       },
     })
       .then((res) => {
-        console.log("res: ", res);
         if (res.data.success) {
           alert(`${newMember.userEmail}님에게 초대메시지를 보냈습니다`);
           setModalOn(false);
@@ -69,34 +68,32 @@ const PrivateMain = () => {
       .catch((err) => alert(`${err.response.data.errorMessage}`));
   };
 
-  // 본인에게 온 초대 여부 조회
+  // 워크스페이스 바꾸면 바로 새 멤버 생성을 위한 데이터 업데이트
+  useEffect(() => {
+    setNewMember({
+      ...newMember,
+      workSpaceName: workspace.current_workSpace,
+    });
+  }, [workspace, workspace?.current_workSpace]);
+
+  // 해당 워크스페이스에 속한 유저 관리
   useEffect(() => {
     axios
-      .get(`http://43.200.170.45/api/members/inviting`, {
+      .get(`http://43.200.170.45/api/members/lists/${currentParams}`, {
         headers: {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },
       })
       .then((res) => {
+        console.log("res: ", res);
         if (res.data.success) {
           dispatch(
-            getUserInfo({
-              ...user,
-              invitation: [...user.invitation, res.data.result],
-            })
+            getMemberList({ ...workspace, member_list: [...res.data.result] })
           );
         }
       })
       .catch((err) => console.log(err));
-  }, [currentWorkSpace, currentWorkSpace?.current_workSpace]);
-
-  // 워크스페이스 바꾸면 바로 새 멤버 생성을 위한 데이터 업데이트
-  useEffect(() => {
-    setNewMember({
-      ...newMember,
-      workSpaceName: currentWorkSpace.current_workSpace,
-    });
-  }, [currentWorkSpace, currentWorkSpace?.current_workSpace]);
+  }, []);
 
   return (
     <PrivateMainStyle>
@@ -251,118 +248,46 @@ const PrivateMain = () => {
           <WeekCalendar />
         </PrivateMainLeft>
         <PrivateMainRight>
+          {/* 컨택트 컨테이너 */}
           <ContactWrap>
             <div className="right-wrap-title contact-title">Contact</div>
             <div className="contact-screen" hasparams="false">
               {hasParams ? (
                 <>
-                  <div className="contact-card">
-                    <div className="contact-card_profile">
-                      <div className="profile">
-                        <img src={human02} alt="human02" className="human02" />
-                        <img
-                          src={Ellipse106}
-                          alt="Ellipse106"
-                          className="online"
-                        />
-                      </div>
-                      <div className="contact-card_name">이형섭</div>
-                    </div>
-
-                    <div className="contact-card-toDirect">
-                      다이렉트 채팅하기
-                      <img
-                        src={commentIcon}
-                        alt="commentIcon"
-                        className="commentIcon"
-                      />
-                    </div>
-                  </div>
-                  <div className="contact-card">
-                    <div className="contact-card_profile">
-                      <div className="profile">
-                        <img src={human02} alt="human02" className="human02" />
-                        <img
-                          src={Ellipse106}
-                          alt="Ellipse106"
-                          className="online"
-                        />
-                      </div>
-                      <div className="contact-card_name">이형섭</div>
-                    </div>
-
-                    <div className="contact-card-toDirect">
-                      다이렉트 채팅하기
-                      <img
-                        src={commentIcon}
-                        alt="commentIcon"
-                        className="commentIcon"
-                      />
-                    </div>
-                  </div>
-                  <div className="contact-card">
-                    <div className="contact-card_profile">
-                      <div className="profile">
-                        <img src={human02} alt="human02" className="human02" />
-                        <img
-                          src={Ellipse106}
-                          alt="Ellipse106"
-                          className="online"
-                        />
-                      </div>
-                      <div className="contact-card_name">이형섭</div>
-                    </div>
-                    <div className="contact-card-toDirect">
-                      다이렉트 채팅하기
-                      <img
-                        src={commentIcon}
-                        alt="commentIcon"
-                        className="commentIcon"
-                      />
-                    </div>
-                  </div>
-                  <div className="contact-card">
-                    <div className="contact-card_profile">
-                      <div className="profile">
-                        <img src={human02} alt="human02" className="human02" />
-                        <img
-                          src={Ellipse106}
-                          alt="Ellipse106"
-                          className="online"
-                        />
-                      </div>
-                      <div className="contact-card_name">이형섭</div>
-                    </div>
-                    <div className="contact-card-toDirect">
-                      다이렉트 채팅하기
-                      <img
-                        src={commentIcon}
-                        alt="commentIcon"
-                        className="commentIcon"
-                      />
-                    </div>
-                  </div>
-                  <div className="contact-card">
-                    <div className="contact-card_profile">
-                      <div className="profile">
-                        <img src={human02} alt="human02" className="human02" />
-                        <img
-                          src={Ellipse106}
-                          alt="Ellipse106"
-                          className="online"
-                        />
-                      </div>
-                      <div className="contact-card_name">이형섭</div>
-                    </div>
-                    <div className="contact-card-toDirect">
-                      다이렉트 채팅하기
-                      <img
-                        src={commentIcon}
-                        alt="commentIcon"
-                        className="commentIcon"
-                      />
-                    </div>
-                  </div>
+                  {memberList &&
+                    memberList?.map((member) => {
+                      return (
+                        <div className="contact-card">
+                          <div className="contact-card_profile">
+                            <div className="profile">
+                              <img
+                                src={human02}
+                                alt="human02"
+                                className="human02"
+                              />
+                              <img
+                                src={Ellipse106}
+                                alt="Ellipse106"
+                                className="online"
+                              />
+                            </div>
+                            <div className="contact-card_name">
+                              {member.memberName}
+                            </div>
+                          </div>
+                          <div className="contact-card_toChat">
+                            <span className="contact-card_text">
+                              다이렉트 채팅하기
+                            </span>
+                            <img
+                              src={commentIcon}
+                              alt="commentIcon"
+                              className="commentIcon"
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
                 </>
               ) : (
                 <>
@@ -378,6 +303,7 @@ const PrivateMain = () => {
               )}
             </div>
           </ContactWrap>
+          {/* 메모 컨테이너 */}
           <MemoWrap>
             <div className="right-wrap-title memo-title">Note</div>
             <div className="note-screen"></div>
@@ -682,7 +608,7 @@ const ContactWrap = styled.div`
     overflow: scroll;
 
     ${({ hasParams }) => {
-      if (!hasParams) {
+      if (hasParams) {
         return css`
           display: flex;
           justify-content: center;
@@ -735,6 +661,25 @@ const ContactWrap = styled.div`
   .commentWhite {
     width: 34px;
     height: 32px;
+  }
+
+  .contact-card_toChat {
+    display: Flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .contact-card_text {
+    font-size: 14px;
+    line-height: 21px;
+    text-align: right;
+    letter-spacing: -0.02em;
+    color: #7a858e;
+  }
+
+  .commentIcon {
+    width: 22px;
+    height: 22px;
   }
 `;
 

@@ -3,6 +3,7 @@ import { getItemFromLs } from "../utils/localStorage";
 
 const initialState = {
   current_workSpace: "",
+  member_list: [],
 };
 
 const rootState = {
@@ -18,12 +19,16 @@ export const workSpaceSlice = createSlice({
     getWorkSpaceData: (state, action) => {
       state.value = action.payload;
     },
+    getMemberList: (state, action) => {
+      state.value = action.payload;
+    },
     reset: (state, action) => {
       state.value = rootState;
     },
   },
 });
 
-export const { getWorkSpaceData, reset } = workSpaceSlice.actions;
+export const { getWorkSpaceData, getMemberList, reset } =
+  workSpaceSlice.actions;
 
 export default workSpaceSlice.reducer;

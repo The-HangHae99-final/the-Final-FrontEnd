@@ -9,13 +9,13 @@ const DirectChatList = ({ moveRoom, roomName }) => {
   const [membeList, setMemberList] = useState([]);
   const userName = getItemFromLs("userName");
   const user = useSelector((state) => state.user.value);
-  const worksapce = useSelector((state) => state.workSpace.value);
-  console.log("worksapce: ", worksapce);
+  const workspace = useSelector((state) => state.workSpace.value);
+  console.log("workspace: ", workspace);
 
   // 본인을 제외한 유저목록 반환
   useEffect(() => {
     axios({
-      url: `http://43.200.170.45/api/members/${worksapce.current_workSpace}`,
+      url: `http://43.200.170.45/api/members/${workspace.current_workSpace}`,
       method: "get",
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,

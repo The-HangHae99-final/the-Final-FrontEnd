@@ -19,6 +19,7 @@ const ScreenForNewbie = () => {
   const [showCreateBox, setShowCreateBox] = useState(false);
   const [isLoading, setIsLoading] = useState(null);
   const user = useSelector((state) => state.user.value);
+  console.log("user: ", user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -29,7 +30,7 @@ const ScreenForNewbie = () => {
     if (workSpaceName !== "") {
       axios
         .post(
-          "https://0jun.shop/api/work-spaces",
+          "http://43.200.170.45/api/work-spaces",
           { workSpaceName: `${getItemFromLs("userEmail")}+${workSpaceName}` },
           {
             headers: {
