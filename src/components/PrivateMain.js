@@ -4,7 +4,7 @@ import AddMemberModal from "./Modal/AddMemberModal";
 import ModalPortal from "../elements/Portal/ModalPortal";
 import axios from "axios";
 import { getItemFromLs, setItemToLs } from "../utils/localStorage";
-import { Outlet, useParams } from "react-router-dom";
+import { Outlet, useParams, useOutletContext } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo } from "../redux/userReducer";
 import WeekCalendar from "./Calendar/WeekCalendar";
@@ -23,12 +23,13 @@ import leftArrow from "../public/img/left-arrow.png";
 import rightArrow from "../public/img/right-arrow.png";
 import commentWhite from "../public/img/Main/comment-white.png";
 
-const PrivateMain = ({ currentParams }) => {
-  console.log("currentParams: ", currentParams);
+const PrivateMain = () => {
   const [newMember, setNewMember] = useState({
     workSpaceName: "",
     userEmail: "",
   });
+  const { currentParams } = useOutletContext();
+  console.log("currentParams: ", currentParams);
   const [modalOn, setModalOn] = useState(false);
   const params = useParams();
   const hasParams = !!params.workSpace;
@@ -77,7 +78,6 @@ const PrivateMain = ({ currentParams }) => {
         },
       })
       .then((res) => {
-        console.log("res: ", res);
         if (res.data.success) {
           dispatch(
             getUserInfo({

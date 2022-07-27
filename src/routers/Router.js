@@ -33,7 +33,6 @@ const Router = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/main" element={<Main />} />
           <Route path="/main/:workSpaceName/*" element={<Main />}>
-            {/* workspace 접속 후 보여질 컴포넌트 workspaceIntro */}
             <Route path="" element={<PrivateMain />} />
             <Route path="board" element={<Board />} />
             <Route path="calendar" element={<Calender />} />

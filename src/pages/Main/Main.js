@@ -42,6 +42,7 @@ const Main = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const currentParams = params.workSpaceName;
+  console.log("currentParams: ", currentParams);
 
   // 소속된 워크스페이스 전체 조회
   useEffect(() => {
@@ -131,12 +132,12 @@ const Main = () => {
           ) : (
             <>
               {appstate === APP_USER_STATE.USER ? (
-                <PrivateMain currentParams={currentParams} />
+                <Outlet context={{ currentParams }} />
               ) : (
                 <ScreenForNewbie />
               )}
-              {/* Params 값의 유무에 따라 Outlet 렌더링 */}
-              {/* <Outlet /> */}
+              {/* 홈버튼 누르면 빈 화면 출력
+              => Params 값의 유무에 따라 Outlet 렌더링 해야할까? */}
             </>
           )}
         </main>
