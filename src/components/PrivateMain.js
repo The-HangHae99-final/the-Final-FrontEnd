@@ -61,11 +61,12 @@ const PrivateMain = () => {
         if (res.data.success) {
           alert(`${newMember.userEmail}님에게 초대메시지를 보냈습니다`);
           setModalOn(false);
+          setNewMember({ workSpaceName: "", userEmail: "" });
         } else {
-          alert(`${res.data.errorMessage}`);
+          alert(`${res.message}`);
         }
       })
-      .catch((err) => alert(`${err.response.data.errorMessage}`));
+      .catch((err) => alert(`${err}`));
   };
 
   // 워크스페이스 바꾸면 바로 새 멤버 생성을 위한 데이터 업데이트
@@ -100,7 +101,7 @@ const PrivateMain = () => {
       <MainHeader className="MainHeader">
         <div className="main-header-workspace-name">
           {currentParams ? (
-            currentParams
+            currentParams.split("+")[1]
           ) : (
             <h1>워크 스페이스를 선택해주세요</h1>
           )}

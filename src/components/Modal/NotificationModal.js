@@ -3,16 +3,15 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ModalPortal from "../../elements/Portal/ModalPortal";
 import { getItemFromLs } from "../../utils/localStorage";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { removeInvitation } from "../../redux/userReducer";
 
 const NotificationModal = ({ onClose }) => {
   const user = useSelector((state) => state.user.value);
-  console.log("user: ", user);
   const invitations = user.invitation;
-  console.log("invitations: ", invitations);
+  const dispatch = useDispatch();
 
-  const accept = (invitee, fromThisWorkSpaceName) => {
-    console.log("fromThisWorkSpaceName: ", fromThisWorkSpaceName);
+  const accept = (invitee, fromThisWorkSpaceName, clickedID) => {
     axios
       .post(
         "http://43.200.170.45/api/members/inviting/accepting",
@@ -23,7 +22,23 @@ const NotificationModal = ({ onClose }) => {
           },
         }
       )
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log("res: ", res);
+        const filteredInvitation = invitations.filter((item) => {
+          return item._id !== clickedID;
+        });
+        console.log(filteredInvitation);
+        dispatch(
+          removeInvitation({
+            ...user,
+            workSpaceList: [
+              ...user.workSpaceList,
+              res.data.createdMember.workSpace,
+            ],
+            invitation: [...filteredInvitation],
+          })
+        );
+      })
       .catch((err) => console.log(err));
   };
 
@@ -46,22 +61,23 @@ const NotificationModal = ({ onClose }) => {
           <ul>
             {invitations &&
               invitations.map((item, idx) => {
+                console.log("item: ", item);
                 const invitee = item.userEmail;
                 const fromThisWorkSpaceName = item.workSpaceName;
-
+                const clickedID = item._id;
                 return (
-                  <>
-                    <li key={idx} className="noti">
-                      {item.inviter}님이 {item.workSpaceName.split("+")[1]}로
-                      초대하셨습니다!
-                      <button
-                        onClick={() => accept(invitee, fromThisWorkSpaceName)}
-                      >
-                        수락
-                      </button>
-                      <button onClick={() => refuse()}>거절</button>
-                    </li>
-                  </>
+                  <li className="noti" key={idx}>
+                    {item.inviter}님이 {item.workSpaceName.split("+")[1]}로
+                    초대하셨습니다!
+                    <button
+                      onClick={() =>
+                        accept(invitee, fromThisWorkSpaceName, clickedID)
+                      }
+                    >
+                      수락
+                    </button>
+                    <button onClick={() => refuse()}>거절</button>
+                  </li>
                 );
               })}
           </ul>

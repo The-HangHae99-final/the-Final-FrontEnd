@@ -23,9 +23,15 @@ export const userSlice = createSlice({
       console.log("action: ", action);
       state.value = action.payload;
     },
+    removeInvitation: (state, action) => {
+      state.value = {
+        ...action.payload,
+      };
+    },
   },
 });
 
-export const { login, userLogout, getUserInfo } = userSlice.actions;
+export const { login, userLogout, getUserInfo, removeInvitation } =
+  userSlice.actions;
 
 export default userSlice.reducer;
