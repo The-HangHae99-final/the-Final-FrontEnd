@@ -7,18 +7,50 @@ import { useSelector } from "react-redux";
 
 const NotificationModal = ({ onClose }) => {
   const user = useSelector((state) => state.user.value);
-  const invitations = user.invitation;
+  const invitations = user.invitation[0];
+  console.log("invitations: ", invitations);
+
+  const accept = (invitee, fromThisWorkSpaceName) => {
+    console.log("fromThisWorkSpaceName: ", fromThisWorkSpaceName);
+    axios
+      .post(
+        "https://0jun.shop/api/members/inviting/accepting",
+        { body: { userEmail: invitee, workSpaceName: fromThisWorkSpaceName } },
+        {
+          headers: {
+            Authorization: `Bearer ${getItemFromLs("myToken")}`,
+          },
+        }
+      )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+
+  const refuse = () => {};
   return (
     <NotificationModalBg>
       <WorkspaceModalStyle>
         <div className="workspace-create-box-wrap">
           <div className="workspace-name">Notification</div>
           <ul>
-            {invitations.map((item, idx) => (
-              <li key={idx} className="noti">
-                From. {item}
-              </li>
-            ))}
+            {invitations.map((item, idx) => {
+              const invitee = item.userEmail;
+              const fromThisWorkSpaceName = item.workSpaceName;
+              return (
+                <>
+                  <li key={idx} className="noti">
+                    {item.inviter}님이 {item.workSpaceName.split("+")[1]}로
+                    초대하셨습니다!
+                    <button
+                      onClick={() => accept(invitee, fromThisWorkSpaceName)}
+                    >
+                      수락
+                    </button>
+                    <button onClick={() => refuse()}>거절</button>
+                  </li>
+                </>
+              );
+            })}
           </ul>
           <div className="active-buttons">
             <button className="active-button cancel" onClick={onClose}>
@@ -52,7 +84,6 @@ const WorkspaceModalStyle = styled.div`
   flex-direction: column;
   gap: 20px;
   width: 541px;
-  height: 228px;
   background: #ffffff;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
   padding: 30px 100px;

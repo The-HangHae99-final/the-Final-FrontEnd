@@ -63,7 +63,7 @@ const WeekCalendar = () => {
                   }
                 >
                   <div className="date">{d}</div>
-                  <div className="date-content">오늘의 일정</div>
+                  <div className="date-content"></div>
                 </li>
               );
             })}
