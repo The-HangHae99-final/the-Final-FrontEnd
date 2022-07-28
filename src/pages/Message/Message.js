@@ -3,6 +3,8 @@ import io from "socket.io-client";
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
+import socketIOClient from "socket.io-client";
+import Spinner from "../../elements/Spinner";
 
 // import files
 import UserProfile from "../../elements/UserProfile";
@@ -10,29 +12,27 @@ import DirectChatList from "../../elements/DirectChatList";
 import BubbleBox from "../../components/BubbleBox";
 import { getItemFromLs } from "../../utils/localStorage";
 import TeamChatList from "../../elements/TeamChatList";
-
-import socketIOClient from "socket.io-client";
-import Spinner from "../../elements/Spinner";
+import topArrow from "../../public/img/top-arrow.png";
+import camera from "../../public/img/camera.png";
 
 const Message = () => {
-  const [currentSocket, setCurrentSocket] = useState();
-  console.log("currentSocket: ", currentSocket);
+  const [currentSocket, setCurrentSocket] = useState(null);
   const [DataForJoin, setDataForJoin] = useState({
     opponent: "",
     workspace: "",
   });
-  const dispatch = useDispatch();
-  const workspace = useSelector((state) => state.workSpace.value);
-  console.log("workspace: ", workspace);
-
+  const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
+  console.log("messageList: ", messageList);
   const [showChat, setShowChat] = useState(false);
   const [roomName, setRoomName] = useState("");
   const [oppenent, setOppenent] = useState("");
 
+  const dispatch = useDispatch();
+  const workspace = useSelector((state) => state.workSpace.value);
   const teamChatRoomName = getItemFromLs("workspace");
+  const username = getItemFromLs("userName");
 
-  // 퇴장 + 채팅리스트 삭제
   const leaveRoom = (oldRoom) => {
     currentSocket.emit("leave_room", oldRoom);
     currentSocket.off("chat_list");
@@ -40,11 +40,10 @@ const Message = () => {
 
   // 개인 채팅방 입장 + 퇴장 + 채팅 목록 불러오기
   const moveRoom = (oldRoom, newRoom, name) => {
+    console.log("oldRoom: ", oldRoom, newRoom, name);
     currentSocket.emit("join_room", newRoom);
     leaveRoom(oldRoom);
-    setRoomName(() => {
-      return newRoom;
-    });
+    setRoomName(() => newRoom);
     setOppenent(() => name);
 
     currentSocket.on("chat_list", (chat_list) => {
@@ -54,10 +53,31 @@ const Message = () => {
     });
   };
 
-  // 공지방 입장
+  // 메시지 보내기
+  const sendMessage = async () => {
+    if (currentMessage !== "") {
+      // 접속한 방 이름, 유저이름, 작성한 메시지, 시간을 담은 data 객체
+      const messageData = {
+        room: roomName,
+        author: username,
+        message: currentMessage,
+        time:
+          new Date(Date.now()).getHours() +
+          ":" +
+          new Date(Date.now()).getMinutes(),
+      };
+      console.log("messageData: ", messageData);
+      // 소켓 명령어와 함께 메시지 데이터를 보낸다
+      await currentSocket.emit("send_message", messageData);
+      setMessageList((list) => [...list, messageData]);
+      setCurrentMessage("");
+    }
+  };
+
+  // 팀채팅방 입장
   const joinTeamRoom = () => {
-    currentSocket.emit("join_room", getItemFromLs("workspace"));
-    setRoomName(() => teamChatRoomName);
+    currentSocket.emit("join_room", workspace.current_workSpace);
+    setRoomName(() => workspace.current_workSpace);
 
     // 서버로부터 채팅리스트를 받는다
     currentSocket.on("chat_list", (chat_list) => {
@@ -72,9 +92,7 @@ const Message = () => {
   useEffect(() => {
     setCurrentSocket(socketIOClient("http://43.200.170.45/chat"));
   }, []);
-  useEffect(() => {
-    console.log(getItemFromLs("workSpace"));
-  }, []);
+
   return (
     <ChatStyle>
       {currentSocket ? (
@@ -106,8 +124,9 @@ const Message = () => {
 
               {/* 단체 메시지 유저 리스트 */}
               <TeamChatList
-                setDataForJoin={setDataForJoin}
-                joinTeamRoom={joinTeamRoom}
+                moveRoom={moveRoom}
+                roomName={roomName}
+                newRoomName={workspace.current_workSpace}
               ></TeamChatList>
             </TeamchatBox>
 
@@ -118,11 +137,7 @@ const Message = () => {
               </BoxHeader>
 
               {/* 개인 메시지 유저 리스트 */}
-              <DirectChatList
-                setDataForJoin={setDataForJoin}
-                moveRoom={moveRoom}
-                roomName={roomName}
-              />
+              <DirectChatList moveRoom={moveRoom} roomName={roomName} />
             </MyChatBox>
           </LeftSection>
 
@@ -130,7 +145,6 @@ const Message = () => {
           <RightSection className="rightSection">
             <ChatSection className="ChatSection">
               {/* 채팅 화면 상단 바 */}
-
               <BarTop className="BarTop">
                 <div className="user-state">
                   <UserProfile
@@ -156,6 +170,31 @@ const Message = () => {
                   setMessageList={setMessageList}
                 />
               )}
+
+              <Inputwrap>
+                <input
+                  className="chat-input"
+                  type="text"
+                  value={currentMessage || ""}
+                  onChange={(e) => {
+                    setCurrentMessage(e.target.value);
+                  }}
+                  onKeyPress={(e) => {
+                    e.key === "Enter" && sendMessage();
+                  }}
+                />
+                <ButtonsWrap>
+                  <button className="submit-button submit-button_file">
+                    <img src={camera} alt="camera" className="camera" />
+                  </button>
+                  <button
+                    className="submit-button submit-button_text"
+                    onClick={sendMessage}
+                  >
+                    <img src={topArrow} alt="topArrow" className="topArrow" />
+                  </button>
+                </ButtonsWrap>
+              </Inputwrap>
             </ChatSection>
           </RightSection>
         </>
@@ -269,5 +308,63 @@ const BarTop = styled.div`
 
 const ChattingScreen = styled.div`
 h`;
+
+const Inputwrap = styled.div`
+  width: 100%;
+  height: 100px;
+  background-color: #f8f8f9;
+  border: 1px solid #ecedf1;
+  border-radius: 0px 0px 5px 5px;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 22px 50px 28px 50px;
+  z-index: 999;
+
+  .chat-input {
+    padding: 13px 20px;
+    background: #ffffff;
+    border: 1px solid #ecedf1;
+    border-radius: 5px;
+    width: 100%;
+    outline: none;
+    border: none;
+    overflow: auto;
+    z-index: -1;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.02em;
+    color: #353841;
+  }
+`;
+
+const ButtonsWrap = styled.div`
+  display: flex;
+  gap: 22px;
+  position: absolute;
+  top: 47%;
+  right: 75px;
+  transform: translateY(-50%);
+
+  .submit-button {
+    all: unset;
+    height: 30px;
+    cursor: pointer;
+    padding: 5px;
+  }
+
+  .camera {
+    width: 20px;
+    height: 18.64px;
+  }
+
+  .topArrow {
+    width: 30px;
+    height: 30px;
+  }
+`;
 
 export default Message;

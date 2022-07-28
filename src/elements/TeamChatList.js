@@ -2,15 +2,17 @@ import React from "react";
 import UserProfile from "./UserProfile";
 import styled from "styled-components";
 
-const TeamChatList = ({ joinTeamRoom, setDataForJoin }) => {
+const TeamChatList = ({ moveRoom, roomName, newRoomName }) => {
   return (
     <>
       <TeamChatListStyle>
         <UserProfile
-          text="1조 공지방"
-          name="1조공지방"
+          text="TeamNote"
+          name="TeamNote"
+          roomName={roomName}
+          newRoomName={newRoomName}
           alignItems={"center"}
-          joinTeamRoom={joinTeamRoom}
+          moveRoom={moveRoom}
         />
       </TeamChatListStyle>
     </>

@@ -6,33 +6,15 @@ import topArrow from "../public/img/top-arrow.png";
 import camera from "../public/img/camera.png";
 
 const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
+  console.log("messageList: ", messageList);
   const [currentMessage, setCurrentMessage] = useState("");
   const username = getItemFromLs("userName");
   const bottomRef = useRef(null);
 
-  // 메시지 보내기
-  const sendMessage = async () => {
-    if (currentMessage !== "") {
-      // 접속한 방 이름, 유저이름, 작성한 메시지, 시간을 담은 data 객체
-      const messageData = {
-        room: roomName,
-        author: username,
-        message: currentMessage,
-        time:
-          new Date(Date.now()).getHours() +
-          ":" +
-          new Date(Date.now()).getMinutes(),
-      };
-      // 소켓 명령어와 함께 메시지 데이터를 보낸다
-      await socket.emit("send_message", messageData);
-      setMessageList((list) => [...list, messageData]);
-      setCurrentMessage("");
-    }
-  };
-
   useEffect(() => {
     // 서버에서 클라로 전송할 데이터 있을 시 그 데이터를 받아 차곡차곡 쌓는다
     socket.on("receive_message", (data) => {
+      console.log("data: ", data);
       setMessageList((list) => [...list, data]);
     });
   }, [socket]);
@@ -92,32 +74,6 @@ const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
         )}
       </div>
       <div ref={bottomRef} />
-
-      {/* 채팅 화면의 인풋 섹션*/}
-      <Inputwrap>
-        <input
-          className="chat-input"
-          type="text"
-          value={currentMessage || ""}
-          onChange={(e) => {
-            setCurrentMessage(e.target.value);
-          }}
-          onKeyPress={(e) => {
-            e.key === "Enter" && sendMessage();
-          }}
-        />
-        <ButtonsWrap>
-          <button className="submit-button submit-button_file">
-            <img src={camera} alt="camera" className="camera" />
-          </button>
-          <button
-            className="submit-button submit-button_text"
-            onClick={sendMessage}
-          >
-            <img src={topArrow} alt="topArrow" className="topArrow" />
-          </button>
-        </ButtonsWrap>
-      </Inputwrap>
     </BubbleBoxStyle>
   );
 };
@@ -223,64 +179,6 @@ const SendTimeforLeftBubble = styled.div`
 
 const SendTimeforRightBubble = styled.div`
   align-self: flex-end;
-`;
-
-const Inputwrap = styled.div`
-  width: 100%;
-  height: 100px;
-  background-color: #f8f8f9;
-  border: 1px solid #ecedf1;
-  border-radius: 0px 0px 5px 5px;
-  position: absolute;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 22px 50px 28px 50px;
-  z-index: 1;
-
-  .chat-input {
-    padding: 13px 20px;
-    background: #ffffff;
-    border: 1px solid #ecedf1;
-    border-radius: 5px;
-    width: 100%;
-    outline: none;
-    border: none;
-    overflow: auto;
-    z-index: -1;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 24px;
-    letter-spacing: -0.02em;
-    color: #353841;
-  }
-`;
-
-const ButtonsWrap = styled.div`
-  display: flex;
-  gap: 22px;
-  position: absolute;
-  top: 47%;
-  right: 75px;
-  transform: translateY(-50%);
-
-  .submit-button {
-    all: unset;
-    height: 30px;
-    cursor: pointer;
-    padding: 5px;
-  }
-
-  .camera {
-    width: 20px;
-    height: 18.64px;
-  }
-
-  .topArrow {
-    width: 30px;
-    height: 30px;
-  }
 `;
 
 export default BubbleBox;
