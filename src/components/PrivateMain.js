@@ -29,6 +29,7 @@ const PrivateMain = () => {
     workSpaceName: "",
     userEmail: "",
   });
+  console.log("newMember: ", newMember);
   const { currentParams } = useOutletContext();
   const [modalOn, setModalOn] = useState(false);
   const params = useParams();
@@ -61,7 +62,7 @@ const PrivateMain = () => {
         if (res.data.success) {
           alert(`${newMember.userEmail}님에게 초대메시지를 보냈습니다`);
           setModalOn(false);
-          setNewMember({ workSpaceName: "", userEmail: "" });
+          setNewMember({ ...newMember, userEmail: "" });
         } else {
           alert(`${res.message}`);
         }

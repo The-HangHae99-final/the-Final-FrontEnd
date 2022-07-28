@@ -92,6 +92,7 @@ const Board = () => {
     workSpaceName: "",
     category: "todo",
   });
+  console.log("data: ", data);
   const [allBoard, setAllBoard] = useState([]);
   const [todoBoardList, setTodoBoardList] = useState([]);
   const [inProgressList, setInProgressList] = useState([]);
@@ -105,7 +106,7 @@ const Board = () => {
     e.preventDefault();
     axios({
       method: "post",
-      url: "http://43.200.170.45/api/boards",
+      url: "http://43.200.170.45/api/post",
       data: data,
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,
@@ -214,62 +215,57 @@ const Board = () => {
 
   // 전체 보드 리스트 가져오기
   useEffect(() => {
-    axios
-      .post(
+    const fetchAllBoardList = async () => {
+      const res = await axios.post(
         "http://43.200.170.45/api/posts",
         {
-          body: {
-            workSpaceName: currentParams,
-          },
-        },
-        {
-          workSpaceName: getItemFromLs("workspace"),
+          workSpaceName: currentParams,
         },
         {
           headers: {
             Authorization: `Bearer ${getItemFromLs("myToken")}`,
           },
         }
-      )
-      .then((res) => {
-        console.log(res);
-
-        // 요청 성공 시
-        const allBoardList = res.data.posts;
-        console.log("allBoardList: ", allBoardList);
-        // setAllBoard(() => {
-        //   return [...allBoardList];
-        // });
-
-        // Categorize all board data by the 3 categories
-        // allBoardList.map((board) => {
-        //   switch (board.category) {
-        //     case "todo":
-        //       console.log("---todo 카테고리---");
-        //       setTodoBoardList((prevState) => {
-        //         return [...prevState, board];
-        //       });
-        //       break;
-        //     case "inProgress":
-        //       console.log("---inProgress 카테고리---");
-
-        //       setInProgressList((prevState) => {
-        //         return [...inProgressList, board];
-        //       });
-        //       break;
-        //     case "done":
-        //       console.log("---done 카테고리---");
-        //       setDoneList((prevState) => {
-        //         return [...doneList, board];
-        //       });
-        //       break;
-        //     default:
-        //       console.log("데이터를 불러오는데 실패했습니다.");
-        //   }
-        // });
-      })
-      .catch((err) => console.log(err));
+      );
+      console.log(res);
+      return res;
+    };
+    const result = fetchAllBoardList().catch(console.error);
   }, []);
+
+  // const allBoardList = res.data.posts;
+  // console.log("allBoardList: ", allBoardList);
+  // 요청 성공 시
+  // setAllBoard(() => {
+  //   return [...allBoardList];
+  // });
+
+  // Categorize all board data by the 3 categories
+  // allBoardList.map((board) => {
+  //   switch (board.category) {
+  //     case "todo":
+  //       console.log("---todo 카테고리---");
+  //       setTodoBoardList((prevState) => {
+  //         return [...prevState, board];
+  //       });
+  //       break;
+  //     case "inProgress":
+  //       console.log("---inProgress 카테고리---");
+
+  //       setInProgressList((prevState) => {
+  //         return [...inProgressList, board];
+  //       });
+  //       break;
+  //     case "done":
+  //       console.log("---done 카테고리---");
+  //       setDoneList((prevState) => {
+  //         return [...doneList, board];
+  //       });
+  //       break;
+  //     default:
+  //       console.log("데이터를 불러오는데 실패했습니다.");
+  //   }
+  // });
 
   const onDragEnd = (res) => {
     //드래그 하는 sourced의 index
@@ -279,10 +275,6 @@ const Board = () => {
     const destinationOrderNo = res.destination.index;
     console.log("destinationOrderNo: ", destinationOrderNo);
   };
-
-  useEffect(() => {
-    console.log("다시 돌아왔다");
-  }, []);
 
   return (
     <BoardStyle>

@@ -15,13 +15,14 @@ const UserProfile = ({
   newRoomName,
   roomName,
   size,
+  joinTeamRoom,
 }) => {
   return (
     <OnlineUser
       toTop={toTop}
       alignItems={alignItems}
       onClick={() => {
-        moveRoom(roomName, newRoomName, text);
+        return moveRoom(roomName, newRoomName, text);
         // joinTeamRoom
         //   ? joinTeamRoom()
         //   : setDataForJoin(() => {
