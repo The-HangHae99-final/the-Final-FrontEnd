@@ -69,10 +69,6 @@ const SignIn = () => {
         console.log(err);
       }
     }
-    // if (e.target.innerText.includes("이메일")) {
-    //   // 등록된 이메일인지 확인
-    //   axios
-    //     .post("http://43.200.170.45/api/users/email", {
     //       userEmail: loginValue.userEmail,
     //     })
     //     .then((response) => {

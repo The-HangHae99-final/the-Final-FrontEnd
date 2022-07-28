@@ -19,7 +19,7 @@ const Signup = ({ showLogin, setShowLogin }) => {
 
   // 오류메시지 상태 저장
   const [nameMessage, setNameMessage] = useState("이름을 입력해주세요.");
-  const [emailMessage, setEmailMessage] = useState("이메일을 입력해주세요");
+  const [emailMessage, setEmailMessage] = useState(false);
   const [passwordMessage, setPasswordMessage] =
     useState("비밀번호를 입력해주세요");
   const [passwordConfirmMessage, setPasswordConfirmMessage] =
@@ -28,6 +28,12 @@ const Signup = ({ showLogin, setShowLogin }) => {
   const inputRef = useRef();
   const { userEmail, userName, password, confirmPassword } = signupValue;
 
+  const isValidInput =
+    userEmail.length >= 1 &&
+    userName.length >= 1 &&
+    password.length >= 1 &&
+    confirmPassword.length >= 1;
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setSignupValue({ ...signupValue, [name]: value });
@@ -35,6 +41,9 @@ const Signup = ({ showLogin, setShowLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!isValidInput) {
+      return alert("모든 칸을 채워주세요.");
+    }
     // 회원가입에 필요한 데이터 서버로 전송
     axios
       .post("http://43.200.170.45/api/users/signup", signupValue)
@@ -42,9 +51,15 @@ const Signup = ({ showLogin, setShowLogin }) => {
         console.log("res: ", res);
         if (res.data.success) {
           alert("회원가입에 성공하였습니다!");
+          setShowLogin(true);
         }
       })
-      .catch((error) => console.log(error));
+      .catch((err) => {
+        const errMsg = err.response.data.errorMessage;
+        if (errMsg === "비밀번호는 6글자 이상으로 입력해주세요.") {
+          alert(errMsg);
+        }
+      });
   };
 
   // <SignupStyle>
@@ -155,9 +170,6 @@ const Signup = ({ showLogin, setShowLogin }) => {
                   ref={inputRef}
                   className="siginIn-input"
                 />
-                {/* {userName === "" && (
-                    <span className="help-message">{nameMessage}</span>
-                  )} */}
                 <input
                   type="text"
                   name="userEmail"
@@ -218,7 +230,7 @@ const Signup = ({ showLogin, setShowLogin }) => {
                     transition: "all 0.2s linear",
                     borderRadius: "5px",
                     cursor: "pointer",
-                    backgroundColor: isActive ? "#889AFF" : "#d5d8da",
+                    backgroundColor: isValidInput ? "#889AFF" : "#d5d8da",
                     position: "position",
                     textAlign: "center",
                     padding: "17px 47px",
