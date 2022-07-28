@@ -150,7 +150,18 @@ const Signup = ({ showLogin, setShowLogin }) => {
           <div className="signin_title">Join Us</div>
           <div className="switch">
             <span>이미 팀노트의 멤버이신가요?</span>
-            <div className="join" onClick={() => setShowLogin(!showLogin)}>
+            <div
+              className="join"
+              onClick={() => {
+                setShowLogin(!showLogin);
+                setSignupValue({
+                  userEmail: "",
+                  userName: "",
+                  password: "",
+                  confirmPassword: "",
+                });
+              }}
+            >
               로그인
             </div>
           </div>

@@ -15,6 +15,12 @@ import loginBanner from "../../public/img/Login/login-banner.png";
 import { Button } from "@mui/material";
 import Signup from "./Signup";
 
+function PopUpErrorMsg() {
+  return (
+    <PopUpErrorMsgStyle>아이디 또는 비밀번호를 확인하세요</PopUpErrorMsgStyle>
+  );
+}
+
 const SignIn = () => {
   const [showLogin, setShowLogin] = useState(true);
 
@@ -23,89 +29,49 @@ const SignIn = () => {
     userEmail: "",
     password: "",
   });
-  const { userEmail, password } = loginValue;
   const [isActive, setIsActive] = useState(false);
-  console.log("isActive: ", isActive);
-  const emailChars = userEmail.length;
-  const passwordChars = password.length;
+  const [match, setMatch] = useState(true);
+  console.log("match: ", match);
 
-  useEffect(() => {
-    if (emailChars !== 0 && passwordChars !== 0) {
-      setIsActive(true);
-    } else {
-      setIsActive(false);
-    }
-  }, [loginValue, loginValue?.userEmail, userEmail?.password]);
-
+  const { userEmail, password } = loginValue;
+  const isValidInput = userEmail.length >= 1 && password.length >= 1;
   const navigate = useNavigate();
   const inputRef = useRef();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLoginValue({ ...loginValue, [name]: value });
+    if (!isValidInput) {
+      setIsActive(false);
+    } else {
+      setIsActive(true);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (userEmail !== "" && password !== "") {
-      console.log("loginValue: ", loginValue);
-
-      try {
-        const res = await axios.post("http://43.200.170.45/api/users/login", {
-          userEmail,
-          password,
-        });
-        if (res.data.success) {
-          const user_name = res.data.userName;
-          const user_email = res.data.userEmail;
-          const token = res.data.token;
-          setItemToLs("myToken", token);
-          setItemToLs("userName", user_name);
-          setItemToLs("userEmail", user_email);
-          navigate("/main");
-        }
-      } catch (err) {
-        inputRef.current.focus();
-        console.log(err);
+    try {
+      const res = await axios.post("http://43.200.170.45/api/users/login", {
+        userEmail,
+        password,
+      });
+      if (res.data.success) {
+        const user_name = res.data.userName;
+        const user_email = res.data.userEmail;
+        const token = res.data.token;
+        setItemToLs("myToken", token);
+        setItemToLs("userName", user_name);
+        setItemToLs("userEmail", user_email);
+        navigate("/main");
       }
+    } catch (err) {
+      inputRef.current.focus();
+      setLoginValue({ userEmail: "", password: "" });
+      setMatch(false);
+      setTimeout(() => {
+        setMatch(true);
+      }, 2000);
     }
-    //       userEmail: loginValue.userEmail,
-    //     })
-    //     .then((response) => {
-    //       if (response.data.success) {
-    //         inputRef.current.focus();
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       alert(err.response.data.errorMessage);
-    //       inputRef.current.focus();
-    //       setLoginValue({ ...loginValue, userEmail: "" });
-    //     });
-    // } else {
-    //   // 입력한 비밀번호가 앞서 입력한 이메일과 매칭되는지 확인
-    //   axios
-    //     .post("http://43.200.170.45/api/users/password", {
-    //       userEmail: loginValue.userEmail,
-    //       password: loginValue.password,
-    //     })
-    //     .then((response) => {
-    //       console.log("response: ", response);
-    //       const user_name = response.data.userName;
-    //       const user_email = response.data.userEmail;
-    //       if (response.data.success) {
-    //         const token = response.data.token;
-    //         setItemToLs("myToken", token);
-    //         setItemToLs("userName", user_name);
-    //         setItemToLs("userEmail", user_email);
-    //         navigate("/main");
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       alert(err.response.data.errorMessage);
-    //       inputRef.current.focus();
-    //       setLoginValue({ ...loginValue, password: "" });
-    //     });
-    // }
   };
 
   const login = () => {
@@ -119,7 +85,16 @@ const SignIn = () => {
             <div className="signin_title">Sign In</div>
             <div className="switch">
               <span>신규 사용자이신가요?</span>
-              <div className="join" onClick={() => setShowLogin(!showLogin)}>
+              <div
+                className="join"
+                onClick={() => {
+                  setShowLogin(!showLogin);
+                  setLoginValue({
+                    userEmail: "",
+                    password: "",
+                  });
+                }}
+              >
                 회원가입
               </div>
             </div>
@@ -203,6 +178,7 @@ const SignIn = () => {
         ) : (
           <Signup showLogin={showLogin} setShowLogin={setShowLogin} />
         )}
+        {!match && <PopUpErrorMsg match={match} />}
       </SingInScreen>
     </SignInStyle>
   );
@@ -230,6 +206,7 @@ const SingInScreen = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
 `;
 
 const LoginContainer = styled.div`
@@ -350,7 +327,7 @@ const ContinueWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 25px;
+  margin-bottom: 35px;
 
   .continue-text {
     font-weight: 400;
@@ -359,6 +336,50 @@ const ContinueWrap = styled.div`
     color: #7a858e;
     width: 400px;
     margin: 0px 25px;
+  }
+`;
+
+const PopUpErrorMsgStyle = styled.div`
+  display: ${(props) => (props.match ? "none" : "block")};
+  width: 371px;
+  height: 56px;
+  background: var(--error);
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 15px 58px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 26px;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  animation: shake 0.72s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+
+  @keyframes shake {
+    10%,
+    90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+      transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+      transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+      transform: translate3d(4px, 0, 0);
+    }
   }
 `;
 
