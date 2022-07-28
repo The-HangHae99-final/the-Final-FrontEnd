@@ -1,7 +1,6 @@
 import styles from "./main.module.css";
 import Header from "../../components/Header/Header";
 import { Link, Outlet, useParams } from "react-router-dom";
-import LoginModal from "../../elements/LoginModal";
 import Modal from "../../components/Modal";
 import { useNavigate } from "react-router-dom";
 import PrivateMain from "../../components/PrivateMain";

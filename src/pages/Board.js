@@ -217,10 +217,7 @@ const Board = () => {
   useEffect(() => {
     const fetchAllBoardList = async () => {
       const res = await axios.post(
-        "http://43.200.170.45/api/posts",
-        {
-          workSpaceName: currentParams,
-        },
+        `http://43.200.170.45/api/posts/${currentParams}`,
         {
           headers: {
             Authorization: `Bearer ${getItemFromLs("myToken")}`,

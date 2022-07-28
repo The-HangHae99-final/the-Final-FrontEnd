@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/userReducer";
 import { setItemToLs } from "../utils/localStorage";
 import Divider from "../elements/Divider";
-import loginbg from "../public/img/loginBg.png";
 import SocialLogin from "./SocialLogin";
 import Spinner from "../elements/Spinner";
 
@@ -150,7 +149,6 @@ const LoginBackGround = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  background-image: url(${loginbg});
   background-size: cover;
   background-position: center;
 `;

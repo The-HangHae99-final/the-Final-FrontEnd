@@ -127,6 +127,7 @@ const LoginWrap = styled.div`
 `;
 const ContinueWrap = styled.div`
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: center;
   margin-bottom: 25px;
@@ -137,7 +138,7 @@ const ContinueText = styled.span`
   font-size: 14px;
   line-height: 24px;
   color: #7a858e;
-  width: 400px;
+  width: 100%;
   margin: 0px 25px;
 `;
 // const  = styled.div``;

@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/userReducer";
 import { setItemToLs } from "../../utils/localStorage";
 import Spinner from "../Spinner";
-import loginbg from "../../public/img/loginBg.png";
 import styled from "styled-components";
 
 const NaverLoginCallBack = () => {
@@ -87,7 +86,6 @@ const LoginBackGround = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  background-image: url(${loginbg});
   background-size: cover;
   background-position: center;
 `;

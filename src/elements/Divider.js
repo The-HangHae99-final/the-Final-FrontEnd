@@ -7,8 +7,8 @@ const Divider = (props) => {
 
 const DividerStyle = styled.div`
   height: 1px;
+  border: 1px solid #dcdce8;
   width: ${(props) => props.width || "100%"};
-  background-color: #f8f8f9;
 `;
 
 export default Divider;

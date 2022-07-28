@@ -13,8 +13,8 @@ import ScreenForNewbie from "../components/ScreenForNewbie";
 import PublicMain from "../components/PublicMain";
 
 import Spinner from "../elements/Spinner";
-import Signup from "../components/Signup";
 import styled from "styled-components";
+import SignIn from "../components/SignIn";
 
 const Router = () => {
   const [loading, setLoading] = useState(false);
@@ -25,15 +25,14 @@ const Router = () => {
       setLoading(false);
     }, 1500);
   }, []);
+
   return (
     <RouterStyle>
       {loading ? (
         <Spinner />
       ) : (
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-
+          <Route path="/" element={<SignIn />} />
           <Route path="/main" element={<PublicMain />} />
           <Route path="/main/:workSpaceName/*" element={<Main />}>
             <Route path="" element={<PrivateMain />} />
