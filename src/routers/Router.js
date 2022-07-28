@@ -10,6 +10,8 @@ import KakaoLoginCallback from "../elements/introMain/KakaoLoginCallBack";
 import Login from "../components/Login";
 import PrivateMain from "../components/PrivateMain";
 import ScreenForNewbie from "../components/ScreenForNewbie";
+import PublicMain from "../components/PublicMain";
+
 import Spinner from "../elements/Spinner";
 import Signup from "../components/Signup";
 import styled from "styled-components";
@@ -32,8 +34,7 @@ const Router = () => {
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 
-          <Route path="/main" element={<Main />} />
-
+          <Route path="/main" element={<PublicMain />} />
           <Route path="/main/:workSpaceName/*" element={<Main />}>
             <Route path="" element={<PrivateMain />} />
             <Route path="board" element={<Board />} />

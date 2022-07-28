@@ -389,15 +389,6 @@ const ContactWrap = styled.div`
   background: #ffffff;
   border: 1px solid #ecedf1;
   border-radius: 5px;
-`
-
-const MemoWrap = styled.div`
-  padding: 20px 30px 38px 30px;
-  width: 100%;
-  background: #ffffff;
-  border: 1px solid #ecedf1;
-  border-radius: 5px;
-`
 
   .contact-screen {
     display: flex;
