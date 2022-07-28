@@ -13,6 +13,8 @@ import BubbleBox from "../../components/BubbleBox";
 import { getItemFromLs } from "../../utils/localStorage";
 import TeamChatList from "../../elements/TeamChatList";
 import topArrow from "../../public/img/top-arrow.png";
+import topArrowActive from "../../public/img/top-arrow-active.png";
+
 import camera from "../../public/img/camera.png";
 
 const Message = () => {
@@ -23,7 +25,6 @@ const Message = () => {
   });
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
-  console.log("messageList: ", messageList);
   const [showChat, setShowChat] = useState(false);
   const [roomName, setRoomName] = useState("");
   const [oppenent, setOppenent] = useState("");
@@ -32,6 +33,8 @@ const Message = () => {
   const workspace = useSelector((state) => state.workSpace.value);
   const teamChatRoomName = getItemFromLs("workspace");
   const username = getItemFromLs("userName");
+  const [showActiveBtn, setShowActiveBtn] = useState(false);
+  console.log("showActiveBtn: ", showActiveBtn);
 
   const leaveRoom = (oldRoom) => {
     currentSocket.emit("leave_room", oldRoom);
@@ -74,19 +77,13 @@ const Message = () => {
     }
   };
 
-  // 팀채팅방 입장
-  const joinTeamRoom = () => {
-    currentSocket.emit("join_room", workspace.current_workSpace);
-    setRoomName(() => workspace.current_workSpace);
-
-    // 서버로부터 채팅리스트를 받는다
-    currentSocket.on("chat_list", (chat_list) => {
-      console.log(chat_list);
-      setMessageList([...chat_list]);
-      setShowChat(true);
-    });
-    currentSocket.emit("leave_room", roomName);
-  };
+  useEffect(() => {
+    if (currentMessage.length >= 1) {
+      setShowActiveBtn(true);
+    } else {
+      setShowActiveBtn(false);
+    }
+  }, [currentMessage]);
 
   // 훅을 이용해 소켓 관리
   useEffect(() => {
@@ -191,7 +188,15 @@ const Message = () => {
                     className="submit-button submit-button_text"
                     onClick={sendMessage}
                   >
-                    <img src={topArrow} alt="topArrow" className="topArrow" />
+                    {showActiveBtn ? (
+                      <img
+                        src={topArrowActive}
+                        alt="topArrowActive"
+                        className="topArrow"
+                      />
+                    ) : (
+                      <img src={topArrow} alt="topArrow" className="topArrow" />
+                    )}
                   </button>
                 </ButtonsWrap>
               </Inputwrap>
