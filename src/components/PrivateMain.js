@@ -22,6 +22,7 @@ import Ellipse106 from "../public/img/Ellipse106.png";
 import leftArrow from "../public/img/left-arrow.png";
 import rightArrow from "../public/img/right-arrow.png";
 import commentWhite from "../public/img/Main/comment-white.png";
+// import delete from "../public/img/Main/delete.png";
 import { getMemberList } from "../redux/workSpaceReducer";
 
 const PrivateMain = () => {
@@ -29,16 +30,55 @@ const PrivateMain = () => {
     workSpaceName: "",
     userEmail: "",
   });
-  console.log("newMember: ", newMember);
   const { currentParams } = useOutletContext();
   const [modalOn, setModalOn] = useState(false);
+  const [notification, setNotification] = useState({
+    content: "",
+    workSpaceName: currentParams,
+  });
+  const [notificationList, setNotificationList] = useState([]);
+  console.log("notificationList: ", notificationList);
   const params = useParams();
   const hasParams = params.workSpaceName;
 
   const dispatch = useDispatch();
   const workspace = useSelector((state) => state.workSpace.value);
-  console.log("workspace: ", workspace);
   const memberList = workspace.member_list;
+
+  const handleNotice = (e) => {
+    setNotification({ ...notification, content: e.target.value });
+  };
+
+  // 공지 등록
+  const registerNotification = () => {
+    axios
+      .post(
+        "http://43.200.170.45/api/boards",
+        {
+          content: notification.content,
+          workSpaceName: notification.workSpaceName,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${getItemFromLs("myToken")}`,
+          },
+        }
+      )
+      .then((res) =>
+        setNotificationList([...notificationList, res.data.result])
+      );
+  };
+
+  // 공지 조회
+  useEffect(() => {
+    axios
+      .get(`http://43.200.170.45/api/boards/${currentParams}`, {
+        headers: {
+          Authorization: `Bearer ${getItemFromLs("myToken")}`,
+        },
+      })
+      .then((res) => setNotificationList([...res.data.boards]));
+  }, [currentParams]);
 
   const handleAddMemberModal = () => {
     setModalOn(!modalOn);
@@ -122,21 +162,28 @@ const PrivateMain = () => {
                 <h3 className="main-wrap-title">공지사항</h3>
               </div>
               <NoticeScreen>
-                {hasParams ? (
-                  <ul className="notification-list notification-list_has-params">
-                    <li className="notification-item notification-item_yours">
-                      <div className="notification-content">
-                        공지사항 등록하는 공간입니다 공지사항 등록자만 수정가능
-                        삭제는 각자 워크스페이스 내에서 가능
-                      </div>
-                      <Human03
-                        size={50}
-                        position="absolute"
-                        bottom="-25px"
-                        right="-25px"
-                      />
-                    </li>
-                    <li className="notification-item notification-item_mine">
+                <ul className="notification-list notification-list_has-params">
+                  {notificationList &&
+                    notificationList?.map((noti, idx) => {
+                      return (
+                        <li
+                          className="notification-item notification-item_yours"
+                          key={idx}
+                        >
+                          <div className="notification-content">
+                            {noti.content}
+                          </div>
+                          <Human03
+                            size={50}
+                            position="absolute"
+                            bottom="-25px"
+                            right="-25px"
+                          />
+                        </li>
+                      );
+                    })}
+
+                  {/* <li className="notification-item notification-item_mine">
                       <div className="notification-content">
                         공지사항 등록하는 공간입니다 공지사항 등록자만 수정가능
                         삭제는 각자 워크스페이스 내에서 가능
@@ -147,22 +194,25 @@ const PrivateMain = () => {
                         bottom="-30px"
                         left="-20px"
                       />
-                    </li>
-                  </ul>
-                ) : (
-                  <div className="notification-list notification-list_none-params">
+                    </li> */}
+                </ul>
+                {/* <div className="notification-list notification-list_none-params">
                     <div className="alarm top13">
                       팀원들에게
                       <br /> 알릴 내용이 있나요?
                     </div>
-                  </div>
-                )}
+                  </div> */}
                 <div className="input-wrap">
-                  <input type="text" className="notice-input" />
+                  <input
+                    type="text"
+                    className="notice-input"
+                    onChange={handleNotice}
+                  />
                   <img
                     src={submitVector}
                     alt="submitVector"
                     className="submitVector"
+                    onClick={registerNotification}
                   />
                 </div>
               </NoticeScreen>
@@ -483,7 +533,7 @@ const LeftTop = styled.div`
   gap: 20px;
 
   .notice-wrap {
-    width: 34%;
+    width: 300px;
     height: 476px;
   }
 
@@ -524,13 +574,14 @@ const NoticeScreen = styled.div`
   }
 
   .notification-list {
-    height: 100%;
+    height: 78%;
     display: flex;
     flex-direction: column;
     gap: 35px;
     display: flex;
     align-items: center;
     padding: 15px 29px;
+    overflow: scroll;
   }
 
   .notification-list_has-params {
@@ -545,7 +596,6 @@ const NoticeScreen = styled.div`
     background: #f8f8f9;
     border: 1px solid #7d8bdb;
     border-radius: 20px;
-    height: 86px;
     position: relative;
     width: 83%;
     font-weight: 400;
@@ -554,6 +604,10 @@ const NoticeScreen = styled.div`
     letter-spacing: -0.02em;
     color: #353841;
     position: relative;
+    cursor: pointer;
+  }
+
+  .notification-item:hover {
   }
 
   .notification-item_yours {
