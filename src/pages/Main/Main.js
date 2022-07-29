@@ -37,7 +37,6 @@ const Main = () => {
   const [openNewbieModal, setOpenNewbieModal] = useState(false);
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.value);
-  console.log("user: ", user.invitation);
   const workSpace = useSelector((state) => state.workSpace.value);
   const dispatch = useDispatch();
   const params = useParams();

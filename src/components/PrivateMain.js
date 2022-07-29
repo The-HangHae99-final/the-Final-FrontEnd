@@ -95,7 +95,7 @@ const PrivateMain = () => {
     setModalOn(!modalOn);
   };
 
-  // 멤버 추가하기
+  // 초대장 보내기
   const addNewMember = () => {
     axios({
       method: "post",
