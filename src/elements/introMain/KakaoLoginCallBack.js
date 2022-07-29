@@ -11,14 +11,13 @@ import { useSelector } from "react-redux";
 
 const KakaoLoginCallback = () => {
   const [loading, setLoading] = useState(false);
+  console.log("loading: ", loading);
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.value);
 
   const getKakaoToken = () => {
     const code = location.search.split("=")[1];
-    console.log(code);
 
     // 인가 코드 서버로 전송
     axios
@@ -26,7 +25,6 @@ const KakaoLoginCallback = () => {
         code: code,
       })
       .then((res) => {
-        console.log(res);
         const token = res.data;
 
         // 서버가 받아온 유저 정보 조회

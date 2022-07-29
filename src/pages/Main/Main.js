@@ -238,13 +238,11 @@ const RightSide = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  background-color: #ecedf1;
   display: flex;
 
   .mainStyle {
     width: 100%;
     height: 100%;
-    background-color: #ecedf1;
     padding: 20px;
     display: flex;
     gap: 20px;

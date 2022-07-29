@@ -92,7 +92,10 @@ const Main = () => {
           <div className="buttonWrap">
             <div
               onClick={() => {
-                navigate(`/main/${workSpace.current_workSpace}/board`);
+                alert(
+                  "프로필 옆 화살표를 눌러 워크스페이스를 먼저 선택해주세요!"
+                );
+                // navigate(`/main/${workSpace.current_workSpace}/board`);
               }}
               className="page-navigate-button"
             >
@@ -102,8 +105,12 @@ const Main = () => {
           <div className="buttonWrap">
             <div
               className="page-navigate-button"
-              onClick={() =>
-                navigate(`/main/${workSpace.current_workSpace}/calendar`)
+              onClick={
+                () =>
+                  alert(
+                    "프로필 옆 화살표를 눌러 워크스페이스를 먼저 선택해주세요!"
+                  )
+                // navigate(`/main/${workSpace.current_workSpace}/calendar`)
               }
             >
               <img
@@ -116,8 +123,12 @@ const Main = () => {
           <div className="buttonWrap">
             <div
               className="page-navigate-button"
-              onClick={() =>
-                navigate(`/main/${workSpace.current_workSpace}/message`)
+              onClick={
+                () =>
+                  alert(
+                    "프로필 옆 화살표를 눌러 워크스페이스를 먼저 선택해주세요!"
+                  )
+                // navigate(`/main/${workSpace.current_workSpace}/message`)
               }
             >
               <img src={chatIcon} alt="chatIcon" className="chatIcon" />
@@ -232,13 +243,12 @@ const RightSide = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  background-color: #ecedf1;
   display: flex;
+  background: #ffffff;
 
   .mainStyle {
     width: 100%;
     height: 100%;
-    background-color: #ecedf1;
     padding: 20px;
     display: flex;
     gap: 20px;

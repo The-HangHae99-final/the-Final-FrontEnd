@@ -175,7 +175,7 @@ const PrivateMain = () => {
                 <h3 className="main-wrap-title">타임 랭킹</h3>
               </div>
               <TimeTaskingScreen>
-                {hasParams ? (
+                {!hasParams ? (
                   <>
                     <NoticeScreenTime>
                       <div className="time-ranking-card">
@@ -221,13 +221,14 @@ const PrivateMain = () => {
                 ) : (
                   <>
                     <NoticeScreenTime hasParams={hasParams}>
-                      <div className="alarm">이번주 타임 랭커는?</div>
+                      <div className="alarm">준비 중 입니다</div>
+                      {/* <div className="alarm">준비 중 입니다</div> */}
                     </NoticeScreenTime>
                     <NoticeScreenTime hasParams={hasParams}>
-                      <div className="alarm">이번주 타임 랭커는?</div>
+                      <div className="alarm">준비 중 입니다</div>
                     </NoticeScreenTime>
                     <NoticeScreenTime hasParams={hasParams}>
-                      <div className="alarm">이번주 타임 랭커는?</div>
+                      <div className="alarm">준비 중 입니다</div>
                     </NoticeScreenTime>
                   </>
                 )}
@@ -237,6 +238,7 @@ const PrivateMain = () => {
 
           <WeekCalendar />
         </PrivateMainLeft>
+
         <PrivateMainRight>
           {/* 컨택트 컨테이너 */}
           <ContactWrap>
@@ -358,15 +360,12 @@ const PrivateMainStyle = styled.div`
 `;
 
 const PrivateMainContainer = styled.div`
-  width: 100%;
   display: Flex;
   gap: 20px;
-  height: 100%;
 `;
 
 const MainHeader = styled.div`
   width: 100%;
-  height: 10%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -411,6 +410,7 @@ const TimeTaskingScreen = styled.div`
   display: flex;
   flex-direction: column;
   overflow: scroll;
+  gap: 10px;
 `;
 
 const NoticeScreenTime = styled.div`
@@ -419,8 +419,8 @@ const NoticeScreenTime = styled.div`
   border: 1px solid #ecedf1;
   border-radius: 5px;
   padding: 9px 24px;
-  margin-bottom: 10px;
   height: 137px;
+  width: 100%;
 
   ${({ hasparams }) => {
     if (!hasparams) {
@@ -471,11 +471,11 @@ const NoticeScreenTime = styled.div`
 `;
 
 const PrivateMainLeft = styled.div`
-  max-width: 820px;
   height: 100%;
   display: Flex;
   flex-direction: column;
   gap: 20px;
+  flex: 1;
 `;
 
 const LeftTop = styled.div`
@@ -483,7 +483,7 @@ const LeftTop = styled.div`
   gap: 20px;
 
   .notice-wrap {
-    width: 300px;
+    width: 34%;
     height: 476px;
   }
 
@@ -521,7 +521,6 @@ const NoticeScreen = styled.div`
   border: 1px solid #ecedf1;
 
   .notice-screen-main {
-    background-color: red;
   }
 
   .notification-list {
@@ -531,7 +530,7 @@ const NoticeScreen = styled.div`
     gap: 35px;
     display: flex;
     align-items: center;
-    padding: 15px 10px;
+    padding: 15px 29px;
   }
 
   .notification-list_has-params {
@@ -558,7 +557,7 @@ const NoticeScreen = styled.div`
   }
 
   .notification-item_yours {
-    right: 7px;
+    right: 3px;
   }
 
   .notification-item_mine {
@@ -568,7 +567,7 @@ const NoticeScreen = styled.div`
     background: #ecedf1;
     border: 1px solid #ecedf1;
     border-radius: 5px;
-    width: 100%;
+    width: 91.5%;
     height: 100%;
     padding-left: 22px;
     outline: none;
@@ -591,7 +590,7 @@ const NoticeScreen = styled.div`
 `;
 
 const PrivateMainRight = styled.div`
-  width: 480px;
+  flex-basis: 400px;
 `;
 
 const ContactWrap = styled.div`
