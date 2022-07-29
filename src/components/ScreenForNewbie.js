@@ -8,11 +8,12 @@ import { getUserInfo } from "../redux/userReducer";
 import { getItemFromLs } from "../utils/localStorage";
 import { useNavigate } from "react-router-dom";
 import ModalPortal from "../elements/Portal/ModalPortal";
+import APP_USER_STATE from "../components/PublicMain";
 
 // 이미지
 import clap from "../public/img/Main/clap.png";
 
-const ScreenForNewbie = () => {
+const ScreenForNewbie = ({ setAppState }) => {
   const [titleCharacter, setTitleCharacter] = useState(0);
   const [workSpaceName, setWorkSpaceName] = useState("");
   const [showTeamNoteBtn, setShowTeamNoteBtn] = useState(true);
@@ -42,16 +43,14 @@ const ScreenForNewbie = () => {
           console.log("res: ", res);
           setTimeout(() => {
             setIsLoading(false);
+            window.location.reload();
+            setAppState(APP_USER_STATE.USER);
             dispatch(
               getUserInfo({
                 ...user,
-                workSpaceList: [
-                  ...user.workSpaceList,
-                  res.data.createdWorkSpace.name,
-                ],
+                workSpaceList: [...user.workSpaceList, res.data.name],
               })
             );
-            navigate("/main");
           }, 2000);
         })
         .catch((err) => console.log(err));

@@ -27,6 +27,7 @@ export const APP_USER_STATE = {
 
 const Main = () => {
   const [appstate, setAppState] = useState(APP_USER_STATE.UNKNOWN);
+  console.log("appstate: ", appstate);
   const isLoading = appstate === APP_USER_STATE.UNKNOWN;
   const [openNewbieModal, setOpenNewbieModal] = useState(false);
   const navigate = useNavigate();
@@ -147,7 +148,7 @@ const Main = () => {
               {appstate === APP_USER_STATE.USER ? (
                 <ScreenForUser />
               ) : (
-                <ScreenForNewbie />
+                <ScreenForNewbie setAppState={setAppState} />
               )}
               {/* 홈버튼 누르면 빈 화면 출력
               => Params 값의 유무에 따라 Outlet 렌더링 해야할까? */}

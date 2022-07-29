@@ -271,6 +271,7 @@ const Board = () => {
   // });
 
   const onDragEnd = (res) => {
+    console.log("res: ", res);
     //드래그 하는 sourced의 index
     const sourceOrderNo = res.source.index;
     console.log("sourceOrderNo: ", sourceOrderNo);

@@ -18,6 +18,10 @@ const SocialLogin = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
 
+  const onClickGoogle = () => {
+    alert("서비스 준비 중 입니다");
+  };
+
   return (
     <SocialLoginStyle>
       <div className="btnWrap kakaoWrap" onClick={onClickKakao}>
@@ -40,7 +44,7 @@ const SocialLogin = () => {
           }}
         ></img>
       </div>
-      <div className="btnWrap googleWrap">
+      <div className="btnWrap googleWrap" onClick={onClickGoogle}>
         <img
           src={googleBtn}
           alt="google"
