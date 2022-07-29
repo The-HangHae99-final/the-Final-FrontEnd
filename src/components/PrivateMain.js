@@ -41,7 +41,6 @@ const PrivateMain = () => {
   const params = useParams();
   const hasParams = params.workSpaceName;
   const inputRef = useRef(null);
-  console.log("inputRef: ", inputRef);
 
   const dispatch = useDispatch();
   const workspace = useSelector((state) => state.workSpace.value);
@@ -67,6 +66,7 @@ const PrivateMain = () => {
         }
       )
       .then((res) => {
+        setNotification({ ...notification, content: "" });
         setNotificationList([...notificationList, res.data.result]);
       });
   };
@@ -218,6 +218,11 @@ const PrivateMain = () => {
                     type="text"
                     className="notice-input"
                     onChange={handleNotice}
+                    value={notification.content}
+                    onKeyPress={(e) => {
+                      console.log(e.key);
+                      e.key === "Enter" && registerNotification();
+                    }}
                   />
                   <img
                     src={submitVector}
