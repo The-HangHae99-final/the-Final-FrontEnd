@@ -56,90 +56,9 @@ const Signup = ({ showLogin, setShowLogin }) => {
       })
       .catch((err) => {
         const errMsg = err.response.data.errorMessage;
-        if (errMsg === "비밀번호는 6글자 이상으로 입력해주세요.") {
-          alert(errMsg);
-        }
+        console.log("errMsg: ", errMsg);
       });
   };
-
-  // <SignupStyle>
-  //   <LoginWrap>
-  //     <LoginTitle>{title}</LoginTitle>
-  //     <EmailWrap>
-  //       <FormWrap onSubmit={handleSubmit}>
-  //         <div className="formbox">
-  //           <EmailLabel>이름</EmailLabel>
-  //           <EmailInput
-  //             type="text"
-  //             name="userName"
-  //             value={userName || ""}
-  //             userName={userName}
-  //             onChange={handleChange}
-  //             placeholder="5글자 이내로 입력해주세요."
-  //             ref={inputRef}
-  //           />
-  //           {userName === "" && (
-  //             <span className="help-message">{nameMessage}</span>
-  //           )}
-  //         </div>
-
-  // <div className="formbox">
-  //   <EmailLabel htmlFor="userEmail">이메일</EmailLabel>
-  //   <EmailInput
-  //     type="text"
-  //     name="userEmail"
-  //     value={userEmail || ""}
-  //     onChange={handleChange}
-  //     placeholder="사용 가능한 이메일주소를 입력해주세요."
-  //     ref={inputRef}
-  //   />
-  //   {userEmail === "" && (
-  //     <span className="help-message">{emailMessage}</span>
-  //   )}
-  // </div>
-
-  // <div className="formbox">
-  //   <EmailLabel>비밀번호</EmailLabel>
-  //   <EmailInput
-  //     name="password"
-  //     type="password"
-  //     value={password || ""}
-  //     onChange={handleChange}
-  //     placeholder="6글자 이상 입력해주세요."
-  //     ref={inputRef}
-  //   />
-  //   {password === "" && (
-  //     <span className="help-message">{passwordMessage}</span>
-  //   )}
-  // </div>
-  // <div className="formbox">
-  //   <EmailLabel>비밀번호 확인</EmailLabel>
-  //   <EmailInput
-  //     name="confirmPassword"
-  //     type="password"
-  //     value={confirmPassword || ""}
-  //     onChange={handleChange}
-  //     placeholder="비밀번호를 확인해주세요."
-  //     ref={inputRef}
-  //   />
-  //   {confirmPassword === "" && (
-  //     <span className="help-message">{passwordConfirmMessage}</span>
-  //   )}
-  // </div>
-  //         <EmailSubmit
-  //           type="submit"
-  //           confirmPassword={confirmPassword}
-  //           password={password}
-  //           userName={userName}
-  //           userEmail={userEmail}
-  //         >
-  //           회원가입하기
-  //         </EmailSubmit>
-  //       </FormWrap>
-  //     </EmailWrap>
-  //   </LoginWrap>
-  // </SignupStyle>
-
   return (
     <LoginContainer>
       <div className="signin-screen-wrap">

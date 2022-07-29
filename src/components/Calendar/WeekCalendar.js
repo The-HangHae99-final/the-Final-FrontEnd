@@ -63,7 +63,7 @@ const WeekCalendar = () => {
                   }
                 >
                   <div className="date">{d}</div>
-                  <div className="date-content">qweq</div>
+                  <div className="date-content"></div>
                 </li>
               );
             })}
@@ -78,6 +78,7 @@ const WeekCalendarStyle = styled.div`
   padding: 20px 30px;
   box-sizing: border-box;
   background: #ffffff;
+  height: 35%;
 
   .header-month {
     font-weight: 600;
@@ -88,7 +89,6 @@ const WeekCalendarStyle = styled.div`
   }
 
   .weekCalendar-container {
-    height: 100%;
   }
 
   .calendar-main {
@@ -99,7 +99,6 @@ const WeekCalendarStyle = styled.div`
     display: flex;
     justify-content: space-between;
     gap: 8px;
-    height: 100%;
     width: 100%;
   }
 
@@ -110,6 +109,7 @@ const WeekCalendarStyle = styled.div`
     width: 100%;
     height: 100%;
   }
+
   .date-weekend {
     width: 43px;
   }
@@ -126,7 +126,6 @@ const WeekCalendarStyle = styled.div`
   .date-content {
     background: #ffffff;
     border: 1px solid #ecedf1;
-    height: 100%;
   }
 `;
 

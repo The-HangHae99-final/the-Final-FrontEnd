@@ -51,7 +51,7 @@ const ScreenForNewbie = () => {
                 ],
               })
             );
-            window.location.reload();
+            navigate("/main");
           }, 2000);
         })
         .catch((err) => console.log(err));

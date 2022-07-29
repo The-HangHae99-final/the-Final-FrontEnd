@@ -50,13 +50,22 @@ const PrivateMain = () => {
               </div>
               <NoticeScreen>
                 <div className="notification-list notification-list_none-params">
+                  <img
+                    src={commentWhite}
+                    alt="commentWhite"
+                    className="commentWhite"
+                  />
                   <div className="alarm top13">
                     팀원들에게
                     <br /> 알릴 내용이 있나요?
                   </div>
                 </div>
                 <div className="input-wrap">
-                  <input type="text" className="notice-input" />
+                  <input
+                    type="text"
+                    className="notice-input"
+                    placeholder="팀원들에게 알릴 내용이 있나요?"
+                  />
                   <img
                     src={submitVector}
                     alt="submitVector"
@@ -159,7 +168,9 @@ const PrivateMainStyle = styled.div`
 
 const PrivateMainContainer = styled.div`
   width: 100%;
+  height: 100%;
   display: Flex;
+  justify-content: space-between;
   gap: 20px;
 `;
 
@@ -210,6 +221,7 @@ const TimeTaskingScreen = styled.div`
   height: 91%;
   display: flex;
   flex-direction: column;
+  gap: 10px;
   overflow: scroll;
 `;
 
@@ -219,7 +231,6 @@ const NoticeScreenTime = styled.div`
   border: 1px solid #ecedf1;
   border-radius: 5px;
   padding: 9px 24px;
-  margin-bottom: 10px;
   height: 137px;
 
   ${({ hasparams }) => {
@@ -271,7 +282,7 @@ const NoticeScreenTime = styled.div`
 `;
 
 const PrivateMainLeft = styled.div`
-  max-width: 820px;
+  width: 68%;
   height: 100%;
   display: Flex;
   flex-direction: column;
@@ -283,7 +294,7 @@ const LeftTop = styled.div`
   gap: 20px;
 
   .notice-wrap {
-    width: 300px;
+    width: 39%;
     height: 476px;
   }
 
@@ -307,7 +318,7 @@ const LeftTop = styled.div`
   }
 
   .time_tasking-wrap {
-    width: 500px;
+    width: 61%;
     height: 476px;
   }
 `;
@@ -350,28 +361,50 @@ const NoticeScreen = styled.div`
     position: relative;
   }
 
+  .input-wrap {
+    width: 86%;
+    height: 52px;
+    margin: auto;
+    position: absolute;
+    bottom: 10px;
+    left: 47%;
+    transform: translateX(-50%);
+  }
+
   .notice-input {
     background: #ecedf1;
     border: 1px solid #ecedf1;
     border-radius: 5px;
     width: 100%;
     height: 100%;
-    padding-left: 22px;
     outline: none;
+    padding: 0px;
+    border: none;
+    padding: 0 0 0 22px;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+    letter-spacing: -0.02em;
+    color: #353841;
+
+    ::placeholder {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 17px;
+      letter-spacing: -0.02em;
+      color: #cbcbd7;
+    }
   }
 
-  .input-wrap {
-    width: 280px;
-    height: 52px;
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
+  .commentWhite {
+    width: 34px;
+    height: 32px;
   }
 
   .submitVector {
     position: absolute;
-    right: 11px;
-    top: 11px;
+    right: -10px;
+    top: 10px;
     cursor: pointer;
   }
 `;

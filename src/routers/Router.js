@@ -7,7 +7,6 @@ import Calender from "../pages/Calendar/Calendar";
 import Message from "../pages/Message/Message";
 import NaverLoginCallBack from "../elements/introMain/NaverLoginCallBack";
 import KakaoLoginCallback from "../elements/introMain/KakaoLoginCallBack";
-import Login from "../components/Login";
 import PrivateMain from "../components/PrivateMain";
 import ScreenForNewbie from "../components/ScreenForNewbie";
 import PublicMain from "../components/PublicMain";
