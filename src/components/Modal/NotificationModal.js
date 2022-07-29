@@ -58,7 +58,7 @@ const NotificationModal = ({ onClose }) => {
       <WorkspaceModalStyle>
         <div className="workspace-create-box-wrap">
           <div className="workspace-name">Notification</div>
-          <ul>
+          <ul className="noti-list">
             {invitations &&
               invitations.map((item, idx) => {
                 console.log("item: ", item);
@@ -67,16 +67,26 @@ const NotificationModal = ({ onClose }) => {
                 const clickedID = item._id;
                 return (
                   <li className="noti" key={idx}>
-                    {item.inviter}님이 {item.workSpaceName.split("+")[1]}로
-                    초대하셨습니다!
-                    <button
-                      onClick={() =>
-                        accept(invitee, fromThisWorkSpaceName, clickedID)
-                      }
-                    >
-                      수락
-                    </button>
-                    <button onClick={() => refuse()}>거절</button>
+                    <div>
+                      {item.inviter}님이 {item.workSpaceName.split("+")[1]}
+                      (으)로 초대하셨습니다!
+                    </div>
+                    <div className="decision_button">
+                      <button
+                        className="decision decision_accept"
+                        onClick={() =>
+                          accept(invitee, fromThisWorkSpaceName, clickedID)
+                        }
+                      >
+                        수락
+                      </button>
+                      <button
+                        className="decision decision_refused"
+                        onClick={() => refuse()}
+                      >
+                        거절
+                      </button>
+                    </div>
                   </li>
                 );
               })}
@@ -85,7 +95,6 @@ const NotificationModal = ({ onClose }) => {
             <button className="active-button cancel" onClick={onClose}>
               뒤로가기
             </button>
-            <button className="active-button submit">수락하기</button>
           </div>
         </div>
       </WorkspaceModalStyle>
@@ -164,6 +173,26 @@ const WorkspaceModalStyle = styled.div`
     }
   }
 
+  .decision_button {
+    display: flex;
+    gap: 10px;
+
+    .decision {
+      all: unset;
+      padding: 4px 14px;
+      cursor: pointer;
+      color: white;
+      border-radius: 5px;
+    }
+    .decision_accept {
+      background-color: #7d8bdb;
+    }
+
+    .decision_refused {
+      background-color: #c1c9cf;
+    }
+  }
+
   .active-buttons {
     display: flex;
     justify-content: center;
@@ -191,8 +220,18 @@ const WorkspaceModalStyle = styled.div`
     }
   }
 
+  .noti-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .noti {
     font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
   }
 `;
 

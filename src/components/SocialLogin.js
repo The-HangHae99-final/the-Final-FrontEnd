@@ -9,8 +9,9 @@ import styled from "styled-components";
 
 const SocialLogin = () => {
   const onClickNaver = () => {
-    window.location.href =
-      "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=0wSIvykcfvmOTk3Dz4fS&state=teamnote&redirect_uri=http://localhost:3000/api/auth/login/naver/callback";
+    alert("서비스 준비 중 입니다");
+    // window.location.href =
+    //   "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=0wSIvykcfvmOTk3Dz4fS&state=teamnote&redirect_uri=http://localhost:3000/api/auth/login/naver/callback";
   };
 
   const onClickKakao = () => {

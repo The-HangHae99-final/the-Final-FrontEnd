@@ -65,6 +65,7 @@ const PrivateMain = () => {
                     type="text"
                     className="notice-input"
                     placeholder="팀원들에게 알릴 내용이 있나요?"
+                    disabled
                   />
                   <img
                     src={submitVector}
@@ -83,13 +84,13 @@ const PrivateMain = () => {
               </div>
               <TimeTaskingScreen>
                 <NoticeScreenTime>
-                  <div className="alarm">이번주 타임 랭커는?</div>
+                  <div className="alarm">서비스 준비 중 입니다.</div>
                 </NoticeScreenTime>
                 <NoticeScreenTime>
-                  <div className="alarm">이번주 타임 랭커는?</div>
+                  <div className="alarm">서비스 준비 중 입니다.</div>
                 </NoticeScreenTime>
                 <NoticeScreenTime>
-                  <div className="alarm">이번주 타임 랭커는?</div>
+                  <div className="alarm">서비스 준비 중 입니다.</div>
                 </NoticeScreenTime>
               </TimeTaskingScreen>
             </div>
@@ -176,7 +177,6 @@ const PrivateMainContainer = styled.div`
 
 const MainHeader = styled.div`
   width: 100%;
-  height: 10%;
   display: flex;
   align-items: center;
   justify-content: space-between;

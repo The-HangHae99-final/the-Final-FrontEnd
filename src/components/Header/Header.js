@@ -21,7 +21,7 @@ import { getWorkSpaceData } from "../../redux/workSpaceReducer";
 import reset from "../../redux/workSpaceReducer";
 import NotificationModal from "../Modal/NotificationModal";
 
-const Header = () => {
+const Header = ({ invitation }) => {
   const [workSpaceName, setWorkSpaceName] = useState("");
   const [modalOn, setModalOn] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
@@ -112,6 +112,9 @@ const Header = () => {
             </button>
             <button className="menuBtn" onClick={openNotiModal}>
               <img src={bellIcon} alt="sun icon" />
+              {invitation?.length >= 1 && (
+                <span className="badge">{invitation?.length}</span>
+              )}
             </button>
             {openNoti && <NotificationModal onClose={closeNoti} />}
           </div>
@@ -221,6 +224,28 @@ const HeaderStyle = styled.div`
     display: flex;
     align-items: center;
     gap: 25px;
+    position: relative;
+
+    .badge {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      padding: 5px 10px;
+      border-radius: 50%;
+      background: red;
+      color: white;
+      animation: MoveUpDown 1s linear infinite;
+    }
+
+    @keyframes MoveUpDown {
+      0%,
+      100% {
+        transform: translateY(2px);
+      }
+      50% {
+        transform: translateY(-2px);
+      }
+    }
   }
 
   .menuBtn {

@@ -201,7 +201,6 @@ const SignInBanner = styled.div`
 
 const SingInScreen = styled.div`
   display: flex;
-  background-color: whitesmoke;
   width: 47%;
   flex-direction: column;
   align-items: center;
