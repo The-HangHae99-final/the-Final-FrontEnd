@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useRef } from "react";
 import styled, { css } from "styled-components";
 import AddMemberModal from "./Modal/AddMemberModal";
 import ModalPortal from "../elements/Portal/ModalPortal";
@@ -40,6 +40,8 @@ const PrivateMain = () => {
   console.log("notificationList: ", notificationList);
   const params = useParams();
   const hasParams = params.workSpaceName;
+  const inputRef = useRef(null);
+  console.log("inputRef: ", inputRef);
 
   const dispatch = useDispatch();
   const workspace = useSelector((state) => state.workSpace.value);
@@ -64,10 +66,15 @@ const PrivateMain = () => {
           },
         }
       )
-      .then((res) =>
-        setNotificationList([...notificationList, res.data.result])
-      );
+      .then((res) => {
+        setNotificationList([...notificationList, res.data.result]);
+      });
   };
+
+  useEffect(() => {
+    // 공지 목록이 업데이트 될 때마다 스크롤을 내린다
+    inputRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [notificationList]);
 
   // 공지 조회
   useEffect(() => {
@@ -77,7 +84,7 @@ const PrivateMain = () => {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },
       })
-      .then((res) => setNotificationList([...res.data.boards]));
+      .then((res) => setNotificationList([...res.data.boards.reverse()]));
   }, [currentParams]);
 
   const handleAddMemberModal = () => {
@@ -166,35 +173,39 @@ const PrivateMain = () => {
                   {notificationList &&
                     notificationList?.map((noti, idx) => {
                       return (
-                        <li
-                          className="notification-item notification-item_yours"
-                          key={idx}
-                        >
-                          <div className="notification-content">
-                            {noti.content}
-                          </div>
-                          <Human03
-                            size={50}
-                            position="absolute"
-                            bottom="-25px"
-                            right="-25px"
-                          />
-                        </li>
+                        <>
+                          {noti.userName === getItemFromLs("userName") ? (
+                            <li
+                              className="notification-item notification-item_mine"
+                              key={noti._id}
+                              ref={inputRef}
+                            >
+                              <div className="notification-content">
+                                {noti.content}
+                              </div>
+                              <div className="user-info user-info_me">
+                                <span className="me">나</span>
+                                <Human03 size={40} />
+                              </div>
+                            </li>
+                          ) : (
+                            <li
+                              className="notification-item notification-item_yours"
+                              ref={inputRef}
+                              key={noti._id}
+                            >
+                              <div className="notification-content">
+                                {noti.content}
+                              </div>
+                              <div className="user-info user-info_you">
+                                <Human04 size={40} />
+                                <span className="you">{noti.userName}</span>
+                              </div>
+                            </li>
+                          )}
+                        </>
                       );
                     })}
-
-                  {/* <li className="notification-item notification-item_mine">
-                      <div className="notification-content">
-                        공지사항 등록하는 공간입니다 공지사항 등록자만 수정가능
-                        삭제는 각자 워크스페이스 내에서 가능
-                      </div>
-                      <Human04
-                        size={50}
-                        position="absolute"
-                        bottom="-30px"
-                        left="-20px"
-                      />
-                    </li> */}
                 </ul>
                 {/* <div className="notification-list notification-list_none-params">
                     <div className="alarm top13">
@@ -580,8 +591,9 @@ const NoticeScreen = styled.div`
     gap: 35px;
     display: flex;
     align-items: center;
-    padding: 15px 29px;
+    padding: 15px 0px;
     overflow: scroll;
+    position: relative;
   }
 
   .notification-list_has-params {
@@ -596,8 +608,8 @@ const NoticeScreen = styled.div`
     background: #f8f8f9;
     border: 1px solid #7d8bdb;
     border-radius: 20px;
-    position: relative;
-    width: 83%;
+    position: absolute;
+    width: 70%;
     font-weight: 400;
     font-size: 14px;
     line-height: 20px;
@@ -607,14 +619,39 @@ const NoticeScreen = styled.div`
     cursor: pointer;
   }
 
-  .notification-item:hover {
+  .notification-item_mine {
   }
 
   .notification-item_yours {
-    right: 3px;
   }
 
-  .notification-item_mine {
+  .user-info {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 17px;
+    text-align: right;
+    letter-spacing: -0.02em;
+    color: #353841;
+  }
+
+  .user-info_me {
+    bottom: -25px;
+    right: -15px;
+  }
+
+  .user-info_you {
+    bottom: -25px;
+    left: -15px;
+  }
+
+  .me,
+  .you {
+    position: relative;
+    top: 7px;
   }
 
   .notice-input {
