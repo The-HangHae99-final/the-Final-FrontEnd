@@ -44,16 +44,16 @@ function CreateBox({
             꽤나중요
           </div>
           <div className="label" onClick={handleLabelClick}>
-            조금중요
+            안중요
           </div>
           <div className="label" onClick={handleLabelClick}>
-            핵중요
+            상당히중요
           </div>
           <div className="label" onClick={handleLabelClick}>
             살짝중요
           </div>
           <div className="label" onClick={handleLabelClick}>
-            살짝조금중요
+            종종중요
           </div>
         </div>
         {/* <div className="arrow-btns">
@@ -82,7 +82,6 @@ function CreateBox({
 
 const Board = () => {
   const { currentParams } = useOutletContext();
-  console.log("currentParams: ", currentParams);
 
   const [data, setData] = useState({
     title: "",
@@ -92,7 +91,6 @@ const Board = () => {
     workSpaceName: "",
     category: "todo",
   });
-  console.log("data: ", data);
   const [allBoard, setAllBoard] = useState([]);
   const [todoBoardList, setTodoBoardList] = useState([]);
   const [inProgressList, setInProgressList] = useState([]);
@@ -100,30 +98,35 @@ const Board = () => {
 
   const [isShown, setIsShown] = useState(false);
   const [titleCharacter, setTitleCharacter] = useState(0);
+  console.log("todoBoardList: ", todoBoardList);
 
   // 보드 생성
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios({
-      method: "post",
-      url: "http://43.200.170.45/api/post",
-      data: data,
-      headers: {
-        Authorization: `Bearer ${getItemFromLs("myToken")}`,
-      },
-    })
-      .then((res) => {
-        console.log(res.data);
+    try {
+      const res = await axios({
+        method: "post",
+        url: "http://43.200.170.45/api/posts",
+        data: data,
+        headers: {
+          Authorization: `Bearer ${getItemFromLs("myToken")}`,
+        },
+      });
+      if (res.data.success) {
         setTodoBoardList((prevState) => [...prevState, res.data.result]);
         setIsShown(false);
-      })
-      .catch((err) => console.log(err));
+      } else {
+        alert("빠진게 없는지 다시 한번 확인해주세요 :)");
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
     setData({
       ...data,
-      workSpaceName: getItemFromLs("workspace"),
+      workSpaceName: currentParams,
       assignees: getItemFromLs("userName"),
     });
   }, []);
@@ -161,32 +164,32 @@ const Board = () => {
               });
 
               // todo, in progress, done 카테고리로 나눠 state에 저장하기
-              allBoardList.map((board) => {
-                switch (board.category) {
-                  case "todo":
-                    console.log("---todo 카테고리---");
-                    setTodoBoardList((prevState) => {
-                      return [...prevState, board];
-                    });
-                    break;
-                  case "inProgress":
-                    console.log("---inProgress 카테고리---");
+              // allBoardList.map((board) => {
+              //   switch (board.category) {
+              //     case "todo":
+              //       console.log("---todo 카테고리---");
+              //       setTodoBoardList((prevState) => {
+              //         return [...prevState, board];
+              //       });
+              //       break;
+              //     case "inProgress":
+              //       console.log("---inProgress 카테고리---");
 
-                    setInProgressList((prevState) => {
-                      return [...prevState, board];
-                    });
-                    break;
-                  case "done":
-                    console.log("---done 카테고리---");
+              //       setInProgressList((prevState) => {
+              //         return [...prevState, board];
+              //       });
+              //       break;
+              //     case "done":
+              //       console.log("---done 카테고리---");
 
-                    setDoneList((prevState) => {
-                      return [...prevState, board];
-                    });
-                    break;
-                  default:
-                    console.log("데이터를 불러오는데 실패했습니다.");
-                }
-              });
+              //       setDoneList((prevState) => {
+              //         return [...prevState, board];
+              //       });
+              //       break;
+              //     default:
+              //       console.log("데이터를 불러오는데 실패했습니다.");
+              //   }
+              // });
             })
             .catch((err) => console.log(err));
         })
@@ -215,19 +218,22 @@ const Board = () => {
 
   // 전체 보드 리스트 가져오기
   useEffect(() => {
-    const fetchAllBoardList = async () => {
-      const res = await axios.post(
-        `http://43.200.170.45/api/posts/${currentParams}`,
+    axios
+      .post(
+        `http://43.200.170.45/api/posts/list`,
+        {
+          workSpaceName: currentParams,
+        },
         {
           headers: {
             Authorization: `Bearer ${getItemFromLs("myToken")}`,
           },
         }
-      );
-      console.log(res);
-      return res;
-    };
-    const result = fetchAllBoardList().catch(console.error);
+      )
+      .then((res) => {
+        const reverseArr = res.data.posts.reverse();
+        setTodoBoardList([...reverseArr]);
+      });
   }, []);
 
   // const allBoardList = res.data.posts;
@@ -313,7 +319,7 @@ const Board = () => {
                     ref={provided.innerRef}
                   >
                     {todoBoardList &&
-                      todoBoardList.map((board, index) => {
+                      todoBoardList?.map((board, index) => {
                         return (
                           <Draggable
                             draggableId={index.toString()}
@@ -635,6 +641,12 @@ const CreateBoxStyle = styled.form`
         background: rgba(247, 247, 247, 0.5);
         border: 1px solid #ecedf1;
         border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .label:hover {
+        background-color: #7d8bdb;
       }
     }
 
