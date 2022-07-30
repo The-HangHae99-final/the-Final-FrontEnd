@@ -33,10 +33,12 @@ export const APP_USER_STATE = {
 
 const Main = () => {
   const [appstate, setAppState] = useState(APP_USER_STATE.UNKNOWN);
+  console.log("appstate: ", appstate);
   const isLoading = appstate === APP_USER_STATE.UNKNOWN;
   const [openNewbieModal, setOpenNewbieModal] = useState(false);
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.value);
+  console.log("user: ", user);
   const workSpace = useSelector((state) => state.workSpace.value);
   const dispatch = useDispatch();
   const params = useParams();
@@ -144,8 +146,7 @@ const Main = () => {
               ) : (
                 <ScreenForNewbie />
               )}
-              {/* 홈버튼 누르면 빈 화면 출력
-              => Params 값의 유무에 따라 Outlet 렌더링 해야할까? */}
+              {/* 뉴비 컴포넌트 렌더링 => 유저의 웤스 존재 여부에 따라 뉴비 모달 띄우기 */}
             </>
           )}
         </main>
@@ -193,7 +194,6 @@ const LeftSide = styled.div`
   .logo {
     width: 50px;
     height: 50px;
-    border-radius: 50%;
   }
 
   .buttons {

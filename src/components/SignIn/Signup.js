@@ -18,7 +18,7 @@ const Signup = ({ showLogin, setShowLogin }) => {
   const [isActive, setIsActive] = useState(false);
 
   // 오류메시지 상태 저장
-  const [nameMessage, setNameMessage] = useState("이름을 입력해주세요.");
+  const [nameMessage, setNameMessage] = useState(false);
   const [emailMessage, setEmailMessage] = useState(false);
   const [passwordMessage, setPasswordMessage] =
     useState("비밀번호를 입력해주세요");
@@ -94,7 +94,7 @@ const Signup = ({ showLogin, setShowLogin }) => {
                   type="text"
                   name="userName"
                   value={userName || ""}
-                  userName={userName}
+                  username={userName}
                   onChange={handleChange}
                   placeholder="이름을 입력해 주세요."
                   ref={inputRef}
@@ -134,11 +134,6 @@ const Signup = ({ showLogin, setShowLogin }) => {
                   ref={inputRef}
                   className="siginIn-input"
                 />
-                {/* {confirmPassword === "" && (
-                    <span className="help-message">
-                      {passwordConfirmMessage}
-                    </span>
-                  )} */}
               </div>
 
               <div className="active-buttons">

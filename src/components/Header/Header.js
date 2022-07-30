@@ -89,7 +89,7 @@ const Header = ({ invitation }) => {
         dispatch(
           getUserInfo({
             ...user,
-            workSpaceList: [...user.workSpaceList, res.data.addedOwner],
+            workSpaceList: [...user.workSpaceList, res.data.name],
           })
         );
         setModalOn(false);
@@ -158,7 +158,8 @@ const Header = ({ invitation }) => {
               <WorkspaceList>
                 {user?.workSpaceList &&
                   user?.workSpaceList.map((item, idx) => {
-                    const wsName = item.split("+")[1];
+                    console.log("item: ", item);
+                    const wsName = item.split("+");
                     return (
                       <li
                         key={idx}
@@ -174,8 +175,8 @@ const Header = ({ invitation }) => {
                           navigate(`/main/${item}`);
                         }}
                       >
-                        <div className="workspace_avatar">{wsName[0]}</div>
-                        <div className="current_workSpace">{wsName}</div>
+                        <div className="workspace_avatar">{wsName[1][0]}</div>
+                        <div className="current_workSpace">{wsName[1]}</div>
                       </li>
                     );
                   })}

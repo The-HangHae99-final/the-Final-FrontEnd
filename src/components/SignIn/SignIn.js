@@ -173,12 +173,14 @@ const SignIn = () => {
     <SignInStyle>
       <SignInBanner></SignInBanner>
       <SingInScreen>
-        {showLogin ? (
-          login()
-        ) : (
-          <Signup showLogin={showLogin} setShowLogin={setShowLogin} />
-        )}
-        {!match && <PopUpErrorMsg match={match} />}
+        <LoginContainer>
+          {showLogin ? (
+            login()
+          ) : (
+            <Signup showLogin={showLogin} setShowLogin={setShowLogin} />
+          )}
+          {!match && <PopUpErrorMsg match={match} />}
+        </LoginContainer>
       </SingInScreen>
     </SignInStyle>
   );
@@ -206,6 +208,7 @@ const SingInScreen = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
+  padding: 0px 90px;
 `;
 
 const LoginContainer = styled.div`
