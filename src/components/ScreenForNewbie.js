@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { getUserInfo } from "../redux/userReducer";
 import { getItemFromLs } from "../utils/localStorage";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ModalPortal from "../elements/Portal/ModalPortal";
-import APP_USER_STATE from "../components/PublicMain";
+import { APP_USER_STATE } from "../components/PublicMain";
 
 // 이미지
 import clap from "../public/img/Main/clap.png";
@@ -20,7 +20,6 @@ const ScreenForNewbie = ({ setAppState }) => {
   const [showCreateBox, setShowCreateBox] = useState(false);
   const [isLoading, setIsLoading] = useState(null);
   const user = useSelector((state) => state.user.value);
-  console.log("user: ", user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -42,9 +41,8 @@ const ScreenForNewbie = ({ setAppState }) => {
         .then((res) => {
           console.log("res: ", res);
           setTimeout(() => {
-            setIsLoading(false);
-            window.location.reload();
             setAppState(APP_USER_STATE.USER);
+            setIsLoading(false);
             dispatch(
               getUserInfo({
                 ...user,
@@ -97,7 +95,9 @@ const ScreenForNewbie = ({ setAppState }) => {
               />
             </div>
           </div>
-          <div className="add-later">나중에 할래요</div>
+          <Link className="add-later" to="/main">
+            나중에 할래요
+          </Link>
         </div>
       </div>
     );

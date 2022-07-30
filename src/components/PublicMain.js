@@ -32,6 +32,7 @@ const Main = () => {
   const [openNewbieModal, setOpenNewbieModal] = useState(false);
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.value);
+  console.log("user: ", user);
   const workSpace = useSelector((state) => state.workSpace.value);
   const dispatch = useDispatch();
   const params = useParams();
@@ -139,7 +140,7 @@ const Main = () => {
       </LeftSide>
 
       <RightSide>
-        <Header />
+        <Header invitation={user.invitation} />
         <main className="mainStyle">
           {isLoading ? (
             <Spinner />
@@ -199,7 +200,6 @@ const LeftSide = styled.div`
   .logo {
     width: 50px;
     height: 50px;
-    border-radius: 50%;
   }
 
   .buttons {

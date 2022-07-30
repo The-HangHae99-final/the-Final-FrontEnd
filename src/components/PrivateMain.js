@@ -134,7 +134,6 @@ const PrivateMain = () => {
         },
       })
       .then((res) => {
-        console.log("res: ", res);
         if (res.data.success) {
           dispatch(
             getMemberList({ ...workspace, member_list: [...res.data.result] })
