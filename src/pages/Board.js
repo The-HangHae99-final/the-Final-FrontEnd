@@ -82,7 +82,6 @@ function CreateBox({
 
 const Board = () => {
   const { currentParams } = useOutletContext();
-
   const [data, setData] = useState({
     title: "",
     desc: "",
@@ -93,11 +92,11 @@ const Board = () => {
   });
   const [allBoard, setAllBoard] = useState([]);
   const [todoBoardList, setTodoBoardList] = useState([]);
+  console.log("todoBoardList: ", todoBoardList);
   const [inProgressList, setInProgressList] = useState([]);
   const [doneList, setDoneList] = useState([]);
   const [isShown, setIsShown] = useState(false);
   const [titleCharacter, setTitleCharacter] = useState(0);
-  console.log("todoBoardList: ", todoBoardList);
 
   // 보드 생성
   const handleSubmit = async (e) => {
@@ -232,44 +231,43 @@ const Board = () => {
       )
       .then((res) => {
         console.log("res: ", res);
-        const reverseArr = res.data.posts.reverse();
-        setTodoBoardList([...reverseArr]);
+        const allBoardList = res.data.posts;
+
+        setTodoBoardList([...allBoardList]);
+
+        // 요청 성공 시
+        // setAllBoard(() => {
+        //   return [...allBoardList];
+        // });
+
+        // Categorize all board data by the 3 categories
+        allBoardList.map((board) => {
+          switch (board.category) {
+            case "todo":
+              console.log("---todo 카테고리---");
+              setTodoBoardList((prevState) => {
+                return [...prevState, board];
+              });
+              break;
+            case "inProgress":
+              console.log("---inProgress 카테고리---");
+
+              setInProgressList((prevState) => {
+                return [...prevState, board];
+              });
+              break;
+            case "done":
+              console.log("---done 카테고리---");
+              setDoneList((prevState) => {
+                return [...prevState, board];
+              });
+              break;
+            default:
+              console.log("데이터를 불러오는데 실패했습니다.");
+          }
+        });
       });
   }, []);
-
-  // const allBoardList = res.data.posts;
-  // console.log("allBoardList: ", allBoardList);
-  // 요청 성공 시
-  // setAllBoard(() => {
-  //   return [...allBoardList];
-  // });
-
-  // Categorize all board data by the 3 categories
-  // allBoardList.map((board) => {
-  //   switch (board.category) {
-  //     case "todo":
-  //       console.log("---todo 카테고리---");
-  //       setTodoBoardList((prevState) => {
-  //         return [...prevState, board];
-  //       });
-  //       break;
-  //     case "inProgress":
-  //       console.log("---inProgress 카테고리---");
-
-  //       setInProgressList((prevState) => {
-  //         return [...inProgressList, board];
-  //       });
-  //       break;
-  //     case "done":
-  //       console.log("---done 카테고리---");
-  //       setDoneList((prevState) => {
-  //         return [...doneList, board];
-  //       });
-  //       break;
-  //     default:
-  //       console.log("데이터를 불러오는데 실패했습니다.");
-  //   }
-  // });
 
   const handleDragEnd = (res) => {
     if (!res.destination) return;
@@ -283,6 +281,8 @@ const Board = () => {
     // 내려놓는 위치의 인덱스에 추기힌디. 끌기 시작한 요소를.
     items.splice(destinationOrderNo, 0, reOrderedItem);
     console.log("items: ", items);
+    // console.log("items: ", items);
+    setTodoBoardList(items);
   };
 
   return (
@@ -328,7 +328,7 @@ const Board = () => {
                       todoBoardList?.map((board, index) => {
                         return (
                           <Draggable
-                            draggableId={board.postId}
+                            draggableId={index.toString()}
                             index={index}
                             key={index}
                           >
@@ -339,7 +339,6 @@ const Board = () => {
                                 {...provided.dragHandleProps}
                               >
                                 <BoardCard
-                                  draggableId={index.toString()}
                                   board={board}
                                   removeBoard={removeBoard}
                                   index={index}

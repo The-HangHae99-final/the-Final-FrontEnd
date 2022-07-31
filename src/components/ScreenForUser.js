@@ -294,7 +294,7 @@ const LeftTop = styled.div`
   gap: 20px;
 
   .notice-wrap {
-    width: 39%;
+    width: 300px;
     height: 476px;
   }
 
@@ -318,7 +318,7 @@ const LeftTop = styled.div`
   }
 
   .time_tasking-wrap {
-    width: 61%;
+    width: 100%;
     height: 476px;
   }
 `;

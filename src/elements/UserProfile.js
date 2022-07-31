@@ -39,9 +39,7 @@ const UserProfile = ({
         size={size}
       ></OnlineUserProfile>
       {text && <UserName>{text}</UserName>}
-      {online == true || online == false ? (
-        <StatusOnline size={size} online={online}></StatusOnline>
-      ) : null}
+      {online && <StatusOnline size={size} online={online} />}
     </OnlineUser>
   );
 };
