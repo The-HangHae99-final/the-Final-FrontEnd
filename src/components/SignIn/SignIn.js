@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import logo from "../../public/img/Login/logo-colored.png";
 import axios from "axios";
@@ -30,13 +30,15 @@ const SignIn = () => {
   const [isActive, setIsActive] = useState(false);
   const [match, setMatch] = useState(true);
   const [emailHelpMessage, setEmailHelpMessage] = useState("");
+  const [passwordHelpMessage, setPasswordHelpMessage] = useState("");
+
   console.log("emailHelpMessage: ", emailHelpMessage);
 
   const { userEmail, password } = loginValue;
   const isValidInput = userEmail.length >= 1 && password.length >= 1;
   const navigate = useNavigate();
-  const inputRef = useRef();
   const emailRef = useRef();
+  const pwRef = useRef();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLoginValue({ ...loginValue, [name]: value });
@@ -65,25 +67,25 @@ const SignIn = () => {
         setLoginValue({ userEmail: "", password: "" });
       }
     } catch (err) {
-      console.log(
-        "err.response.data.errorMessage: ",
-        err.response.data.errorMessage
-      );
+      console.log("err: ", err);
       if (err.response.data.errorMessage == "일치하는 이메일이 없습니다.") {
         setEmailHelpMessage("이메일 형식을 다시 확인 해주세요.");
         emailRef.current.focus();
-
         // setMatch(false);
         // setTimeout(() => {
         //   setMatch(true);
         // }, 2000);
+      } else if (err.response.data.errorMessage == "비밀번호가 틀렸습니다.") {
+        setPasswordHelpMessage("잘못된 비밀번호입니다");
+        pwRef.current.focus();
       }
     }
   };
 
   useEffect(() => {
     setEmailHelpMessage("");
-  }, [userEmail]);
+    setPasswordHelpMessage("");
+  }, [userEmail, password]);
 
   const login = () => {
     return (
@@ -115,7 +117,7 @@ const SignIn = () => {
             <EmailWrap>
               <FormWrap onSubmit={handleSubmit}>
                 <div className="input-wrap">
-                  <SignInInput
+                  <SignInInputEmail
                     type="text"
                     name="userEmail"
                     value={userEmail || ""}
@@ -125,22 +127,24 @@ const SignIn = () => {
                     placeholder="이메일 주소를 입력해주세요."
                     emailHelpMessage={emailHelpMessage}
                   />
-                  ㅛㅁ
                   {emailHelpMessage !== "" && (
                     <span className="help-message">{emailHelpMessage}</span>
                   )}
                 </div>
                 <div className="input-wrap">
-                  <SignInInput
+                  <SignInInputPassword
                     type="password"
                     name="password"
                     value={password || ""}
                     onChange={handleChange}
-                    ref={inputRef}
+                    ref={pwRef}
                     className="siginIn-input siginIn-input_password"
                     placeholder="비밀번호를 입력해주세요."
-                    // passwordHelpMessage={passwordHelpMessage}
+                    passwordHelpMessage={passwordHelpMessage}
                   />
+                  {passwordHelpMessage !== "" && (
+                    <span className="help-message">{passwordHelpMessage}</span>
+                  )}
                 </div>
 
                 <div className="active-buttons">
@@ -346,15 +350,23 @@ const FormWrap = styled.form`
   }
 `;
 
-const SignInInput = styled.input`
+const SignInInputEmail = styled.input`
   all: unset;
   outline: none;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   color: #7a858e;
-  // emailHelpMessage !== "" ? "1px solid #F06767" : "1px solid #dcdce8"};
   padding: 23px 0px 10px 0px;
+  border-bottom: 1px solid #dcdce8;
+
+  ${(props) => {
+    if (props.emailHelpMessage !== "") {
+      return css`
+        border-bottom: 1px solid var(--error);
+      `;
+    }
+  }}
 
   ::placeholder {
     font-weight: 400;
@@ -364,6 +376,31 @@ const SignInInput = styled.input`
   }
 `;
 
+const SignInInputPassword = styled.input`
+  all: unset;
+  outline: none;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #7a858e;
+  padding: 23px 0px 10px 0px;
+  border-bottom: 1px solid #dcdce8;
+
+  ${(props) => {
+    if (props.passwordHelpMessage !== "") {
+      return css`
+        border-bottom: 1px solid var(--error);
+      `;
+    }
+  }}
+
+  ::placeholder {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 26px;
+    color: #cbcbd7;
+  }
+`;
 const ContinueWrap = styled.div`
   display: flex;
   align-items: center;

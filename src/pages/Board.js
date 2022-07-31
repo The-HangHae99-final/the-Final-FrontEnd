@@ -343,7 +343,7 @@ const Board = () => {
                                   board={board}
                                   removeBoard={removeBoard}
                                   index={index}
-                                  key={board.postId}
+                                  key={index}
                                 />
                               </li>
                             )}
