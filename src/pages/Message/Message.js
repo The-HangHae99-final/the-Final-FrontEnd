@@ -222,12 +222,15 @@ const LeftSection = styled.div`
   height: 100%;
   padding: 30px 20px;
   background-color: #ffffff;
+  border: 1px solid #ecedf1;
+  border-radius: 5px;
 `;
 
 const RightSection = styled.div`
   width: 100%;
   height: 100%;
   background-color: #ffffff;
+  border-radius: 5px;
 `;
 
 const OnlineBox = styled.div``;
@@ -310,9 +313,6 @@ const BarTop = styled.div`
     color: #7a858e;
   }
 `;
-
-const ChattingScreen = styled.div`
-h`;
 
 const Inputwrap = styled.div`
   width: 100%;

@@ -18,7 +18,7 @@ const KakaoLoginCallback = () => {
 
   const getKakaoToken = () => {
     const code = location.search.split("=")[1];
-
+    console.log("hihi");
     // 인가 코드 서버로 전송
     axios
       .post(`http://43.200.170.45/api/auth/login/kakao/callback`, {
@@ -26,6 +26,7 @@ const KakaoLoginCallback = () => {
       })
       .then((res) => {
         const token = res.data;
+        console.log("token: ", token);
 
         // 서버가 받아온 유저 정보 조회
         axios
@@ -41,6 +42,7 @@ const KakaoLoginCallback = () => {
             }
           )
           .then((res) => {
+            console.log("res: ", res);
             const user_email = res.data.kakao_account.email;
             const user_id = res.data.id;
             const user_name = res.data.kakao_account.profile.nickname;

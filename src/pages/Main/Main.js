@@ -246,6 +246,7 @@ const RightSide = styled.div`
     padding: 20px;
     display: flex;
     gap: 20px;
+    background: #f8f8f9;
   }
 `;
 

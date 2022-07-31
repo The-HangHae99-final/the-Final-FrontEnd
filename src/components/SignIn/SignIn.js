@@ -23,21 +23,20 @@ function PopUpErrorMsg() {
 
 const SignIn = () => {
   const [showLogin, setShowLogin] = useState(true);
-
-  const [loading, setLoading] = useState(false);
   const [loginValue, setLoginValue] = useState({
     userEmail: "",
     password: "",
   });
   const [isActive, setIsActive] = useState(false);
   const [match, setMatch] = useState(true);
-  console.log("match: ", match);
+  const [emailHelpMessage, setEmailHelpMessage] = useState("");
+  console.log("emailHelpMessage: ", emailHelpMessage);
 
   const { userEmail, password } = loginValue;
   const isValidInput = userEmail.length >= 1 && password.length >= 1;
   const navigate = useNavigate();
   const inputRef = useRef();
-
+  const emailRef = useRef();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLoginValue({ ...loginValue, [name]: value });
@@ -63,16 +62,28 @@ const SignIn = () => {
         setItemToLs("userName", user_name);
         setItemToLs("userEmail", user_email);
         navigate("/main");
+        setLoginValue({ userEmail: "", password: "" });
       }
     } catch (err) {
-      inputRef.current.focus();
-      setLoginValue({ userEmail: "", password: "" });
-      setMatch(false);
-      setTimeout(() => {
-        setMatch(true);
-      }, 2000);
+      console.log(
+        "err.response.data.errorMessage: ",
+        err.response.data.errorMessage
+      );
+      if (err.response.data.errorMessage == "일치하는 이메일이 없습니다.") {
+        setEmailHelpMessage("이메일 형식을 다시 확인 해주세요.");
+        emailRef.current.focus();
+
+        // setMatch(false);
+        // setTimeout(() => {
+        //   setMatch(true);
+        // }, 2000);
+      }
     }
   };
+
+  useEffect(() => {
+    setEmailHelpMessage("");
+  }, [userEmail]);
 
   const login = () => {
     return (
@@ -103,24 +114,34 @@ const SignIn = () => {
           <LoginWrap>
             <EmailWrap>
               <FormWrap onSubmit={handleSubmit}>
-                <input
-                  type="text"
-                  name="userEmail"
-                  value={userEmail || ""}
-                  onChange={handleChange}
-                  ref={inputRef}
-                  className="siginIn-input"
-                  placeholder="이메일 주소를 입력해주세요."
-                />
-                <input
-                  type="password"
-                  name="password"
-                  value={password || ""}
-                  onChange={handleChange}
-                  ref={inputRef}
-                  className="siginIn-input"
-                  placeholder="비밀번호를 입력해주세요."
-                />
+                <div className="input-wrap">
+                  <SignInInput
+                    type="text"
+                    name="userEmail"
+                    value={userEmail || ""}
+                    onChange={handleChange}
+                    ref={emailRef}
+                    className="siginIn-input siginIn-input_email"
+                    placeholder="이메일 주소를 입력해주세요."
+                    emailHelpMessage={emailHelpMessage}
+                  />
+                  ㅛㅁ
+                  {emailHelpMessage !== "" && (
+                    <span className="help-message">{emailHelpMessage}</span>
+                  )}
+                </div>
+                <div className="input-wrap">
+                  <SignInInput
+                    type="password"
+                    name="password"
+                    value={password || ""}
+                    onChange={handleChange}
+                    ref={inputRef}
+                    className="siginIn-input siginIn-input_password"
+                    placeholder="비밀번호를 입력해주세요."
+                    // passwordHelpMessage={passwordHelpMessage}
+                  />
+                </div>
 
                 <div className="active-buttons">
                   <div className="need-help">
@@ -280,23 +301,23 @@ const FormWrap = styled.form`
   justify-content: flex-start;
   margin-bottom: 95px;
 
-  .siginIn-input {
-    all: unset;
-    outline: none;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 20px;
-    color: #7a858e;
-    border-bottom: 1px solid #dcdce8;
-    padding: 23px 0px 10px 0px;
+  .input-wrap {
+    display: Flex;
+    flex-direction: column;
+    margin-bottom: 25px;
+    position: relative;
 
-    ::placeholder {
+    .help-message {
+      color: var(--error);
       font-weight: 400;
-      font-size: 18px;
-      line-height: 26px;
-      color: #cbcbd7;
+      font-size: 14px;
+      line-height: 20px;
+      position: absolute;
+      bottom: -20px;
+      right: 0;
     }
   }
+
   .active-buttons {
     margin-top: 38px;
     display: flex;
@@ -322,6 +343,24 @@ const FormWrap = styled.form`
       text-decoration-line: underline;
       color: #7d8bdb;
     }
+  }
+`;
+
+const SignInInput = styled.input`
+  all: unset;
+  outline: none;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #7a858e;
+  // emailHelpMessage !== "" ? "1px solid #F06767" : "1px solid #dcdce8"};
+  padding: 23px 0px 10px 0px;
+
+  ::placeholder {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 26px;
+    color: #cbcbd7;
   }
 `;
 

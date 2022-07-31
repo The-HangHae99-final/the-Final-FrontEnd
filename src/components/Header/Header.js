@@ -158,7 +158,6 @@ const Header = ({ invitation }) => {
               <WorkspaceList>
                 {user?.workSpaceList &&
                   user?.workSpaceList.map((item, idx) => {
-                    console.log("item: ", item);
                     const wsName = item.split("+");
                     return (
                       <li
