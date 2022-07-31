@@ -95,7 +95,6 @@ const Board = () => {
   const [todoBoardList, setTodoBoardList] = useState([]);
   const [inProgressList, setInProgressList] = useState([]);
   const [doneList, setDoneList] = useState([]);
-
   const [isShown, setIsShown] = useState(false);
   const [titleCharacter, setTitleCharacter] = useState(0);
   console.log("todoBoardList: ", todoBoardList);
@@ -112,6 +111,7 @@ const Board = () => {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },
       });
+      console.log("res: ", res);
       if (res.data.success) {
         setTodoBoardList((prevState) => [...prevState, res.data.result]);
         setIsShown(false);
@@ -231,6 +231,7 @@ const Board = () => {
         }
       )
       .then((res) => {
+        console.log("res: ", res);
         const reverseArr = res.data.posts.reverse();
         setTodoBoardList([...reverseArr]);
       });
@@ -270,19 +271,23 @@ const Board = () => {
   //   }
   // });
 
-  const onDragEnd = (res) => {
-    console.log("res: ", res);
+  const handleDragEnd = (res) => {
+    if (!res.destination) return;
     //드래그 하는 sourced의 index
     const sourceOrderNo = res.source.index;
-    console.log("sourceOrderNo: ", sourceOrderNo);
     //드래그 해서 내려놓은 destination의 index
     const destinationOrderNo = res.destination.index;
-    console.log("destinationOrderNo: ", destinationOrderNo);
+    const items = [...todoBoardList];
+    // 끌기 시작한 요소의 인덱스에서 한 개 요소를 제거한다
+    const [reOrderedItem] = items.splice(sourceOrderNo, 1);
+    // 내려놓는 위치의 인덱스에 추기힌디. 끌기 시작한 요소를.
+    items.splice(destinationOrderNo, 0, reOrderedItem);
+    console.log("items: ", items);
   };
 
   return (
     <BoardStyle>
-      <DragDropContext onDragEnd={onDragEnd}>
+      <DragDropContext onDragEnd={handleDragEnd}>
         <BoardContainer>
           <SectionWrap>
             <div className="section-top">
@@ -314,7 +319,7 @@ const Board = () => {
               </div>
               <Droppable droppableId="Todo">
                 {(provided) => (
-                  <div
+                  <ul
                     className="boards-list"
                     {...provided.droppableProps}
                     ref={provided.innerRef}
@@ -323,12 +328,12 @@ const Board = () => {
                       todoBoardList?.map((board, index) => {
                         return (
                           <Draggable
-                            draggableId={index.toString()}
+                            draggableId={board.postId}
                             index={index}
                             key={index}
                           >
                             {(provided) => (
-                              <div
+                              <li
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
@@ -340,13 +345,13 @@ const Board = () => {
                                   index={index}
                                   key={board.postId}
                                 />
-                              </div>
+                              </li>
                             )}
                           </Draggable>
                         );
                       })}
                     {provided.placeholder}
-                  </div>
+                  </ul>
                 )}
               </Droppable>
             </div>

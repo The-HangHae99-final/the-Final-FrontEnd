@@ -18,8 +18,8 @@ const Signup = ({ showLogin, setShowLogin }) => {
   const [isActive, setIsActive] = useState(false);
 
   // 오류메시지 상태 저장
-  const [nameMessage, setNameMessage] = useState(false);
-  const [emailMessage, setEmailMessage] = useState(false);
+  const [nameMessage, setNameMessage] = useState("");
+  const [emailMessage, setEmailMessage] = useState("");
   const [passwordMessage, setPasswordMessage] =
     useState("비밀번호를 입력해주세요");
   const [passwordConfirmMessage, setPasswordConfirmMessage] =

@@ -25,15 +25,20 @@ const DirectChatList = ({ moveRoom, roomName }) => {
             temp.sort();
             const newRoomName = temp[0] + temp[1];
             return (
-              <UserProfile
-                key={idx}
-                text={member.memberName}
-                roomName={roomName}
-                newRoomName={newRoomName}
-                online={true}
-                alignItems={"center"}
-                moveRoom={moveRoom}
-              />
+              <div>
+                <UserProfile
+                  key={idx}
+                  text={member.memberName}
+                  roomName={roomName}
+                  newRoomName={newRoomName}
+                  alignItems={"center"}
+                  moveRoom={moveRoom}
+                />
+                <div className="message-count">
+                  <div className="count-alarm"></div>
+                  <div className="count-number"></div>
+                </div>
+              </div>
             );
           })}
       </MyChatList>
