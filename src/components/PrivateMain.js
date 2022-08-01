@@ -54,7 +54,7 @@ const PrivateMain = () => {
   const registerNotification = () => {
     axios
       .post(
-        "http://43.200.170.45/api/boards",
+        "https://teamnote.shop/api/boards",
         {
           content: notification.content,
           workSpaceName: notification.workSpaceName,
@@ -79,7 +79,7 @@ const PrivateMain = () => {
   // 공지 조회
   useEffect(() => {
     axios
-      .get(`http://43.200.170.45/api/boards/${currentParams}`, {
+      .get(`https://teamnote.shop/api/boards/${currentParams}`, {
         headers: {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },
@@ -99,7 +99,7 @@ const PrivateMain = () => {
   const addNewMember = () => {
     axios({
       method: "post",
-      url: "http://43.200.170.45/api/members/inviting",
+      url: "https://teamnote.shop/api/members/inviting",
       data: newMember,
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,
@@ -128,7 +128,7 @@ const PrivateMain = () => {
   // 해당 워크스페이스에 속한 유저 관리
   useEffect(() => {
     axios
-      .get(`http://43.200.170.45/api/members/lists/${currentParams}`, {
+      .get(`https://teamnote.shop/api/members/lists/${currentParams}`, {
         headers: {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },
@@ -176,7 +176,7 @@ const PrivateMain = () => {
                           {noti.userName === getItemFromLs("userName") ? (
                             <li
                               className="notification-item notification-item_mine"
-                              key={noti._id}
+                              key={idx}
                               ref={inputRef}
                             >
                               <div className="notification-content">
@@ -191,7 +191,7 @@ const PrivateMain = () => {
                             <li
                               className="notification-item notification-item_yours"
                               ref={inputRef}
-                              key={noti._id}
+                              key={idx}
                             >
                               <div className="notification-content">
                                 {noti.content}

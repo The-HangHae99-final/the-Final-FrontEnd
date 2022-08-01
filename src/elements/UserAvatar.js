@@ -26,7 +26,6 @@ const UserAvatar = (props) => {
         <>
           <Avatar
             alt="Vemy Sharp"
-            src="/static/images/avatar/1.jpg"
             sx={{ width: width, height: height }}
             style={{
               cursor: "pointer",

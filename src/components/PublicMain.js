@@ -42,12 +42,13 @@ const Main = () => {
   useEffect(() => {
     try {
       axios
-        .get("http://43.200.170.45/api/members/spaceLists", {
+        .get("https://teamnote.shop/api/members/spaceLists", {
           headers: {
             Authorization: `Bearer ${getItemFromLs("myToken")}`,
           },
         })
         .then((res) => {
+          console.log("res: ", res);
           if (res.data.success) {
             const wsInfoList = res.data.includedList;
             const workSpaceFullname = wsInfoList.map((ws) => {
@@ -61,7 +62,7 @@ const Main = () => {
             }
 
             axios
-              .get(`http://43.200.170.45/api/members/inviting`, {
+              .get(`https://teamnote.shop/api/members/inviting`, {
                 headers: {
                   Authorization: `Bearer ${getItemFromLs("myToken")}`,
                 },

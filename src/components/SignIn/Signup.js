@@ -46,7 +46,7 @@ const Signup = ({ showLogin, setShowLogin }) => {
     }
     // 회원가입에 필요한 데이터 서버로 전송
     axios
-      .post("http://43.200.170.45/api/users/signup", signupValue)
+      .post("https://teamnote.shop/api/users/signup", signupValue)
       .then((res) => {
         console.log("res: ", res);
         if (res.data.success) {

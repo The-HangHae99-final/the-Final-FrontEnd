@@ -21,7 +21,7 @@ const KakaoLoginCallback = () => {
     console.log("hihi");
     // 인가 코드 서버로 전송
     axios
-      .post(`http://43.200.170.45/api/auth/login/kakao/callback`, {
+      .post(`https://teamnote.shop/api/auth/login/kakao/callback`, {
         code: code,
       })
       .then((res) => {
@@ -31,7 +31,7 @@ const KakaoLoginCallback = () => {
         // 서버가 받아온 유저 정보 조회
         axios
           .post(
-            `http://43.200.170.45/api/kakao/member`,
+            `https://teamnote.shop/api/kakao/member`,
             {
               token,
             },
@@ -52,7 +52,7 @@ const KakaoLoginCallback = () => {
 
             axios
               .post(
-                `http://43.200.170.45/api/kakao/parsing`,
+                `https://teamnote.shop/api/kakao/parsing`,
                 {
                   user_email,
                   user_name,

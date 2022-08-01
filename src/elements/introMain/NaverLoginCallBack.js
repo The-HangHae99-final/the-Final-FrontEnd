@@ -20,7 +20,7 @@ const NaverLoginCallBack = () => {
     console.log("-------------1------------code: ", code);
     // 인가 코드 서버로 전송
     axios
-      .post(`http://43.200.170.45/api/naver`, {
+      .post(`https://teamnote.shop/api/naver`, {
         code: code,
       })
       .then((res) => {
@@ -32,7 +32,7 @@ const NaverLoginCallBack = () => {
         }
         // 받아온 토큰으로 유저 정보 조회
         axios
-          .post(`http://43.200.170.45/api/member`, {
+          .post(`https://teamnote.shop/api/member`, {
             token,
           })
           .then((res) => {
@@ -45,15 +45,13 @@ const NaverLoginCallBack = () => {
             );
             // 파싱 할 데이터 전달
             axios
-              .post(`http://43.200.170.45/api/parsing`, {
+              .post(`https://teamnote.shop/api/parsing`, {
                 user_email,
                 user_id,
                 user_name,
                 token,
               })
               .then((res) => {
-                console.log("loading: ", loading);
-
                 console.log("res: ", res);
                 if (res.data.success) {
                   console.log("hihi");

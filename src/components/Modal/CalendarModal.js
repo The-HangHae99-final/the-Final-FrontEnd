@@ -42,7 +42,7 @@ const CalendarModal = ({
       console.log("개인일정 요청임!");
       axios({
         method: "post",
-        url: "http://43.200.170.45/api/mytask/work",
+        url: "https://teamnote.shop/api/mytask/work",
         data: taskContents,
         headers: {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
@@ -54,7 +54,7 @@ const CalendarModal = ({
       console.log("팀일정 요청임!");
       axios({
         method: "post",
-        url: "http://43.200.170.45/api/task/team/workSpaceName",
+        url: "https://teamnote.shop/api/task/team/workSpaceName",
         data: taskContents,
         headers: {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,

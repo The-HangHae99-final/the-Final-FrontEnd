@@ -76,7 +76,7 @@ const Header = ({ invitation }) => {
   const addNewWorkSpace = (e) => {
     axios
       .post(
-        "http://43.200.170.45/api/work-spaces",
+        "https://teamnote.shop/api/work-spaces",
         { workSpaceName: `${getItemFromLs("userEmail")}+${workSpaceName}` },
         {
           headers: {

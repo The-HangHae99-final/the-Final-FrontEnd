@@ -38,17 +38,19 @@ const Main = () => {
   const [openNewbieModal, setOpenNewbieModal] = useState(false);
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.value);
-  console.log("user: ", user);
+
   const workSpace = useSelector((state) => state.workSpace.value);
+  console.log("workSpace: ", workSpace.current_workSpace);
   const dispatch = useDispatch();
   const params = useParams();
   const currentParams = params.workSpaceName;
+  console.log("currentParams: ", currentParams);
 
   // 소속된 워크스페이스 전체 조회
   useEffect(() => {
     try {
       axios
-        .get("http://43.200.170.45/api/members/spaceLists", {
+        .get("https://teamnote.shop/api/members/spaceLists", {
           headers: {
             Authorization: `Bearer ${getItemFromLs("myToken")}`,
           },
@@ -67,7 +69,7 @@ const Main = () => {
             }
 
             axios
-              .get(`http://43.200.170.45/api/members/inviting`, {
+              .get(`https://teamnote.shop/api/members/inviting`, {
                 headers: {
                   Authorization: `Bearer ${getItemFromLs("myToken")}`,
                 },
@@ -93,14 +95,14 @@ const Main = () => {
   return (
     <MainStyle>
       <LeftSide>
-        <Link to="/main">
+        <Link to={`/main/${currentParams}`}>
           <img src={logo} alt="logo" className="logo" />
         </Link>
         <div className="buttons">
           <div className="buttonWrap">
             <div
               onClick={() => {
-                navigate(`/main/${workSpace.current_workSpace}/board`);
+                navigate(`/main/${currentParams}/board`);
               }}
               className="page-navigate-button"
             >
@@ -110,9 +112,7 @@ const Main = () => {
           <div className="buttonWrap">
             <div
               className="page-navigate-button"
-              onClick={() =>
-                navigate(`/main/${workSpace.current_workSpace}/calendar`)
-              }
+              onClick={() => navigate(`/main/${currentParams}/calendar`)}
             >
               <img
                 src={calendarIcon}
@@ -124,9 +124,7 @@ const Main = () => {
           <div className="buttonWrap">
             <div
               className="page-navigate-button"
-              onClick={() =>
-                navigate(`/main/${workSpace.current_workSpace}/message`)
-              }
+              onClick={() => navigate(`/main/${currentParams}/message`)}
             >
               <img src={chatIcon} alt="chatIcon" className="chatIcon" />
             </div>

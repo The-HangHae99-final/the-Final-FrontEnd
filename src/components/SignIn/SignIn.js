@@ -52,7 +52,7 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://43.200.170.45/api/users/login", {
+      const res = await axios.post("https://teamnote.shop/api/users/login", {
         userEmail,
         password,
       });

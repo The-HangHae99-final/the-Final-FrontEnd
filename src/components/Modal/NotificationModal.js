@@ -14,7 +14,7 @@ const NotificationModal = ({ onClose }) => {
   const accept = (invitee, fromThisWorkSpaceName, clickedID) => {
     axios
       .post(
-        "http://43.200.170.45/api/members/inviting/accepting",
+        "https://teamnote.shop/api/members/inviting/accepting",
         { userEmail: invitee, workSpaceName: fromThisWorkSpaceName },
         {
           headers: {
@@ -44,7 +44,7 @@ const NotificationModal = ({ onClose }) => {
 
   const refuse = () => {
     axios
-      .delete("http://43.200.170.45/api/members/inviting", {
+      .delete("https://teamnote.shop/api/members/inviting", {
         headers: {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },

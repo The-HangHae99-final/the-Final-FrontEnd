@@ -14,6 +14,7 @@ import leftArrpw from "../public/img/left-arrow.png";
 import rightArrow from "../public/img/right-arrow.png";
 import { Human03 } from "../elements/humanIcon";
 import { useOutletContext } from "react-router-dom";
+import { keys } from "@mui/system";
 
 function CreateBox({
   handleSubmit,
@@ -97,14 +98,47 @@ const Board = () => {
   const [doneList, setDoneList] = useState([]);
   const [isShown, setIsShown] = useState(false);
   const [titleCharacter, setTitleCharacter] = useState(0);
+  const [state, setState] = useState({
+    todoBoardList,
+    inProgressList,
+    doneList,
+  });
+  console.log("state: ", state);
+
+  const move = (source, destination, droppableSource, droppableDestination) => {
+    const sourceClone = Array.from(source);
+    const destinationClone = Array.from(destination);
+    // drag start할 리스트에서 해당 인덱스 값을 하나 제거한다
+    const [removed] = sourceClone.splice(droppableSource.index, 1);
+
+    // drag over할 리스트에서 drag start된 데이터를 drop over 될 인덱스의 다음 인덱스에 추가한다.
+    destinationClone.splice(droppableDestination.index, 0, removed);
+
+    // result 객체를 새로 만들어 drop에 의해 start,over된 배열만을 모은 객체를 리턴한다.
+    const result = {};
+    result[droppableSource.droppableId] = sourceClone;
+    result[droppableDestination.droppableId] = destinationClone;
+
+    return result;
+  };
+
+  // multiple lists를 위한 유니크 아이디
+  const id2List = {
+    Todo: "todoBoardList",
+    InProgress: "inProgressList",
+    Done: "doneList",
+  };
+
+  const getList = (id) => state[id2List[id]];
 
   // 보드 생성
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setAllBoard([...allBoard, data]);
     try {
       const res = await axios({
         method: "post",
-        url: "http://43.200.170.45/api/posts",
+        url: "https://teamnote.shop/api/posts",
         data: data,
         headers: {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
@@ -138,7 +172,7 @@ const Board = () => {
       )
     ) {
       axios
-        .delete(`http://43.200.170.45/api/post/${postId}`, {
+        .delete(`https://teamnote.shop/api/post/${postId}`, {
           headers: {
             Authorization: `Bearer ${getItemFromLs("myToken")}`,
           },
@@ -146,7 +180,7 @@ const Board = () => {
         .then((res) => {
           axios
             .post(
-              "http://43.200.170.45/api/post/all",
+              "https://teamnote.shop/api/post/all",
               {
                 workSpaceName: getItemFromLs("workspace"),
               },
@@ -161,34 +195,33 @@ const Board = () => {
               setAllBoard(() => {
                 return [...allBoardList];
               });
-
               // todo, in progress, done 카테고리로 나눠 state에 저장하기
-              // allBoardList.map((board) => {
-              //   switch (board.category) {
-              //     case "todo":
-              //       console.log("---todo 카테고리---");
-              //       setTodoBoardList((prevState) => {
-              //         return [...prevState, board];
-              //       });
-              //       break;
-              //     case "inProgress":
-              //       console.log("---inProgress 카테고리---");
+              allBoardList.map((board) => {
+                switch (board.category) {
+                  case "todo":
+                    console.log("---todo 카테고리---");
+                    setTodoBoardList((prevState) => {
+                      return [...prevState, board];
+                    });
+                    break;
+                  case "inProgress":
+                    console.log("---inProgress 카테고리---");
 
-              //       setInProgressList((prevState) => {
-              //         return [...prevState, board];
-              //       });
-              //       break;
-              //     case "done":
-              //       console.log("---done 카테고리---");
+                    setInProgressList((prevState) => {
+                      return [...prevState, board];
+                    });
+                    break;
+                  case "done":
+                    console.log("---done 카테고리---");
 
-              //       setDoneList((prevState) => {
-              //         return [...prevState, board];
-              //       });
-              //       break;
-              //     default:
-              //       console.log("데이터를 불러오는데 실패했습니다.");
-              //   }
-              // });
+                    setDoneList((prevState) => {
+                      return [...prevState, board];
+                    });
+                    break;
+                  default:
+                    console.log("데이터를 불러오는데 실패했습니다.");
+                }
+              });
             })
             .catch((err) => console.log(err));
         })
@@ -219,7 +252,7 @@ const Board = () => {
   useEffect(() => {
     axios
       .post(
-        `http://43.200.170.45/api/posts/list`,
+        `https://teamnote.shop/api/posts/list`,
         {
           workSpaceName: currentParams,
         },
@@ -230,7 +263,6 @@ const Board = () => {
         }
       )
       .then((res) => {
-        console.log("res: ", res);
         const allBoardList = res.data.posts;
 
         setTodoBoardList([...allBoardList]);
@@ -241,49 +273,87 @@ const Board = () => {
         // });
 
         // Categorize all board data by the 3 categories
-        allBoardList.map((board) => {
-          switch (board.category) {
-            case "todo":
-              console.log("---todo 카테고리---");
-              setTodoBoardList((prevState) => {
-                return [...prevState, board];
-              });
-              break;
-            case "inProgress":
-              console.log("---inProgress 카테고리---");
+        //   allBoardList.map((board) => {
+        //     switch (board.category) {
+        //       case "todo":
+        //         console.log("---todo 카테고리---");
+        //         setTodoBoardList((prevState) => {
+        //           return [...prevState, board];
+        //         });
+        //         break;
+        //       case "inProgress":
+        //         console.log("---inProgress 카테고리---");
 
-              setInProgressList((prevState) => {
-                return [...prevState, board];
-              });
-              break;
-            case "done":
-              console.log("---done 카테고리---");
-              setDoneList((prevState) => {
-                return [...prevState, board];
-              });
-              break;
-            default:
-              console.log("데이터를 불러오는데 실패했습니다.");
-          }
-        });
+        //         setInProgressList((prevState) => {
+        //           return [...prevState, board];
+        //         });
+        //         break;
+        //       case "done":
+        //         console.log("---done 카테고리---");
+        //         setDoneList((prevState) => {
+        //           return [...prevState, board];
+        //         });
+        //         break;
+        //       default:
+        //         console.log("데이터를 불러오는데 실패했습니다.");
+        //     }
+        //   });
       });
   }, []);
 
   const handleDragEnd = (res) => {
-    if (!res.destination) return;
-    //드래그 하는 sourced의 index
-    const sourceOrderNo = res.source.index;
-    //드래그 해서 내려놓은 destination의 index
-    const destinationOrderNo = res.destination.index;
-    const items = [...todoBoardList];
-    // 끌기 시작한 요소의 인덱스에서 한 개 요소를 제거한다
-    const [reOrderedItem] = items.splice(sourceOrderNo, 1);
-    // 내려놓는 위치의 인덱스에 추기힌디. 끌기 시작한 요소를.
-    items.splice(destinationOrderNo, 0, reOrderedItem);
-    console.log("items: ", items);
-    // console.log("items: ", items);
-    setTodoBoardList(items);
+    if (res.reason === "DROP") {
+      const { source, destination } = res;
+      // console.log("source: ", source.droppableId, destination.droppableId);
+      if (!res.destination) return;
+      if (source.droppableId === destination.droppableId) {
+        //드래그 하는 sourced의 index
+        const sourceOrderNo = res.source.index;
+
+        //드래그 해서 내려놓은 destination의 index
+        const destinationOrderNo = res.destination.index;
+
+        const items = [...todoBoardList];
+
+        // 끌기 시작한 요소의 인덱스에서 한 개 요소를 제거한다
+        const [removed] = items.splice(sourceOrderNo, 1);
+
+        // 끌기 시작한 요소를 내려놓는 위치의 인덱스에 추기힌디.
+        items.splice(destinationOrderNo, 0, removed);
+        setTodoBoardList(items);
+      } else {
+        // getList(source.droppableId) => drag start 할 요소의 배열
+        // getList(destination.droppableId) => drag over 할 요소의 배열
+        // source => drag start 의 정보
+        // destination => drag over 의 정보
+        const result = move(
+          getList(source.droppableId),
+          getList(destination.droppableId),
+          source,
+          destination
+        );
+        console.log("result: ", result[source.droppableId]);
+        // console.log("result: ", result[source.droppableId]);
+        // console.log("result: ", result[destination.droppableId]);
+
+        // setState({
+        //   ...state,
+        //    id2List[source.droppableId] : result
+        //   inProgressList: result.InProgress,
+        //   doneList: result.Done && result.Done,
+        // });
+      }
+    }
   };
+
+  // 여러 리스트 배열에 드래그앤드랍 하기
+
+  // **드래그 start, over 시 droppableId를 바꿔준다
+  // 조건
+  // 1. 3개의 state 배열을 만든다
+  // 2.
+  // => 드래그 start 를 제거한다
+  // => 내려놓는 위치에 드래그 end를 추가한다.
 
   return (
     <BoardStyle>
@@ -359,46 +429,43 @@ const Board = () => {
             <div className="section-top">
               <span className="section-top_title">In Progress</span>
             </div>
-            <div className="section-cards-screen">
-              <div className="section-cards-wrap">
-                <Droppable droppableId="InProgress">
-                  {(provided) => (
-                    <div
-                      className="boards-list"
-                      {...provided.droppableProps}
-                      ref={provided.innerRef}
-                    >
-                      {inProgressList &&
-                        inProgressList.map((board, index) => {
-                          return (
-                            <Draggable
-                              draggableId={index.toString()}
-                              index={index}
-                              key={board.postId}
-                            >
-                              {(provided) => (
-                                <div
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                >
-                                  <BoardCard
-                                    draggableId={index.toString()}
-                                    board={board}
-                                    removeBoard={removeBoard}
-                                    index={index}
-                                    key={board.postId}
-                                  />
-                                </div>
-                              )}
-                            </Draggable>
-                          );
-                        })}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </div>
+            <div className="section-cards-wrap">
+              <Droppable droppableId="InProgress">
+                {(provided) => (
+                  <div
+                    className="boards-list"
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                  >
+                    {inProgressList &&
+                      inProgressList.map((board, index) => {
+                        return (
+                          <Draggable
+                            draggableId={index.toString()}
+                            index={index}
+                            key={index}
+                          >
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <BoardCard
+                                  board={board}
+                                  removeBoard={removeBoard}
+                                  index={index}
+                                  key={index}
+                                />
+                              </div>
+                            )}
+                          </Draggable>
+                        );
+                      })}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
             </div>
           </SectionWrap>
           <SectionWrap>
@@ -406,45 +473,42 @@ const Board = () => {
               <span className="section-top_title">Done</span>
             </div>
             <div className="section-cards-wrap">
-              <div className="section-cards-wrap">
-                <Droppable droppableId="Done">
-                  {(provided) => (
-                    <div
-                      className="boards-list"
-                      {...provided.droppableProps}
-                      ref={provided.innerRef}
-                    >
-                      {doneList &&
-                        doneList.map((board, index) => {
-                          return (
-                            <Draggable
-                              draggableId={index.toString()}
-                              index={index}
-                              key={board.postId}
-                            >
-                              {(provided) => (
-                                <div
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                >
-                                  <BoardCard
-                                    draggableId={index.toString()}
-                                    board={board}
-                                    removeBoard={removeBoard}
-                                    index={index}
-                                    key={board.postId}
-                                  />
-                                </div>
-                              )}
-                            </Draggable>
-                          );
-                        })}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </div>
+              <Droppable droppableId="Done">
+                {(provided) => (
+                  <div
+                    className="boards-list"
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                  >
+                    {doneList &&
+                      doneList.map((board, index) => {
+                        return (
+                          <Draggable
+                            draggableId={index.toString()}
+                            index={index}
+                            key={index}
+                          >
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <BoardCard
+                                  board={board}
+                                  removeBoard={removeBoard}
+                                  index={index}
+                                  key={index}
+                                />
+                              </div>
+                            )}
+                          </Draggable>
+                        );
+                      })}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
             </div>
           </SectionWrap>
           <NoteWrap>
