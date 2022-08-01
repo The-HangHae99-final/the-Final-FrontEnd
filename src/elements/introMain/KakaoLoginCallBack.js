@@ -18,7 +18,6 @@ const KakaoLoginCallback = () => {
 
   const getKakaoToken = () => {
     const code = location.search.split("=")[1];
-    console.log("hihi");
     // 인가 코드 서버로 전송
     axios
       .post(`https://teamnote.shop/api/auth/login/kakao/callback`, {
