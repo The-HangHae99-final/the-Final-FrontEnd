@@ -55,8 +55,8 @@ const NaverLoginCallBack = () => {
                 console.log("res: ", res);
 
                 if (res.data.token) {
-                  console.log("hihi");
-                  setItemToLs("myToken", token);
+                  const newToken = res.data.token;
+                  setItemToLs("myToken", newToken);
                   setItemToLs("userName", user_name);
                   setItemToLs("userEmail", user_email);
                   setLoading(false);
