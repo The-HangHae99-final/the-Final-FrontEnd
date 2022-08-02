@@ -11,8 +11,8 @@ import { getUserInfo } from "../../redux/userReducer";
 import { Routes, Route } from "react-router-dom";
 
 import boardIcon from "../../public/img/image27.png";
-import calendarIcon from "../../public/img/image25.png";
-import chatIcon from "../../public/img/image26.png";
+import calendarIcon from "../../public/img/calendar.png";
+import chatIcon from "../../public/img/comment.png";
 import ScreenForNewbie from "../../components/ScreenForNewbie";
 import ScreenForUser from "../../components/ScreenForUser";
 import Message from "../Message/Message";
@@ -33,18 +33,15 @@ export const APP_USER_STATE = {
 
 const Main = () => {
   const [appstate, setAppState] = useState(APP_USER_STATE.UNKNOWN);
-  console.log("appstate: ", appstate);
   const isLoading = appstate === APP_USER_STATE.UNKNOWN;
   const [openNewbieModal, setOpenNewbieModal] = useState(false);
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.value);
 
   const workSpace = useSelector((state) => state.workSpace.value);
-  console.log("workSpace: ", workSpace.current_workSpace);
   const dispatch = useDispatch();
   const params = useParams();
   const currentParams = params.workSpaceName;
-  console.log("currentParams: ", currentParams);
 
   // 소속된 워크스페이스 전체 조회
   useEffect(() => {
@@ -106,7 +103,11 @@ const Main = () => {
               }}
               className="page-navigate-button"
             >
-              <img src={boardIcon} alt="boardcon" className="boardcon" />
+              <img
+                src={boardIcon}
+                alt="boardcon"
+                className="side-btn boardcon"
+              />
             </div>
           </div>
           <div className="buttonWrap">
@@ -117,7 +118,7 @@ const Main = () => {
               <img
                 src={calendarIcon}
                 alt="calendarIcon"
-                className="calendarIcon"
+                className="calendarIcon side-btn"
               />
             </div>
           </div>
@@ -126,7 +127,11 @@ const Main = () => {
               className="page-navigate-button"
               onClick={() => navigate(`/main/${currentParams}/message`)}
             >
-              <img src={chatIcon} alt="chatIcon" className="chatIcon" />
+              <img
+                src={chatIcon}
+                alt="chatIcon"
+                className="chatIcon side-btn"
+              />
             </div>
           </div>
         </div>
@@ -229,6 +234,9 @@ const LeftSide = styled.div`
       left: 0;
       top: 0;
     }
+  }
+
+  .side-btn {
   }
 `;
 

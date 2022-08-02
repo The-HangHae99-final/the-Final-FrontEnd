@@ -7,8 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route } from "react-router-dom";
 
 import boardIcon from "../public/img/image27.png";
-import calendarIcon from "../public/img/image25.png";
-import chatIcon from "../public/img/image26.png";
+import calendarIcon from "../public/img/calendar.png";
+import chatIcon from "../public/img/comment.png";
 import ScreenForNewbie from "./ScreenForNewbie";
 import ScreenForUser from "../components/ScreenForUser";
 import logo from "../public/img/Main/logo_white.png";

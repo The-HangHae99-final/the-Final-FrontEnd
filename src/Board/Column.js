@@ -3,7 +3,20 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import BoardCard from "../components/Card/BoardCard";
 
-const Column = ({ column, tasks }) => {
+import createBtn from "../public/img/createBtn.png";
+
+const Column = ({
+  column,
+  tasks,
+  createBox,
+  isShown,
+  handleSubmit,
+  handleChange,
+  showCreateBox,
+  titleCharacter,
+  handleLabelClick,
+}) => {
+  console.log("tasks: ", tasks);
   return (
     <SectionWrap>
       <div className="section-top">
@@ -11,17 +24,44 @@ const Column = ({ column, tasks }) => {
       </div>
       <div className="section-cards-screen">
         <div className="section-cards-wrap">
-          <Droppable droppableId={column.id}>
-            {(droppableProvided, droppableSnapshot) => (
-              <ul
-                className="boards-list"
-                ref={droppableProvided.innerRef}
-                {...droppableProvided.droppableProps}
-              >
-                {tasks.map((task, index) => (
+          {column.title === "TO-DO" && (
+            <>
+              {isShown ? (
+                createBox(
+                  handleSubmit,
+                  handleChange,
+                  titleCharacter,
+                  handleLabelClick
+                )
+              ) : (
+                <div className="create-box">
+                  <div className="createBtn-wrap">
+                    <img
+                      src={createBtn}
+                      alt="createBtn"
+                      className="createBtn"
+                      onClick={showCreateBox}
+                    />
+                  </div>
+                  <div className="createBtn-title">일정을 추가 해보세요</div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+        <Droppable droppableId={column.id}>
+          {(droppableProvided, droppableSnapshot) => (
+            <ul
+              className="boards-list"
+              ref={droppableProvided.innerRef}
+              {...droppableProvided.droppableProps}
+            >
+              {tasks.map((task, index) => {
+                console.log("task: ", task);
+                return (
                   <Draggable
-                    key={task.id}
-                    draggableId={`${task.id}`}
+                    key={task.postId}
+                    draggableId={`${task.postId}`}
                     index={index}
                   >
                     {(draggableProvided, draggableSnapshot) => (
@@ -30,23 +70,18 @@ const Column = ({ column, tasks }) => {
                         {...draggableProvided.draggableProps}
                         {...draggableProvided.dragHandleProps}
                       >
-                        <div
-                          style={{
-                            padding: "30px",
-                            backgroundColor: "red",
-                          }}
-                        >
-                          {task.content}
+                        <div>
+                          <BoardCard task={task} />
                         </div>
                       </li>
                     )}
                   </Draggable>
-                ))}
-                {droppableProvided.placeholder}
-              </ul>
-            )}
-          </Droppable>
-        </div>
+                );
+              })}
+              {droppableProvided.placeholder}
+            </ul>
+          )}
+        </Droppable>
       </div>
       {/* <div className="section-cards-screen">
       <div className="section-cards-wrap">
@@ -152,7 +187,6 @@ const SectionWrap = styled.div`
 
   .create-box {
     width: 100%;
-    background-color: red;
     padding: 25px 0px 19px 0px;
     display: flex;
     flex-direction: column;
@@ -176,8 +210,7 @@ const SectionWrap = styled.div`
   }
 
   .boards-list {
-    height: 300px;
-    background-color: blue;
+    height: 500px;
   }
 `;
 

@@ -17,13 +17,12 @@ import { useOutletContext } from "react-router-dom";
 import { keys } from "@mui/system";
 import Column from "../Board/Column";
 
-function CreateBox({
+function createBox(
   handleSubmit,
   handleChange,
-  showCreateBox,
   titleCharacter,
-  handleLabelClick,
-}) {
+  handleLabelClick
+) {
   return (
     <CreateBoxStyle onSubmit={handleSubmit}>
       <div className="create-box_title">
@@ -43,19 +42,16 @@ function CreateBox({
 
         <div className="label-wrap">
           <div className="label" onClick={handleLabelClick}>
-            꽤나중요
+            공지사항
           </div>
           <div className="label" onClick={handleLabelClick}>
-            안중요
+            업무자료
           </div>
           <div className="label" onClick={handleLabelClick}>
-            상당히중요
+            일정공유
           </div>
           <div className="label" onClick={handleLabelClick}>
-            살짝중요
-          </div>
-          <div className="label" onClick={handleLabelClick}>
-            종종중요
+            회의록
           </div>
         </div>
         {/* <div className="arrow-btns">
@@ -92,7 +88,6 @@ const Board = () => {
     workSpaceName: "",
     category: "todo",
   });
-  const [allBoard, setAllBoard] = useState([]);
   const [todoList, setTodoList] = useState([]);
   const [inProgressList, setInProgressList] = useState([]);
   const [doneList, setDoneList] = useState([]);
@@ -114,7 +109,24 @@ const Board = () => {
       });
       console.log("res: ", res);
       if (res.data.success) {
-        setTodoList((prevState) => [...prevState, res.data.result]);
+        const task = res.data.result;
+        let newObject = {};
+
+        newObject[task.postId] = task;
+        console.log("newObject: ", newObject);
+
+        setState({
+          ...state,
+          tasks: { ...state.tasks, ...newObject },
+          columns: {
+            ...state.columns,
+            "column-1": {
+              id: "column-1",
+              title: "TO-DO",
+              taskIds: [...state.columns["column-1"].taskIds, task.postId],
+            },
+          },
+        });
         setIsShown(false);
       } else {
         alert("빠진게 없는지 다시 한번 확인해주세요 :)");
@@ -124,6 +136,7 @@ const Board = () => {
     }
   };
 
+  // 화면 렌더링 시 자동으로 workspace 의 이름과 할당자(본인이름)을 업데이트
   useEffect(() => {
     setData({
       ...data,
@@ -160,9 +173,9 @@ const Board = () => {
             )
             .then((res) => {
               const allBoardList = res.data.posts;
-              setAllBoard(() => {
-                return [...allBoardList];
-              });
+              // setAllBoard(() => {
+              //   return [...allBoardList];
+              // });
             })
             .catch((err) => console.log(err));
         })
@@ -204,8 +217,27 @@ const Board = () => {
             },
           }
         );
+        // 서버에서 받아온 데이터(배열)
         const boards = res.data.posts;
-        setTodoList([...boards]);
+
+        const newObject = {};
+
+        boards.forEach((task) => {
+          return (newObject[task.postId] = task);
+        });
+
+        setState({
+          ...state,
+          tasks: { ...newObject },
+          columns: {
+            ...state.columns,
+            "column-1": {
+              id: "column-1",
+              title: "TO-DO",
+              taskIds: [...state.columns["column-1"].taskIds],
+            },
+          },
+        });
       }
       fetchBoards();
     } catch (e) {
@@ -334,7 +366,22 @@ const Board = () => {
           {state.columnOrder.map((columnId) => {
             const column = state.columns[columnId];
             const tasks = column.taskIds.map((taskId) => state.tasks[taskId]);
-            return <Column key={column.id} column={column} tasks={tasks} />;
+            console.log("tasks: ", tasks);
+            return (
+              <Column
+                key={column.id}
+                column={column}
+                tasks={tasks}
+                state={state}
+                createBox={createBox}
+                isShown={isShown}
+                handleSubmit={handleSubmit}
+                handleChange={handleChange}
+                showCreateBox={showCreateBox}
+                titleCharacter={titleCharacter}
+                handleLabelClick={handleLabelClick}
+              />
+            );
           })}
           <NoteWrap>
             <div className="noteWrap-top">Note</div>
@@ -346,24 +393,17 @@ const Board = () => {
 };
 
 const initialData = {
-  tasks: {
-    1: { id: 1, content: "Configure Next.js application" },
-    2: { id: 2, content: "Configure Next.js and tailwind " },
-    3: { id: 3, content: "Create sidebar navigation menu" },
-    4: { id: 4, content: "Create page footer" },
-    5: { id: 5, content: "Create page navigation menu" },
-    6: { id: 6, content: "Create page layout" },
-  },
+  tasks: {},
   columns: {
     "column-1": {
       id: "column-1",
       title: "TO-DO",
-      taskIds: [1, 2, 3, 4],
+      taskIds: [],
     },
     "column-2": {
       id: "column-2",
       title: "IN-PROGRESS",
-      taskIds: [5, 6],
+      taskIds: [],
     },
     "column-3": {
       id: "column-3",
@@ -612,6 +652,7 @@ const CreateBoxStyle = styled.form`
     background: #889aff;
     border-radius: 5px;
     text-align: center;
+    cursor: pointer;
 
     & > span {
       font-weight: 500;

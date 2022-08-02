@@ -32,8 +32,6 @@ const SignIn = () => {
   const [emailHelpMessage, setEmailHelpMessage] = useState("");
   const [passwordHelpMessage, setPasswordHelpMessage] = useState("");
 
-  console.log("emailHelpMessage: ", emailHelpMessage);
-
   const { userEmail, password } = loginValue;
   const isValidInput = userEmail.length >= 1 && password.length >= 1;
   const navigate = useNavigate();

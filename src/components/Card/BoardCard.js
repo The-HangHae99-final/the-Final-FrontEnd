@@ -7,26 +7,26 @@ import labelActive from "../../public/img/label-active.png";
 import drag from "../../public/img/drag.png";
 
 const BoardCard = ({ task }) => {
-  // const { title, desc, label, assignees, postId } = board;
+  const { title, desc, label, assignees, postId } = task;
 
   return (
     <BoardCardStyle>
-      <div className="card_title">{task.content}</div>
+      <div className="card_title">{task.title}</div>
       <div className="label-wrap">
         <div className="labelIcon-wrap">
           <img src={labelActive} alt="labelActive" className="labelActive" />
         </div>
-        {/* <div className="card_label">{label}</div> */}
+        <div className="card_label">{label}</div>
       </div>
 
-      {/* <div className="card_desc">{desc}</div> */}
+      <div className="card_desc">{desc}</div>
 
       <div className="divider"></div>
 
       <div className="author-info-wrap">
         <div className="author_content_text">
           <div className="author_text">일정 등록자</div>
-          {/* <div className="author_name">{assignees}</div> */}
+          <div className="author_name">{task.assignees}</div>
         </div>
         <Human04 size="50px" />
       </div>
