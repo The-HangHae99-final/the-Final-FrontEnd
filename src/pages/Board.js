@@ -495,6 +495,7 @@ const Board = () => {
 
 const BoardStyle = styled.div`
   width: 100%;
+  padding: 20px;
 `;
 
 const BoardContainer = styled.div`
@@ -517,7 +518,7 @@ const BoardContainer = styled.div`
 `;
 
 const SectionWrap = styled.div`
-  width: 341px;
+  width: 26%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -580,11 +581,11 @@ const SectionWrap = styled.div`
 `;
 
 const NoteWrap = styled.div`
-  width: 15%;
-  background-color: red;
   background: #ffffff;
   border: 1px solid #7d8bdb;
   border-radius: 5px;
+  flex-grow: 1;
+
   .noteWrap-top {
     border-radius: 5px;
     height: 50px;

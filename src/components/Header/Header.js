@@ -326,6 +326,9 @@ const WorkspaceList = styled.ul`
   flex-direction: column;
   gap: 15px;
   margin-top: 20px;
+  height: 300px;
+  overflow: scroll;
+  scroll-behavior: smooth;
   .workspace-item {
     display: Flex;
     align-items: center;
