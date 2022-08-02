@@ -19,23 +19,23 @@ const GlobalStyle = createGlobalStyle`
     }   --middle-text: #7A858E;
     *{
         margin: 0;
-};
+    };
 
     html,
-      body {
-        width: 100vw;
-        height: 100vh;
-      }
-body{
-    font-family: 'Noto Sans KR', sans-serif;
-    font-family: 'Poppins', sans-serif;
-    padding: 0;
-        margin: 0;
+    body {
+      width: 100vw;
+      height: 100vh;
+    }
+    body{
+      font-family: 'Noto Sans KR', sans-serif;
+      font-family: 'Poppins', sans-serif;
+      padding: 0;
+      margin: 0;
     };
     div{
-  box-sizing: border-box;
-
+      box-sizing: border-box;
     }
+
 `;
 
 export default GlobalStyle;

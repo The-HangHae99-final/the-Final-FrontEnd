@@ -99,9 +99,9 @@ const Board = () => {
   const [isShown, setIsShown] = useState(false);
   const [titleCharacter, setTitleCharacter] = useState(0);
   const [state, setState] = useState({
-    todoBoardList,
-    inProgressList,
-    doneList,
+    todoBoardList: todoBoardList,
+    inProgressList: inProgressList,
+    doneList: doneList,
   });
   console.log("state: ", state);
 
@@ -195,33 +195,6 @@ const Board = () => {
               setAllBoard(() => {
                 return [...allBoardList];
               });
-              // todo, in progress, done 카테고리로 나눠 state에 저장하기
-              allBoardList.map((board) => {
-                switch (board.category) {
-                  case "todo":
-                    console.log("---todo 카테고리---");
-                    setTodoBoardList((prevState) => {
-                      return [...prevState, board];
-                    });
-                    break;
-                  case "inProgress":
-                    console.log("---inProgress 카테고리---");
-
-                    setInProgressList((prevState) => {
-                      return [...prevState, board];
-                    });
-                    break;
-                  case "done":
-                    console.log("---done 카테고리---");
-
-                    setDoneList((prevState) => {
-                      return [...prevState, board];
-                    });
-                    break;
-                  default:
-                    console.log("데이터를 불러오는데 실패했습니다.");
-                }
-              });
             })
             .catch((err) => console.log(err));
         })
@@ -268,36 +241,36 @@ const Board = () => {
         setTodoBoardList([...allBoardList]);
 
         // 요청 성공 시
-        // setAllBoard(() => {
-        //   return [...allBoardList];
-        // });
+        setAllBoard(() => {
+          return [...allBoardList];
+        });
 
         // Categorize all board data by the 3 categories
-        //   allBoardList.map((board) => {
-        //     switch (board.category) {
-        //       case "todo":
-        //         console.log("---todo 카테고리---");
-        //         setTodoBoardList((prevState) => {
-        //           return [...prevState, board];
-        //         });
-        //         break;
-        //       case "inProgress":
-        //         console.log("---inProgress 카테고리---");
+        // allBoardList.map((board) => {
+        //   switch (board.category) {
+        //     case "todo":
+        //       console.log("---todo 카테고리---");
+        //       setTodoBoardList((prevState) => {
+        //         return [...prevState, board];
+        //       });
+        //       break;
+        //     case "inProgress":
+        //       console.log("---inProgress 카테고리---");
 
-        //         setInProgressList((prevState) => {
-        //           return [...prevState, board];
-        //         });
-        //         break;
-        //       case "done":
-        //         console.log("---done 카테고리---");
-        //         setDoneList((prevState) => {
-        //           return [...prevState, board];
-        //         });
-        //         break;
-        //       default:
-        //         console.log("데이터를 불러오는데 실패했습니다.");
-        //     }
-        //   });
+        //       setInProgressList((prevState) => {
+        //         return [...prevState, board];
+        //       });
+        //       break;
+        //     case "done":
+        //       console.log("---done 카테고리---");
+        //       setDoneList((prevState) => {
+        //         return [...prevState, board];
+        //       });
+        //       break;
+        //     default:
+        //       console.log("데이터를 불러오는데 실패했습니다.");
+        //   }
+        // });
       });
   }, []);
 
@@ -766,12 +739,5 @@ const CreateBoxStyle = styled.form`
     }
   }
 `;
-
-// const BoardStyle = styled.div`
-//   width: 100%;
-// `;
-// const BoardStyle = styled.div`
-//   width: 100%;
-// `;
 
 export default Board;

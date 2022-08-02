@@ -169,6 +169,8 @@ const LeftSide = styled.div`
   align-items: center;
   padding: 20px 0px;
   box-sizing: border-box;
+  position: absolute;
+  left: 0;
 
   .page-navigate-button {
     cursor: pointer;
@@ -239,11 +241,12 @@ const RightSide = styled.div`
   display: flex;
 
   .mainStyle {
-    width: 100%;
-    height: 100%;
-    padding: 20px;
+    width: calc(100vw - 80px);
+    height: calc(100vh - 80px);
+    margin-left: 80px;
     display: flex;
     gap: 20px;
+
     background: #f8f8f9;
   }
 `;

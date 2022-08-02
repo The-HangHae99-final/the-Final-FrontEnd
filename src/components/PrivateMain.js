@@ -22,6 +22,7 @@ import Ellipse106 from "../public/img/Ellipse106.png";
 import leftArrow from "../public/img/left-arrow.png";
 import rightArrow from "../public/img/right-arrow.png";
 import commentWhite from "../public/img/Main/comment-white.png";
+import edit from "../public/img/edit.png";
 // import delete from "../public/img/Main/delete.png";
 import { getMemberList } from "../redux/workSpaceReducer";
 
@@ -147,11 +148,10 @@ const PrivateMain = () => {
     <PrivateMainStyle>
       <MainHeader className="MainHeader">
         <div className="main-header-workspace-name">
-          {currentParams ? (
-            currentParams.split("+")[1]
-          ) : (
-            <h1>워크 스페이스를 선택해주세요</h1>
-          )}
+          {currentParams.split("+")[1]}
+          <div className="edit-wrap">
+            <img src={edit} alt="edit" className="edit" />
+          </div>
         </div>
         <button className="main-header-addBtn" onClick={handleAddMemberModal}>
           <img src={addMemberIcon} alt="addMemberIcon" className="addBtn-img" />
@@ -396,7 +396,9 @@ const PrivateMain = () => {
 
 const PrivateMainStyle = styled.div`
   width: 100%;
-  box-sizing: border-box;
+  padding: 20px;
+  height: calc(100vh - 80px);
+
   .right-wrap-title {
     font-weight: 600;
     font-size: 22px;
@@ -427,6 +429,8 @@ const PrivateMainStyle = styled.div`
 const PrivateMainContainer = styled.div`
   display: Flex;
   gap: 20px;
+  width: 100%;
+  height: 90%;
 `;
 
 const MainHeader = styled.div`
@@ -438,9 +442,30 @@ const MainHeader = styled.div`
 
   .main-header-workspace-name {
     font-weight: 400;
-    font-size: 30px;
-    line-height: 45px;
+    font-size: 1.8rem;
+    line-height: 3rem;
     color: #353841;
+    display: flex;
+    align-items: center;
+  }
+
+  .edit-wrap {
+    width: 35px;
+    height: 35px;
+    background: rgba(247, 247, 247, 0.5);
+    border: 1px solid #ecedf1;
+    border-radius: 50%;
+    padding: 9px;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .edit {
+    width: 100%;
+    height: 100%;
   }
 
   .main-header-addBtn {
@@ -540,16 +565,16 @@ const PrivateMainLeft = styled.div`
   display: Flex;
   flex-direction: column;
   gap: 20px;
-  flex: 1;
+  width: 75%;
 `;
 
 const LeftTop = styled.div`
   display: Flex;
   gap: 20px;
+  height: 61%;
 
   .notice-wrap {
-    width: 300px;
-    height: 476px;
+    width: 37%;
   }
 
   .wrap-header {
@@ -572,8 +597,8 @@ const LeftTop = styled.div`
   }
 
   .time_tasking-wrap {
-    width: 500px;
-    height: 476px;
+    width: 63%;
+    height: 100%;
   }
 `;
 
@@ -658,6 +683,15 @@ const NoticeScreen = styled.div`
     top: 7px;
   }
 
+  .input-wrap {
+    width: 90%;
+    height: 3rem;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
   .notice-input {
     background: #ecedf1;
     border: 1px solid #ecedf1;
@@ -666,14 +700,6 @@ const NoticeScreen = styled.div`
     height: 100%;
     padding-left: 22px;
     outline: none;
-  }
-
-  .input-wrap {
-    width: 280px;
-    height: 52px;
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
   }
 
   .submitVector {
@@ -685,12 +711,15 @@ const NoticeScreen = styled.div`
 `;
 
 const PrivateMainRight = styled.div`
-  flex-basis: 400px;
+  width: 44%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `;
 
 const ContactWrap = styled.div`
   padding: 20px 30px;
-  height: 314px;
+  height: 40%;
   background: #ffffff;
   border: 1px solid #ecedf1;
   border-radius: 5px;
@@ -782,10 +811,14 @@ const ContactWrap = styled.div`
 const MemoWrap = styled.div`
   padding: 20px 30px 38px 30px;
   width: 100%;
+  height: 60%;
+  background: #ffffff;
+  border: 1px solid #ecedf1;
+  border-radius: 5px;
 
   .note-screen {
     width: 100%;
-    height: 319px;
+    height: 77%;
     background: linear-gradient(
       180deg,
       rgba(255, 220, 36, 0.5) 0%,
@@ -810,7 +843,8 @@ const MemoWrap = styled.div`
   }
 
   .memo-title {
-    margin-top: 13px;
+    line-height: 33px;
+    margin-bottom: 13px;
   }
 
   .note-arrow {
