@@ -12,10 +12,13 @@ import ModalPortal from "../../elements/Portal/ModalPortal";
 import CalendarModal from "../../components/Modal/CalendarModal";
 import { getItemFromLs } from "../../utils/localStorage";
 import axios from "axios";
+import { useOutletContext } from "react-router-dom";
 
 const Calender = () => {
   const [modalOn, setModalOn] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
+
+  const { currentParams } = useOutletContext();
 
   const handleModal = (e) => {
     setModalOn(() => {
@@ -29,9 +32,10 @@ const Calender = () => {
     endDate: "",
     title: "",
     desc: "",
-    color: "#FFFF",
+    color: "#7EA0E3",
     workSpaceName: "",
   });
+  console.log("taskContents: ", taskContents);
 
   const handleTaskInfoChange = (e) => {
     const { value, name } = e.target;
@@ -50,7 +54,7 @@ const Calender = () => {
   const fetchMyTasks = () => {
     axios({
       method: "get",
-      url: "https://teamnote.shop/api/mytask",
+      url: `https://teamnote.shop/api/tasks/${currentParams}`,
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,
       },
@@ -62,13 +66,13 @@ const Calender = () => {
   // 전체 팀 일정 조회
   const fetchTeamTasks = () => {
     axios({
-      method: "post",
-      url: "https://teamnote.shop/api/task/team/workSpaceName/all",
-      data: {
-        workSpaceName: `${getItemFromLs("workspace")}`,
-      },
+      method: "get",
+      url: "https://teamnote.shop/api/team-tasks",
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,
+      },
+      params: {
+        workSpaceName: currentParams,
       },
     })
       .then((res) => console.log(res))
@@ -78,7 +82,7 @@ const Calender = () => {
   useEffect(() => {
     setTaskContents({
       ...taskContents,
-      workSpaceName: `${getItemFromLs("workspace")}`,
+      workSpaceName: currentParams,
     });
   }, []);
 

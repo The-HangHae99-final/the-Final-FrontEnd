@@ -15,7 +15,7 @@ import rightArrow from "../public/img/right-arrow.png";
 import { Human03 } from "../elements/humanIcon";
 import { useOutletContext } from "react-router-dom";
 import { keys } from "@mui/system";
-import Column from "../Board/Column";
+import Column from "../components/Board/Column";
 
 function createBox(
   handleSubmit,
@@ -94,6 +94,7 @@ const Board = () => {
   const [state, setState] = useState(initialData);
   const [isShown, setIsShown] = useState(false);
   const [titleCharacter, setTitleCharacter] = useState(0);
+  console.log("state: ", state);
 
   // 보드 생성
   const handleSubmit = async (e) => {
@@ -219,6 +220,7 @@ const Board = () => {
         );
         // 서버에서 받아온 데이터(배열)
         const boards = res.data.posts;
+        console.log("boards: ", boards);
 
         const newObject = {};
 
@@ -364,6 +366,7 @@ const Board = () => {
       <DragDropContext onDragEnd={onDragEnd}>
         <BoardContainer>
           {state.columnOrder.map((columnId) => {
+            console.log("columnId: ", columnId);
             const column = state.columns[columnId];
             const tasks = column.taskIds.map((taskId) => state.tasks[taskId]);
             console.log("tasks: ", tasks);

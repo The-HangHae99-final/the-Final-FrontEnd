@@ -1,9 +1,9 @@
 import React from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
-import BoardCard from "../components/Card/BoardCard";
+import BoardCard from "../Card/BoardCard";
 
-import createBtn from "../public/img/createBtn.png";
+import createBtn from "../../public/img/createBtn.png";
 
 const Column = ({
   column,

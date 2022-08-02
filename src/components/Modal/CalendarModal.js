@@ -13,8 +13,18 @@ import Vector3 from "../../public/img/Vector3.png";
 import { TextareaAutosize } from "@mui/base";
 import ko from "date-fns/locale/ko";
 import { getItemFromLs } from "../../utils/localStorage";
+import useMountTransition from "../../utils/useMointTransition";
 
 registerLocale("ko", ko);
+
+const colors = [
+  { kr: "파랑", eng: "#7EA0E3" },
+  { kr: "빨강", eng: "#E37E7E" },
+  { kr: "노랑", eng: "#F4D686" },
+  { kr: "주황", eng: "#F0BB7D" },
+  { kr: "연두", eng: "#D9E087" },
+  { kr: "보라", eng: "#D1A0F7" },
+];
 
 const CalendarModal = ({
   onClose,
@@ -27,6 +37,12 @@ const CalendarModal = ({
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [showPickers, setShowPickers] = useState(false);
+  const [currentColorKr, setCurrentColorKr] = useState("파랑");
+  const [currentColorEng, setCurrentColorEng] = useState("#7EA0E3");
+
+  const [isMounted, setIsMounted] = useState(false);
+  console.log("isMounted: ", isMounted);
+  const hasTransitionedIn = useMountTransition(isMounted, 300);
 
   // UTC 시간 -> 한국 시간으로 변환
   const toKrTime = (date) => {
@@ -35,6 +51,12 @@ const CalendarModal = ({
     ).toISOString();
   };
 
+  useEffect(() => {
+    const end_date_kr = toKrTime(endDate).split("T")[0];
+    const start_date_kr = toKrTime(startDate).split("T")[0];
+    handleTaskDateChage(start_date_kr, end_date_kr);
+  }, [startDate, endDate]);
+
   // 개인 일정 or 팀 일정 생성 함수
   const taskSubmit = (e) => {
     e.preventDefault();
@@ -42,7 +64,7 @@ const CalendarModal = ({
       console.log("개인일정 요청임!");
       axios({
         method: "post",
-        url: "https://teamnote.shop/api/mytask/work",
+        url: "https://teamnote.shop/api/tasks",
         data: taskContents,
         headers: {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
@@ -54,7 +76,7 @@ const CalendarModal = ({
       console.log("팀일정 요청임!");
       axios({
         method: "post",
-        url: "https://teamnote.shop/api/task/team/workSpaceName",
+        url: "https://teamnote.shop/api/team-tasks",
         data: taskContents,
         headers: {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
@@ -64,16 +86,6 @@ const CalendarModal = ({
         .catch((err) => console.log(err));
     }
   };
-
-  const showColorPickers = () => {
-    setShowPickers(!showPickers);
-  };
-
-  useEffect(() => {
-    const end_date_kr = toKrTime(endDate).split("T")[0];
-    const start_date_kr = toKrTime(startDate).split("T")[0];
-    handleTaskDateChage(start_date_kr, end_date_kr);
-  }, [startDate, endDate]);
 
   return (
     <ModalPortal>
@@ -116,11 +128,47 @@ const CalendarModal = ({
               </div>
             </RegisterDate>
             <ColorPickWrap>
-              <div className="color-pick_circle"></div>
-              <span className="color-pick_title" name="color">
-                기본 색상
-              </span>
-              <div className="color-pick_icon-wrap" onClick={showColorPickers}>
+              {hasTransitionedIn || isMounted ? (
+                <ul
+                  className={`colors-picker ${hasTransitionedIn && "in"} ${
+                    isMounted && "visible"
+                  }`}
+                >
+                  {colors.map((color, idx) => {
+                    console.log("color: ", color);
+                    return (
+                      <Color
+                        key={idx}
+                        className="color"
+                        backgroundColor={color.eng}
+                        onClick={() => {
+                          setIsMounted(!isMounted);
+                          setCurrentColorKr(color.kr);
+                          setCurrentColorEng(color.eng);
+                          setTaskContents({
+                            ...taskContents,
+                            color: color.eng,
+                          });
+                        }}
+                      ></Color>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <>
+                  <ColorPickCircle
+                    currentColorEng={currentColorEng}
+                  ></ColorPickCircle>
+                  <span className="color-pick_title" name="color">
+                    {currentColorKr}
+                  </span>
+                </>
+              )}
+
+              <div
+                className="color-pick_icon-wrap"
+                onClick={() => setIsMounted(!isMounted)}
+              >
                 <img src={Vector3} alt="Vector3" className="color-pick_icon" />
               </div>
             </ColorPickWrap>
@@ -278,14 +326,6 @@ const ColorPickWrap = styled.div`
   align-items: center;
   position: relative;
 
-  .color-pick_circle {
-    width: 22px;
-    height: 22px;
-    background-color: #7ea0e3;
-    border-radius: 50%;
-    margin-right: 12px;
-  }
-
   .color-pick_title {
     font-weight: 500;
     font-size: 14px;
@@ -294,7 +334,7 @@ const ColorPickWrap = styled.div`
   }
 
   .color-pick_icon-wrap {
-    padding: 2px 4px;
+    padding: 4px;
     cursor: pointer;
     height: 100%;
     position: absolute;
@@ -303,7 +343,37 @@ const ColorPickWrap = styled.div`
     align-items: center;
   }
 
-  .color-pick_icon {
+  .colors-picker {
+    opacity: 0;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .colors-picker.in.visible {
+    opacity: 1;
+  }
+`;
+
+const ColorPickCircle = styled.div`
+  width: 22px;
+  height: 22px;
+  background-color: ${({ currentColorEng }) => currentColorEng};
+  border-radius: 50%;
+  margin-right: 12px;
+`;
+
+const Color = styled.li`
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: ${({ backgroundColor }) => backgroundColor};
+  cursor: pointer;
+  transition: all 0.1s ease;
+
+  :hover {
+    transform: scale(1.2);
   }
 `;
 
