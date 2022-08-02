@@ -20,12 +20,16 @@ import { getUserInfo, userLogout } from "../../redux/userReducer";
 import { getWorkSpaceData } from "../../redux/workSpaceReducer";
 import reset from "../../redux/workSpaceReducer";
 import NotificationModal from "../Modal/NotificationModal";
+import useMountTransition from "../../utils/useMointTransition";
 
 const Header = ({ invitation }) => {
   const [workSpaceName, setWorkSpaceName] = useState("");
   const [modalOn, setModalOn] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
   const [openNoti, setOpenNoti] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const hasTransitionedIn = useMountTransition(isMounted, 1500);
+
   const dropdownRef = useRef(null);
   const username = getItemFromLs("userName");
   const userEmail = getItemFromLs("userEmail");
@@ -94,7 +98,10 @@ const Header = ({ invitation }) => {
         );
         setModalOn(false);
         setWorkSpaceName("");
-        alert("새로운 워크스페이스가 만들어졌어요");
+        setIsMounted(true);
+        setTimeout(() => {
+          setIsMounted(false);
+        }, 2500);
       });
   };
 
@@ -206,6 +213,17 @@ const Header = ({ invitation }) => {
             />
           )}
         </ModalPortal>
+        {hasTransitionedIn || isMounted ? (
+          <SuccessModalBox>
+            <div
+              className={`success-modal ${hasTransitionedIn && "in"} ${
+                isMounted && "visible"
+              }`}
+            >
+              새로운 워크스페이스가 개설되었습니다!
+            </div>
+          </SuccessModalBox>
+        ) : null}
       </HeaderStyle>
     </>
   );
@@ -415,6 +433,39 @@ const UsernameWrap = styled.div`
   .toBottom {
     transform: rotate(0deg);
     transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+  }
+`;
+
+const SuccessModalBox = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  text-align: center;
+  z-index: 9999;
+
+  .success-modal {
+    padding: 15px 20px;
+    height: 3.7rem;
+    background: #889aff;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 26px;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .success-modal.in.visible {
+    opacity: 1;
   }
 `;
 

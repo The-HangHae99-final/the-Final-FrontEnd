@@ -260,6 +260,7 @@ const CalenderStyle = styled.div`
       font-size: 16px;
       line-height: 24px;
       color: #7d8bdb;
+      cursor: pointer;
     }
   }
 

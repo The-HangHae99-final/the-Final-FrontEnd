@@ -41,7 +41,6 @@ const CalendarModal = ({
   const [currentColorEng, setCurrentColorEng] = useState("#7EA0E3");
 
   const [isMounted, setIsMounted] = useState(false);
-  console.log("isMounted: ", isMounted);
   const hasTransitionedIn = useMountTransition(isMounted, 300);
 
   // UTC 시간 -> 한국 시간으로 변환

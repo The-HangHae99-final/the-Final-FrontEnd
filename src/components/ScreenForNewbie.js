@@ -95,9 +95,14 @@ const ScreenForNewbie = ({ setAppState }) => {
               />
             </div>
           </div>
-          <Link className="add-later" to="/main">
+          <div
+            className="add-later"
+            onClick={() => {
+              setAppState(APP_USER_STATE.USER);
+            }}
+          >
             나중에 할래요
-          </Link>
+          </div>
         </div>
       </div>
     );
