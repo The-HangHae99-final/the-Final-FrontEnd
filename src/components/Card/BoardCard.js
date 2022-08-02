@@ -6,26 +6,27 @@ import remove from "../../public/img/remove.png";
 import labelActive from "../../public/img/label-active.png";
 import drag from "../../public/img/drag.png";
 
-const BoardCard = ({ board, removeBoard }) => {
-  const { title, desc, label, assignees, postId } = board;
+const BoardCard = ({ task }) => {
+  // const { title, desc, label, assignees, postId } = board;
+
   return (
     <BoardCardStyle>
-      <div className="card_title">{title}</div>
+      <div className="card_title">{task.content}</div>
       <div className="label-wrap">
         <div className="labelIcon-wrap">
           <img src={labelActive} alt="labelActive" className="labelActive" />
         </div>
-        <div className="card_label">{label}</div>
+        {/* <div className="card_label">{label}</div> */}
       </div>
 
-      <div className="card_desc">{desc}</div>
+      {/* <div className="card_desc">{desc}</div> */}
 
       <div className="divider"></div>
 
       <div className="author-info-wrap">
         <div className="author_content_text">
           <div className="author_text">일정 등록자</div>
-          <div className="author_name">{assignees}</div>
+          {/* <div className="author_name">{assignees}</div> */}
         </div>
         <Human04 size="50px" />
       </div>
@@ -34,7 +35,7 @@ const BoardCard = ({ board, removeBoard }) => {
         <div className="action_edit">
           <img src={edit} alt="edit" onClick={() => {}} />
         </div>
-        <div className="action_delete" onClick={() => removeBoard(postId)}>
+        <div className="action_delete">
           <img src={remove} alt="remove" />
         </div>
       </div>

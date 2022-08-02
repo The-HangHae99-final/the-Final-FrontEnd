@@ -15,6 +15,7 @@ import rightArrow from "../public/img/right-arrow.png";
 import { Human03 } from "../elements/humanIcon";
 import { useOutletContext } from "react-router-dom";
 import { keys } from "@mui/system";
+import Column from "../Board/Column";
 
 function CreateBox({
   handleSubmit,
@@ -92,49 +93,16 @@ const Board = () => {
     category: "todo",
   });
   const [allBoard, setAllBoard] = useState([]);
-  const [todoBoardList, setTodoBoardList] = useState([]);
-  console.log("todoBoardList: ", todoBoardList);
+  const [todoList, setTodoList] = useState([]);
   const [inProgressList, setInProgressList] = useState([]);
   const [doneList, setDoneList] = useState([]);
+  const [state, setState] = useState(initialData);
   const [isShown, setIsShown] = useState(false);
   const [titleCharacter, setTitleCharacter] = useState(0);
-  const [state, setState] = useState({
-    todoBoardList: todoBoardList,
-    inProgressList: inProgressList,
-    doneList: doneList,
-  });
-  console.log("state: ", state);
-
-  const move = (source, destination, droppableSource, droppableDestination) => {
-    const sourceClone = Array.from(source);
-    const destinationClone = Array.from(destination);
-    // drag start할 리스트에서 해당 인덱스 값을 하나 제거한다
-    const [removed] = sourceClone.splice(droppableSource.index, 1);
-
-    // drag over할 리스트에서 drag start된 데이터를 drop over 될 인덱스의 다음 인덱스에 추가한다.
-    destinationClone.splice(droppableDestination.index, 0, removed);
-
-    // result 객체를 새로 만들어 drop에 의해 start,over된 배열만을 모은 객체를 리턴한다.
-    const result = {};
-    result[droppableSource.droppableId] = sourceClone;
-    result[droppableDestination.droppableId] = destinationClone;
-
-    return result;
-  };
-
-  // multiple lists를 위한 유니크 아이디
-  const id2List = {
-    Todo: "todoBoardList",
-    InProgress: "inProgressList",
-    Done: "doneList",
-  };
-
-  const getList = (id) => state[id2List[id]];
 
   // 보드 생성
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setAllBoard([...allBoard, data]);
     try {
       const res = await axios({
         method: "post",
@@ -146,7 +114,7 @@ const Board = () => {
       });
       console.log("res: ", res);
       if (res.data.success) {
-        setTodoBoardList((prevState) => [...prevState, res.data.result]);
+        setTodoList((prevState) => [...prevState, res.data.result]);
         setIsShown(false);
       } else {
         alert("빠진게 없는지 다시 한번 확인해주세요 :)");
@@ -223,267 +191,151 @@ const Board = () => {
 
   // 전체 보드 리스트 가져오기
   useEffect(() => {
-    axios
-      .post(
-        `https://teamnote.shop/api/posts/list`,
-        {
-          workSpaceName: currentParams,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${getItemFromLs("myToken")}`,
+    try {
+      async function fetchBoards() {
+        const res = await axios.post(
+          `https://teamnote.shop/api/posts/list`,
+          {
+            workSpaceName: currentParams,
           },
-        }
-      )
-      .then((res) => {
-        const allBoardList = res.data.posts;
-
-        setTodoBoardList([...allBoardList]);
-
-        // 요청 성공 시
-        setAllBoard(() => {
-          return [...allBoardList];
-        });
-
-        // Categorize all board data by the 3 categories
-        // allBoardList.map((board) => {
-        //   switch (board.category) {
-        //     case "todo":
-        //       console.log("---todo 카테고리---");
-        //       setTodoBoardList((prevState) => {
-        //         return [...prevState, board];
-        //       });
-        //       break;
-        //     case "inProgress":
-        //       console.log("---inProgress 카테고리---");
-
-        //       setInProgressList((prevState) => {
-        //         return [...prevState, board];
-        //       });
-        //       break;
-        //     case "done":
-        //       console.log("---done 카테고리---");
-        //       setDoneList((prevState) => {
-        //         return [...prevState, board];
-        //       });
-        //       break;
-        //     default:
-        //       console.log("데이터를 불러오는데 실패했습니다.");
-        //   }
-        // });
-      });
+          {
+            headers: {
+              Authorization: `Bearer ${getItemFromLs("myToken")}`,
+            },
+          }
+        );
+        const boards = res.data.posts;
+        setTodoList([...boards]);
+      }
+      fetchBoards();
+    } catch (e) {
+      console.log(e);
+    }
   }, []);
 
-  const handleDragEnd = (res) => {
-    if (res.reason === "DROP") {
-      const { source, destination } = res;
-      // console.log("source: ", source.droppableId, destination.droppableId);
-      if (!res.destination) return;
-      if (source.droppableId === destination.droppableId) {
-        //드래그 하는 sourced의 index
-        const sourceOrderNo = res.source.index;
+  // const handleDragEnd = (res) => {
+  //   if (res.reason === "DROP") {
+  //     const { source, destination } = res;
+  //     // console.log("source: ", source.droppableId, destination.droppableId);
+  //     if (!res.destination) return;
+  //     if (source.droppableId === destination.droppableId) {
+  //       //드래그 하는 sourced의 index
+  //       const sourceOrderNo = res.source.index;
 
-        //드래그 해서 내려놓은 destination의 index
-        const destinationOrderNo = res.destination.index;
+  //       //드래그 해서 내려놓은 destination의 index
+  //       const destinationOrderNo = res.destination.index;
 
-        const items = [...todoBoardList];
+  //       const items = [...todoList];
 
-        // 끌기 시작한 요소의 인덱스에서 한 개 요소를 제거한다
-        const [removed] = items.splice(sourceOrderNo, 1);
+  //       // 끌기 시작한 요소의 인덱스에서 한 개 요소를 제거한다
+  //       const [removed] = items.splice(sourceOrderNo, 1);
 
-        // 끌기 시작한 요소를 내려놓는 위치의 인덱스에 추기힌디.
-        items.splice(destinationOrderNo, 0, removed);
-        setTodoBoardList(items);
-      } else {
-        // getList(source.droppableId) => drag start 할 요소의 배열
-        // getList(destination.droppableId) => drag over 할 요소의 배열
-        // source => drag start 의 정보
-        // destination => drag over 의 정보
-        const result = move(
-          getList(source.droppableId),
-          getList(destination.droppableId),
-          source,
-          destination
-        );
-        console.log("result: ", result[source.droppableId]);
-        // console.log("result: ", result[source.droppableId]);
-        // console.log("result: ", result[destination.droppableId]);
+  //       // 끌기 시작한 요소를 내려놓는 위치의 인덱스에 추기힌디.
+  //       items.splice(destinationOrderNo, 0, removed);
+  //       setTodoList(items);
+  //     } else {
+  //       // getList(source.droppableId) => drag start 할 요소의 배열
+  //       // getList(destination.droppableId) => drag over 할 요소의 배열
+  //       // source => drag start 의 정보
+  //       // destination => drag over 의 정보
+  //       // const result = move(
+  //       //   getList(source.droppableId),
+  //       //   getList(destination.droppableId),
+  //       //   source,
+  //       //   destination
+  //       //   );
+  //     }
+  //   }
+  // };
 
-        // setState({
-        //   ...state,
-        //    id2List[source.droppableId] : result
-        //   inProgressList: result.InProgress,
-        //   doneList: result.Done && result.Done,
-        // });
-      }
-    }
+  const reorderColumnList = (sourceCol, startIndex, endIndex) => {
+    const newtaskIds = Array.from(sourceCol.taskIds);
+    const [removed] = newtaskIds.splice(startIndex, 1);
+    newtaskIds.splice(endIndex, 0, removed);
+
+    const newColumn = {
+      ...sourceCol,
+      taskIds: newtaskIds,
+    };
+
+    return newColumn;
   };
 
-  // 여러 리스트 배열에 드래그앤드랍 하기
+  const onDragEnd = (result) => {
+    console.log("result: ", result);
+    const { source, destination } = result;
 
-  // **드래그 start, over 시 droppableId를 바꿔준다
-  // 조건
-  // 1. 3개의 state 배열을 만든다
-  // 2.
-  // => 드래그 start 를 제거한다
-  // => 내려놓는 위치에 드래그 end를 추가한다.
+    // If 유저가 정해지지 않은 영역에 드랍 할 떄
+    if (!destination) return;
 
+    // If 유저가 제자리에 드래그앤드랍을 다시 되돌릴 떄
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    // If 유저가 같은 column에 다른 위치에 드랍 할 떄
+    const sourceCol = state.columns[source.droppableId];
+    console.log("sourceCol: ", sourceCol);
+
+    const destinationCol = state.columns[destination.droppableId];
+    console.log("destinationCol: ", destinationCol);
+
+    if (sourceCol.id === destinationCol.id) {
+      const newColumn = reorderColumnList(
+        sourceCol,
+        source.index,
+        destination.index
+      );
+
+      const newState = {
+        ...state,
+        columns: {
+          ...state.columns,
+          [newColumn.id]: newColumn,
+        },
+      };
+      setState(newState);
+      return;
+    }
+
+    // If 유저가 다른 column에 드랍할 떄
+    const startTaskIds = Array.from(sourceCol.taskIds);
+    const [removed] = startTaskIds.splice(source.index, 1);
+    const newStartCol = {
+      ...sourceCol,
+      taskIds: startTaskIds,
+    };
+
+    const endTaskIds = Array.from(destinationCol.taskIds);
+    endTaskIds.splice(destination.index, 0, removed);
+    const newEndCol = {
+      ...destinationCol,
+      taskIds: endTaskIds,
+    };
+
+    const newState = {
+      ...state,
+      columns: {
+        ...state.columns,
+        [newStartCol.id]: newStartCol,
+        [newEndCol.id]: newEndCol,
+      },
+    };
+
+    setState(newState);
+  };
   return (
     <BoardStyle>
-      <DragDropContext onDragEnd={handleDragEnd}>
+      <DragDropContext onDragEnd={onDragEnd}>
         <BoardContainer>
-          <SectionWrap>
-            <div className="section-top">
-              <span className="section-top_title">To Do</span>
-            </div>
-            <div className="section-cards-screen">
-              <div className="section-cards-wrap">
-                {isShown ? (
-                  <CreateBox
-                    handleSubmit={handleSubmit}
-                    handleChange={handleChange}
-                    showCreateBox={showCreateBox}
-                    titleCharacter={titleCharacter}
-                    handleLabelClick={handleLabelClick}
-                  />
-                ) : (
-                  <div className="create-box">
-                    <div className="createBtn-wrap">
-                      <img
-                        src={createBtn}
-                        alt="createBtn"
-                        className="createBtn"
-                        onClick={showCreateBox}
-                      />
-                    </div>
-                    <div className="createBtn-title">일정을 추가 해보세요</div>
-                  </div>
-                )}
-              </div>
-              <Droppable droppableId="Todo">
-                {(provided) => (
-                  <ul
-                    className="boards-list"
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                  >
-                    {todoBoardList &&
-                      todoBoardList?.map((board, index) => {
-                        return (
-                          <Draggable
-                            draggableId={index.toString()}
-                            index={index}
-                            key={index}
-                          >
-                            {(provided) => (
-                              <li
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                              >
-                                <BoardCard
-                                  board={board}
-                                  removeBoard={removeBoard}
-                                  index={index}
-                                  key={index}
-                                />
-                              </li>
-                            )}
-                          </Draggable>
-                        );
-                      })}
-                    {provided.placeholder}
-                  </ul>
-                )}
-              </Droppable>
-            </div>
-          </SectionWrap>
-          <SectionWrap>
-            <div className="section-top">
-              <span className="section-top_title">In Progress</span>
-            </div>
-            <div className="section-cards-wrap">
-              <Droppable droppableId="InProgress">
-                {(provided) => (
-                  <div
-                    className="boards-list"
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                  >
-                    {inProgressList &&
-                      inProgressList.map((board, index) => {
-                        return (
-                          <Draggable
-                            draggableId={index.toString()}
-                            index={index}
-                            key={index}
-                          >
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                              >
-                                <BoardCard
-                                  board={board}
-                                  removeBoard={removeBoard}
-                                  index={index}
-                                  key={index}
-                                />
-                              </div>
-                            )}
-                          </Draggable>
-                        );
-                      })}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </div>
-          </SectionWrap>
-          <SectionWrap>
-            <div className="section-top">
-              <span className="section-top_title">Done</span>
-            </div>
-            <div className="section-cards-wrap">
-              <Droppable droppableId="Done">
-                {(provided) => (
-                  <div
-                    className="boards-list"
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                  >
-                    {doneList &&
-                      doneList.map((board, index) => {
-                        return (
-                          <Draggable
-                            draggableId={index.toString()}
-                            index={index}
-                            key={index}
-                          >
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                              >
-                                <BoardCard
-                                  board={board}
-                                  removeBoard={removeBoard}
-                                  index={index}
-                                  key={index}
-                                />
-                              </div>
-                            )}
-                          </Draggable>
-                        );
-                      })}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </div>
-          </SectionWrap>
+          {state.columnOrder.map((columnId) => {
+            const column = state.columns[columnId];
+            const tasks = column.taskIds.map((taskId) => state.tasks[taskId]);
+            return <Column key={column.id} column={column} tasks={tasks} />;
+          })}
           <NoteWrap>
             <div className="noteWrap-top">Note</div>
           </NoteWrap>
@@ -491,6 +343,36 @@ const Board = () => {
       </DragDropContext>
     </BoardStyle>
   );
+};
+
+const initialData = {
+  tasks: {
+    1: { id: 1, content: "Configure Next.js application" },
+    2: { id: 2, content: "Configure Next.js and tailwind " },
+    3: { id: 3, content: "Create sidebar navigation menu" },
+    4: { id: 4, content: "Create page footer" },
+    5: { id: 5, content: "Create page navigation menu" },
+    6: { id: 6, content: "Create page layout" },
+  },
+  columns: {
+    "column-1": {
+      id: "column-1",
+      title: "TO-DO",
+      taskIds: [1, 2, 3, 4],
+    },
+    "column-2": {
+      id: "column-2",
+      title: "IN-PROGRESS",
+      taskIds: [5, 6],
+    },
+    "column-3": {
+      id: "column-3",
+      title: "COMPLETED",
+      taskIds: [],
+    },
+  },
+  // Facilitate reordering of the columns
+  columnOrder: ["column-1", "column-2", "column-3"],
 };
 
 const BoardStyle = styled.div`
@@ -555,7 +437,7 @@ const SectionWrap = styled.div`
   }
 
   .create-box {
-    width: 341px;
+    width: 100%;
     background-color: red;
     padding: 25px 0px 19px 0px;
     display: flex;
@@ -607,7 +489,6 @@ const CreateBoxStyle = styled.form`
   background: #ffffff;
   border: 1px solid #ecedf1;
   border-radius: 5px;
-
   .create-box_title {
     padding: 3px 0px;
     position: relative;
