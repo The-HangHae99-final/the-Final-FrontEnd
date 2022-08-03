@@ -11,7 +11,7 @@ import WeekCalendar from "./Calendar/WeekCalendar";
 
 // 이미지
 import { Human03, Human04 } from "../elements/humanIcon";
-import thunder from "../public/img/thunder.png";
+import thunder from "../public/img/Main/thunder.png";
 import addMemberIcon from "../public/img/addMemberIcon.png";
 import submitVector from "../public/img/submitVector.png";
 import human01 from "../public/img/human01.png";
@@ -706,6 +706,8 @@ const NoticeScreen = styled.div`
     position: absolute;
     right: 11px;
     top: 11px;
+    width: 30px;
+    height: 30px;
     cursor: pointer;
   }
 `;
