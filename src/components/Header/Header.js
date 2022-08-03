@@ -21,6 +21,7 @@ import { getWorkSpaceData } from "../../redux/workSpaceReducer";
 import reset from "../../redux/workSpaceReducer";
 import NotificationModal from "../Modal/NotificationModal";
 import useMountTransition from "../../utils/useMointTransition";
+import MyProfileModal from "../Modal/MyProfileModal";
 
 const Header = ({ invitation }) => {
   const [workSpaceName, setWorkSpaceName] = useState("");
@@ -38,6 +39,8 @@ const Header = ({ invitation }) => {
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
   const workspace = useSelector((state) => state.workSpace.value);
+
+  const [openMyProfileModal, setOpenMyProfileModal] = useState(false);
 
   const handleModal = () => {
     setModalOn(!modalOn);
@@ -109,6 +112,10 @@ const Header = ({ invitation }) => {
     setOpenNoti(true);
   };
 
+  const showMyProfileModal = () => {
+    setOpenMyProfileModal(true);
+  };
+
   return (
     <>
       <HeaderStyle>
@@ -153,7 +160,9 @@ const Header = ({ invitation }) => {
             <li className="nav-item">
               <div className="li-header">
                 <h3 className="li-header-title">내 계정</h3>
-                <span className="edit_account">| 편집하기</span>
+                <span className="edit_account" onClick={showMyProfileModal}>
+                  | 편집하기
+                </span>
               </div>
               <div className="nav_email">{userEmail}</div>
             </li>
@@ -210,6 +219,15 @@ const Header = ({ invitation }) => {
               handleWorkSpaceName={handleWorkSpaceName}
               modalOn={modalOn}
               setModalOn={setModalOn}
+            />
+          )}
+        </ModalPortal>
+        <ModalPortal>
+          {openMyProfileModal && (
+            <MyProfileModal
+              onClose={handleModal}
+              openMyProfileModal={openMyProfileModal}
+              setOpenMyProfileModal={setOpenMyProfileModal}
             />
           )}
         </ModalPortal>
