@@ -20,10 +20,12 @@ const KakaoLoginCallback = () => {
     const code = location.search.split("=")[1];
     // 인가 코드 서버로 전송
     axios
-      .post(`https://teamnote.shop/api/auth/login/kakao/callback`, {
+      .post(`https://teamnote.shop/api/auth/kakao`, {
         code: code,
       })
       .then((res) => {
+        console.log("hi kakao");
+        console.log("res: ", res);
         const token = res.data;
         console.log("token: ", token);
 

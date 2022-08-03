@@ -207,11 +207,10 @@ const Board = () => {
   useEffect(() => {
     try {
       async function fetchBoards() {
-        const res = await axios.post(
-          `https://teamnote.shop/api/posts/list`,
-          {
-            workSpaceName: currentParams,
-          },
+        const res = await axios.get(
+          `https://teamnote.shop/api/posts/list/${encodeURIComponent(
+            currentParams
+          )}`,
           {
             headers: {
               Authorization: `Bearer ${getItemFromLs("myToken")}`,
@@ -246,41 +245,6 @@ const Board = () => {
       console.log(e);
     }
   }, []);
-
-  // const handleDragEnd = (res) => {
-  //   if (res.reason === "DROP") {
-  //     const { source, destination } = res;
-  //     // console.log("source: ", source.droppableId, destination.droppableId);
-  //     if (!res.destination) return;
-  //     if (source.droppableId === destination.droppableId) {
-  //       //드래그 하는 sourced의 index
-  //       const sourceOrderNo = res.source.index;
-
-  //       //드래그 해서 내려놓은 destination의 index
-  //       const destinationOrderNo = res.destination.index;
-
-  //       const items = [...todoList];
-
-  //       // 끌기 시작한 요소의 인덱스에서 한 개 요소를 제거한다
-  //       const [removed] = items.splice(sourceOrderNo, 1);
-
-  //       // 끌기 시작한 요소를 내려놓는 위치의 인덱스에 추기힌디.
-  //       items.splice(destinationOrderNo, 0, removed);
-  //       setTodoList(items);
-  //     } else {
-  //       // getList(source.droppableId) => drag start 할 요소의 배열
-  //       // getList(destination.droppableId) => drag over 할 요소의 배열
-  //       // source => drag start 의 정보
-  //       // destination => drag over 의 정보
-  //       // const result = move(
-  //       //   getList(source.droppableId),
-  //       //   getList(destination.droppableId),
-  //       //   source,
-  //       //   destination
-  //       //   );
-  //     }
-  //   }
-  // };
 
   const reorderColumnList = (sourceCol, startIndex, endIndex) => {
     const newtaskIds = Array.from(sourceCol.taskIds);
@@ -366,10 +330,8 @@ const Board = () => {
       <DragDropContext onDragEnd={onDragEnd}>
         <BoardContainer>
           {state.columnOrder.map((columnId) => {
-            console.log("columnId: ", columnId);
             const column = state.columns[columnId];
             const tasks = column.taskIds.map((taskId) => state.tasks[taskId]);
-            console.log("tasks: ", tasks);
             return (
               <Column
                 key={column.id}

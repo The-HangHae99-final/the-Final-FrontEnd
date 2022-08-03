@@ -75,7 +75,6 @@ const WeekCalendar = () => {
 };
 
 const WeekCalendarStyle = styled.div`
-  padding: 20px 30px;
   height: 47%;
   border-radius: 5px;
 
@@ -83,7 +82,6 @@ const WeekCalendarStyle = styled.div`
     font-weight: 600;
     font-size: 22px;
     line-height: 33px;
-    margin-bottom: 13px;
     color: #7d8bdb;
   }
 
@@ -134,7 +132,7 @@ const WeekCalendarStyle = styled.div`
   }
 
   .date-weekend {
-    width: 40%;
+    width: 38%;
   }
 `;
 

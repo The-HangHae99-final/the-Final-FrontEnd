@@ -16,6 +16,7 @@ import topArrow from "../../public/img/top-arrow.png";
 import topArrowActive from "../../public/img/top-arrow-active.png";
 
 import camera from "../../public/img/camera.png";
+import FileUploadBtn from "../../components/FileUploadBtn";
 
 const Message = () => {
   const [currentSocket, setCurrentSocket] = useState(null);
@@ -181,8 +182,12 @@ const Message = () => {
                   }}
                 />
                 <ButtonsWrap>
-                  <button className="submit-button submit-button_file">
-                    <img src={camera} alt="camera" className="camera" />
+                  {/* multer는 multipart/form-data가 아닌 폼에서는 동작하지 않음에 주의 */}
+                  <button
+                    className="submit-button submit-button_file"
+                    // onClick={handleFileOnChange}
+                  >
+                    <FileUploadBtn />
                   </button>
                   <button
                     className="submit-button submit-button_text"

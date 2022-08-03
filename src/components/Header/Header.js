@@ -230,7 +230,7 @@ const Header = ({ invitation }) => {
 };
 
 const HeaderStyle = styled.div`
-  height: 80px;
+  padding: 15px 0px;
   width: 100%;
   display: flex;
   box-sizing: border-box;

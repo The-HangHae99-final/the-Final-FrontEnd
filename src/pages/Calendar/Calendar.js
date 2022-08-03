@@ -18,6 +18,9 @@ const Calender = () => {
   const [modalOn, setModalOn] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
 
+  const monthTitle = document.querySelector(".react-datepicker__current-month");
+  // console.log(monthTitle.);
+
   const { currentParams } = useOutletContext();
 
   const handleModal = (e) => {
@@ -52,31 +55,47 @@ const Calender = () => {
 
   // 전체 개인 일정 조회
   const fetchMyTasks = () => {
-    axios({
-      method: "get",
-      url: `https://teamnote.shop/api/tasks/${currentParams}`,
-      headers: {
-        Authorization: `Bearer ${getItemFromLs("myToken")}`,
-      },
-    })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+    axios
+      .get(
+        `https://teamnote.shop/api/tasks/all/lists/${encodeURIComponent(
+          currentParams
+        )}`,
+        {
+          headers: {
+            Authorization: `Bearer ${getItemFromLs("myToken")}`,
+          },
+        }
+      )
+      .then((res) => console.log(res));
   };
 
   // 전체 팀 일정 조회
   const fetchTeamTasks = () => {
-    axios({
-      method: "get",
-      url: "https://teamnote.shop/api/team-tasks",
-      headers: {
-        Authorization: `Bearer ${getItemFromLs("myToken")}`,
-      },
-      params: {
-        workSpaceName: currentParams,
-      },
-    })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+    // axios({
+    //   method: "post",
+    //   url: "https://teamnote.shop/api/team-tasks/lists",
+    //  {
+    //     workSpaceName: currentParams,
+    //   },
+    //   headers: {
+    //     Authorization: `Bearer ${getItemFromLs("myToken")}`,
+    //   },
+    // })
+    //   .then((res) => console.log(res))
+    //   .catch((err) => console.log(err));
+    axios
+      .get(
+        "https://teamnote.shop/api/team-tasks/lists",
+        {
+          workSpaceName: currentParams,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${getItemFromLs("myToken")}`,
+          },
+        }
+      )
+      .then((res) => console.log(res));
   };
 
   useEffect(() => {
@@ -268,6 +287,10 @@ const CalenderStyle = styled.div`
     width: 100%;
     height: 100%;
     background-color: #ffffff;
+  }
+
+  .react-datepicker__navigation {
+    display: none;
   }
 `;
 
