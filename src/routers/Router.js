@@ -10,7 +10,6 @@ import KakaoLoginCallback from "../elements/introMain/KakaoLoginCallBack";
 import PrivateMain from "../components/PrivateMain";
 import ScreenForNewbie from "../components/ScreenForNewbie";
 import PublicMain from "../components/PublicMain";
-import { useMediaQuery } from "react-responsive";
 
 import Spinner from "../elements/Spinner";
 import styled from "styled-components";
@@ -18,9 +17,6 @@ import SignIn from "../components/SignIn";
 
 const Router = () => {
   const [loading, setLoading] = useState(false);
-  const isDesktopOrLaptop = useMediaQuery({
-    maxWidth: 1224,
-  });
 
   useEffect(() => {
     setLoading(true);

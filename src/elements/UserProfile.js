@@ -3,7 +3,6 @@ import human01 from "../public/img/human1.png";
 import Ellipse106 from "../public/img/Ellipse106.png";
 import Ellipse103 from "../public/img/Ellipse103.png";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 
 const UserProfile = ({
   text,
@@ -23,21 +22,20 @@ const UserProfile = ({
       alignItems={alignItems}
       onClick={() => {
         return moveRoom(roomName, newRoomName, text);
-        // joinTeamRoom
-        //   ? joinTeamRoom()
-        //   : setDataForJoin(() => {
-        //       moveRoom(oppenent, userName);
-        //       return { opponent: oppenent, userName: userName };
-        //     });
       }}
     >
-      <OnlineUserProfile
-        alt="human"
-        className="online-user-profile"
-        src={human01}
-        marginRight={marginRight}
-        size={size}
-      ></OnlineUserProfile>
+      {text !== "TeamNote" ? (
+        <OnlineUserProfile
+          alt="human"
+          className="online-user-profile"
+          src={human01}
+          marginRight={marginRight}
+          size={size}
+        ></OnlineUserProfile>
+      ) : (
+        <div className="workspace_avatar">{text[0]}</div>
+      )}
+
       {text && <UserName>{text}</UserName>}
       {online && <StatusOnline size={size} online={online} />}
     </OnlineUser>
@@ -52,6 +50,23 @@ const OnlineUser = styled.div`
   top: ${({ toTop }) => (toTop ? toTop : null)};
   padding: 4px;
   cursor: pointer;
+
+  .workspace_avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 20px;
+    background: #f8f8f9;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+    letter-spacing: -0.02em;
+    color: #7d8bdb;
+  }
 `;
 
 const OnlineUserProfile = styled.img`
