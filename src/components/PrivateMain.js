@@ -360,24 +360,6 @@ const PrivateMain = () => {
               )}
             </div>
           </ContactWrap>
-          {/* 메모 컨테이너 */}
-          <MemoWrap>
-            <div className="right-wrap-title memo-title">Note</div>
-            <div className="note-screen"></div>
-            <div className="note-navi-buttons">
-              <img
-                src={leftArrow}
-                alt="leftArrow"
-                className="note-arrow leftArrow"
-              />
-              <span className="note-category-title">Team</span>
-              <img
-                src={rightArrow}
-                alt="rightArrow"
-                className="note-arrow rightArrow"
-              />
-            </div>
-          </MemoWrap>
         </PrivateMainRight>
       </PrivateMainContainer>
       <ModalPortal>
@@ -430,7 +412,7 @@ const PrivateMainContainer = styled.div`
   display: Flex;
   gap: 20px;
   width: 100%;
-  height: 90%;
+  height: 92.5%;
 `;
 
 const MainHeader = styled.div`
@@ -721,7 +703,7 @@ const PrivateMainRight = styled.div`
 
 const ContactWrap = styled.div`
   padding: 20px 30px;
-  height: 40%;
+  height: 100%;
   background: #ffffff;
   border: 1px solid #ecedf1;
   border-radius: 5px;
