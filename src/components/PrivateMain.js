@@ -8,6 +8,7 @@ import { Outlet, useParams, useOutletContext } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo } from "../redux/userReducer";
 import WeekCalendar from "./Calendar/WeekCalendar";
+import Alert from "@mui/material/Alert";
 
 // 이미지
 import { Human03, Human04 } from "../elements/humanIcon";
@@ -25,6 +26,7 @@ import commentWhite from "../public/img/Main/comment-white.png";
 import edit from "../public/img/edit.png";
 // import delete from "../public/img/Main/delete.png";
 import { getMemberList } from "../redux/workSpaceReducer";
+import useMountTransition from "../utils/useMointTransition";
 
 const PrivateMain = () => {
   const [newMember, setNewMember] = useState({
@@ -37,7 +39,10 @@ const PrivateMain = () => {
     content: "",
     workSpaceName: currentParams,
   });
+  const [isMounted, setIsMounted] = useState(false);
   const [notificationList, setNotificationList] = useState([]);
+  const hasTransitionedIn = useMountTransition(isMounted, 1000);
+
   console.log("notificationList: ", notificationList);
   const params = useParams();
   const hasParams = params.workSpaceName;
@@ -108,9 +113,12 @@ const PrivateMain = () => {
     })
       .then((res) => {
         if (res.data.success) {
-          alert(`${newMember.userEmail}님에게 초대메시지를 보냈습니다`);
           setModalOn(false);
           setNewMember({ ...newMember, userEmail: "" });
+          setIsMounted(true);
+          setTimeout(() => {
+            setIsMounted(false);
+          }, 1500);
         } else {
           alert(`${res.message}`);
         }
@@ -301,7 +309,7 @@ const PrivateMain = () => {
             </div>
           </LeftTop>
 
-          <WeekCalendar />
+          {/* <WeekCalendar /> */}
         </PrivateMainLeft>
 
         <PrivateMainRight>
@@ -372,6 +380,22 @@ const PrivateMain = () => {
           />
         )}
       </ModalPortal>
+      {(hasTransitionedIn || isMounted) && (
+        <Alert
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+          }}
+          severity="success"
+          color="info"
+          className={`success-modal ${hasTransitionedIn && "in"} ${
+            isMounted && "visible"
+          }`}
+        >
+          짝짝짝! 초대 메세지를 보냈습니다!
+        </Alert>
+      )}
     </PrivateMainStyle>
   );
 };
@@ -380,6 +404,7 @@ const PrivateMainStyle = styled.div`
   width: 100%;
   padding: 20px;
   height: calc(100vh - 80px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 
   .right-wrap-title {
     font-weight: 600;
@@ -405,6 +430,10 @@ const PrivateMainStyle = styled.div`
 
   .top13 {
     transform: translateY(-13px);
+  }
+
+  .success-modal.in.visible {
+    opacity: 1;
   }
 `;
 
@@ -553,7 +582,7 @@ const PrivateMainLeft = styled.div`
 const LeftTop = styled.div`
   display: Flex;
   gap: 20px;
-  height: 61%;
+  height: 100%;
 
   .notice-wrap {
     width: 37%;
@@ -712,7 +741,6 @@ const ContactWrap = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 221px;
     gap: 13px;
     overflow: scroll;
 

@@ -100,7 +100,10 @@ const Header = ({ invitation }) => {
         dispatch(
           getUserInfo({
             ...user,
-            workSpaceList: [...user.workSpaceList, res.data.name],
+            workSpaceList: [
+              ...user.workSpaceList,
+              res.data.createdWorkSpace.name,
+            ],
           })
         );
         setModalOn(false);

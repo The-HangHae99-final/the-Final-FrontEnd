@@ -5,6 +5,7 @@ import styled from "styled-components";
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route } from "react-router-dom";
+import Tooltip from "@mui/material/Tooltip";
 
 import boardIcon from "../public/img/image27.png";
 import calendarIcon from "../public/img/calendar.png";
@@ -92,51 +93,31 @@ const Main = () => {
           <img src={logo} alt="logo" className="logo" />
         </Link>
         <div className="buttons">
-          <div className="buttonWrap">
-            <div
-              onClick={() => {
-                alert(
-                  "프로필 옆 화살표를 눌러 워크스페이스를 먼저 선택해주세요!"
-                );
-                // navigate(`/main/${workSpace.current_workSpace}/board`);
-              }}
-              className="page-navigate-button"
-            >
-              <img src={boardIcon} alt="boardcon" className="boardcon" />
+          <Tooltip title="워크스페이스를 선택해주세요.">
+            <div className="buttonWrap">
+              <div className="page-navigate-button">
+                <img src={boardIcon} alt="boardcon" className="boardcon" />
+              </div>
             </div>
-          </div>
-          <div className="buttonWrap">
-            <div
-              className="page-navigate-button"
-              onClick={
-                () =>
-                  alert(
-                    "프로필 옆 화살표를 눌러 워크스페이스를 먼저 선택해주세요!"
-                  )
-                // navigate(`/main/${workSpace.current_workSpace}/calendar`)
-              }
-            >
-              <img
-                src={calendarIcon}
-                alt="calendarIcon"
-                className="calendarIcon"
-              />
+          </Tooltip>
+          <Tooltip title="워크스페이스를 선택해주세요.">
+            <div className="buttonWrap">
+              <div className="page-navigate-button">
+                <img
+                  src={calendarIcon}
+                  alt="calendarIcon"
+                  className="calendarIcon"
+                />
+              </div>
             </div>
-          </div>
-          <div className="buttonWrap">
-            <div
-              className="page-navigate-button"
-              onClick={
-                () =>
-                  alert(
-                    "프로필 옆 화살표를 눌러 워크스페이스를 먼저 선택해주세요!"
-                  )
-                // navigate(`/main/${workSpace.current_workSpace}/message`)
-              }
-            >
-              <img src={chatIcon} alt="chatIcon" className="chatIcon" />
+          </Tooltip>
+          <Tooltip title="워크스페이스를 선택해주세요.">
+            <div className="buttonWrap">
+              <div className="page-navigate-button">
+                <img src={chatIcon} alt="chatIcon" className="chatIcon" />
+              </div>
             </div>
-          </div>
+          </Tooltip>
         </div>
       </LeftSide>
 
