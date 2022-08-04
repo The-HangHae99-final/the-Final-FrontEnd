@@ -7,42 +7,32 @@
 <b>일정 관리부터 실시간 소통까지, 똑똑한 협업을 위한 팀 노트!</b>
 <br />
 <img src="https://user-images.githubusercontent.com/105115805/182895596-13eecf6c-4ed7-4a4c-9286-64ef3010a91d.png"/>
-## TEAM NOTE 소개
-### 서비스 개요💻
-
 
 ## 🗂️ 목차
 
 ### 1. [프로젝트 소개](#-프로젝트-소개)
-
-실용적이고, 매력적인 UI로 협업에서 받는 스트레스를 줄여 드립니다!
-함께 프로젝트를 하는 사람들과 일정을 공유하고, 정리하고, 대화를 나눠보세요!
-Share your task ~! Share your Idea !
-
-### 2. [팀 구성](#-팀-구성)
-
+### 2. [팀 멤버](#-팀-멤버)
 ### 3. [기술 스텍](#-기술스택-why)
-
 ### 4. [라이브러리](#-라이브러리-why)
-
 ### 5. [주요 기능](#️-주요-기능)
-
-### 6. [아키텍쳐](#-백엔드-아키텍처)
-
+### 6. [아키텍쳐](#-프론트-아키텍처)
 ### 7. [최종 성과](#최종-성과)
-
 ### 8. [트러블 슈팅](#트러블-슈팅)
 
 <hr>
 <br>
 
-<br>
+### 1. 프로젝트 소개
 
-## 🗓 프로젝트 기간
+## 서비스 개요
+
+## 프로젝트 기간
 
 2022년 6월 24일 ~ 2022년 8월 5일
 
-### 😎 팀 멤버
+<br/>
+
+### 2. 팀 멤버
 
 <table>
    <tr>
@@ -58,13 +48,9 @@ Share your task ~! Share your Idea !
     
   </tr>
   <tr>
+     <td align="center"><b>(L)Backend</b></td>
+     <td align="center"><b>Backend</b></td>
      <td align="center"><b>(VL)Frontend</b></td>
-    <td align="center"><b>Frontend</b></td>
-    <td align="center"><b>Frontend</b></td>
-    <td align="center"><b>(L)Backend</b></td>
-    <td align="center"><b>Backend</b></td>
-    <td align="center"><b>Backend</b></td>
-    <td align="center"><b>Backend</b></td>
   </tr>
 </table>
 
@@ -81,7 +67,8 @@ Share your task ~! Share your Idea !
 
 <br>
 
-## 🛠 기술스택 ([WHY?](https://spark-stove-6bf.notion.site/cf6de263fec844ba8c989b4c9a6dd32e))
+## 3. 기술스택 ([WHY?](https://spark-stove-6bf.notion.site/cf6de263fec844ba8c989b4c9a6dd32e))
+
 
 | 기술스택      |           설명           |
 | ------------- | :----------------------: |
@@ -91,10 +78,16 @@ Share your task ~! Share your Idea !
 
 <br>
 
-## 🕹️ 주요 기능
+## 4. 라이브러리
+
+(아런이런 라이브러리를 썼습니다)
+
+<br/>
+
+## 5. 주요 기능
 
 ### 소셜 로그인
-
+<br/>
 - 더 이상 귀찮은 회원가입, 로그인은 naver
 - 네이버와 카카오를 이용한 간편한 로그인 시스템
 
@@ -121,4 +114,18 @@ Share your task ~! Share your Idea !
 - 간편한 메모장 기능
 - 이번 주의 일정을 확인 할 수 있는 미니 캘린더
 
-<hr>
+<br/>
+
+## 6. 아키텍쳐
+<img src="https://ifh.cc/g/2YHnlQ.jpg](https://user-images.githubusercontent.com/105115805/182904104-2e0ef1de-878f-486c-80a7-ac4010d4a1ca.png" />
+
+<br/>
+
+## 7. 최종 성과
+
+<br/>
+
+## 8. 트러블 슈팅
+
+<br/>
+
