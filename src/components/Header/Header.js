@@ -8,6 +8,8 @@ import {
   removeItemFromLs,
   setItemToLs,
 } from "../../utils/localStorage";
+import socketIOClient from "socket.io-client";
+import io from "socket.io-client";
 
 // module
 import UserAvatar from "../../elements/UserAvatar";
@@ -30,6 +32,7 @@ const Header = ({ invitation }) => {
   const [openNoti, setOpenNoti] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const hasTransitionedIn = useMountTransition(isMounted, 1500);
+  const [currentSocket, setCurrentSocket] = useState(null);
 
   const dropdownRef = useRef(null);
   const username = getItemFromLs("userName");
@@ -116,6 +119,10 @@ const Header = ({ invitation }) => {
     setOpenMyProfileModal(true);
   };
 
+  useEffect(() => {
+    setCurrentSocket(socketIOClient(`https://teamnote.shop/`));
+  }, []);
+
   return (
     <>
       <HeaderStyle>
@@ -186,6 +193,11 @@ const Header = ({ invitation }) => {
                               ...workspace,
                               current_workSpace: item,
                             })
+                          );
+                          setCurrentSocket(
+                            socketIOClient(
+                              "https://teamnote.shop/workSpaceName"
+                            )
                           );
                           navigate(`/main/${item}`);
                         }}

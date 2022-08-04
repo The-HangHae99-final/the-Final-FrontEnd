@@ -4,6 +4,25 @@ import "react-datepicker/dist/react-datepicker.css";
 import styled from "styled-components";
 
 const BigCalendar = (props) => {
+  // const highlightWithRanges = [
+  //   {
+  //     "react-datepicker__day--highlighted-custom-1": [
+  //       subDays(today, 4),
+  //       subDays(today, 3),
+  //       subDays(today, 2),
+  //       subDays(today, 1),
+  //     ],
+  //   },
+  //   {
+  //     "react-datepicker__day--highlighted-custom-2": [
+  //       addDays(today, 1),
+  //       addDays(today, 2),
+  //       addDays(today, 3),
+  //       addDays(today, 4),
+  //     ],
+  //   },
+  // ];
+
   return (
     <BigCalendarStyle>
       <DatePicker inline />

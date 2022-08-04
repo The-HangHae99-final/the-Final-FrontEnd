@@ -114,7 +114,6 @@ const Board = () => {
         let newObject = {};
 
         newObject[task.postId] = task;
-        console.log("newObject: ", newObject);
 
         setState({
           ...state,
@@ -127,6 +126,14 @@ const Board = () => {
               taskIds: [...state.columns["column-1"].taskIds, task.postId],
             },
           },
+        });
+        setData({
+          title: "",
+          desc: "",
+          label: "",
+          assignees: "",
+          workSpaceName: "",
+          category: "todo",
         });
         setIsShown(false);
       } else {
@@ -202,15 +209,14 @@ const Board = () => {
       return { ...data, [name]: value };
     });
   };
+  console.log("currentParams: ", currentParams);
 
   // 전체 보드 리스트 가져오기
   useEffect(() => {
     try {
       async function fetchBoards() {
         const res = await axios.get(
-          `https://teamnote.shop/api/posts/list/${encodeURIComponent(
-            currentParams
-          )}`,
+          `https://teamnote.shop/api/posts/list/${currentParams}`, // hs421
           {
             headers: {
               Authorization: `Bearer ${getItemFromLs("myToken")}`,
@@ -218,6 +224,7 @@ const Board = () => {
           }
         );
         // 서버에서 받아온 데이터(배열)
+        console.log("res: ", res);
         const boards = res.data.posts;
         console.log("boards: ", boards);
 

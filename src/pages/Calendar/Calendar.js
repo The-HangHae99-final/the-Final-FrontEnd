@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import "react-datepicker/dist/react-datepicker.css";
 import "./calendar.css";
+import moment from "moment";
 
 // file
 import BigCalendar from "../../components/Calendar/BigCalendar";
@@ -17,8 +18,9 @@ import { useOutletContext } from "react-router-dom";
 const Calender = () => {
   const [modalOn, setModalOn] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
+  const today = moment();
 
-  const monthTitle = document.querySelector(".react-datepicker__current-month");
+  // const monthTitle = document.querySelector(".react-datepicker__current-month");
   // console.log(monthTitle.);
 
   const { currentParams } = useOutletContext();
@@ -53,19 +55,16 @@ const Calender = () => {
     });
   };
 
-  // 전체 개인 일정 조회
+  // 전체 개인 일정 조회 + 달력에 그리기
+  // 1. startDate + (endDate에서 startDate와의 차이 일 수 ) using by add();
+  // 2.
   const fetchMyTasks = () => {
     axios
-      .get(
-        `https://teamnote.shop/api/tasks/all/lists/${encodeURIComponent(
-          currentParams
-        )}`,
-        {
-          headers: {
-            Authorization: `Bearer ${getItemFromLs("myToken")}`,
-          },
-        }
-      )
+      .get(`https://teamnote.shop/api/tasks/all/lists`, {
+        headers: {
+          Authorization: `Bearer ${getItemFromLs("myToken")}`,
+        },
+      })
       .then((res) => console.log(res));
   };
 
@@ -84,7 +83,7 @@ const Calender = () => {
     //   .then((res) => console.log(res))
     //   .catch((err) => console.log(err));
     axios
-      .get(
+      .post(
         "https://teamnote.shop/api/team-tasks/lists",
         {
           workSpaceName: currentParams,

@@ -1,9 +1,9 @@
 // module, library
-import io from "socket.io-client";
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import socketIOClient from "socket.io-client";
+import io from "socket.io-client";
 import Spinner from "../../elements/Spinner";
 
 // import files
