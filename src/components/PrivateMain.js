@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo } from "../redux/userReducer";
 import WeekCalendar from "./Calendar/WeekCalendar";
 import Alert from "@mui/material/Alert";
+import { changeAvatar } from "../redux/userReducer";
 
 // 이미지
 import { Human03, Human04 } from "../elements/humanIcon";
@@ -43,14 +44,16 @@ const PrivateMain = () => {
   const [notificationList, setNotificationList] = useState([]);
   const hasTransitionedIn = useMountTransition(isMounted, 1000);
 
-  console.log("notificationList: ", notificationList);
   const params = useParams();
   const hasParams = params.workSpaceName;
   const inputRef = useRef(null);
 
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.value);
   const workspace = useSelector((state) => state.workSpace.value);
+
   const memberList = workspace.member_list;
+  console.log("memberList: ", memberList);
 
   const handleNotice = (e) => {
     setNotification({ ...notification, content: e.target.value });
@@ -143,6 +146,7 @@ const PrivateMain = () => {
         },
       })
       .then((res) => {
+        console.log("res: ", res);
         if (res.data.success) {
           dispatch(
             getMemberList({ ...workspace, member_list: [...res.data.result] })
@@ -150,6 +154,15 @@ const PrivateMain = () => {
         }
       })
       .catch((err) => console.log(err));
+  }, [currentParams, user, user?.profile_image_url]);
+
+  useEffect(() => {
+    dispatch(
+      changeAvatar({
+        ...user,
+        profile_image_url: getItemFromLs("profile_image"),
+      })
+    );
   }, []);
 
   return (
@@ -294,14 +307,14 @@ const PrivateMain = () => {
                 ) : (
                   <>
                     <NoticeScreenTime hasParams={hasParams}>
-                      <div className="alarm">준비 중 입니다</div>
+                      <div className="alarm">서비스 준비 중 입니다</div>
                       {/* <div className="alarm">준비 중 입니다</div> */}
                     </NoticeScreenTime>
                     <NoticeScreenTime hasParams={hasParams}>
-                      <div className="alarm">준비 중 입니다</div>
+                      <div className="alarm">서비스 준비 중 입니다</div>
                     </NoticeScreenTime>
                     <NoticeScreenTime hasParams={hasParams}>
-                      <div className="alarm">준비 중 입니다</div>
+                      <div className="alarm">서비스 준비 중 입니다</div>
                     </NoticeScreenTime>
                   </>
                 )}
@@ -326,14 +339,9 @@ const PrivateMain = () => {
                           <div className="contact-card_profile">
                             <div className="profile">
                               <img
-                                src={human02}
+                                src={member?.profile_image}
                                 alt="human02"
                                 className="human02"
-                              />
-                              <img
-                                src={Ellipse106}
-                                alt="Ellipse106"
-                                className="online"
                               />
                             </div>
                             <div className="contact-card_name">
@@ -384,8 +392,9 @@ const PrivateMain = () => {
         <Alert
           style={{
             position: "absolute",
-            top: "10px",
-            right: "10px",
+            bottom: "20px",
+            right: "20px",
+            width: "200px",
           }}
           severity="success"
           color="info"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import ModalPortal from "../../elements/Portal/ModalPortal";
 import user_avatar from "../../public/img/Main/profile_basic.png";
@@ -10,6 +10,10 @@ import mask5 from "../../public/img/avatar/Mask group-5.png";
 import mask6 from "../../public/img/avatar/Mask group-6.png";
 import mask7 from "../../public/img/avatar/Mask group-7.png";
 import mask8 from "../../public/img/avatar/Mask group-8.png";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { getItemFromLs, setItemToLs } from "../../utils/localStorage";
+import { changeAvatar } from "../../redux/userReducer";
 
 const masks = [mask1, mask2, mask3, mask4, mask5, mask6, mask7, mask8];
 
@@ -18,6 +22,35 @@ const MyProfileModal = ({
   openMyProfileModal,
   setOpenMyProfileModal,
 }) => {
+  // 이미지 요청 => 유저의 이미지 저장
+  const [image, setImage] = useState(`${user_avatar}`);
+  const [avatarIndex, setAvatarIndex] = useState(null);
+  const fileInput = useRef(null);
+  const user = useSelector((state) => state.user.value);
+  console.log("user: ", user);
+  const dispatch = useDispatch();
+
+  const changeProfileImage = async () => {
+    try {
+      const response = await axios.patch(
+        `https://teamnote.shop/api/users/mypage/profile`,
+        { image_number: avatarIndex },
+        {
+          headers: {
+            Authorization: `Bearer ${getItemFromLs("myToken")}`,
+          },
+        }
+      );
+      console.log("response: ", response);
+      const newImg_url = response.data.findUser.profile_image;
+      dispatch(changeAvatar({ ...user, profile_image_url: newImg_url }));
+      setItemToLs("profile_image", newImg_url);
+      setOpenMyProfileModal(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <ModalPortal>
       <WorkspaceModalBg>
@@ -26,17 +59,33 @@ const MyProfileModal = ({
             <div className="myprofile-title">Profile</div>
             <div className="user-info">
               <div className="user_avatar">
-                <img
-                  src={user_avatar}
-                  alt="user_avatar"
-                  className="user_avatar"
-                />
+                <img src={image} alt="user_avatar" className="user_avatar" />
+                {/* <input
+                  type="file"
+                  accept="image/jpg,impge/png,image/jpeg"
+                  name="profile_img"
+                  style={{ display: "none" }}
+                  onChange={changeProfileImage}
+                  ref={fileInput}
+                /> */}
               </div>
               <div className="user_name">이형섭</div>
             </div>
             <ul className="mask-list">
-              {masks.map((mask) => {
-                return <img src={mask} alt="mask" className="mask" />;
+              {masks.map((mask, idx) => {
+                const index = idx + 1;
+                return (
+                  <img
+                    src={mask}
+                    alt="mask"
+                    className="mask"
+                    onClick={() => {
+                      setImage(mask);
+                      setAvatarIndex(String(index));
+                    }}
+                    key={idx}
+                  />
+                );
               })}
             </ul>
             <div className="active-buttons">
@@ -48,7 +97,7 @@ const MyProfileModal = ({
               </button>
               <button
                 className="active-button submit"
-                // onClick={addNewWorkSpace}
+                onClick={changeProfileImage}
               >
                 수정하기
               </button>

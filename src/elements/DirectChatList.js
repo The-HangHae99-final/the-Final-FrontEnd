@@ -33,6 +33,7 @@ const DirectChatList = ({ moveRoom, roomName }) => {
                   newRoomName={newRoomName}
                   alignItems={"center"}
                   moveRoom={moveRoom}
+                  profileImage={member.profile_image}
                 />
                 <div className="message-count">
                   <div className="count-alarm"></div>

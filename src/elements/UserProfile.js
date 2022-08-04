@@ -15,6 +15,7 @@ const UserProfile = ({
   roomName,
   size,
   joinTeamRoom,
+  profileImage,
 }) => {
   return (
     <OnlineUser
@@ -28,7 +29,7 @@ const UserProfile = ({
         <OnlineUserProfile
           alt="human"
           className="online-user-profile"
-          src={human01}
+          src={profileImage}
           marginRight={marginRight}
           size={size}
         ></OnlineUserProfile>

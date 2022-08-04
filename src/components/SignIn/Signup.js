@@ -44,6 +44,7 @@ const Signup = ({ showLogin, setShowLogin }) => {
     if (!isValidInput) {
       return alert("모든 칸을 채워주세요.");
     }
+
     // 회원가입에 필요한 데이터 서버로 전송
     axios
       .post("https://teamnote.shop/api/users/signup", signupValue)

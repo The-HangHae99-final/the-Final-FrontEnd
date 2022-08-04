@@ -44,7 +44,7 @@ const SocialLogin = () => {
           }}
         ></img>
       </div>
-      <div className="btnWrap googleWrap" onClick={onClickGoogle}>
+      {/* <div className="btnWrap googleWrap" onClick={onClickGoogle}>
         <img
           src={googleBtn}
           alt="google"
@@ -54,7 +54,7 @@ const SocialLogin = () => {
             borderRadius: "50%",
           }}
         />
-      </div>
+      </div> */}
     </SocialLoginStyle>
   );
 };

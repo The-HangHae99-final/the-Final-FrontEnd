@@ -20,10 +20,7 @@ import FileUploadBtn from "../../components/FileUploadBtn";
 
 const Message = () => {
   const [currentSocket, setCurrentSocket] = useState(null);
-  const [DataForJoin, setDataForJoin] = useState({
-    opponent: "",
-    workspace: "",
-  });
+
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
   const [showChat, setShowChat] = useState(false);
@@ -106,11 +103,12 @@ const Message = () => {
                 </OnlineUserCount>
               </BoxHeader>
               <OnlineList className="user-list">
+                {/* {exceptMe() && exceptMe().map((member, idx) => {})} */}
+                {/* <UserProfile online={true} marginRight="10px" />
                 <UserProfile online={true} marginRight="10px" />
                 <UserProfile online={true} marginRight="10px" />
                 <UserProfile online={true} marginRight="10px" />
-                <UserProfile online={true} marginRight="10px" />
-                <UserProfile online={true} marginRight="10px" />
+                <UserProfile online={true} marginRight="10px" /> */}
               </OnlineList>
             </OnlineBox>
 
@@ -145,11 +143,6 @@ const Message = () => {
               {/* 채팅 화면 상단 바 */}
               <BarTop className="BarTop">
                 <div className="user-state">
-                  <UserProfile
-                    online={true}
-                    alignItems={"center"}
-                    size="50px"
-                  />
                   <div className="user-state_content">
                     <div className="user-name">
                       {oppenent ? oppenent : "????"}
@@ -288,7 +281,7 @@ const ChatSection = styled.div`
 
 const BarTop = styled.div`
   width: 100%;
-  height: 80px;
+  height: 60px;
   background-color: #ffffff;
   position: sticky;
   top: 0;

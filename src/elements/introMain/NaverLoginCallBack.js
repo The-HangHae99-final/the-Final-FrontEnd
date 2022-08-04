@@ -10,10 +10,10 @@ import styled from "styled-components";
 
 const NaverLoginCallBack = () => {
   const [loading, setLoading] = useState(false);
-  console.log("loading: ", loading);
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.value);
 
   const getNaverToken = () => {
     const code = location.search.split("=")[1].split("&")[0];
@@ -41,7 +41,13 @@ const NaverLoginCallBack = () => {
             const user_id = res.data.response.id;
             const user_name = res.data.response.name;
             dispatch(
-              login({ user_name, user_email, user_id, isLoggedIn: true })
+              login({
+                ...user,
+                user_name,
+                user_email,
+                user_id,
+                isLoggedIn: true,
+              })
             );
             // 파싱 할 데이터 전달
             axios

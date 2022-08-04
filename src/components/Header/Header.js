@@ -8,10 +8,10 @@ import {
   removeItemFromLs,
   setItemToLs,
 } from "../../utils/localStorage";
-import socketIOClient from "socket.io-client";
-import io from "socket.io-client";
+import Mask_basic from "../../public/img/avatar/Mask_basic.png";
 
 // module
+
 import UserAvatar from "../../elements/UserAvatar";
 import vector from "../../public/img/Vector1.png";
 import sunIcon from "../../public/img/sun.png";
@@ -33,7 +33,7 @@ const Header = ({ invitation }) => {
   const [isMounted, setIsMounted] = useState(false);
   const hasTransitionedIn = useMountTransition(isMounted, 1500);
   const [currentSocket, setCurrentSocket] = useState(null);
-
+  console.log("Mask_basic: ", Mask_basic);
   const dropdownRef = useRef(null);
   const username = getItemFromLs("userName");
   const userEmail = getItemFromLs("userEmail");
@@ -60,6 +60,8 @@ const Header = ({ invitation }) => {
     removeItemFromLs("userName");
     removeItemFromLs("userEmail");
     removeItemFromLs("workSpace");
+    removeItemFromLs("profile_image");
+
     window.location.replace("/");
     dispatch(reset);
     // setOpenDropdown(false);
@@ -123,10 +125,6 @@ const Header = ({ invitation }) => {
     setOpenMyProfileModal(true);
   };
 
-  useEffect(() => {
-    setCurrentSocket(socketIOClient(`https://teamnote.shop/`));
-  }, []);
-
   return (
     <>
       <HeaderStyle>
@@ -144,7 +142,14 @@ const Header = ({ invitation }) => {
             {openNoti && <NotificationModal onClose={closeNoti} />}
           </div>
           <AboutUser>
-            <UserAvatar size="big" width={50} height={50} />
+            <img
+              src={user.profile_image_url ? user.profile_image_url : Mask_basic}
+              className="user-avatar"
+              alt="user_avatar"
+              style={{ width: "50px", height: "50px" }}
+            />
+            {/* <UserAvatar size="big" width={50} height={50} /> */}
+
             <div className="userMetaInfo">
               <span className="greeting">Hi!</span>
 
@@ -197,11 +202,6 @@ const Header = ({ invitation }) => {
                               ...workspace,
                               current_workSpace: item,
                             })
-                          );
-                          setCurrentSocket(
-                            socketIOClient(
-                              "https://teamnote.shop/workSpaceName"
-                            )
                           );
                           navigate(`/main/${item}`);
                         }}
@@ -480,7 +480,6 @@ const SuccessModalBox = styled.div`
   left: 0;
   top: 0;
   text-align: center;
-  z-index: 9999;
 
   .success-modal {
     padding: 15px 20px;

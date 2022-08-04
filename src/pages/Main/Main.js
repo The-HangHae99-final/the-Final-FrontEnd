@@ -37,6 +37,7 @@ const Main = () => {
   const [openNewbieModal, setOpenNewbieModal] = useState(false);
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.value);
+  console.log("user: ", user);
 
   const workSpace = useSelector((state) => state.workSpace.value);
   const dispatch = useDispatch();
@@ -75,6 +76,7 @@ const Main = () => {
                 if (res.data.success) {
                   dispatch(
                     getUserInfo({
+                      ...user,
                       workSpaceList: [...workSpaceFullname],
                       invitation: [...res.data.result],
                     })

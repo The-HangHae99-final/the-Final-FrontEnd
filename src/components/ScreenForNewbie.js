@@ -57,12 +57,16 @@ const ScreenForNewbie = ({ setAppState }) => {
 
   const handleChange = (e) => {
     const inputValue = e.target.value;
-    setWorkSpaceName(() => {
-      if (inputValue.length <= 11) {
-        setTitleCharacter(inputValue.length);
-      }
-      return `${inputValue}`;
-    });
+    console.log("inputValue: ", inputValue.length);
+
+    if (inputValue.length > 10) {
+      return;
+    } else {
+      setTitleCharacter(() => {
+        return inputValue.length;
+      });
+      setWorkSpaceName(inputValue);
+    }
   };
 
   const createBox = () => {
@@ -78,13 +82,14 @@ const ScreenForNewbie = ({ setAppState }) => {
               type="text"
               className="create-box_input"
               placeholder="10글자 내외로 작성해주세요."
+              maxLength={10}
               onChange={(e) => handleChange(e)}
               onKeyPress={(e) => {
                 e.key === "Enter" && addNewWorkSpace();
               }}
             />
             <div className="input-actions">
-              <span className="input-max-length">0/10</span>
+              <span className="input-max-length">{titleCharacter}/10</span>
               <img
                 src={topArrow}
                 alt="topArrow"
