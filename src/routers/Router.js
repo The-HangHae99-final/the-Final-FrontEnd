@@ -41,11 +41,11 @@ const Router = () => {
           </Route>
 
           <Route
-            path="/api/auth/login/naver/callback/*"
+            path="/api/auth/login/naver/callback"
             element={<NaverLoginCallBack />}
           />
           <Route
-            path="/api/oauth/login/kakao/callback/*"
+            path="/api/oauth/login/kakao/callback"
             element={<KakaoLoginCallback />}
           />
           <Route path="*" element={<div>There's nothing here!</div>} />
