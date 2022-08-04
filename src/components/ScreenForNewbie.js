@@ -46,7 +46,7 @@ const ScreenForNewbie = ({ setAppState }) => {
             dispatch(
               getUserInfo({
                 ...user,
-                workSpaceList: [...user.workSpaceList, res.data.name],
+                workSpaceList: [res.data.createdWorkSpace.name],
               })
             );
           }, 2000);
