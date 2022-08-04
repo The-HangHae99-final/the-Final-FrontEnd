@@ -1,7 +1,4 @@
 # 💻 TEAM NOTE - frontEnd
-
-## 🏠 [Home Page Link]()
-
 ☕[팀노트 바로 가기](http://teamnote-dev.s3-website.ap-northeast-2.amazonaws.com)
 <br />
 <b>일정 관리부터 실시간 소통까지, 똑똑한 협업을 위한 팀 노트!</b>
@@ -41,8 +38,8 @@
      <td align="center"><b><a href="https://github.com/sojin0106">이형섭</a></b></td>
   </tr>
   <tr>
-     <td align="center"><a href="https://github.com/horang-e"><img src="https://ifh.cc/g/0TgKO9.png" width="100px" /></a></td>
-     <td align="center"><a href="https://github.com/appreciate87"><img src="https://avatars.githubusercontent.com/u/103627100?v=4" width="100px" /></a></td>
+     <td align="center"><a href="https://github.com/hayeonkimm"><img src="https://user-images.githubusercontent.com/105115805/182905584-e387b6d5-d48f-459c-a92b-8af68ee7a175.jpeg" width="100px" /></a></td>
+     <td align="center"><a href="https://github.com/jyj9784"><img src="https://user-images.githubusercontent.com/105115805/182905519-359fd892-e3a6-4d91-94cc-5dbebdc0773b.jpeg?v=4" width="100px" /></a></td>
      <td align="center"><a href="https://github.com/vennydev"><img src="https://user-images.githubusercontent.com/105115805/182900945-8c414eb4-0d50-4741-8d61-38bf3f1bfeca.JPG?v=4" width="100px" /></a></td>
   
     
@@ -117,7 +114,7 @@
 <br/>
 
 ## 6. 아키텍쳐
-<img src="https://ifh.cc/g/2YHnlQ.jpg](https://user-images.githubusercontent.com/105115805/182904104-2e0ef1de-878f-486c-80a7-ac4010d4a1ca.png" />
+<img src="https://user-images.githubusercontent.com/105115805/182904504-0db404d6-f456-490b-b3a3-b500df06b134.png" />
 
 <br/>
 
