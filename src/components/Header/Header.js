@@ -6,9 +6,11 @@ import { useNavigate } from "react-router-dom";
 import {
   getItemFromLs,
   removeItemFromLs,
+  resetItemFromLs,
   setItemToLs,
 } from "../../utils/localStorage";
 import Mask_basic from "../../public/img/avatar/Mask_basic.png";
+import { Button } from "@mui/material";
 
 // module
 
@@ -56,13 +58,9 @@ const Header = ({ invitation }) => {
   };
 
   const logout = () => {
-    removeItemFromLs("myToken");
-    removeItemFromLs("userName");
-    removeItemFromLs("userEmail");
-    removeItemFromLs("workSpace");
-    removeItemFromLs("profile_image");
+    resetItemFromLs();
 
-    window.location.replace("/");
+    window.location.replace("/join/signin");
     dispatch(reset);
     // setOpenDropdown(false);
     // alert("로그아웃 되었습니다");
@@ -125,10 +123,23 @@ const Header = ({ invitation }) => {
     setOpenMyProfileModal(true);
   };
 
+  const toNotion = () => {
+    window.location.href =
+      "https://sprout-dress-47a.notion.site/1f35cba8fca540b5ab8e09b73f014cab";
+  };
+
   return (
     <>
       <HeaderStyle>
         <div className="menuItems">
+          <Button
+            variant="outlined"
+            onClick={toNotion}
+            style={{ marginRight: "25px", color: "#7D8BD" }}
+          >
+            Guide
+          </Button>
+
           <div className="menuBtns">
             <button className="menuBtn">
               <img src={sunIcon} alt="sun icon" />
@@ -271,6 +282,24 @@ const HeaderStyle = styled.div`
   justify-content: flex-end;
   position: relative;
   background: #ffffff;
+
+  .css-1rwt2y5-MuiButtonBase-root-MuiButton-root {
+    color: #7d8bdb;
+    /* transition: all 0.2s ease; */
+    animation: motion 0.4s ease 0s infinite alternate;
+
+    /* :hover {
+      transform: scale(1.1);
+    } */
+
+    @keyframes motion {
+      0% {
+      }
+      100% {
+        transform: translateY(5px);
+      }
+    }
+  }
 
   .menuBtns {
     display: flex;
