@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
@@ -9,59 +9,118 @@ import { Button } from "@mui/material";
 
 // TODO prop명 바꾸기
 const Signup = () => {
-  const [signupValue, setSignupValue] = useState({
-    userEmail: "",
-    userName: "",
-    password: "",
-    confirmPassword: "",
-  });
+  // 회원가입에 필요한 인풋 값
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
 
-  // 오류메시지 상태 저장
-  // const [nameMessage, setNameMessage] = useState("");
-  // const [emailMessage, setEmailMessage] = useState("");
-  // const [passwordMessage, setPasswordMessage] =
-  //   useState("비밀번호를 입력해주세요");
-  // const [passwordConfirmMessage, setPasswordConfirmMessage] =
-  //   useState("비밀번호를 한번 더 입력해주세요");
+  // 오류 메시지
+  const [nameErrorMessage, setNameErrorMessage] = useState("");
+  const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [passwordConfirmErrorMessage, setPasswordConfirmErrorMessage] =
+    useState("");
+
+  // 오류 메시지 상태
+  const [isName, setIsName] = useState(false);
+  const [isEmail, setIsEmail] = useState(false);
+  const [isPassword, setIsPassword] = useState(false);
+  const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
 
   const inputRef = useRef();
   const navigate = useNavigate();
 
-  const { userEmail, userName, password, confirmPassword } = signupValue;
-
-  const isValidInput =
-    userEmail.length >= 1 &&
-    userName.length >= 1 &&
-    password.length >= 1 &&
-    confirmPassword.length >= 1;
+  // const isValidInput =
+  //   userEmail.length >= 1 &&
+  //   userName.length >= 1 &&
+  //   password.length >= 1 &&
+  //   confirmPassword.length >= 1;
 
   // useInput 으로 함수 분리하기
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setSignupValue({ ...signupValue, [name]: value });
-  };
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setSignupValue({ ...signupValue, [name]: value });
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isValidInput) {
-      return alert("모든 칸을 채워주세요.");
-    }
-
+    console.log("제출");
     // 회원가입 요청
-    axios
-      .post("https://teamnote.shop/api/users/signup", signupValue)
-      .then((res) => {
-        console.log("res: ", res);
-        if (res.data.success) {
-          alert("회원가입에 성공하였습니다!");
-          navigate("/join/signin");
-        }
-      })
-      .catch((err) => {
-        const errMsg = err.response.data.errorMessage;
-        console.log("errMsg: ", errMsg);
-      });
+    // axios
+    //   .post("https://teamnote.shop/api/users/signup", signupValue)
+    //   .then((res) => {
+    //     console.log("res: ", res);
+    //     if (res.data.success) {
+    //       alert("회원가입에 성공하였습니다!");
+    //       navigate("/join/signin");
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     const errMsg = err.response.data.errorMessage;
+    //     console.log("errMsg: ", errMsg);
+    //   });
   };
+
+  // 이름 입력 + 유효성 검사
+  const onChangeName = useCallback((e) => {
+    const nameLength = e.target.value.length;
+
+    setName(e.target.value);
+    if (nameLength < 2 || nameLength >= 5) {
+      setNameErrorMessage("2글자 이상 5글자 미만으로 입력해주세요.");
+      setIsName(false);
+    } else if (2 <= nameLength <= 5) {
+      setNameErrorMessage("사용 할 수 있는 이름입니다.");
+      setIsName(true);
+    }
+  }, []);
+
+  // 이메일 유효성 검사
+  const onChangeEmail = useCallback((e) => {
+    const emailValue = e.target.value;
+    setEmail(e.target.value);
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    console.log("!emailRegex.test(email): ", emailRegex.test(emailValue));
+    if (!emailRegex.test(emailValue)) {
+      setEmailErrorMessage("이메일 형식이 틀렸습니다.");
+      setIsEmail(false);
+    } else {
+      setEmailErrorMessage("사용 할 수 있는 이메일입니다.");
+      setIsEmail(true);
+    }
+  }, []);
+
+  // 비밀번호 유효성 검사(6글자 이상)
+  const onChangePassword = useCallback((e) => {
+    const passwordValue = e.target.value;
+    setPassword(passwordValue);
+    if (passwordValue.length <= 6) {
+      setPasswordErrorMessage("6글자 이상 입력해주세요");
+      setIsPassword(false);
+    } else {
+      setPasswordErrorMessage("사용 할 수 있는 비밀번호입니다.");
+      setIsPassword(true);
+    }
+  }, []);
+
+  // 비밀번호2 유효성 검사
+  const onChangePasswordConfirm = useCallback(
+    (e) => {
+      const passwordConfirmValue = e.target.value;
+      setPasswordConfirm(passwordConfirmValue);
+      if (passwordConfirmValue === password) {
+        setPasswordConfirmErrorMessage("사용 할 수 있는 비밀번호입니다.");
+        setIsPasswordConfirm(true);
+      } else {
+        setPasswordConfirmErrorMessage("비밀번호가 일치하지 않습니다");
+        setIsPasswordConfirm(false);
+      }
+    },
+    [password]
+  );
+
   return (
     <LoginContainer>
       <div className="signin-screen-wrap">
@@ -84,48 +143,80 @@ const Signup = () => {
               <div className="input-wrap">
                 <input
                   type="text"
-                  name="userName"
-                  value={userName || ""}
-                  username={userName}
-                  onChange={handleChange}
+                  name="name"
+                  value={name || ""}
+                  onChange={onChangeName}
                   placeholder="이름을 입력해 주세요."
                   ref={inputRef}
+                  // onBlur={isNameValidate}
                   className="siginIn-input"
                 />
+                {name.length > 0 && (
+                  <span
+                    className={`inputErrorMessage ${
+                      isName ? "success" : "error"
+                    }`}
+                  >
+                    {nameErrorMessage}
+                  </span>
+                )}
+
                 <input
                   type="text"
                   name="userEmail"
-                  value={userEmail || ""}
-                  onChange={handleChange}
+                  value={email || ""}
+                  onChange={onChangeEmail}
                   placeholder="사용 가능한 이메일을 입력해 주세요."
                   ref={inputRef}
+                  // onBlur={isEmailValidate}
                   className="siginIn-input"
                 />
-                {/* {userEmail === "" && (
-                    <span className="help-message">{emailMessage}</span>
-                  )} */}
+                {email.length > 0 && (
+                  <span
+                    className={`inputErrorMessage ${
+                      isEmail ? "success" : "error"
+                    }`}
+                  >
+                    {emailErrorMessage}
+                  </span>
+                )}
 
                 <input
                   name="password"
                   type="password"
                   value={password || ""}
-                  onChange={handleChange}
+                  onChange={onChangePassword}
                   placeholder="비밀번호를 입력해 주세요."
                   ref={inputRef}
                   className="siginIn-input"
                 />
-                {/* {password === "" && (
-                    <span className="help-message">{passwordMessage}</span>
-                  )} */}
+                {password.length > 0 && (
+                  <span
+                    className={`inputErrorMessage ${
+                      isPassword ? "success" : "error"
+                    }`}
+                  >
+                    {passwordErrorMessage}
+                  </span>
+                )}
                 <input
                   name="confirmPassword"
                   type="password"
-                  value={confirmPassword || ""}
-                  onChange={handleChange}
+                  value={passwordConfirm || ""}
+                  onChange={onChangePasswordConfirm}
                   placeholder="비밀번호를 한번 더 입력해 주세요."
                   ref={inputRef}
                   className="siginIn-input"
                 />
+                {passwordConfirm.length > 0 && (
+                  <span
+                    className={`inputErrorMessage ${
+                      isPasswordConfirm ? "success" : "error"
+                    }`}
+                  >
+                    {passwordConfirmErrorMessage}
+                  </span>
+                )}
               </div>
 
               <div className="active-buttons">
@@ -157,6 +248,14 @@ const Signup = () => {
                     lineHeight: "26px",
                     color: "#ffffff",
                   }}
+                  disabled={
+                    !(
+                      setIsName &&
+                      setIsEmail &&
+                      setIsPassword &&
+                      setIsPasswordConfirm
+                    )
+                  }
                 >
                   회원가입
                 </Button>
@@ -244,7 +343,7 @@ const FormWrap = styled.form`
     position: relative;
     transition: all 0.3s linear;
 
-    .help-message {
+    .inputErrorMessage {
       margin-top: 4px;
       font-weight: 400;
       font-size: 12px;
