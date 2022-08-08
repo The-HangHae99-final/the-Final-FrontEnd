@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Divider from "../../elements/Divider";
 import SocialLogin from "../SocialLogin";
 import { useDispatch } from "react-redux";
+import CalendarLabel from "../../pages/Calendar/CalendarLabel";
 
 // 이미지
 import loginHelp from "../../public/img/Login/login-help.png";
@@ -21,7 +22,7 @@ function PopUpErrorMsg() {
   );
 }
 
-const SignIn = () => {
+export const SignIn = () => {
   const [showLogin, setShowLogin] = useState(true);
   const [loginValue, setLoginValue] = useState({
     userEmail: "",
@@ -37,6 +38,8 @@ const SignIn = () => {
   const navigate = useNavigate();
   const emailRef = useRef();
   const pwRef = useRef();
+
+  // useInput 으로 함수 분리하기
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLoginValue({ ...loginValue, [name]: value });
@@ -47,8 +50,13 @@ const SignIn = () => {
     }
   };
 
+  // 로그인 요청
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // TODO 로그인버튼 누르자마자 날리는게 좋음
+    setLoginValue({ userEmail: "", password: "" });
+
     try {
       const res = await axios.post("https://teamnote.shop/api/users/login", {
         userEmail,
@@ -58,21 +66,18 @@ const SignIn = () => {
         const user_name = res.data.userName;
         const user_email = res.data.userEmail;
         const token = res.data.token;
+
         setItemToLs("myToken", token);
         setItemToLs("userName", user_name);
         setItemToLs("userEmail", user_email);
         navigate("/main");
-        setLoginValue({ userEmail: "", password: "" });
       }
     } catch (err) {
+      // TOODO 토스트 얼럿으로 변경하는게 좋음
       console.log("err: ", err);
       if (err.response.data.errorMessage == "일치하는 이메일이 없습니다.") {
         setEmailHelpMessage("이메일 형식을 다시 확인 해주세요.");
         emailRef.current.focus();
-        // setMatch(false);
-        // setTimeout(() => {
-        //   setMatch(true);
-        // }, 2000);
       } else if (err.response.data.errorMessage == "비밀번호가 틀렸습니다.") {
         setPasswordHelpMessage("잘못된 비밀번호입니다");
         pwRef.current.focus();
@@ -80,13 +85,17 @@ const SignIn = () => {
     }
   };
 
+  const handleGoToLogin = () => {
+    setShowLogin(true);
+  };
+
   useEffect(() => {
     setEmailHelpMessage("");
     setPasswordHelpMessage("");
   }, [userEmail, password]);
 
-  const login = () => {
-    return (
+  return (
+    <>
       <LoginContainer>
         <div className="signin-screen-wrap">
           <div className="signin-top">
@@ -96,16 +105,7 @@ const SignIn = () => {
             <div className="signin_title">Sign In</div>
             <div className="switch">
               <span>신규 사용자이신가요?</span>
-              <div
-                className="join"
-                onClick={() => {
-                  setShowLogin(!showLogin);
-                  setLoginValue({
-                    userEmail: "",
-                    password: "",
-                  });
-                }}
-              >
+              <div className="join" onClick={() => navigate("/join/signup")}>
                 회원가입
               </div>
             </div>
@@ -146,14 +146,14 @@ const SignIn = () => {
                 </div>
 
                 <div className="active-buttons">
-                  <div className="need-help">
+                  {/* <div className="need-help">
                     <img
                       src={loginHelp}
                       alt="loginHelp"
                       className="loginHelp_icon"
                     />
                     <span className="loginHelp_message">도움이 필요해요</span>
-                  </div>
+                  </div> */}
 
                   <Button
                     variant="contained"
@@ -167,14 +167,15 @@ const SignIn = () => {
                       backgroundColor: isActive ? "#889AFF" : "#d5d8da",
                       position: "position",
                       textAlign: "center",
-                      padding: "17px 47px",
+                      padding: "1rem 2.5rem",
+                      width: "20%",
                       fontWeight: "400",
-                      fontSize: "18px",
+                      fontSize: "1.1em",
                       lineHeight: "26px",
                       color: "#ffffff",
                     }}
                   >
-                    로그인 하기
+                    로그인
                   </Button>
                 </div>
               </FormWrap>
@@ -189,50 +190,10 @@ const SignIn = () => {
           </LoginWrap>
         </div>
       </LoginContainer>
-    );
-  };
-
-  return (
-    <SignInStyle>
-      <SignInBanner></SignInBanner>
-      <SingInScreen>
-        <LoginContainer>
-          {showLogin ? (
-            login()
-          ) : (
-            <Signup showLogin={showLogin} setShowLogin={setShowLogin} />
-          )}
-          {!match && <PopUpErrorMsg match={match} />}
-        </LoginContainer>
-      </SingInScreen>
-    </SignInStyle>
+      {!match && <PopUpErrorMsg match={match} />}
+    </>
   );
 };
-
-const SignInStyle = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  display: flex;
-`;
-const SignInBanner = styled.div`
-  width: 53%;
-  background-color: yellowgreen;
-  background: url(${loginBanner});
-  background-size: cover;
-  background-position: center;
-`;
-
-const SingInScreen = styled.div`
-  display: flex;
-  width: 47%;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  padding: 0px 90px;
-`;
 
 const LoginContainer = styled.div`
   display: flex;
@@ -324,8 +285,7 @@ const FormWrap = styled.form`
     margin-top: 38px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 171.5px;
+    justify-content: flex-end;
   }
 
   .need-help {
@@ -458,5 +418,3 @@ const PopUpErrorMsgStyle = styled.div`
     }
   }
 `;
-
-export default SignIn;

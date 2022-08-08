@@ -1,31 +1,32 @@
 import axios from "axios";
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 import logo from "../../public/img/Login/logo-colored.png";
 import loginHelp from "../../public/img/Login/login-help.png";
 import { Button } from "@mui/material";
 
-const Signup = ({ showLogin, setShowLogin }) => {
-  // 이메일, 이름, 비밀번호, 비밀번호 확인
+// TODO prop명 바꾸기
+const Signup = () => {
   const [signupValue, setSignupValue] = useState({
     userEmail: "",
     userName: "",
     password: "",
     confirmPassword: "",
   });
-  console.log("signupValue: ", signupValue);
-  const [isActive, setIsActive] = useState(false);
 
   // 오류메시지 상태 저장
-  const [nameMessage, setNameMessage] = useState("");
-  const [emailMessage, setEmailMessage] = useState("");
-  const [passwordMessage, setPasswordMessage] =
-    useState("비밀번호를 입력해주세요");
-  const [passwordConfirmMessage, setPasswordConfirmMessage] =
-    useState("비밀번호를 한번 더 입력해주세요");
+  // const [nameMessage, setNameMessage] = useState("");
+  // const [emailMessage, setEmailMessage] = useState("");
+  // const [passwordMessage, setPasswordMessage] =
+  //   useState("비밀번호를 입력해주세요");
+  // const [passwordConfirmMessage, setPasswordConfirmMessage] =
+  //   useState("비밀번호를 한번 더 입력해주세요");
 
   const inputRef = useRef();
+  const navigate = useNavigate();
+
   const { userEmail, userName, password, confirmPassword } = signupValue;
 
   const isValidInput =
@@ -34,6 +35,7 @@ const Signup = ({ showLogin, setShowLogin }) => {
     password.length >= 1 &&
     confirmPassword.length >= 1;
 
+  // useInput 으로 함수 분리하기
   const handleChange = (e) => {
     const { name, value } = e.target;
     setSignupValue({ ...signupValue, [name]: value });
@@ -45,14 +47,14 @@ const Signup = ({ showLogin, setShowLogin }) => {
       return alert("모든 칸을 채워주세요.");
     }
 
-    // 회원가입에 필요한 데이터 서버로 전송
+    // 회원가입 요청
     axios
       .post("https://teamnote.shop/api/users/signup", signupValue)
       .then((res) => {
         console.log("res: ", res);
         if (res.data.success) {
           alert("회원가입에 성공하였습니다!");
-          setShowLogin(true);
+          navigate("/join/signin");
         }
       })
       .catch((err) => {
@@ -70,18 +72,7 @@ const Signup = ({ showLogin, setShowLogin }) => {
           <div className="signin_title">Join Us</div>
           <div className="switch">
             <span>이미 팀노트의 멤버이신가요?</span>
-            <div
-              className="join"
-              onClick={() => {
-                setShowLogin(!showLogin);
-                setSignupValue({
-                  userEmail: "",
-                  userName: "",
-                  password: "",
-                  confirmPassword: "",
-                });
-              }}
-            >
+            <div className="join" onClick={() => navigate("/join/signin")}>
               로그인
             </div>
           </div>
@@ -138,14 +129,14 @@ const Signup = ({ showLogin, setShowLogin }) => {
               </div>
 
               <div className="active-buttons">
-                <div className="need-help">
+                {/* <div className="need-help">
                   <img
                     src={loginHelp}
                     alt="loginHelp"
                     className="loginHelp_icon"
                   />
                   <span className="loginHelp_message">도움이 필요해요</span>
-                </div>
+                </div> */}
 
                 <Button
                   variant="contained"
@@ -156,17 +147,18 @@ const Signup = ({ showLogin, setShowLogin }) => {
                     transition: "all 0.2s linear",
                     borderRadius: "5px",
                     cursor: "pointer",
-                    backgroundColor: isValidInput ? "#889AFF" : "#d5d8da",
+                    backgroundColor: "#d5d8da",
                     position: "position",
                     textAlign: "center",
-                    padding: "17px 47px",
+                    padding: "1rem 2.5rem",
+                    width: "20%",
                     fontWeight: "400",
-                    fontSize: "18px",
+                    fontSize: "1.1em",
                     lineHeight: "26px",
                     color: "#ffffff",
                   }}
                 >
-                  회원가입 하기
+                  회원가입
                 </Button>
               </div>
             </FormWrap>
@@ -187,6 +179,7 @@ const FormWrap = styled.form`
   flex-direction: column;
   justify-content: flex-start;
   margin-bottom: 95px;
+  width: 100%;
 
   .siginIn-input {
     all: unset;
@@ -206,11 +199,10 @@ const FormWrap = styled.form`
     }
   }
   .active-buttons {
-    margin-top: 208px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 171.5px;
+    justify-content: flex-end;
   }
 
   .need-help {
@@ -267,13 +259,15 @@ const FormWrap = styled.form`
   .input-wrap {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    margin-bottom: 3.5rem;
+    gap: 1.3rem;
   }
 `;
 
 const LoginWrap = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 const LoginContainer = styled.div`
