@@ -4,8 +4,8 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 import logo from "../../public/img/Login/logo-colored.png";
-import loginHelp from "../../public/img/Login/login-help.png";
 import { Button } from "@mui/material";
+import { ErrorAlert, SuccessAlert } from "../../elements/alert";
 
 // TODO prop명 바꾸기
 const Signup = () => {
@@ -28,38 +28,46 @@ const Signup = () => {
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
 
+  const [openSuccessToast, setOpenSuccessToast] = useState(false);
+  const [openErrorToast, setOpenErrorToast] = useState(false);
+
+  const [submitErrorMessage, setSubmitErrorMessage] = useState("");
   const inputRef = useRef();
   const navigate = useNavigate();
 
-  // const isValidInput =
-  //   userEmail.length >= 1 &&
-  //   userName.length >= 1 &&
-  //   password.length >= 1 &&
-  //   confirmPassword.length >= 1;
-
-  // useInput 으로 함수 분리하기
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setSignupValue({ ...signupValue, [name]: value });
-  // };
+  const handleToastClose = (e, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSuccessToast(false);
+    setOpenErrorToast(false);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("제출");
     // 회원가입 요청
-    // axios
-    //   .post("https://teamnote.shop/api/users/signup", signupValue)
-    //   .then((res) => {
-    //     console.log("res: ", res);
-    //     if (res.data.success) {
-    //       alert("회원가입에 성공하였습니다!");
-    //       navigate("/join/signin");
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     const errMsg = err.response.data.errorMessage;
-    //     console.log("errMsg: ", errMsg);
-    //   });
+    axios
+      .post("https://teamnote.shop/api/users/signup", {
+        userEmail: email,
+        userName: name,
+        password: password,
+        confirmPassword: passwordConfirm,
+      })
+      .then((res) => {
+        console.log("res: ", res);
+        if (res.data.success) {
+          navigate("/join/signin");
+          setOpenSuccessToast(true);
+        }
+      })
+      .catch((err) => {
+        const errMsg = err.response.data.errorMessage;
+        setOpenErrorToast(true);
+        setSubmitErrorMessage(errMsg);
+        setTimeout(() => {
+          setOpenErrorToast(false);
+        }, 4000);
+      });
   };
 
   // 이름 입력 + 유효성 검사
@@ -97,7 +105,7 @@ const Signup = () => {
     const passwordValue = e.target.value;
     setPassword(passwordValue);
     if (passwordValue.length <= 6) {
-      setPasswordErrorMessage("6글자 이상 입력해주세요");
+      setPasswordErrorMessage("6글자 이상 입력해주세요.");
       setIsPassword(false);
     } else {
       setPasswordErrorMessage("사용 할 수 있는 비밀번호입니다.");
@@ -110,12 +118,12 @@ const Signup = () => {
     (e) => {
       const passwordConfirmValue = e.target.value;
       setPasswordConfirm(passwordConfirmValue);
-      if (passwordConfirmValue === password) {
+      if (passwordConfirmValue !== password) {
+        setPasswordConfirmErrorMessage("비밀번호가 일치하지 않습니다.");
+        setIsPasswordConfirm(false);
+      } else {
         setPasswordConfirmErrorMessage("사용 할 수 있는 비밀번호입니다.");
         setIsPasswordConfirm(true);
-      } else {
-        setPasswordConfirmErrorMessage("비밀번호가 일치하지 않습니다");
-        setIsPasswordConfirm(false);
       }
     },
     [password]
@@ -136,7 +144,6 @@ const Signup = () => {
             </div>
           </div>
         </div>
-
         <LoginWrap>
           <EmailWrap>
             <FormWrap onSubmit={handleSubmit}>
@@ -148,8 +155,13 @@ const Signup = () => {
                   onChange={onChangeName}
                   placeholder="이름을 입력해 주세요."
                   ref={inputRef}
+                  className={`signup-input ${
+                    name.length > 0 &&
+                    nameErrorMessage ===
+                      "2글자 이상 5글자 미만으로 입력해주세요." &&
+                    "error"
+                  }`}
                   // onBlur={isNameValidate}
-                  className="siginIn-input"
                 />
                 {name.length > 0 && (
                   <span
@@ -160,8 +172,14 @@ const Signup = () => {
                     {nameErrorMessage}
                   </span>
                 )}
-
+              </div>
+              <div className="input-wrap">
                 <input
+                  className={`signup-input ${
+                    email.length > 0 &&
+                    emailErrorMessage === "이메일 형식이 틀렸습니다." &&
+                    "error"
+                  }`}
                   type="text"
                   name="userEmail"
                   value={email || ""}
@@ -169,7 +187,6 @@ const Signup = () => {
                   placeholder="사용 가능한 이메일을 입력해 주세요."
                   ref={inputRef}
                   // onBlur={isEmailValidate}
-                  className="siginIn-input"
                 />
                 {email.length > 0 && (
                   <span
@@ -180,15 +197,20 @@ const Signup = () => {
                     {emailErrorMessage}
                   </span>
                 )}
-
+              </div>
+              <div className="input-wrap">
                 <input
+                  className={`signup-input ${
+                    password.length > 0 &&
+                    passwordErrorMessage === "6글자 이상 입력해주세요." &&
+                    "error"
+                  }`}
                   name="password"
                   type="password"
                   value={password || ""}
                   onChange={onChangePassword}
                   placeholder="비밀번호를 입력해 주세요."
                   ref={inputRef}
-                  className="siginIn-input"
                 />
                 {password.length > 0 && (
                   <span
@@ -199,14 +221,21 @@ const Signup = () => {
                     {passwordErrorMessage}
                   </span>
                 )}
+              </div>
+              <div className="input-wrap">
                 <input
+                  className={`signup-input ${
+                    passwordConfirm.length > 0 &&
+                    passwordConfirmErrorMessage ===
+                      "비밀번호가 일치하지 않습니다." &&
+                    "error"
+                  }`}
                   name="confirmPassword"
                   type="password"
                   value={passwordConfirm || ""}
                   onChange={onChangePasswordConfirm}
                   placeholder="비밀번호를 한번 더 입력해 주세요."
                   ref={inputRef}
-                  className="siginIn-input"
                 />
                 {passwordConfirm.length > 0 && (
                   <span
@@ -230,7 +259,7 @@ const Signup = () => {
                 </div> */}
 
                 <Button
-                  variant="contained"
+                  variant="outlined"
                   type="submit"
                   style={{
                     all: "unset",
@@ -238,7 +267,10 @@ const Signup = () => {
                     transition: "all 0.2s linear",
                     borderRadius: "5px",
                     cursor: "pointer",
-                    backgroundColor: "#d5d8da",
+                    backgroundColor:
+                      isName && isEmail && isPassword && isPasswordConfirm
+                        ? "rgb(136, 154, 255)"
+                        : "rgb(213, 216, 218)",
                     position: "position",
                     textAlign: "center",
                     padding: "1rem 2.5rem",
@@ -249,12 +281,7 @@ const Signup = () => {
                     color: "#ffffff",
                   }}
                   disabled={
-                    !(
-                      setIsName &&
-                      setIsEmail &&
-                      setIsPassword &&
-                      setIsPasswordConfirm
-                    )
+                    !(isName && isEmail && isPassword && isPasswordConfirm)
                   }
                 >
                   회원가입
@@ -264,6 +291,21 @@ const Signup = () => {
           </EmailWrap>
         </LoginWrap>
       </div>
+
+      {openSuccessToast && (
+        <SuccessAlert
+          text="회원가입에 성공했습니다!"
+          handleClose={handleToastClose}
+          openToast={openSuccessToast}
+        />
+      )}
+      {openErrorToast && (
+        <ErrorAlert
+          text={submitErrorMessage}
+          handleClose={handleToastClose}
+          openToast={openErrorToast}
+        />
+      )}
     </LoginContainer>
   );
 };
@@ -280,28 +322,12 @@ const FormWrap = styled.form`
   margin-bottom: 95px;
   width: 100%;
 
-  .siginIn-input {
-    all: unset;
-    outline: none;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 20px;
-    color: #7a858e;
-    border-bottom: 1px solid #dcdce8;
-    padding: 23px 0px 10px 0px;
-
-    ::placeholder {
-      font-weight: 400;
-      font-size: 18px;
-      line-height: 26px;
-      color: #cbcbd7;
-    }
-  }
   .active-buttons {
     display: flex;
     align-items: center;
     justify-content: space-between;
     justify-content: flex-end;
+    margin-top: 4rem;
   }
 
   .need-help {
@@ -342,6 +368,31 @@ const FormWrap = styled.form`
   .formbox {
     position: relative;
     transition: all 0.3s linear;
+  }
+
+  .input-wrap {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    .signup-input {
+      all: unset;
+      outline: none;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      color: #7a858e;
+      border-bottom: 1px solid #dcdce8;
+      padding: 23px 0px 10px 0px;
+      margin-bottom: 25px;
+
+      ::placeholder {
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 26px;
+        color: #cbcbd7;
+      }
+    }
 
     .inputErrorMessage {
       margin-top: 4px;
@@ -350,16 +401,18 @@ const FormWrap = styled.form`
       line-height: 17px;
       letter-spacing: -1px;
       position: absolute;
-      left: 0;
+      bottom: 0px;
+      right: 0;
+      color: #00c753;
+    }
+
+    .signup-input.error {
+      border-bottom: 1px solid var(--error);
+    }
+
+    .inputErrorMessage.error {
       color: #f06767;
     }
-  }
-
-  .input-wrap {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 3.5rem;
-    gap: 1.3rem;
   }
 `;
 
