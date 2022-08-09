@@ -39,7 +39,7 @@ const PrivateMain = () => {
 };
 
 const PrivateMainStyle = styled.div`
-  background: url(${mainBg});
+  background-color: blue;
   width: 100%;
   height: calc(100vh - 80px);
   background-repeat: no-repeat;

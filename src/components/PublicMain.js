@@ -6,14 +6,11 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route } from "react-router-dom";
 import Tooltip from "@mui/material/Tooltip";
-
 import boardIcon from "../public/img/image27.png";
 import calendarIcon from "../public/img/calendar.png";
 import chatIcon from "../public/img/comment.png";
 import ScreenForNewbie from "./ScreenForNewbie";
 import ScreenForUser from "../components/ScreenForUser";
-import logo from "../public/img/Main/logo_white.png";
-
 import axios from "axios";
 import { getItemFromLs, setItemToLs } from "../utils/localStorage";
 import Spinner from "../elements/Spinner";
@@ -26,7 +23,7 @@ export const APP_USER_STATE = {
   USER: "워크스페이스가_있는_유저",
 };
 
-const  Main = () => {
+const Main = () => {
   const [appstate, setAppState] = useState(APP_USER_STATE.UNKNOWN);
   const isLoading = appstate === APP_USER_STATE.UNKNOWN;
   const [openNewbieModal, setOpenNewbieModal] = useState(false);
@@ -88,44 +85,42 @@ const  Main = () => {
   return (
     <MainStyle>
       <LeftSide>
-        <Link to="/main">
-          <img src={logo} alt="logo" className="logo" />
-        </Link>
-        <div className="buttons">
-          <Tooltip title="워크스페이스를 선택해주세요.">
-            <div className="buttonWrap">
-              <div className="page-navigate-button">
-                <img src={boardIcon} alt="boardcon" className="boardcon" />
+        <div className="left-side_wrap">
+          <div className="buttons">
+            <Tooltip title="워크스페이스를 선택해주세요.">
+              <div className="buttonWrap">
+                <div className="page-navigate-button">
+                  <img src={boardIcon} alt="boardcon" className="boardcon" />
+                </div>
               </div>
-            </div>
-          </Tooltip>
-          <Tooltip title="워크스페이스를 선택해주세요.">
-            <div className="buttonWrap">
-              <div className="page-navigate-button">
-                <img
-                  src={calendarIcon}
-                  alt="calendarIcon"
-                  className="calendarIcon"
-                />
+            </Tooltip>
+            <Tooltip title="워크스페이스를 선택해주세요.">
+              <div className="buttonWrap">
+                <div className="page-navigate-button">
+                  <img
+                    src={calendarIcon}
+                    alt="calendarIcon"
+                    className="calendarIcon"
+                  />
+                </div>
               </div>
-            </div>
-          </Tooltip>
-          <Tooltip title="워크스페이스를 선택해주세요.">
-            <div className="buttonWrap">
-              <div className="page-navigate-button">
-                <img src={chatIcon} alt="chatIcon" className="chatIcon" />
+            </Tooltip>
+            <Tooltip title="워크스페이스를 선택해주세요.">
+              <div className="buttonWrap">
+                <div className="page-navigate-button">
+                  <img src={chatIcon} alt="chatIcon" className="chatIcon" />
+                </div>
               </div>
-            </div>
-          </Tooltip>
+            </Tooltip>
+          </div>
         </div>
       </LeftSide>
 
       <RightSide>
         <Header invitation={user.invitation} />
         <main className="mainStyle">
-          {isLoading ? (
-            <Spinner />
-          ) : (
+          {isLoading ? null : (
+            // <Spinner />
             <>
               {appstate === APP_USER_STATE.USER ? (
                 <ScreenForUser />
@@ -149,8 +144,8 @@ const MainStyle = styled.div`
 
 const LeftSide = styled.div`
   background-color: #889aff;
-  height: 100%;
-  width: 80px;
+  height: calc(100vh - 80px);
+  width: 20%;
   min-width: 80px;
   z-index: 100;
   display: flex;
@@ -158,6 +153,10 @@ const LeftSide = styled.div`
   align-items: center;
   padding: 20px 0px;
   box-sizing: border-box;
+
+  .left-side_wrap {
+    background-color: red;
+  }
 
   .page-navigate-button {
     cursor: pointer;

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   getItemFromLs,
   removeItemFromLs,
@@ -11,9 +11,11 @@ import {
 } from "../../utils/localStorage";
 import Mask_basic from "../../public/img/avatar/Mask_basic.png";
 import { Button } from "@mui/material";
+import logo from "../../public/img/Login/logo-colored.png";
+import MenuIcon from "@mui/icons-material/Menu";
+import { Icon, SvgIcon } from "@mui/material";
 
 // module
-
 import UserAvatar from "../../elements/UserAvatar";
 import vector from "../../public/img/Vector1.png";
 import sunIcon from "../../public/img/sun.png";
@@ -27,6 +29,7 @@ import NotificationModal from "../Modal/NotificationModal";
 import useMountTransition from "../../utils/useMointTransition";
 import MyProfileModal from "../Modal/MyProfileModal";
 import * as common from "../../elements/toast";
+import Board from "../../pages/Board";
 
 const Header = ({ invitation }) => {
   const [workSpaceName, setWorkSpaceName] = useState("");
@@ -128,6 +131,21 @@ const Header = ({ invitation }) => {
   return (
     <>
       <HeaderStyle>
+        <div className="toggle-bar">
+          <MenuIcon fontSize="large" />
+        </div>
+        <div className="spacer"></div>
+        <Link to="/main" className="logo-wrap">
+          <img src={logo} alt="logo" className="logo" />
+        </Link>
+
+        <img
+          src={user.profile_image_url ? user.profile_image_url : Mask_basic}
+          className="user-avatar_mobile"
+          alt="user_avatar"
+          style={{ width: "34px", height: "34px" }}
+        />
+
         <div className="menuItems">
           <Button
             variant="outlined"
@@ -154,7 +172,7 @@ const Header = ({ invitation }) => {
               src={user.profile_image_url ? user.profile_image_url : Mask_basic}
               className="user-avatar"
               alt="user_avatar"
-              style={{ width: "50px", height: "50px" }}
+              style={{ width: "34px", height: "34px" }}
             />
             {/* <UserAvatar size="big" width={50} height={50} /> */}
 
@@ -176,6 +194,7 @@ const Header = ({ invitation }) => {
             </div>
           </AboutUser>
         </div>
+
         <nav
           ref={dropdownRef}
           className={`menu ${openDropdown ? "active" : "inactive"}`}
@@ -272,22 +291,20 @@ const Header = ({ invitation }) => {
 };
 
 const HeaderStyle = styled.div`
-  padding: 15px 0px;
-  width: 100%;
+  padding: 12px 24px;
+  width: 100vw;
   display: flex;
   box-sizing: border-box;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   position: relative;
-  background: #ffffff;
-
+  position: fixed;
+  top: 0;
+  left: 0;
   .css-1rwt2y5-MuiButtonBase-root-MuiButton-root {
     color: #7d8bdb;
     /* transition: all 0.2s ease; */
     animation: motion 0.4s ease 0s infinite alternate;
-
-    /* :hover {
-      transform: scale(1.1);
-    } */
 
     @keyframes motion {
       0% {
@@ -296,6 +313,10 @@ const HeaderStyle = styled.div`
         transform: translateY(5px);
       }
     }
+  }
+
+  .logo {
+    width: 40px;
   }
 
   .menuBtns {
@@ -397,6 +418,43 @@ const HeaderStyle = styled.div`
     color: #7a858e;
     font-weight: 400;
   }
+
+  .toggle-bar {
+    display: none;
+  }
+
+  .spacer {
+    display: none;
+  }
+
+  .user-avatar_mobile {
+    display: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    justify-content: center;
+    .menuItems {
+      display: none;
+    }
+
+    .toggle-bar {
+      display: block;
+      position: absolute;
+      left: 10px;
+      cursor: pointer;
+    }
+
+    .spacer {
+      display: block;
+    }
+
+    .user-avatar_mobile {
+      display: block;
+      position: absolute;
+      right: 10px;
+    }
+  }
 `;
 
 const WorkspaceList = styled.ul`
@@ -440,7 +498,6 @@ const WorkspaceList = styled.ul`
 `;
 
 const AboutUser = styled.div`
-  width: 160px;
   margin-left: 42px;
   display: flex;
   align-items: center;

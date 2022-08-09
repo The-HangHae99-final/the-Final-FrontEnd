@@ -86,9 +86,6 @@ const Main = () => {
   return (
     <MainStyle>
       <LeftSide>
-        <Link to={`/main/${currentParams}`}>
-          <img src={logo} alt="logo" className="logo" />
-        </Link>
         <div className="buttons">
           <div className="buttonWrap">
             <div
@@ -133,7 +130,7 @@ const Main = () => {
 
       <RightSide>
         <Header invitation={user.invitation} />
-        <main className="mainStyle">
+        <main className="main-container">
           {isLoading ? (
             <Spinner />
           ) : (
@@ -153,22 +150,18 @@ const Main = () => {
 
 const MainStyle = styled.div`
   height: 100vh;
+  padding-top: 82px;
   display: flex;
+  background-color: blue;
 `;
 
-const LeftSide = styled.div`
+const LeftSide = styled.aside`
   background-color: #889aff;
-  height: 100%;
-  width: 80px;
-  min-width: 80px;
-  z-index: 100;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 0px;
   box-sizing: border-box;
-  position: absolute;
-  left: 0;
+  width: 18%;
 
   .page-navigate-button {
     cursor: pointer;
@@ -234,17 +227,10 @@ const LeftSide = styled.div`
 `;
 
 const RightSide = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
-  display: flex;
 
-  .mainStyle {
-    width: calc(100vw - 80px);
-    height: calc(100vh - 80px);
-    margin-left: 80px;
+  .main-container {
     display: flex;
     gap: 20px;
     background: #f8f8f9;
