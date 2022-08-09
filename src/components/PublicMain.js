@@ -26,7 +26,7 @@ export const APP_USER_STATE = {
   USER: "워크스페이스가_있는_유저",
 };
 
-const Main = () => {
+const  Main = () => {
   const [appstate, setAppState] = useState(APP_USER_STATE.UNKNOWN);
   const isLoading = appstate === APP_USER_STATE.UNKNOWN;
   const [openNewbieModal, setOpenNewbieModal] = useState(false);

@@ -16,6 +16,7 @@ import { SignIn } from "../components/SignIn/SignIn.js";
 import Signup from "../components/SignIn/Signup";
 import { useMediaQuery } from "react-responsive";
 import ResponsiveLayout from "../Layout/responsive.layout";
+import { ToastContainer } from "react-toastify";
 
 const Router = () => {
   return (
@@ -43,6 +44,7 @@ const Router = () => {
         />
         <Route path="*" element={<div>There's nothing here!</div>} />
       </Routes>
+      <ToastContainer />
     </ResponsiveLayout>
   );
 };

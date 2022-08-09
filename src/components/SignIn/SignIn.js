@@ -9,12 +9,14 @@ import Divider from "../../elements/Divider";
 import SocialLogin from "../SocialLogin";
 import { useDispatch } from "react-redux";
 import CalendarLabel from "../../pages/Calendar/CalendarLabel";
+import * as common from "../../elements/toast";
+import { successNotify } from "../../elements/toast";
+import Signup from "./Signup";
+import { Button } from "@mui/material";
 
 // 이미지
 import loginHelp from "../../public/img/Login/login-help.png";
 import loginBanner from "../../public/img/Login/login-banner.png";
-import { Button } from "@mui/material";
-import Signup from "./Signup";
 
 function PopUpErrorMsg() {
   return (
@@ -70,6 +72,7 @@ export const SignIn = () => {
         setItemToLs("myToken", token);
         setItemToLs("userName", user_name);
         setItemToLs("userEmail", user_email);
+        common.successNotify("로그인 성공!");
         navigate("/main");
       }
     } catch (err) {

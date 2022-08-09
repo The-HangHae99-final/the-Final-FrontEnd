@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import topArrow from "../public/img/top-arrow.png";
-import topArrowActive from "../public/img/top-arrow-active.png";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { getUserInfo } from "../redux/userReducer";
 import { getItemFromLs } from "../utils/localStorage";
-import { Link, useNavigate } from "react-router-dom";
-import ModalPortal from "../elements/Portal/ModalPortal";
+import { useNavigate } from "react-router-dom";
 import { APP_USER_STATE } from "../components/PublicMain";
 
 // 이미지
@@ -19,11 +17,11 @@ const ScreenForNewbie = ({ setAppState }) => {
   const [showTeamNoteBtn, setShowTeamNoteBtn] = useState(true);
   const [showCreateBox, setShowCreateBox] = useState(false);
   const [isLoading, setIsLoading] = useState(null);
+
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  // 워크스페이스 생성
+  // 워크스페이스 생성 요청
   const addNewWorkSpace = () => {
     setShowCreateBox(false);
     setIsLoading(true);
@@ -57,8 +55,6 @@ const ScreenForNewbie = ({ setAppState }) => {
 
   const handleChange = (e) => {
     const inputValue = e.target.value;
-    console.log("inputValue: ", inputValue.length);
-
     if (inputValue.length > 10) {
       return;
     } else {

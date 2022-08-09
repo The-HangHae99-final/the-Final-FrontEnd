@@ -86,6 +86,10 @@ const Message = () => {
   // 훅을 이용해 소켓 관리
   useEffect(() => {
     setCurrentSocket(socketIOClient("https://teamnote.shop/chat"));
+ // 컴포넌트 사라질 때 disconnect 시켜줘야함
+    return () => {
+      
+    }
   }, []);
 
   return (

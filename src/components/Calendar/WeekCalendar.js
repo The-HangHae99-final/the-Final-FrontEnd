@@ -36,7 +36,6 @@ const WeekCalendar = () => {
     }
     return week;
   };
-
   useEffect(() => {
     let now = new Date();
     let date = new Date(now.getFullYear(), now.getMonth(), now.getDate());

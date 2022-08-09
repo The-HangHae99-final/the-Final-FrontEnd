@@ -11,6 +11,7 @@ import BigCalendar from "../../components/Calendar/BigCalendar";
 import SmallCalendar from "../../components/Calendar/SmallCalendar";
 import ModalPortal from "../../elements/Portal/ModalPortal";
 import CalendarModal from "../../components/Modal/CalendarModal";
+import CalendarLabel from "./CalendarLabel";
 import { getItemFromLs } from "../../utils/localStorage";
 import axios from "axios";
 import { useOutletContext } from "react-router-dom";
@@ -111,6 +112,52 @@ const Calender = () => {
         <SmallCalendar />
 
         {/* My Calendar */}
+        <CalendarLabel
+          {...{
+            title: "My calendar",
+            labels: [
+              {
+                text: "Contents design",
+                color: "blue",
+              },
+              {
+                text: "Product design",
+                color: "red",
+              },
+              ,
+            ],
+            onClickTitle: fetchMyTasks,
+            onClickAdd: handleModal,
+          }}
+        />
+{/* 
+        <A 
+        {...{
+          text,
+          title
+        }} 
+        text={text} title={title}
+        /> */}
+
+        <CalendarLabel
+          {...{
+            title: "Team calendar",
+            labels: [
+              {
+                text: "Meeting",
+                color: "yellow",
+              },
+              {
+                text: "Event",
+                color: "red",
+              },
+              ,
+            ],
+            onClickTitle: fetchTeamTasks,
+            onClickAdd: handleModal,
+          }}
+        />
+
         <div className="myCalender-box">
           <div className="teamchat-box">
             <div className="box-header">

@@ -1,28 +1,20 @@
-import styles from "./main.module.css";
-import Header from "../../components/Header/Header";
-import { Link, Outlet, useParams } from "react-router-dom";
-import Modal from "../../components/Modal";
-import { useNavigate } from "react-router-dom";
-import PrivateMain from "../../components/PrivateMain";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import React, { useEffect, useMemo, useState } from "react";
+import { Link, Outlet, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo } from "../../redux/userReducer";
-import { Routes, Route } from "react-router-dom";
+import axios from "axios";
+import { getItemFromLs } from "../../utils/localStorage";
+import ScreenForNewbie from "../../components/ScreenForNewbie";
+import Spinner from "../../elements/Spinner";
+import Header from "../../components/Header/Header";
 
+// 이미지
 import boardIcon from "../../public/img/image27.png";
 import calendarIcon from "../../public/img/calendar.png";
 import chatIcon from "../../public/img/comment.png";
-import ScreenForNewbie from "../../components/ScreenForNewbie";
-import ScreenForUser from "../../components/ScreenForUser";
-import Message from "../Message/Message";
-import Board from "../Board";
-import Calender from "../Calendar/Calendar";
 import logo from "../../public/img/Main/logo_white.png";
-
-import axios from "axios";
-import { getItemFromLs, setItemToLs } from "../../utils/localStorage";
-import Spinner from "../../elements/Spinner";
 
 export const APP_USER_STATE = {
   NOT_AUTH: "로그인되지 않은 상태",
@@ -34,19 +26,15 @@ export const APP_USER_STATE = {
 const Main = () => {
   const [appstate, setAppState] = useState(APP_USER_STATE.UNKNOWN);
   const isLoading = appstate === APP_USER_STATE.UNKNOWN;
-  const [openNewbieModal, setOpenNewbieModal] = useState(false);
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user.value);
-  console.log("user: ", user);
-
-  const workSpace = useSelector((state) => state.workSpace.value);
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.value);
   const params = useParams();
   const currentParams = params.workSpaceName;
 
-  // 소속된 워크스페이스 전체 조회
   useEffect(() => {
     try {
+      // 소속된 워크스페이스 리스트 조회 요청
       axios
         .get("https://teamnote.shop/api/members/spaceLists", {
           headers: {
@@ -59,13 +47,17 @@ const Main = () => {
             const workSpaceFullname = wsInfoList.map((ws) => {
               return ws.workSpace;
             });
+            // 앱 상태(3가지)에 따라 조건부 렌더링
+            // 1. 앱 상태가 확인 될 때까지 앱상태 UNKNOWN => spinner
+            // 2. 로그인한 사용자의 워크스페이스가 비어있으면 앱상태 NEWBIE로 변경 => 신규 사용자 화면
+            // 3. 로그인한 사용자의 워크스페이스가 있으면 앱상태 USER로 변경 => 기존 유저 화면
             if (wsInfoList.length === 0) {
               setAppState(APP_USER_STATE.NEWBIE);
-              setOpenNewbieModal(true);
             } else {
               setAppState(APP_USER_STATE.USER);
             }
 
+            // 받은 초대메시지 목록 요청
             axios
               .get(`https://teamnote.shop/api/members/inviting`, {
                 headers: {
@@ -151,7 +143,6 @@ const Main = () => {
               ) : (
                 <ScreenForNewbie />
               )}
-              {/* 뉴비 컴포넌트 렌더링 => 유저의 웤스 존재 여부에 따라 뉴비 모달 띄우기 */}
             </>
           )}
         </main>

@@ -127,14 +127,6 @@ const Board = () => {
             },
           },
         });
-        setData({
-          title: "",
-          desc: "",
-          label: "",
-          assignees: "",
-          workSpaceName: "",
-          category: "todo",
-        });
         setIsShown(false);
       } else {
         alert("빠진게 없는지 다시 한번 확인해주세요 :)");

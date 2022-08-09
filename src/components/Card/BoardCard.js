@@ -31,14 +31,14 @@ const BoardCard = ({ task }) => {
         <Human04 size="50px" />
       </div>
 
-      <div className="card-action-buttons">
+      {/* <div className="card-action-buttons">
         <div className="action_edit">
           <img src={edit} alt="edit" onClick={() => {}} />
         </div>
         <div className="action_delete">
           <img src={remove} alt="remove" />
         </div>
-      </div>
+      </div> */}
 
       <div className="dragIcon-wrap">
         <img src={drag} alt="drag" className="drag" />

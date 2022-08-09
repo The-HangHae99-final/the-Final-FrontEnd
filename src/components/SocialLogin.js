@@ -11,7 +11,7 @@ const SocialLogin = () => {
   const onClickNaver = () => {
     // alert("서비스 준비 중 입니다");
     window.location.href =
-      "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=0wSIvykcfvmOTk3Dz4fS&state=teamnote&redirect_uri=http://teamnote-dev.s3-website.ap-northeast-2.amazonaws.com/api/auth/login/naver/callback";
+      "https://teamnote.co.kr/api/auth/login/naver/callback";
   };
 
   const onClickKakao = () => {

@@ -26,6 +26,7 @@ import reset from "../../redux/workSpaceReducer";
 import NotificationModal from "../Modal/NotificationModal";
 import useMountTransition from "../../utils/useMointTransition";
 import MyProfileModal from "../Modal/MyProfileModal";
+import * as common from "../../elements/toast";
 
 const Header = ({ invitation }) => {
   const [workSpaceName, setWorkSpaceName] = useState("");
@@ -59,12 +60,8 @@ const Header = ({ invitation }) => {
 
   const logout = () => {
     resetItemFromLs();
-
-    window.location.replace("/join/signin");
-    dispatch(reset);
-    // setOpenDropdown(false);
-    // alert("로그아웃 되었습니다");
-    // navigate("/");
+    common.successNotify("로그아웃 되었습니다.");
+    navigate("/join/signin");
   };
 
   const handleDrowdown = () => {

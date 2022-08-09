@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 import logo from "../../public/img/Login/logo-colored.png";
 import { Button } from "@mui/material";
-import { ErrorAlert, SuccessAlert } from "../../elements/alert";
+import "react-toastify/dist/ReactToastify.css";
+import * as common from "../../elements/toast";
 
 // TODO prop명 바꾸기
 const Signup = () => {
@@ -30,6 +31,9 @@ const Signup = () => {
 
   const [openSuccessToast, setOpenSuccessToast] = useState(false);
   const [openErrorToast, setOpenErrorToast] = useState(false);
+
+  const successRef = useRef(null);
+  const errorRef = useRef(null);
 
   const [submitErrorMessage, setSubmitErrorMessage] = useState("");
   const inputRef = useRef();
@@ -56,17 +60,15 @@ const Signup = () => {
       .then((res) => {
         console.log("res: ", res);
         if (res.data.success) {
+          common.successNotify("회원가입이 완료되었습니다!");
           navigate("/join/signin");
-          setOpenSuccessToast(true);
         }
       })
       .catch((err) => {
         const errMsg = err.response.data.errorMessage;
         setOpenErrorToast(true);
         setSubmitErrorMessage(errMsg);
-        setTimeout(() => {
-          setOpenErrorToast(false);
-        }, 4000);
+        common.errorNotify("중복된 이메일입니다!");
       });
   };
 
@@ -128,6 +130,8 @@ const Signup = () => {
     },
     [password]
   );
+
+  useEffect(() => {}, []);
 
   return (
     <LoginContainer>
@@ -291,21 +295,6 @@ const Signup = () => {
           </EmailWrap>
         </LoginWrap>
       </div>
-
-      {openSuccessToast && (
-        <SuccessAlert
-          text="회원가입에 성공했습니다!"
-          handleClose={handleToastClose}
-          openToast={openSuccessToast}
-        />
-      )}
-      {openErrorToast && (
-        <ErrorAlert
-          text={submitErrorMessage}
-          handleClose={handleToastClose}
-          openToast={openErrorToast}
-        />
-      )}
     </LoginContainer>
   );
 };
