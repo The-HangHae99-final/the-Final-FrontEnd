@@ -27,7 +27,7 @@ const Router = () => {
         </Route>
         <Route path="/main" element={<Main />} />
         <Route path="/main/:workSpaceName/*" element={<Main />}>
-          <Route path="" element={<PrivateMain />} />
+          {/* <Route path="" element={<PrivateMain />} /> */}
           <Route path="board" element={<Board />} />
           <Route path="calendar" element={<Calender />} />
           <Route path="message" element={<Message />} />

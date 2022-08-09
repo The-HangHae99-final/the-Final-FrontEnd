@@ -9,12 +9,12 @@ import { getItemFromLs } from "../../utils/localStorage";
 import ScreenForNewbie from "../../components/ScreenForNewbie";
 import Spinner from "../../elements/Spinner";
 import Header from "../../components/Header/Header";
+import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
+import UserAvatar from "../../elements/UserAvatar";
+import Divider from "../../elements/Divider";
+import mainImage from "../../public/img/Main/main_image.png";
 
 // 이미지
-import boardIcon from "../../public/img/image27.png";
-import calendarIcon from "../../public/img/calendar.png";
-import chatIcon from "../../public/img/comment.png";
-import logo from "../../public/img/Main/logo_white.png";
 
 export const APP_USER_STATE = {
   NOT_AUTH: "로그인되지 않은 상태",
@@ -86,7 +86,52 @@ const Main = () => {
   return (
     <MainStyle>
       <LeftSide>
-        <div className="buttons">
+        <div className="workspaces-container">
+          <Divider />
+
+          <div className="workspaces-container_top">
+            <h2 className="active-workspace">
+              최근 활동한 팀플방
+              <div className="create-workspace">
+                <BookmarkAddIcon />
+                New
+              </div>
+            </h2>
+            <input
+              type="text"
+              placeholder="이름으로 검색하세요"
+              className="find-workspaceName-input"
+            />
+          </div>
+          <Divider borderColor="red" />
+          <ul className="workspaces-list">
+            <li className="workspace-source">
+              <UserAvatar width="20px" height="20px" />
+              물리학 중간 3조
+            </li>
+            <li className="workspace-source">
+              <UserAvatar width="20px" height="20px" />
+              물리학 중간 3조
+            </li>
+            <li className="workspace-source">
+              <UserAvatar width="20px" height="20px" />
+              물리학 중간 3조
+            </li>
+            <li className="workspace-source">
+              <UserAvatar width="20px" height="20px" />
+              물리학 중간 3조
+            </li>
+            <li className="workspace-source">
+              <UserAvatar width="20px" height="20px" />
+              물리학 중간 3조
+            </li>
+            <li className="workspace-source">
+              <UserAvatar width="20px" height="20px" />
+              물리학 중간 3조
+            </li>
+          </ul>
+        </div>
+        {/* <div className="buttons">
           <div className="buttonWrap">
             <div
               onClick={() => {
@@ -125,23 +170,25 @@ const Main = () => {
               />
             </div>
           </div>
-        </div>
+        </div> */}
       </LeftSide>
 
       <RightSide>
         <Header invitation={user.invitation} />
         <main className="main-container">
-          {isLoading ? (
+          {/* {isLoading ? (
             <Spinner />
           ) : (
-            <>
-              {appstate === APP_USER_STATE.USER ? (
+            <> */}
+          {/* <h1>물리학 중간 3조</h1>
+          <Outlet /> */}
+          {/* {appstate === APP_USER_STATE.USER ? (
                 <Outlet context={{ currentParams }} />
               ) : (
                 <ScreenForNewbie />
-              )}
-            </>
-          )}
+              )} */}
+          {/* </>
+          )} */}
         </main>
       </RightSide>
     </MainStyle>
@@ -152,17 +199,86 @@ const MainStyle = styled.div`
   height: 100vh;
   padding-top: 82px;
   display: flex;
-  background-color: blue;
 `;
 
 const LeftSide = styled.aside`
-  background-color: #889aff;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
-  width: 18%;
+  min-width: 24%;
+  padding: 24px;
+  background: #e0e2e1;
 
+  .workspaces-container {
+    width: 100%;
+  }
+
+  .workspaces-container_top {
+    .active-workspace {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+      font-weight: 600;
+
+      .create-workspace {
+        display: Flex;
+        align-items: center;
+        padding: 4px 12px;
+        font-size: 12px;
+        line-height: 20px;
+        background-color: #238636;
+        color: var(--white);
+        box-shadow: 0 0 transparent, 0 0 transparent;
+        border-radius: 5px;
+        font-size: 12px;
+        cursor: pointer;
+
+        :hover {
+          background-color: #2ea043;
+        }
+      }
+    }
+  }
+
+  .find-workspaceName-input {
+    all: unset;
+    width: 100%;
+    padding: 5px 12px;
+    font-size: 14px;
+    line-height: 20px;
+    box-shadow: 0 0 transparent;
+    margin-bottom: 30px;
+    border: 1px px solid #30363d;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    box-sizing: border-box;
+  }
+
+  .workspaces-list {
+    list-style: none;
+    word-wrap: break-word;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    .workspace-source {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #8698fc;
+      padding: 12px 16px;
+      cursor: pointer;
+      border-radius: 5px;
+
+      :hover {
+        background-color: #8698fccc;
+      }
+    }
+  }
+  /* 
   .page-navigate-button {
     cursor: pointer;
   }
@@ -223,17 +339,19 @@ const LeftSide = styled.aside`
   }
 
   .side-btn {
-  }
+  } */
 `;
 
 const RightSide = styled.div`
   display: flex;
+  width: 76%;
   flex-direction: column;
 
   .main-container {
+    width: 100%;
+    height: 100%;
     display: flex;
     gap: 20px;
-    background: #f8f8f9;
   }
 `;
 

@@ -301,6 +301,7 @@ const HeaderStyle = styled.div`
   position: fixed;
   top: 0;
   left: 0;
+  background-color: #bac9ff;
   .css-1rwt2y5-MuiButtonBase-root-MuiButton-root {
     color: #7d8bdb;
     /* transition: all 0.2s ease; */

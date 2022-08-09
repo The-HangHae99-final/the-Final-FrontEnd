@@ -5,7 +5,7 @@ const GlobalStyle = createGlobalStyle`
     :root{
         /* Regular */
         --white: #FFFFFF;
-        --balck: #090909;
+        --black: #090909;
         
         /* Point */
         --point-main: #7D8BDB;
@@ -31,6 +31,7 @@ const GlobalStyle = createGlobalStyle`
       font-family: 'Poppins', sans-serif;
       padding: 0;
       margin: 0;
+      color:#000000;
     };
     div{
       box-sizing: border-box;
