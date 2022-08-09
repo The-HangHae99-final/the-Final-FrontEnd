@@ -127,6 +127,7 @@ export const SignIn = () => {
                     className="siginIn-input siginIn-input_email"
                     placeholder="이메일 주소를 입력해주세요."
                     emailHelpMessage={emailHelpMessage}
+                    autoComplete="off"
                   />
                   {emailHelpMessage !== "" && (
                     <span className="help-message">{emailHelpMessage}</span>
@@ -142,6 +143,7 @@ export const SignIn = () => {
                     className="siginIn-input siginIn-input_password"
                     placeholder="비밀번호를 입력해주세요."
                     passwordHelpMessage={passwordHelpMessage}
+                    autoComplete="off"
                   />
                   {passwordHelpMessage !== "" && (
                     <span className="help-message">{passwordHelpMessage}</span>
@@ -212,6 +214,10 @@ const LoginContainer = styled.div`
     display: flex;
     flex-direction: column;
     margin-bottom: 36px;
+
+    @media screen and (max-width: 768px) {
+      align-items: center;
+    }
   }
 
   .logo {
@@ -247,6 +253,14 @@ const LoginContainer = styled.div`
     line-height: 23px;
     text-align: center;
     color: #7a858e;
+  }
+
+  @media screen and (max-width: 768px) {
+    .signin-screen-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
   }
 `;
 
@@ -373,8 +387,9 @@ const ContinueWrap = styled.div`
     font-size: 14px;
     line-height: 24px;
     color: #7a858e;
-    width: 400px;
     margin: 0px 25px;
+    width: 100%;
+    white-space: nowrap;
   }
 `;
 

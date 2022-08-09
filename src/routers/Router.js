@@ -15,18 +15,17 @@ import JoinRouter from "./JoinRouter";
 import { SignIn } from "../components/SignIn/SignIn.js";
 import Signup from "../components/SignIn/Signup";
 import { useMediaQuery } from "react-responsive";
-import ResponsiveLayout from "../Layout/responsive.layout";
 import { ToastContainer } from "react-toastify";
 
 const Router = () => {
   return (
-    <ResponsiveLayout>
+    <>
       <Routes>
         <Route path="/join" element={<JoinRouter />}>
           <Route path="signin" element={<SignIn />} />
           <Route path="signup" element={<Signup />} />
         </Route>
-        <Route path="/main" element={<PublicMain />} />
+        <Route path="/main" element={<Main />} />
         <Route path="/main/:workSpaceName/*" element={<Main />}>
           <Route path="" element={<PrivateMain />} />
           <Route path="board" element={<Board />} />
@@ -45,7 +44,7 @@ const Router = () => {
         <Route path="*" element={<div>There's nothing here!</div>} />
       </Routes>
       <ToastContainer />
-    </ResponsiveLayout>
+    </>
   );
 };
 
