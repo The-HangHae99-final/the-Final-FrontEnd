@@ -165,6 +165,7 @@ const Signup = () => {
                       "2글자 이상 5글자 미만으로 입력해주세요." &&
                     "error"
                   }`}
+                  autoComplete="off"
                   // onBlur={isNameValidate}
                 />
                 {name.length > 0 && (
@@ -191,6 +192,7 @@ const Signup = () => {
                   placeholder="사용 가능한 이메일을 입력해 주세요."
                   ref={inputRef}
                   // onBlur={isEmailValidate}
+                  autoComplete="off"
                 />
                 {email.length > 0 && (
                   <span
@@ -215,6 +217,7 @@ const Signup = () => {
                   onChange={onChangePassword}
                   placeholder="비밀번호를 입력해 주세요."
                   ref={inputRef}
+                  autoComplete="off"
                 />
                 {password.length > 0 && (
                   <span
@@ -240,6 +243,7 @@ const Signup = () => {
                   onChange={onChangePasswordConfirm}
                   placeholder="비밀번호를 한번 더 입력해 주세요."
                   ref={inputRef}
+                  autoComplete="off"
                 />
                 {passwordConfirm.length > 0 && (
                   <span
@@ -419,12 +423,19 @@ const LoginContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    @media screen and (max-width: 768px) {
+      align-items: center;
+    }
   }
 
   .signin-top {
     display: flex;
     flex-direction: column;
     margin-bottom: 36px;
+
+    @media screen and (max-width: 768px) {
+      align-items: center;
+    }
   }
 
   .logo {
