@@ -15,7 +15,6 @@ import Divider from "../../elements/Divider";
 import mainImage from "../../public/img/Main/main_image.png";
 
 // 이미지
-
 export const APP_USER_STATE = {
   NOT_AUTH: "로그인되지 않은 상태",
   UNKNOWN: "모름",
@@ -83,6 +82,10 @@ const Main = () => {
     }
   }, []);
 
+  const click = () => {
+    console.log(this);
+  };
+
   return (
     <MainStyle>
       <LeftSide>
@@ -92,7 +95,7 @@ const Main = () => {
           <div className="workspaces-container_top">
             <h2 className="active-workspace">
               최근 활동한 팀플방
-              <div className="create-workspace">
+              <div className="create-workspace" onClick={() => click()}>
                 <BookmarkAddIcon />
                 New
               </div>
@@ -176,19 +179,11 @@ const Main = () => {
       <RightSide>
         <Header invitation={user.invitation} />
         <main className="main-container">
-          {/* {isLoading ? (
-            <Spinner />
+          {appstate === APP_USER_STATE.USER ? (
+            <Outlet context={{ currentParams }} />
           ) : (
-            <> */}
-          {/* <h1>물리학 중간 3조</h1>
-          <Outlet /> */}
-          {/* {appstate === APP_USER_STATE.USER ? (
-                <Outlet context={{ currentParams }} />
-              ) : (
-                <ScreenForNewbie />
-              )} */}
-          {/* </>
-          )} */}
+            <ScreenForNewbie />
+          )}
         </main>
       </RightSide>
     </MainStyle>
@@ -278,81 +273,53 @@ const LeftSide = styled.aside`
       }
     }
   }
-  /* 
-  .page-navigate-button {
-    cursor: pointer;
-  }
-
-  .boardcon {
-    width: 28px;
-    height: 33px;
-  }
-
-  .calendarIcon {
-    width: 32px;
-    height: 35px;
-  }
-
-  .chatIcon {
-    width: 34px;
-    height: 34px;
-  }
-
-  .logo {
-    width: 50px;
-    height: 50px;
-  }
-
-  .buttons {
-    margin-top: 121px;
-    display: Flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    gap: 48px;
-  }
-
-  .buttonWrap {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 64px;
-    position: relative;
-    transition: all 0.2s ease;
-    cursor: pointer;
-
-    :hover {
-      background: #687cec;
-    }
-
-    :hover.buttonWrap::before {
-      content: "";
-      width: 10px;
-      height: 100%;
-      background: #4357c9;
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
-  }
-
-  .side-btn {
-  } */
 `;
 
 const RightSide = styled.div`
   display: flex;
   width: 76%;
   flex-direction: column;
+  padding: 16px 24px;
 
   .main-container {
     width: 100%;
-    height: 100%;
-    display: flex;
-    gap: 20px;
+    box-sizing: border-box;
+
+    .private-workspace_header {
+      width: 100%;
+    }
+
+    .private-workspace_title {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .private-workspace_navbar {
+      display: flex;
+      gap: 20px;
+    }
+
+    .private-workspace_navbar-item {
+      min-height: 48px;
+      padding: 4px 12px;
+      text-align: center;
+      line-height: 48px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    .private-workspace_navbar-item.selected {
+      border-bottom: 5px solid #8698fc;
+      color: #8698fc;
+    }
+
+    .private-workspace_main {
+      width: 100%;
+      height: 100%;
+      background-color: red;
+      margin-top: 30px;
+    }
   }
 `;
-
 export default Main;

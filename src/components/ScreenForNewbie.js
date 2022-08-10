@@ -6,7 +6,7 @@ import axios from "axios";
 import { getUserInfo } from "../redux/userReducer";
 import { getItemFromLs } from "../utils/localStorage";
 import { useNavigate } from "react-router-dom";
-import { APP_USER_STATE } from "../components/PublicMain";
+import { APP_USER_STATE } from "../pages/Main/Main";
 
 // 이미지
 import clap from "../public/img/Main/clap.png";

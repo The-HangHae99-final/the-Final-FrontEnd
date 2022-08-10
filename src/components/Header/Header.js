@@ -46,7 +46,6 @@ const Header = ({ invitation }) => {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user.value);
-  console.log("user: ", user);
   const dispatch = useDispatch();
   const workspace = useSelector((state) => state.workSpace.value);
 

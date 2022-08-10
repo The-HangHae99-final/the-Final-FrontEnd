@@ -17,6 +17,15 @@ import Signup from "../components/SignIn/Signup";
 import { useMediaQuery } from "react-responsive";
 import { ToastContainer } from "react-toastify";
 
+// 로그인 후
+// 1. 워크스페이스 선택 전 화면
+// => /main
+// 2. 워크스페이스 선택 후 해당 워크스페이스의 BOARD페이지로 이동
+// => /main/123/board
+// 3. 워크스페이스 선택 후 다른 페이지 이동
+// => /main/123/calendar or /main/123/chat
+// 해결 :
+
 const Router = () => {
   return (
     <>
@@ -26,12 +35,15 @@ const Router = () => {
           <Route path="signup" element={<Signup />} />
         </Route>
         <Route path="/main" element={<Main />} />
-        <Route path="/main/:workSpaceName/*" element={<Main />}>
-          {/* <Route path="" element={<PrivateMain />} /> */}
+
+        <Route path="/main/pm/*" element={<PrivateMain />}>
           <Route path="board" element={<Board />} />
           <Route path="calendar" element={<Calender />} />
           <Route path="message" element={<Message />} />
         </Route>
+        {/* <Route path="/main/:workSpaceName/board" element={<Board />} />
+        <Route path="/main/:workSpaceName/calendar" element={<Board />} />
+        <Route path="/main/:workSpaceName/message" element={<Board />} /> */}
 
         <Route
           path="/api/auth/login/naver/callback"
