@@ -24,7 +24,6 @@ import { ToastContainer } from "react-toastify";
 // => /main/123/board
 // 3. 워크스페이스 선택 후 다른 페이지 이동
 // => /main/123/calendar or /main/123/chat
-// 해결 :
 
 const Router = () => {
   return (

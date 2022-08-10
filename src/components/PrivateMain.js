@@ -62,7 +62,7 @@ const PublicMain = () => {
 
   // 선택된 페이지 상태만 true (+classname selected 추가)
   // 나머진 모두 false(+classname selected 제거)
-  const [selectedPage, setSelectedPage] = useState(null);
+  const [selectedPage, setSelectedPage] = useState([]);
   console.log("selectedPage: ", selectedPage);
   const pages = ["BOARD", "CALENDAR", "TALK"];
   const handleSelectedPage = (index) => {
@@ -75,6 +75,8 @@ const PublicMain = () => {
 
   return (
     <MainStyle>
+      <Header invitation={user.invitation} />
+
       <LeftSide>
         <div className="workspaces-container">
           <Divider />
@@ -164,7 +166,6 @@ const PublicMain = () => {
       </LeftSide>
 
       <RightSide>
-        <Header invitation={user.invitation} />
         <main className="main-container">
           {/* {isLoading ? (
             <Spinner />
@@ -208,7 +209,7 @@ const LeftSide = styled.aside`
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
-  min-width: 24%;
+  min-width: 300px;
   padding: 24px;
   background: #e0e2e1;
 
@@ -284,16 +285,19 @@ const LeftSide = styled.aside`
 
 const RightSide = styled.div`
   display: flex;
-  width: 76%;
+  width: 100%;
   flex-direction: column;
-  padding: 16px 24px;
+  padding: 24px;
+  box-sizing: border-box;
 
   .main-container {
     width: 100%;
+    height: 100%;
     box-sizing: border-box;
 
     .private-workspace_header {
       width: 100%;
+      height: 12%;
     }
 
     .private-workspace_title {
@@ -309,28 +313,25 @@ const RightSide = styled.div`
 
     .list-item {
       font-size: 14px;
-      width: 100px;
-      min-height: 48px;
+      min-height: 24px;
       padding: 4px 12px;
       text-align: center;
-      line-height: 48px;
+      line-height: 24px;
       cursor: pointer;
       transition: all 0.2s ease;
       outline: none;
-      border-bottom: 8px solid transparent;
+      border-bottom: 6px solid transparent;
     }
 
     .list-item_clicked {
-      border-bottom: 8px solid #8698fc;
+      border-bottom: 6px solid #8698fc;
       transform: scale(1.1);
       color: #8698fc;
     }
 
     .private-workspace_main {
       width: 100%;
-      height: 100%;
-      background-color: red;
-      margin-top: 30px;
+      height: 88%;
     }
   }
 `;

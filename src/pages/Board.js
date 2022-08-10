@@ -79,7 +79,7 @@ function createBox(
 }
 
 const Board = () => {
-  const { currentParams } = useOutletContext();
+  // const { currentParams } = useOutletContext();
   const [data, setData] = useState({
     title: "",
     desc: "",
@@ -137,13 +137,13 @@ const Board = () => {
   };
 
   // 화면 렌더링 시 자동으로 workspace 의 이름과 할당자(본인이름)을 업데이트
-  useEffect(() => {
-    setData({
-      ...data,
-      workSpaceName: currentParams,
-      assignees: getItemFromLs("userName"),
-    });
-  }, []);
+  // useEffect(() => {
+  //   setData({
+  //     ...data,
+  //     workSpaceName: currentParams,
+  //     assignees: getItemFromLs("userName"),
+  //   });
+  // }, []);
 
   // 보드 삭제
   const removeBoard = (postId) => {
@@ -201,49 +201,48 @@ const Board = () => {
       return { ...data, [name]: value };
     });
   };
-  console.log("currentParams: ", currentParams);
 
   // 전체 보드 리스트 가져오기
-  useEffect(() => {
-    try {
-      async function fetchBoards() {
-        const res = await axios.get(
-          `https://teamnote.shop/api/posts/list/${currentParams}`, // hs421
-          {
-            headers: {
-              Authorization: `Bearer ${getItemFromLs("myToken")}`,
-            },
-          }
-        );
-        // 서버에서 받아온 데이터(배열)
-        console.log("res: ", res);
-        const boards = res.data.posts;
-        console.log("boards: ", boards);
+  // useEffect(() => {
+  //   try {
+  //     async function fetchBoards() {
+  //       const res = await axios.get(
+  //         `https://teamnote.shop/api/posts/list/${currentParams}`, // hs421
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${getItemFromLs("myToken")}`,
+  //           },
+  //         }
+  //       );
+  //       // 서버에서 받아온 데이터(배열)
+  //       console.log("res: ", res);
+  //       const boards = res.data.posts;
+  //       console.log("boards: ", boards);
 
-        const newObject = {};
+  //       const newObject = {};
 
-        boards.forEach((task) => {
-          return (newObject[task.postId] = task);
-        });
+  //       boards.forEach((task) => {
+  //         return (newObject[task.postId] = task);
+  //       });
 
-        setState({
-          ...state,
-          tasks: { ...newObject },
-          columns: {
-            ...state.columns,
-            "column-1": {
-              id: "column-1",
-              title: "TO-DO",
-              taskIds: [...state.columns["column-1"].taskIds],
-            },
-          },
-        });
-      }
-      fetchBoards();
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
+  //       setState({
+  //         ...state,
+  //         tasks: { ...newObject },
+  //         columns: {
+  //           ...state.columns,
+  //           "column-1": {
+  //             id: "column-1",
+  //             title: "TO-DO",
+  //             taskIds: [...state.columns["column-1"].taskIds],
+  //           },
+  //         },
+  //       });
+  //     }
+  //     fetchBoards();
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }, []);
 
   const reorderColumnList = (sourceCol, startIndex, endIndex) => {
     const newtaskIds = Array.from(sourceCol.taskIds);
@@ -381,6 +380,7 @@ const initialData = {
 
 const BoardStyle = styled.div`
   width: 100%;
+  height: 100%;
   padding: 20px;
 `;
 
