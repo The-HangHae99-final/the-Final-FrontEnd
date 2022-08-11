@@ -10,12 +10,12 @@ import Message from "../pages/Message/Message";
 import NaverLoginCallBack from "../elements/introMain/NaverLoginCallBack";
 import KakaoLoginCallback from "../elements/introMain/KakaoLoginCallBack";
 import PrivateMain from "../components/PrivateMain";
-import PublicMain from "../components/PublicMain";
 import JoinRouter from "./JoinRouter";
 import { SignIn } from "../components/SignIn/SignIn.js";
 import Signup from "../components/SignIn/Signup";
 import { useMediaQuery } from "react-responsive";
 import { ToastContainer } from "react-toastify";
+import Header from "../components/Header/Header";
 
 // 로그인 후
 // 1. 워크스페이스 선택 전 화면
@@ -28,21 +28,24 @@ import { ToastContainer } from "react-toastify";
 const Router = () => {
   return (
     <>
+      <Header />
       <Routes>
         <Route path="/join" element={<JoinRouter />}>
           <Route path="signin" element={<SignIn />} />
           <Route path="signup" element={<Signup />} />
         </Route>
-        <Route path="/main" element={<Main />} />
 
-        <Route path="/main/pm/*" element={<PrivateMain />}>
+        <Route path="/main" element={<Main />} />
+        <Route path="/main/:id/*" element={<Board />}>
           <Route path="board" element={<Board />} />
           <Route path="calendar" element={<Calender />} />
           <Route path="message" element={<Message />} />
         </Route>
-        {/* <Route path="/main/:workSpaceName/board" element={<Board />} />
-        <Route path="/main/:workSpaceName/calendar" element={<Board />} />
-        <Route path="/main/:workSpaceName/message" element={<Board />} /> */}
+
+        {/* <Route path="/main/:id" element={<PrivateMain />} /> */}
+        {/* <Route path="/main/:id/board" element={<Board />} />
+        <Route path="/main/:id/calendar" element={<Board />} />
+        <Route path="/main/:id/message" element={<Board />} /> */}
 
         <Route
           path="/api/auth/login/naver/callback"

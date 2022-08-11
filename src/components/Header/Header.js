@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import {
   getItemFromLs,
   removeItemFromLs,
@@ -39,15 +39,15 @@ const Header = ({ invitation }) => {
   const [isMounted, setIsMounted] = useState(false);
   const hasTransitionedIn = useMountTransition(isMounted, 1500);
   const [currentSocket, setCurrentSocket] = useState(null);
-  console.log("Mask_basic: ", Mask_basic);
   const dropdownRef = useRef(null);
   const username = getItemFromLs("userName");
   const userEmail = getItemFromLs("userEmail");
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user.value);
+  const workspaceList = user.workSpaceList;
   const dispatch = useDispatch();
-  const workspace = useSelector((state) => state.workSpace.value);
+  const location = useLocation();
 
   const [openMyProfileModal, setOpenMyProfileModal] = useState(false);
 
@@ -129,162 +129,171 @@ const Header = ({ invitation }) => {
 
   return (
     <>
-      <HeaderStyle>
-        <div className="toggle-bar">
-          <MenuIcon fontSize="large" />
-        </div>
-        <div className="spacer"></div>
-        <Link to="/main" className="logo-wrap">
-          <img src={logo} alt="logo" className="logo" />
-        </Link>
-
-        <img
-          src={user.profile_image_url ? user.profile_image_url : Mask_basic}
-          className="user-avatar_mobile"
-          alt="user_avatar"
-          style={{ width: "34px", height: "34px" }}
-        />
-
-        <div className="menuItems">
-          <Button
-            variant="outlined"
-            onClick={toNotion}
-            style={{ marginRight: "25px", color: "#7D8BD" }}
-          >
-            Guide
-          </Button>
-
-          <div className="menuBtns">
-            <button className="menuBtn">
-              <img src={sunIcon} alt="sun icon" />
-            </button>
-            <button className="menuBtn" onClick={openNotiModal}>
-              <img src={bellIcon} alt="sun icon" />
-              {invitation?.length >= 1 && (
-                <span className="badge">{invitation?.length}</span>
-              )}
-            </button>
-            {openNoti && <NotificationModal onClose={closeNoti} />}
+      {location.pathname.includes("main") ? (
+        <HeaderStyle>
+          <div className="toggle-bar">
+            <MenuIcon fontSize="large" />
           </div>
-          <AboutUser>
-            <img
-              src={user.profile_image_url ? user.profile_image_url : Mask_basic}
-              className="user-avatar"
-              alt="user_avatar"
-              style={{ width: "34px", height: "34px" }}
-            />
-            {/* <UserAvatar size="big" width={50} height={50} /> */}
+          <div className="spacer"></div>
+          <Link to="/main" className="logo-wrap">
+            <img src={logo} alt="logo" className="logo" />
+          </Link>
 
-            <div className="userMetaInfo">
-              <span className="greeting">Hi!</span>
+          <img
+            src={user.profile_image_url ? user.profile_image_url : Mask_basic}
+            className="user-avatar_mobile"
+            alt="user_avatar"
+            style={{ width: "34px", height: "34px" }}
+          />
 
-              {/* show dropdown */}
-              <UsernameWrap className="usernameWrap">
-                <div className="username">{username}님</div>
-                <div
-                  className={`vector-img-wrap ${
-                    openDropdown ? "toBottom" : "toTop"
-                  }`}
-                  onClick={handleDrowdown}
-                >
-                  <img src={vector} alt="vector" className="vector-img"></img>
-                </div>
-              </UsernameWrap>
-            </div>
-          </AboutUser>
-        </div>
-
-        <nav
-          ref={dropdownRef}
-          className={`menu ${openDropdown ? "active" : "inactive"}`}
-        >
-          <ul>
-            <li className="nav-item">
-              <div className="li-header">
-                <h3 className="li-header-title">내 계정</h3>
-                <span className="edit_account" onClick={showMyProfileModal}>
-                  | 편집하기
-                </span>
-              </div>
-              <div className="nav_email">{userEmail}</div>
-            </li>
-            <li className="nav-item">
-              <div className="li-header">
-                <h3 className="li-header-title">내 워크스페이스</h3>
-                <span className="edit_account">| 편집하기</span>
-              </div>
-              <WorkspaceList>
-                {user?.workSpaceList &&
-                  user?.workSpaceList.map((item, idx) => {
-                    const wsName = item.split("+");
-                    return (
-                      <li
-                        key={idx}
-                        className="workspace-item"
-                        onClick={() => {
-                          setOpenDropdown(false);
-                          dispatch(
-                            getWorkSpaceData({
-                              ...workspace,
-                              current_workSpace: item,
-                            })
-                          );
-                          navigate(`/main/${item}`);
-                        }}
-                      >
-                        <div className="workspace_avatar">{wsName[1][0]}</div>
-                        <div className="current_workSpace">{wsName[1]}</div>
-                      </li>
-                    );
-                  })}
-              </WorkspaceList>
-            </li>
-            <li className="nav-item">
-              <div className="li-header li-header_grey" onClick={handleModal}>
-                워크스페이스 추가
-              </div>
-            </li>
-            <li className="nav-item">
-              <div className="li-header li-header_grey" onClick={logout}>
-                로그아웃
-              </div>
-            </li>
-          </ul>
-        </nav>
-        <ModalPortal>
-          {modalOn && (
-            <WorkspaceModal
-              onClose={handleModal}
-              addNewWorkSpace={addNewWorkSpace}
-              workSpaceName={workSpaceName}
-              setWorkSpaceName={setWorkSpaceName}
-              handleWorkSpaceName={handleWorkSpaceName}
-              modalOn={modalOn}
-              setModalOn={setModalOn}
-            />
-          )}
-        </ModalPortal>
-        <ModalPortal>
-          {openMyProfileModal && (
-            <MyProfileModal
-              onClose={handleModal}
-              openMyProfileModal={openMyProfileModal}
-              setOpenMyProfileModal={setOpenMyProfileModal}
-            />
-          )}
-        </ModalPortal>
-        {hasTransitionedIn || isMounted ? (
-          <SuccessModalBox>
-            <div
-              className={`success-modal ${hasTransitionedIn && "in"} ${
-                isMounted && "visible"
-              }`}
+          <div className="menuItems">
+            <Button
+              variant="outlined"
+              onClick={toNotion}
+              style={{ marginRight: "25px", color: "#7D8BD" }}
             >
-              새로운 워크스페이스가 개설되었습니다!
+              Guide
+            </Button>
+
+            <div className="menuBtns">
+              <button className="menuBtn">
+                <img src={sunIcon} alt="sun icon" />
+              </button>
+              <button className="menuBtn" onClick={openNotiModal}>
+                <img src={bellIcon} alt="sun icon" />
+                {invitation?.length >= 1 && (
+                  <span className="badge">{invitation?.length}</span>
+                )}
+              </button>
+              {openNoti && <NotificationModal onClose={closeNoti} />}
             </div>
-          </SuccessModalBox>
-        ) : null}
-      </HeaderStyle>
+            <AboutUser>
+              <img
+                src={
+                  user.profile_image_url ? user.profile_image_url : Mask_basic
+                }
+                className="user-avatar"
+                alt="user_avatar"
+                style={{ width: "34px", height: "34px" }}
+              />
+              {/* <UserAvatar size="big" width={50} height={50} /> */}
+
+              <div className="userMetaInfo">
+                <span className="greeting">Hi!</span>
+
+                {/* show dropdown */}
+                <UsernameWrap className="usernameWrap">
+                  <div className="username">{username}님</div>
+                  <div
+                    className={`vector-img-wrap ${
+                      openDropdown ? "toBottom" : "toTop"
+                    }`}
+                    onClick={handleDrowdown}
+                  >
+                    <img src={vector} alt="vector" className="vector-img"></img>
+                  </div>
+                </UsernameWrap>
+              </div>
+            </AboutUser>
+          </div>
+
+          <nav
+            ref={dropdownRef}
+            className={`menu ${openDropdown ? "active" : "inactive"}`}
+          >
+            <ul>
+              <li className="nav-item">
+                <div className="li-header">
+                  <h3 className="li-header-title">내 계정</h3>
+                  <span className="edit_account" onClick={showMyProfileModal}>
+                    | 편집하기
+                  </span>
+                </div>
+                <div className="nav_email">{userEmail}</div>
+              </li>
+              <li className="nav-item">
+                <div className="li-header">
+                  <h3 className="li-header-title">내 워크스페이스</h3>
+                  <span className="edit_account">| 편집하기</span>
+                </div>
+                <WorkspaceList>
+                  {workspaceList &&
+                    workspaceList.map((item, idx) => {
+                      const workspaceName = item.workSpace.split("+");
+                      const id = item._id;
+                      console.log("id: ", id);
+                      return (
+                        <li
+                          key={idx}
+                          className="workspace-item"
+                          onClick={() => {
+                            setOpenDropdown(false);
+                            // dispatch(
+                            //   getWorkSpaceData({
+                            //     ...workspace,
+                            //   })
+                            // );
+                            navigate(`/main/${item}`);
+                          }}
+                        >
+                          <div className="workspace_avatar">
+                            {workspaceName[1][0]}
+                          </div>
+                          <div className="current_workSpace">
+                            {workspaceName[1]}
+                          </div>
+                        </li>
+                      );
+                    })}
+                </WorkspaceList>
+              </li>
+              <li className="nav-item">
+                <div className="li-header li-header_grey" onClick={handleModal}>
+                  워크스페이스 추가
+                </div>
+              </li>
+              <li className="nav-item">
+                <div className="li-header li-header_grey" onClick={logout}>
+                  로그아웃
+                </div>
+              </li>
+            </ul>
+          </nav>
+          <ModalPortal>
+            {modalOn && (
+              <WorkspaceModal
+                onClose={handleModal}
+                addNewWorkSpace={addNewWorkSpace}
+                workSpaceName={workSpaceName}
+                setWorkSpaceName={setWorkSpaceName}
+                handleWorkSpaceName={handleWorkSpaceName}
+                modalOn={modalOn}
+                setModalOn={setModalOn}
+              />
+            )}
+          </ModalPortal>
+          <ModalPortal>
+            {openMyProfileModal && (
+              <MyProfileModal
+                onClose={handleModal}
+                openMyProfileModal={openMyProfileModal}
+                setOpenMyProfileModal={setOpenMyProfileModal}
+              />
+            )}
+          </ModalPortal>
+          {hasTransitionedIn || isMounted ? (
+            <SuccessModalBox>
+              <div
+                className={`success-modal ${hasTransitionedIn && "in"} ${
+                  isMounted && "visible"
+                }`}
+              >
+                새로운 워크스페이스가 개설되었습니다!
+              </div>
+            </SuccessModalBox>
+          ) : null}
+        </HeaderStyle>
+      ) : null}
     </>
   );
 };
