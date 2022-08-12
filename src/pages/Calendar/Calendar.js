@@ -112,24 +112,7 @@ const Calender = () => {
         <SmallCalendar />
 
         {/* My Calendar */}
-        <CalendarLabel
-          {...{
-            title: "My calendar",
-            labels: [
-              {
-                text: "Contents design",
-                color: "blue",
-              },
-              {
-                text: "Product design",
-                color: "red",
-              },
-              ,
-            ],
-            onClickTitle: fetchMyTasks,
-            onClickAdd: handleModal,
-          }}
-        />
+
         {/* 
         <A 
         {...{
@@ -139,87 +122,47 @@ const Calender = () => {
         text={text} title={title}
         /> */}
 
-        <CalendarLabel
-          {...{
-            title: "Team calendar",
-            labels: [
-              {
-                text: "Meeting",
-                color: "yellow",
-              },
-              {
-                text: "Event",
-                color: "red",
-              },
-              ,
-            ],
-            // onClickTitle: fetchTeamTasks,
-            // onClickAdd: handleModal,
-          }}
-        />
-
         <div className="myCalender-box">
-          <div className="teamchat-box">
-            <div className="box-header">
-              <div className="box-title" onClick={fetchMyTasks}>
-                My calendar
-              </div>
-            </div>
-            <ul className="calender-list-my">
-              <li className="calender-item">
-                <div className="diffcolor blue"></div>
-                <span className="daily-title">Contents design</span>
-              </li>
-              <li className="calender-item">
-                <div className="diffcolor red"></div>
-                <span className="daily-title">Product design</span>
-              </li>
-              <div
-                className="add-button-container"
-                title="My calendar"
-                onClick={handleModal}
-              >
-                <button className="add-button">
-                  <div>+</div>
-                </button>
-                <span>Add</span>
-              </div>
-            </ul>
-          </div>
+          <CalendarLabel
+            {...{
+              title: "My calendar",
+              labels: [
+                {
+                  text: "Contents design",
+                  color: "blue",
+                },
+                {
+                  text: "Product design",
+                  color: "red",
+                },
+                ,
+              ],
+              onClickTitle: fetchMyTasks,
+              onClickAdd: handleModal,
+            }}
+          />
         </div>
 
         {/* Team calendar */}
         <div className="teamCalender">
-          <div className="teamchat-box">
-            <div className="box-header">
-              <div
-                className="box-title"
-                // onClick={fetchTeamTasks}
-              >
-                Team calendar
-              </div>
-            </div>
-            <ul className="calender-list calender-list-team">
-              <li className="calender-item">
-                <div className="diffcolor yellow"></div>
-                <span className="daily-title">Meeting</span>
-              </li>
-              <li className="calender-item">
-                <div className="diffcolor red"></div>
-                <span className="daily-title">Event</span>
-              </li>
-              <div
-                className="add-button-container"
-                onClick={handleModal}
-                title="Team calendar"
-              >
-                <button className="add-button">
-                  <div>+</div>
-                </button>
-                <span>Add</span>
-              </div>
-            </ul>
-          </div>
+          <CalendarLabel
+            {...{
+              title: "Team calendar",
+              labels: [
+                {
+                  text: "Meeting",
+                  color: "yellow",
+                },
+                {
+                  text: "Event",
+                  color: "red",
+                },
+                ,
+              ],
+              // onClickTitle: fetchTeamTasks,
+              // onClickAdd: handleModal,
+            }}
+          />
         </div>
       </div>
 
@@ -245,19 +188,21 @@ const Calender = () => {
 
 const CalenderStyle = styled.div`
   width: 100%;
-  height: 100%;
+  height: 88%;
   display: flex;
   gap: 20px;
+  box-sizing: border-box;
 
   .leftSection {
     width: 280px;
     height: 100%;
     padding: 30px 20px;
-    background-color: #ffffff;
+    /* background-color: #ffffff; */
+    background-color: red;
+    box-sizing: border-box;
 
     .myCalender-box {
-      margin-top: 25px;
-      height: 191px;
+      margin-top: 10px;
     }
 
     .calender-item {

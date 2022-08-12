@@ -34,8 +34,7 @@ const CalendarLabel = ({ style, title, labels, onClickTitle, onClickAdd }) => {
 
 const CalendarLabelStyle = styled.div`
   .myCalender-box {
-    margin-top: 25px;
-    height: 191px;
+    margin-top: 10px;
   }
   .box-header {
     display: flex;

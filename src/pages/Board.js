@@ -80,6 +80,7 @@ function createBox(
 
 const Board = () => {
   // const { currentParams } = useOutletContext();
+
   const [data, setData] = useState({
     title: "",
     desc: "",
@@ -88,13 +89,13 @@ const Board = () => {
     workSpaceName: "",
     category: "todo",
   });
+
   const [todoList, setTodoList] = useState([]);
   const [inProgressList, setInProgressList] = useState([]);
   const [doneList, setDoneList] = useState([]);
   const [state, setState] = useState(initialData);
   const [isShown, setIsShown] = useState(false);
   const [titleCharacter, setTitleCharacter] = useState(0);
-  console.log("state: ", state);
 
   // 보드 생성
   const handleSubmit = async (e) => {
@@ -108,13 +109,10 @@ const Board = () => {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },
       });
-      console.log("res: ", res);
       if (res.data.success) {
         const task = res.data.result;
         let newObject = {};
-
         newObject[task.postId] = task;
-
         setState({
           ...state,
           tasks: { ...state.tasks, ...newObject },
@@ -380,8 +378,9 @@ const initialData = {
 
 const BoardStyle = styled.div`
   width: 100%;
-  height: 100%;
+  height: 88%;
   padding: 20px;
+  background-color: red;
 `;
 
 const BoardContainer = styled.div`

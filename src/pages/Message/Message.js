@@ -211,7 +211,7 @@ const Message = () => {
 
 const ChatStyle = styled.div`
   width: 100%;
-  height: 100%;
+  height: 88%;
   display: flex;
   gap: 20px;
 `;
@@ -315,7 +315,6 @@ const BarTop = styled.div`
 
 const Inputwrap = styled.div`
   width: 100%;
-  height: 100px;
   background-color: #f8f8f9;
   border: 1px solid #ecedf1;
   border-radius: 0px 0px 5px 5px;
@@ -324,7 +323,6 @@ const Inputwrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 22px 50px 28px 50px;
   z-index: 999;
 
   .chat-input {
@@ -350,7 +348,7 @@ const ButtonsWrap = styled.div`
   gap: 22px;
   position: absolute;
   top: 47%;
-  right: 75px;
+  right: 20px;
   transform: translateY(-50%);
 
   .submit-button {
