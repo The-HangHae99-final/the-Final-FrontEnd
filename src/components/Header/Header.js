@@ -220,7 +220,7 @@ const Header = ({ invitation }) => {
                   {workspaceList &&
                     workspaceList?.map((item, idx) => {
                       const workspaceName = item.workSpace.split("+");
-                      const id = item._id;
+                      const id = item._id.substring(0, 6);
                       return (
                         <li
                           key={idx}
@@ -232,7 +232,7 @@ const Header = ({ invitation }) => {
                             //     ...workspace,
                             //   })
                             // );
-                            navigate(`/main/${item}`);
+                            navigate(`/main/${id}/board`);
                           }}
                         >
                           <div className="workspace_avatar">
@@ -306,6 +306,7 @@ const HeaderStyle = styled.div`
   align-items: center;
   position: relative;
   position: fixed;
+  z-index: 999;
   top: 0;
   left: 0;
   background-color: #bac9ff;

@@ -43,13 +43,16 @@ const Main = () => {
   const location = useLocation();
   const [selectedPage, setSelectedPage] = useState([true, false, false]);
 
-  const pages = ["BOARD", "CALENDAR", "TALK"];
-  const handleSelectedPage = (e, index) => {
-    const pageNameToLowerCase = e.target.textContent.toLowerCase();
+  const handleSelectedPage = (e) => {
+    const pages = ["BOARD", "CALENDAR", "TALK"];
+    const index = e.target.getAttribute("index");
+    // const pageNameToLowerCase = e.target.textContent.toLowerCase();
     // page의 수만큼 false로 채워진 새로운 배열을 만든다.
     let newArr = Array(pages.length).fill(false);
     // 선택된 page의 index를 이용해 해당 index의 상태를 true로 바꿔준다.
     newArr[index] = true;
+    console.log("newArr: ", newArr);
+    // state를 newArr로 업데이트한다
     setSelectedPage(newArr);
   };
 
@@ -108,7 +111,7 @@ const Main = () => {
 
   useEffect(() => {}, []);
 
-  const toGoWorkspace = (id) => {
+  const toGoWorkspace = (id, workspace) => {
     navigate(`/main/${id}/board`);
   };
 
@@ -138,7 +141,7 @@ const Main = () => {
               return (
                 <li
                   className="workspace-source"
-                  onClick={() => toGoWorkspace(id)}
+                  onClick={() => toGoWorkspace(id, workspace)}
                   key={idx}
                   id={id}
                 >
@@ -204,47 +207,34 @@ const Main = () => {
                     <ul className="private-workspace_navbar">
                       <Link
                         to={`/main/${params.id}/board`}
-                        className={`list-item`}
-                        // onClick={(e) => handleSelectedPage(e, idx)}
+                        index={0}
+                        onClick={(e) => handleSelectedPage(e)}
+                        className={`list-item ${
+                          selectedPage[0] ? "list-item_clicked" : ""
+                        }`}
                       >
                         BOARD
                       </Link>
                       <Link
                         to={`/main/${params.id}/calendar`}
-                        className={`list-item `}
-                        // className={`list-item ${
-                        //   selectedPage[idx] ? "list-item_clicked" : ""
-                        // }`}
-                        // onClick={(e) => handleSelectedPage(e, idx)}
+                        index={1}
+                        className={`list-item ${
+                          selectedPage[1] ? "list-item_clicked" : ""
+                        }`}
+                        onClick={(e) => handleSelectedPage(e)}
                       >
                         CALENDAR
                       </Link>
                       <Link
+                        index={2}
                         to={`/main/${params.id}/talk`}
-                        className={`list-item`}
-                        // className={`list-item ${
-                        //   selectedPage[idx] ? "list-item_clicked" : ""
-                        // }`}
-                        // onClick={(e) => handleSelectedPage(e, idx)}
+                        className={`list-item ${
+                          selectedPage[2] ? "list-item_clicked" : ""
+                        }`}
+                        onClick={(e) => handleSelectedPage(e)}
                       >
                         TALK
                       </Link>
-                      {/* {pages.map((page, idx) => {
-                        const pageNameToLower = page.toLowerCase();
-                        return (
-                          <Link
-                            key={idx}
-                            name={pageNameToLower}
-                            onClick={(e) => handleSelectedPage(e, idx)}
-                            className={`list-item ${
-                              selectedPage[idx] ? "list-item_clicked" : ""
-                            }`}
-                            to={`/main/${params.id}/${pageNameToLower}`}
-                          >
-                            {page}
-                          </Link>
-                        );
-                      })} */}
                     </ul>
                   </div>
                   <Outlet />
@@ -271,7 +261,7 @@ const LeftSide = styled.aside`
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
-  min-width: 24%;
+  width: 18%;
   padding: 24px;
   background: #e0e2e1;
 
@@ -347,7 +337,7 @@ const LeftSide = styled.aside`
 
 const RightSide = styled.div`
   display: flex;
-  width: 100%;
+  width: 82%;
   flex-direction: column;
   padding: 24px;
   box-sizing: border-box;
