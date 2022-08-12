@@ -32,6 +32,7 @@ const GlobalStyle = createGlobalStyle`
       padding: 0;
       margin: 0;
       color:#000000;
+      font-size: 14px;
     };
     div{
       box-sizing: border-box;

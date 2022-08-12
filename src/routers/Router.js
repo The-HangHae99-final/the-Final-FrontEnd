@@ -16,6 +16,7 @@ import Signup from "../components/SignIn/Signup";
 import { useMediaQuery } from "react-responsive";
 import { ToastContainer } from "react-toastify";
 import Header from "../components/Header/Header";
+import Aside from "../components/Aside";
 
 // 로그인 후
 // 1. 워크스페이스 선택 전 화면
@@ -25,27 +26,26 @@ import Header from "../components/Header/Header";
 // 3. 워크스페이스 선택 후 다른 페이지 이동
 // => /main/123/calendar or /main/123/chat
 
+// * 로그인 전에 /main 입력 시 처리
+
 const Router = () => {
   return (
     <>
       <Header />
       <Routes>
+        {/* 1. 로그인 */}
         <Route path="/join" element={<JoinRouter />}>
           <Route path="signin" element={<SignIn />} />
           <Route path="signup" element={<Signup />} />
         </Route>
 
+        {/* 2. main으로 이동 */}
         <Route path="/main" element={<Main />} />
-        <Route path="/main/:id/*" element={<Board />}>
+        <Route path="/main/:id/*" element={<Main />}>
           <Route path="board" element={<Board />} />
           <Route path="calendar" element={<Calender />} />
-          <Route path="message" element={<Message />} />
+          <Route path="talk" element={<Message />} />
         </Route>
-
-        {/* <Route path="/main/:id" element={<PrivateMain />} /> */}
-        {/* <Route path="/main/:id/board" element={<Board />} />
-        <Route path="/main/:id/calendar" element={<Board />} />
-        <Route path="/main/:id/message" element={<Board />} /> */}
 
         <Route
           path="/api/auth/login/naver/callback"

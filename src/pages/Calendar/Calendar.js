@@ -24,7 +24,7 @@ const Calender = () => {
   // const monthTitle = document.querySelector(".react-datepicker__current-month");
   // console.log(monthTitle.);
 
-  const { currentParams } = useOutletContext();
+  // const { currentParams } = useOutletContext();
 
   const handleModal = (e) => {
     setModalOn(() => {
@@ -70,40 +70,40 @@ const Calender = () => {
   };
 
   // 전체 팀 일정 조회
-  const fetchTeamTasks = () => {
-    // axios({
-    //   method: "post",
-    //   url: "https://teamnote.shop/api/team-tasks/lists",
-    //  {
-    //     workSpaceName: currentParams,
-    //   },
-    //   headers: {
-    //     Authorization: `Bearer ${getItemFromLs("myToken")}`,
-    //   },
-    // })
-    //   .then((res) => console.log(res))
-    //   .catch((err) => console.log(err));
-    axios
-      .post(
-        "https://teamnote.shop/api/team-tasks/lists",
-        {
-          workSpaceName: currentParams,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${getItemFromLs("myToken")}`,
-          },
-        }
-      )
-      .then((res) => console.log(res));
-  };
+  // const fetchTeamTasks = () => {
+  //   // axios({
+  //   //   method: "post",
+  //   //   url: "https://teamnote.shop/api/team-tasks/lists",
+  //   //  {
+  //   //     workSpaceName: currentParams,
+  //   //   },
+  //   //   headers: {
+  //   //     Authorization: `Bearer ${getItemFromLs("myToken")}`,
+  //   //   },
+  //   // })
+  //   //   .then((res) => console.log(res))
+  //   //   .catch((err) => console.log(err));
+  //   axios
+  //     .post(
+  //       "https://teamnote.shop/api/team-tasks/lists",
+  //       {
+  //         workSpaceName: currentParams,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${getItemFromLs("myToken")}`,
+  //         },
+  //       }
+  //     )
+  //     .then((res) => console.log(res));
+  // };
 
-  useEffect(() => {
-    setTaskContents({
-      ...taskContents,
-      workSpaceName: currentParams,
-    });
-  }, []);
+  // useEffect(() => {
+  //   setTaskContents({
+  //     ...taskContents,
+  //     workSpaceName: currentParams,
+  //   });
+  // }, []);
 
   return (
     <CalenderStyle className="calenderStyle">
@@ -130,7 +130,7 @@ const Calender = () => {
             onClickAdd: handleModal,
           }}
         />
-{/* 
+        {/* 
         <A 
         {...{
           text,
@@ -153,8 +153,8 @@ const Calender = () => {
               },
               ,
             ],
-            onClickTitle: fetchTeamTasks,
-            onClickAdd: handleModal,
+            // onClickTitle: fetchTeamTasks,
+            // onClickAdd: handleModal,
           }}
         />
 
@@ -192,7 +192,10 @@ const Calender = () => {
         <div className="teamCalender">
           <div className="teamchat-box">
             <div className="box-header">
-              <div className="box-title" onClick={fetchTeamTasks}>
+              <div
+                className="box-title"
+                // onClick={fetchTeamTasks}
+              >
                 Team calendar
               </div>
             </div>

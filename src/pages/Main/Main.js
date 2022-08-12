@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link, Outlet, useParams } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  Route,
+  Routes,
+  useLocation,
+  useParams,
+} from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo } from "../../redux/userReducer";
@@ -13,7 +20,9 @@ import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import UserAvatar from "../../elements/UserAvatar";
 import Divider from "../../elements/Divider";
 import mainImage from "../../public/img/Main/main_image.png";
-
+import Board from "../Board";
+import Calender from "../Calendar/Calendar";
+import Message from "../Message/Message";
 // 이미지
 export const APP_USER_STATE = {
   NOT_AUTH: "로그인되지 않은 상태",
@@ -28,8 +37,21 @@ const Main = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
+  const workspaceList = user.workSpaceList;
   const params = useParams();
   const currentParams = params.workSpaceName;
+  const location = useLocation();
+  const [selectedPage, setSelectedPage] = useState([true, false, false]);
+
+  const pages = ["BOARD", "CALENDAR", "TALK"];
+  const handleSelectedPage = (e, index) => {
+    const pageNameToLowerCase = e.target.textContent.toLowerCase();
+    // page의 수만큼 false로 채워진 새로운 배열을 만든다.
+    let newArr = Array(pages.length).fill(false);
+    // 선택된 page의 index를 이용해 해당 index의 상태를 true로 바꿔준다.
+    newArr[index] = true;
+    setSelectedPage(newArr);
+  };
 
   useEffect(() => {
     try {
@@ -42,10 +64,12 @@ const Main = () => {
         })
         .then((res) => {
           if (res.data.success) {
+            console.log("res: ", res.data);
             const wsInfoList = res.data.includedList;
-            const workSpaceFullname = wsInfoList.map((ws) => {
-              return ws.workSpace;
-            });
+            // const workSpaceFullname = wsInfoList.map((ws) => {
+            //   return ws.workSpace.split("+")[1];
+            // });
+            // console.log("workSpaceFullname: ", workSpaceFullname);
             // 앱 상태(3가지)에 따라 조건부 렌더링
             // 1. 앱 상태가 확인 될 때까지 앱상태 UNKNOWN => spinner
             // 2. 로그인한 사용자의 워크스페이스가 비어있으면 앱상태 NEWBIE로 변경 => 신규 사용자 화면
@@ -68,7 +92,7 @@ const Main = () => {
                   dispatch(
                     getUserInfo({
                       ...user,
-                      workSpaceList: [...workSpaceFullname],
+                      workSpaceList: [...wsInfoList],
                       invitation: [...res.data.result],
                     })
                   );
@@ -82,8 +106,10 @@ const Main = () => {
     }
   }, []);
 
-  const click = () => {
-    console.log(this);
+  useEffect(() => {}, []);
+
+  const toGoWorkspace = (id) => {
+    navigate(`/main/${id}/board`);
   };
 
   return (
@@ -95,7 +121,7 @@ const Main = () => {
           <div className="workspaces-container_top">
             <h2 className="active-workspace">
               최근 활동한 팀플방
-              <div className="create-workspace" onClick={() => click()}>
+              <div className="create-workspace">
                 <BookmarkAddIcon />
                 New
               </div>
@@ -106,32 +132,21 @@ const Main = () => {
               className="find-workspaceName-input"
             />
           </div>
-          <Divider borderColor="red" />
           <ul className="workspaces-list">
-            <li className="workspace-source">
-              <UserAvatar width="20px" height="20px" />
-              물리학 중간 3조
-            </li>
-            <li className="workspace-source">
-              <UserAvatar width="20px" height="20px" />
-              물리학 중간 3조
-            </li>
-            <li className="workspace-source">
-              <UserAvatar width="20px" height="20px" />
-              물리학 중간 3조
-            </li>
-            <li className="workspace-source">
-              <UserAvatar width="20px" height="20px" />
-              물리학 중간 3조
-            </li>
-            <li className="workspace-source">
-              <UserAvatar width="20px" height="20px" />
-              물리학 중간 3조
-            </li>
-            <li className="workspace-source">
-              <UserAvatar width="20px" height="20px" />
-              물리학 중간 3조
-            </li>
+            {workspaceList?.map((workspace, idx) => {
+              const id = workspace._id.substring(0, 6);
+              return (
+                <li
+                  className="workspace-source"
+                  onClick={() => toGoWorkspace(id)}
+                  key={idx}
+                  id={id}
+                >
+                  <UserAvatar width="20px" height="20px" />
+                  {workspace.workSpace.split("+")[1]}
+                </li>
+              );
+            })}
           </ul>
         </div>
         {/* <div className="buttons">
@@ -177,12 +192,67 @@ const Main = () => {
       </LeftSide>
 
       <RightSide>
-        <Header invitation={user.invitation} />
         <main className="main-container">
           {appstate === APP_USER_STATE.USER ? (
-            <Outlet context={{ currentParams }} />
+            <>
+              {location.pathname === "/main" ? (
+                <h1>어서오세요</h1>
+              ) : (
+                <>
+                  <div className="private-workspace_header">
+                    <h1 className="private-workspace_title">물리학 중간 3조</h1>
+                    <ul className="private-workspace_navbar">
+                      <Link
+                        to={`/main/${params.id}/board`}
+                        className={`list-item`}
+                        // onClick={(e) => handleSelectedPage(e, idx)}
+                      >
+                        BOARD
+                      </Link>
+                      <Link
+                        to={`/main/${params.id}/calendar`}
+                        className={`list-item `}
+                        // className={`list-item ${
+                        //   selectedPage[idx] ? "list-item_clicked" : ""
+                        // }`}
+                        // onClick={(e) => handleSelectedPage(e, idx)}
+                      >
+                        CALENDAR
+                      </Link>
+                      <Link
+                        to={`/main/${params.id}/talk`}
+                        className={`list-item`}
+                        // className={`list-item ${
+                        //   selectedPage[idx] ? "list-item_clicked" : ""
+                        // }`}
+                        // onClick={(e) => handleSelectedPage(e, idx)}
+                      >
+                        TALK
+                      </Link>
+                      {/* {pages.map((page, idx) => {
+                        const pageNameToLower = page.toLowerCase();
+                        return (
+                          <Link
+                            key={idx}
+                            name={pageNameToLower}
+                            onClick={(e) => handleSelectedPage(e, idx)}
+                            className={`list-item ${
+                              selectedPage[idx] ? "list-item_clicked" : ""
+                            }`}
+                            to={`/main/${params.id}/${pageNameToLower}`}
+                          >
+                            {page}
+                          </Link>
+                        );
+                      })} */}
+                    </ul>
+                  </div>
+                  <Outlet />
+                </>
+              )}
+            </>
           ) : (
-            <ScreenForNewbie />
+            <ScreenForNewbie setAppState={setAppState} />
           )}
         </main>
       </RightSide>
@@ -277,48 +347,56 @@ const LeftSide = styled.aside`
 
 const RightSide = styled.div`
   display: flex;
-  width: 76%;
+  width: 100%;
   flex-direction: column;
-  padding: 16px 24px;
+  padding: 24px;
+  box-sizing: border-box;
 
   .main-container {
     width: 100%;
+    height: 100%;
     box-sizing: border-box;
 
     .private-workspace_header {
       width: 100%;
+      height: 12%;
     }
 
     .private-workspace_title {
-      font-size: 32px;
+      font-size: 28px;
       margin-bottom: 12px;
     }
 
     .private-workspace_navbar {
       display: flex;
-      gap: 20px;
+      gap: 25px;
+      margin-left: 10px;
     }
 
-    .private-workspace_navbar-item {
-      min-height: 48px;
+    .list-item {
+      font-size: 14px;
+      min-height: 24px;
       padding: 4px 12px;
       text-align: center;
-      line-height: 48px;
+      line-height: 24px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       outline: none;
+      border-bottom: 6px solid transparent;
+      text-decoration: none;
+      color: black;
+      font-weight: 600;
     }
 
-    .private-workspace_navbar-item.selected {
-      border-bottom: 5px solid #8698fc;
+    .list-item_clicked {
+      border-bottom: 6px solid #8698fc;
+      transform: scale(1.1);
       color: #8698fc;
     }
 
     .private-workspace_main {
       width: 100%;
-      height: 100%;
-      background-color: red;
-      margin-top: 30px;
+      height: 88%;
     }
   }
 `;

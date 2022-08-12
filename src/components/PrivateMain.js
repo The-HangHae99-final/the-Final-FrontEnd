@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link, Outlet, useParams } from "react-router-dom";
+import { Link, Outlet, Route, Routes, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo } from "../redux/userReducer";
@@ -11,13 +11,16 @@ import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import UserAvatar from "../elements/UserAvatar";
 import Divider from "../elements/Divider";
 import Board from "../pages/Board";
+import Calender from "../pages/Calendar/Calendar";
+import Message from "../pages/Message/Message";
 
-const PublicMain = () => {
+const PrivateMain = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
   const params = useParams();
   const currentParams = params.workSpaceName;
+  const workspaceList = user.workSpaceList;
 
   useEffect(() => {
     try {
@@ -32,7 +35,7 @@ const PublicMain = () => {
           if (res.data.success) {
             const wsInfoList = res.data.includedList;
             const workSpaceFullname = wsInfoList.map((ws) => {
-              return ws.workSpace;
+              return ws.workSpace.split("+")[1];
             });
             // 받은 초대메시지 목록 요청
             axios
@@ -63,7 +66,6 @@ const PublicMain = () => {
   // 선택된 페이지 상태만 true (+classname selected 추가)
   // 나머진 모두 false(+classname selected 제거)
   const [selectedPage, setSelectedPage] = useState([]);
-  console.log("selectedPage: ", selectedPage);
   const pages = ["BOARD", "CALENDAR", "TALK"];
   const handleSelectedPage = (index) => {
     // page의 수만큼 false로 채워진 새로운 배열을 만든다.
@@ -75,8 +77,6 @@ const PublicMain = () => {
 
   return (
     <MainStyle>
-      <Header invitation={user.invitation} />
-
       <LeftSide>
         <div className="workspaces-container">
           <Divider />
@@ -97,30 +97,15 @@ const PublicMain = () => {
           </div>
           <Divider borderColor="red" />
           <ul className="workspaces-list">
-            <li className="workspace-source">
-              <UserAvatar width="20px" height="20px" />
-              물리학 중간 3조
-            </li>
-            <li className="workspace-source">
-              <UserAvatar width="20px" height="20px" />
-              물리학 중간 3조
-            </li>
-            <li className="workspace-source">
-              <UserAvatar width="20px" height="20px" />
-              물리학 중간 3조
-            </li>
-            <li className="workspace-source">
-              <UserAvatar width="20px" height="20px" />
-              물리학 중간 3조
-            </li>
-            <li className="workspace-source">
-              <UserAvatar width="20px" height="20px" />
-              물리학 중간 3조
-            </li>
-            <li className="workspace-source">
-              <UserAvatar width="20px" height="20px" />
-              물리학 중간 3조
-            </li>
+            {workspaceList &&
+              workspaceList?.map((workspace, idx) => {
+                return (
+                  <li className="workspace-source" key={idx}>
+                    <UserAvatar width="20px" height="20px" />
+                    {workspace}
+                  </li>
+                );
+              })}
           </ul>
         </div>
         {/* <div className="buttons">
@@ -190,7 +175,12 @@ const PublicMain = () => {
             </ul>
           </div>
           <div className="private-workspace_main">
-            <Outlet />
+            <h1>팀노트에 오실 걸 환영합니다!</h1>
+            <Routes>
+              <Route path=":id" element={<Board />} />
+              <Route path=":id/calendar" element={<Calender />} />
+              <Route path=":id/talk" element={<Message />} />
+            </Routes>
           </div>
         </main>
       </RightSide>
@@ -335,7 +325,7 @@ const RightSide = styled.div`
     }
   }
 `;
-export default PublicMain;
+export default PrivateMain;
 
 // <PrivateMainStyle>
 // <MainHeader className="MainHeader">

@@ -67,7 +67,6 @@ const Message = () => {
           ":" +
           new Date(Date.now()).getMinutes(),
       };
-      console.log("messageData: ", messageData);
       // 소켓 명령어와 함께 메시지 데이터를 보낸다
       await currentSocket.emit("send_message", messageData);
       setMessageList((list) => [...list, messageData]);
@@ -86,10 +85,8 @@ const Message = () => {
   // 훅을 이용해 소켓 관리
   useEffect(() => {
     setCurrentSocket(socketIOClient("https://teamnote.shop/chat"));
- // 컴포넌트 사라질 때 disconnect 시켜줘야함
-    return () => {
-      
-    }
+    // 컴포넌트 사라질 때 disconnect 시켜줘야함
+    return () => {};
   }, []);
 
   return (

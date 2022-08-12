@@ -218,10 +218,9 @@ const Header = ({ invitation }) => {
                 </div>
                 <WorkspaceList>
                   {workspaceList &&
-                    workspaceList.map((item, idx) => {
+                    workspaceList?.map((item, idx) => {
                       const workspaceName = item.workSpace.split("+");
                       const id = item._id;
-                      console.log("id: ", id);
                       return (
                         <li
                           key={idx}
