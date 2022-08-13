@@ -112,7 +112,7 @@ const Main = () => {
   useEffect(() => {}, []);
 
   const toGoWorkspace = (id, workspace) => {
-    navigate(`/main/${id}/board`);
+    navigate(`/main/${id}/board`, { state: workspace });
   };
 
   return (
@@ -137,13 +137,13 @@ const Main = () => {
           </div>
           <ul className="workspaces-list">
             {workspaceList?.map((workspace, idx) => {
-              const id = workspace._id.substring(0, 6);
               return (
                 <li
                   className="workspace-source"
-                  onClick={() => toGoWorkspace(id, workspace)}
+                  onClick={() => {
+                    toGoWorkspace(workspace._id, workspace);
+                  }}
                   key={idx}
-                  id={id}
                 >
                   <UserAvatar width="20px" height="20px" />
                   {workspace.workSpace.split("+")[1]}

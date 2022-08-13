@@ -65,6 +65,7 @@ export const SignIn = () => {
         password,
       });
       if (res.data.success) {
+        console.log("res: ", res);
         const user_name = res.data.userName;
         const user_email = res.data.userEmail;
         const token = res.data.token;

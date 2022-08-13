@@ -16,6 +16,7 @@ import { Human03 } from "../elements/humanIcon";
 import { useOutletContext } from "react-router-dom";
 import { keys } from "@mui/system";
 import Column from "../components/Board/Column";
+import { useLocation } from "react-router";
 
 function createBox(
   handleSubmit,
@@ -79,7 +80,10 @@ function createBox(
 }
 
 const Board = () => {
-  // const { currentParams } = useOutletContext();
+  const { state } = useLocation();
+  const currentWorkspaceName = state.workSpace.split("+")[1];
+  const currntWorkspaceId = state._id;
+  console.log(`${currntWorkspaceId}+${currentWorkspaceName}`);
 
   const [data, setData] = useState({
     title: "",
@@ -93,7 +97,7 @@ const Board = () => {
   const [todoList, setTodoList] = useState([]);
   const [inProgressList, setInProgressList] = useState([]);
   const [doneList, setDoneList] = useState([]);
-  const [state, setState] = useState(initialData);
+  const [initState, setInitState] = useState(initialData);
   const [isShown, setIsShown] = useState(false);
   const [titleCharacter, setTitleCharacter] = useState(0);
 
@@ -113,15 +117,15 @@ const Board = () => {
         const task = res.data.result;
         let newObject = {};
         newObject[task.postId] = task;
-        setState({
-          ...state,
-          tasks: { ...state.tasks, ...newObject },
+        setInitState({
+          ...initState,
+          tasks: { ...initState.tasks, ...newObject },
           columns: {
-            ...state.columns,
+            ...initState.columns,
             "column-1": {
               id: "column-1",
               title: "TO-DO",
-              taskIds: [...state.columns["column-1"].taskIds, task.postId],
+              taskIds: [...initState.columns["column-1"].taskIds, task.postId],
             },
           },
         });
@@ -201,46 +205,45 @@ const Board = () => {
   };
 
   // 전체 보드 리스트 가져오기
-  // useEffect(() => {
-  //   try {
-  //     async function fetchBoards() {
-  //       const res = await axios.get(
-  //         `https://teamnote.shop/api/posts/list/${currentParams}`, // hs421
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${getItemFromLs("myToken")}`,
-  //           },
-  //         }
-  //       );
-  //       // 서버에서 받아온 데이터(배열)
-  //       console.log("res: ", res);
-  //       const boards = res.data.posts;
-  //       console.log("boards: ", boards);
+  useEffect(() => {
+    try {
+      async function fetchBoards() {
+        const res = await axios.get(
+          `https://teamnote.shop/api/posts/list/${currntWorkspaceId}+${currentWorkspaceName}`,
+          {
+            headers: {
+              Authorization: `Bearer ${getItemFromLs("myToken")}`,
+            },
+          }
+        );
+        // 서버에서 받아온 데이터(배열)
+        console.log("res: ", res);
+        const boards = res.data.posts;
 
-  //       const newObject = {};
+        const newObject = {};
 
-  //       boards.forEach((task) => {
-  //         return (newObject[task.postId] = task);
-  //       });
+        boards.forEach((task) => {
+          return (newObject[task.postId] = task);
+        });
 
-  //       setState({
-  //         ...state,
-  //         tasks: { ...newObject },
-  //         columns: {
-  //           ...state.columns,
-  //           "column-1": {
-  //             id: "column-1",
-  //             title: "TO-DO",
-  //             taskIds: [...state.columns["column-1"].taskIds],
-  //           },
-  //         },
-  //       });
-  //     }
-  //     fetchBoards();
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }, []);
+        setInitState({
+          ...initState,
+          tasks: { ...newObject },
+          columns: {
+            ...initState.columns,
+            "column-1": {
+              id: "column-1",
+              title: "TO-DO",
+              taskIds: [...initState.columns["column-1"].taskIds],
+            },
+          },
+        });
+      }
+      fetchBoards();
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
 
   const reorderColumnList = (sourceCol, startIndex, endIndex) => {
     const newtaskIds = Array.from(sourceCol.taskIds);
@@ -271,10 +274,10 @@ const Board = () => {
     }
 
     // If 유저가 같은 column에 다른 위치에 드랍 할 떄
-    const sourceCol = state.columns[source.droppableId];
+    const sourceCol = initState.columns[source.droppableId];
     console.log("sourceCol: ", sourceCol);
 
-    const destinationCol = state.columns[destination.droppableId];
+    const destinationCol = initState.columns[destination.droppableId];
     console.log("destinationCol: ", destinationCol);
 
     if (sourceCol.id === destinationCol.id) {
@@ -285,13 +288,13 @@ const Board = () => {
       );
 
       const newState = {
-        ...state,
+        ...initState,
         columns: {
-          ...state.columns,
+          ...initState.columns,
           [newColumn.id]: newColumn,
         },
       };
-      setState(newState);
+      setInitState(newState);
       return;
     }
 
@@ -311,29 +314,31 @@ const Board = () => {
     };
 
     const newState = {
-      ...state,
+      ...initState,
       columns: {
-        ...state.columns,
+        ...initState.columns,
         [newStartCol.id]: newStartCol,
         [newEndCol.id]: newEndCol,
       },
     };
 
-    setState(newState);
+    setInitState(newState);
   };
   return (
     <BoardStyle>
       <DragDropContext onDragEnd={onDragEnd}>
         <BoardContainer>
-          {state.columnOrder.map((columnId) => {
-            const column = state.columns[columnId];
-            const tasks = column.taskIds.map((taskId) => state.tasks[taskId]);
+          {initState.columnOrder.map((columnId) => {
+            const column = initState.columns[columnId];
+            const tasks = column.taskIds.map(
+              (taskId) => initState.tasks[taskId]
+            );
             return (
               <Column
                 key={column.id}
                 column={column}
                 tasks={tasks}
-                state={state}
+                state={initState}
                 createBox={createBox}
                 isShown={isShown}
                 handleSubmit={handleSubmit}
