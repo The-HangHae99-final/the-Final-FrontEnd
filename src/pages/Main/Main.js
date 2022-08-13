@@ -12,7 +12,7 @@ import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import UserAvatar from "../../elements/UserAvatar";
 import Divider from "../../elements/Divider";
 import { useRecoilState } from "recoil";
-import { userState } from "../../recoil/recoil";
+import { currentWorkspaceState, userState } from "../../recoil/recoil";
 import ModalPortal from "../../elements/Portal/ModalPortal";
 import WorkspaceModal from "../../components/Modal/WorkspaceModal";
 import useMountTransition from "../../utils/useMountTransition";
@@ -26,19 +26,20 @@ export const APP_USER_STATE = {
 
 const Main = () => {
   const [userInfo, setUserInfo] = useRecoilState(userState);
+  const [currentWorkspace, setCurrentWorkspace] = useRecoilState(
+    currentWorkspaceState
+  );
   const [appstate, setAppState] = useState(APP_USER_STATE.UNKNOWN);
   const [modalOn, setModalOn] = useState(false);
   const [workSpaceName, setWorkSpaceName] = useState("");
   const [isMounted, setIsMounted] = useState(false);
   const hasTransitionedIn = useMountTransition(isMounted, 1500);
-
   const isLoading = appstate === APP_USER_STATE.UNKNOWN;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
   const workspaceList = userInfo.workSpaceList;
   const params = useParams();
-  const currentParams = params.workSpaceName;
   const location = useLocation();
   const [selectedPage, setSelectedPage] = useState([true, false, false]);
 
@@ -145,12 +146,10 @@ const Main = () => {
   const handleModal = () => {
     setModalOn(!modalOn);
   };
-  console.log("modalOn: ", modalOn);
 
   const handleWorkSpaceName = (e) => {
     setWorkSpaceName(e.target.value);
   };
-  console.log("e: ", workSpaceName);
 
   return (
     <MainStyle>
@@ -175,16 +174,18 @@ const Main = () => {
           <ul className="workspaces-list">
             {workspaceList &&
               workspaceList?.map((workspace, idx) => {
+                const workspaceName = workspace.workSpace.split("+")[1];
                 return (
                   <li
                     className="workspace-source"
                     onClick={() => {
                       toGoWorkspace(workspace._id, workspace);
+                      setCurrentWorkspace(workspaceName);
                     }}
                     key={idx}
                   >
                     <UserAvatar width="20px" height="20px" />
-                    {workspace.workSpace.split("+")[1]}
+                    {workspaceName}
                   </li>
                 );
               })}
@@ -241,7 +242,9 @@ const Main = () => {
               ) : (
                 <>
                   <div className="private-workspace_header">
-                    <h1 className="private-workspace_title">물리학 중간 3조</h1>
+                    <h1 className="private-workspace_title">
+                      {currentWorkspace}
+                    </h1>
                     <ul className="private-workspace_navbar">
                       <Link
                         to={`/main/${params.id}/board`}

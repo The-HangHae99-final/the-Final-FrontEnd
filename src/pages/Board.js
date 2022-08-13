@@ -17,6 +17,7 @@ import { useOutletContext } from "react-router-dom";
 import { keys } from "@mui/system";
 import Column from "../components/Board/Column";
 import { useLocation } from "react-router";
+import { useRecoilValue } from "recoil";
 
 function createBox(
   handleSubmit,
@@ -81,9 +82,8 @@ function createBox(
 
 const Board = () => {
   const { state } = useLocation();
-  const currentWorkspaceName = state?.workspaceName?.split("+")[1];
-  const currntWorkspaceId = state.workspaceId;
-
+  const currentWorkspaceName = state?.workSpace?.split("+")[1];
+  const currntWorkspaceId = state?.workspaceId;
   const [data, setData] = useState({
     title: "",
     desc: "",
@@ -99,7 +99,6 @@ const Board = () => {
   const [initState, setInitState] = useState(initialData);
   const [isShown, setIsShown] = useState(false);
   const [titleCharacter, setTitleCharacter] = useState(0);
-
   // 보드 생성
   const handleSubmit = async (e) => {
     e.preventDefault();

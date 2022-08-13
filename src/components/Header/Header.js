@@ -30,11 +30,12 @@ import useMountTransition from "../../utils/useMountTransition";
 import MyProfileModal from "../Modal/MyProfileModal";
 import * as common from "../../elements/toast";
 import Board from "../../pages/Board";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { userState } from "../../recoil/recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { currentWorkspaceState, userState } from "../../recoil/recoil";
 
 const Header = ({ invitation }) => {
   const [userInfo, setUserInfo] = useRecoilState(userState);
+  const setCurrentWorkspace = useSetRecoilState(currentWorkspaceState);
   const [workSpaceName, setWorkSpaceName] = useState("");
   const [modalOn, setModalOn] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
@@ -225,17 +226,10 @@ const Header = ({ invitation }) => {
                           className="workspace-item"
                           onClick={() => {
                             setOpenDropdown(false);
-                            // dispatch(
-                            //   getWorkSpaceData({
-                            //     ...workspace,
-                            //   })
-                            // );
                             navigate(`/main/${item._id}/board`, {
-                              state: {
-                                workspaceName: item.workSpace,
-                                workspaceId,
-                              },
+                              state: item,
                             });
+                            setCurrentWorkspace(workspaceName[1]);
                           }}
                         >
                           <div className="workspace_avatar">

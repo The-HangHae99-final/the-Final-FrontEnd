@@ -10,3 +10,8 @@ export const userState = atom({
     invitation: [],
   },
 });
+
+export const currentWorkspaceState = atom({
+  key: "currentWorkspaceState",
+  default: "",
+});

@@ -29,6 +29,7 @@ import isLogin from "../utils/isLogin";
 // => /main/123/calendar or /main/123/chat
 
 // * 로그인 전에 /main 입력 시 처리
+console.log("isLogin(): ", isLogin());
 
 const Router = () => {
   return (
@@ -41,7 +42,7 @@ const Router = () => {
         </Route>
         <Route
           path="/main"
-          element={!isLogin() ? <Navigate to="/join/signin" /> : <Main />}
+          element={isLogin() ? <Main /> : <Navigate to="/join/signin" />}
         ></Route>
         <Route path="/main/:id/*" element={<Main />}>
           <Route path="board" element={<Board />} />

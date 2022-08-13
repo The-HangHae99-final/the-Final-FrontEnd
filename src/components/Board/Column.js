@@ -16,7 +16,6 @@ const Column = ({
   titleCharacter,
   handleLabelClick,
 }) => {
-  console.log("tasks: ", tasks);
   return (
     <SectionWrap>
       <div className="section-top">
