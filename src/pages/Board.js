@@ -18,6 +18,7 @@ import { keys } from "@mui/system";
 import Column from "../components/Board/Column";
 import { useLocation } from "react-router";
 import { useRecoilValue } from "recoil";
+import { currentWorkspaceState } from "../recoil/recoil";
 
 function createBox(
   handleSubmit,
@@ -84,6 +85,8 @@ const Board = () => {
   const { state } = useLocation();
   const currentWorkspaceName = state?.workSpace?.split("+")[1];
   const currntWorkspaceId = state?.workspaceId;
+  const currentWs = useRecoilValue(currentWorkspaceState);
+  console.log("currentWs: ", currentWs);
   const [data, setData] = useState({
     title: "",
     desc: "",
@@ -92,6 +95,7 @@ const Board = () => {
     workSpaceName: "",
     category: "todo",
   });
+  console.log("data: ", data);
 
   const [todoList, setTodoList] = useState([]);
   const [inProgressList, setInProgressList] = useState([]);
@@ -112,6 +116,7 @@ const Board = () => {
         },
       });
       if (res.data.success) {
+        console.log("res: ", res);
         const task = res.data.result;
         let newObject = {};
         newObject[task.postId] = task;
@@ -140,10 +145,10 @@ const Board = () => {
   useEffect(() => {
     setData({
       ...data,
-      workSpaceName: currentWorkspaceName,
+      workSpaceName: currentWs,
       assignees: getItemFromLs("userName"),
     });
-  }, []);
+  }, [state?.workSpace, currentWs]);
 
   // 보드 삭제
   const removeBoard = (postId) => {

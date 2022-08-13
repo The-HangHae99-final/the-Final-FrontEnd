@@ -11,7 +11,7 @@ import Spinner from "../../elements/Spinner";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import UserAvatar from "../../elements/UserAvatar";
 import Divider from "../../elements/Divider";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { currentWorkspaceState, userState } from "../../recoil/recoil";
 import ModalPortal from "../../elements/Portal/ModalPortal";
 import WorkspaceModal from "../../components/Modal/WorkspaceModal";
@@ -43,6 +43,8 @@ const Main = () => {
   const workspaceList = userInfo.workSpaceList;
   const params = useParams();
   const location = useLocation();
+  const currentWs = useRecoilValue(currentWorkspaceState);
+  console.log("currentWs: ", currentWs);
 
   const handleSelectedPage = (e) => {
     const pages = ["BOARD", "CALENDAR", "TALK"];
@@ -196,7 +198,7 @@ const Main = () => {
                     className="workspace-source"
                     onClick={() => {
                       toGoWorkspace(workspace._id, workspace);
-                      setCurrentWorkspace(workspaceName);
+                      setCurrentWorkspace(workspace.workSpace);
                     }}
                     key={idx}
                   >
@@ -261,7 +263,7 @@ const Main = () => {
                 <>
                   <div className="private-workspace_header">
                     <h1 className="private-workspace_title">
-                      {currentWorkspace}
+                      {currentWorkspace.split("+")[1]}
                     </h1>
                     <ul className="private-workspace_navbar">
                       <Link
