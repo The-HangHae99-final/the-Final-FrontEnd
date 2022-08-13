@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Spinner from "../elements/Spinner";
 
 // 페이지
@@ -17,6 +17,8 @@ import { useMediaQuery } from "react-responsive";
 import { ToastContainer } from "react-toastify";
 import Header from "../components/Header/Header";
 import Aside from "../components/Aside";
+import { getItemFromLs } from "../utils/localStorage";
+import isLogin from "../utils/isLogin";
 
 // 로그인 후
 // 1. 워크스페이스 선택 전 화면
@@ -33,14 +35,14 @@ const Router = () => {
     <>
       <Header />
       <Routes>
-        {/* 1. 로그인 */}
         <Route path="/join" element={<JoinRouter />}>
           <Route path="signin" element={<SignIn />} />
           <Route path="signup" element={<Signup />} />
         </Route>
-
-        {/* 2. main으로 이동 */}
-        <Route path="/main" element={<Main />} />
+        <Route
+          path="/main"
+          element={!isLogin() ? <Navigate to="/join/signin" /> : <Main />}
+        ></Route>
         <Route path="/main/:id/*" element={<Main />}>
           <Route path="board" element={<Board />} />
           <Route path="calendar" element={<Calender />} />
