@@ -13,6 +13,9 @@ import UserAvatar from "../../elements/UserAvatar";
 import Divider from "../../elements/Divider";
 import { useRecoilState } from "recoil";
 import { userState } from "../../recoil/recoil";
+import ModalPortal from "../../elements/Portal/ModalPortal";
+import WorkspaceModal from "../../components/Modal/WorkspaceModal";
+import useMountTransition from "../../utils/useMountTransition";
 
 export const APP_USER_STATE = {
   NOT_AUTH: "로그인되지 않은 상태",
@@ -24,6 +27,11 @@ export const APP_USER_STATE = {
 const Main = () => {
   const [userInfo, setUserInfo] = useRecoilState(userState);
   const [appstate, setAppState] = useState(APP_USER_STATE.UNKNOWN);
+  const [modalOn, setModalOn] = useState(false);
+  const [workSpaceName, setWorkSpaceName] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
+  const hasTransitionedIn = useMountTransition(isMounted, 1500);
+
   const isLoading = appstate === APP_USER_STATE.UNKNOWN;
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -45,7 +53,6 @@ const Main = () => {
     // state를 newArr로 업데이트한다
     setSelectedPage(newArr);
   };
-  console.log("---------메인 렌더링!!---------");
   useEffect(() => {
     try {
       // 소속된 워크스페이스 리스트 조회 요청
@@ -104,11 +111,46 @@ const Main = () => {
     }
   }, []);
 
-  useEffect(() => {}, []);
+  //워크스페이스 생성
+  const addNewWorkSpace = (e) => {
+    axios
+      .post(
+        "https://teamnote.shop/api/work-spaces",
+        { workSpaceName: `${getItemFromLs("userEmail")}+${workSpaceName}` },
+        {
+          headers: {
+            Authorization: `Bearer ${getItemFromLs("myToken")}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log("res: ", res);
+        setUserInfo({
+          ...userInfo,
+          workSpaceList: [...userInfo.workSpaceList, res.data.addedOwner],
+        });
+        setModalOn(false);
+        setWorkSpaceName("");
+        setIsMounted(true);
+        setTimeout(() => {
+          setIsMounted(false);
+        }, 2500);
+      });
+  };
 
   const toGoWorkspace = (id, workspace) => {
     navigate(`/main/${id}/board`, { state: workspace });
   };
+
+  const handleModal = () => {
+    setModalOn(!modalOn);
+  };
+  console.log("modalOn: ", modalOn);
+
+  const handleWorkSpaceName = (e) => {
+    setWorkSpaceName(e.target.value);
+  };
+  console.log("e: ", workSpaceName);
 
   return (
     <MainStyle>
@@ -116,7 +158,7 @@ const Main = () => {
         <div className="workspaces-container">
           <Divider />
 
-          <div className="workspaces-container_top">
+          <div className="workspaces-container_top" onClick={handleModal}>
             <h2 className="active-workspace">
               최근 활동한 팀플방
               <div className="create-workspace">
@@ -242,6 +284,27 @@ const Main = () => {
           )}
         </main>
       </RightSide>
+      <ModalPortal>
+        {modalOn && (
+          <WorkspaceModal
+            onClose={handleModal}
+            addNewWorkSpace={addNewWorkSpace}
+            workSpaceName={workSpaceName}
+            handleWorkSpaceName={handleWorkSpaceName}
+          />
+        )}
+      </ModalPortal>
+      {hasTransitionedIn || isMounted ? (
+        <SuccessModalBox>
+          <div
+            className={`success-modal ${hasTransitionedIn && "in"} ${
+              isMounted && "visible"
+            }`}
+          >
+            새로운 워크스페이스가 개설되었습니다!
+          </div>
+        </SuccessModalBox>
+      ) : null}
     </MainStyle>
   );
 };
@@ -314,6 +377,9 @@ const LeftSide = styled.aside`
     display: flex;
     flex-direction: column;
     gap: 14px;
+    max-height: 450px;
+    overflow: scroll;
+    padding: 10px;
 
     .workspace-source {
       display: flex;
@@ -384,6 +450,38 @@ const RightSide = styled.div`
       width: 100%;
       height: 88%;
     }
+  }
+`;
+
+const SuccessModalBox = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  text-align: center;
+
+  .success-modal {
+    padding: 15px 20px;
+    height: 3.7rem;
+    background: #889aff;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 26px;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .success-modal.in.visible {
+    opacity: 1;
   }
 `;
 export default Main;

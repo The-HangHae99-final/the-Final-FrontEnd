@@ -26,7 +26,7 @@ import { getUserInfo, userLogout } from "../../redux/userReducer";
 import { getWorkSpaceData } from "../../redux/workSpaceReducer";
 import reset from "../../redux/workSpaceReducer";
 import NotificationModal from "../Modal/NotificationModal";
-import useMountTransition from "../../utils/useMointTransition";
+import useMountTransition from "../../utils/useMountTransition";
 import MyProfileModal from "../Modal/MyProfileModal";
 import * as common from "../../elements/toast";
 import Board from "../../pages/Board";
@@ -35,7 +35,6 @@ import { userState } from "../../recoil/recoil";
 
 const Header = ({ invitation }) => {
   const [userInfo, setUserInfo] = useRecoilState(userState);
-  console.log("userInfo: ", userInfo);
   const [workSpaceName, setWorkSpaceName] = useState("");
   const [modalOn, setModalOn] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);

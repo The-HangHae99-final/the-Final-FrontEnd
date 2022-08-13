@@ -13,7 +13,7 @@ import Vector3 from "../../public/img/Vector3.png";
 import { TextareaAutosize } from "@mui/base";
 import ko from "date-fns/locale/ko";
 import { getItemFromLs } from "../../utils/localStorage";
-import useMountTransition from "../../utils/useMointTransition";
+import useMountTransition from "../../utils/useMountTransition";
 
 registerLocale("ko", ko);
 

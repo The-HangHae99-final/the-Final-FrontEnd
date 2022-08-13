@@ -7,7 +7,6 @@ import { getItemFromLs } from "../../utils/localStorage";
 const WorkspaceModal = ({
   onClose,
   addNewWorkSpace,
-  setWorkSpaceName,
   workSpaceNameMessage,
   handleWorkSpaceName,
   workSpaceName,
@@ -28,9 +27,6 @@ const WorkspaceModal = ({
                 onChange={handleWorkSpaceName}
                 maxLength="10"
               />
-              {workSpaceNameMessage !== "" ? (
-                <span className="help-message">{workSpaceNameMessage}</span>
-              ) : null}
             </div>
             <div className="active-buttons">
               <button className="active-button cancel" onClick={onClose}>
