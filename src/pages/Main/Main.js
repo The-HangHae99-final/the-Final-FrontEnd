@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import {
-  Link,
-  Outlet,
-  Route,
-  Routes,
-  useLocation,
-  useParams,
-} from "react-router-dom";
+import { Link, Outlet, useLocation, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo } from "../../redux/userReducer";
@@ -15,15 +8,12 @@ import axios from "axios";
 import { getItemFromLs } from "../../utils/localStorage";
 import ScreenForNewbie from "../../components/ScreenForNewbie";
 import Spinner from "../../elements/Spinner";
-import Header from "../../components/Header/Header";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import UserAvatar from "../../elements/UserAvatar";
 import Divider from "../../elements/Divider";
-import mainImage from "../../public/img/Main/main_image.png";
-import Board from "../Board";
-import Calender from "../Calendar/Calendar";
-import Message from "../Message/Message";
-// 이미지
+import { useRecoilState } from "recoil";
+import { userState } from "../../recoil/recoil";
+
 export const APP_USER_STATE = {
   NOT_AUTH: "로그인되지 않은 상태",
   UNKNOWN: "모름",
@@ -32,12 +22,13 @@ export const APP_USER_STATE = {
 };
 
 const Main = () => {
+  const [userInfo, setUserInfo] = useRecoilState(userState);
   const [appstate, setAppState] = useState(APP_USER_STATE.UNKNOWN);
   const isLoading = appstate === APP_USER_STATE.UNKNOWN;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
-  const workspaceList = user.workSpaceList;
+  const workspaceList = userInfo.workSpaceList;
   const params = useParams();
   const currentParams = params.workSpaceName;
   const location = useLocation();
@@ -51,11 +42,10 @@ const Main = () => {
     let newArr = Array(pages.length).fill(false);
     // 선택된 page의 index를 이용해 해당 index의 상태를 true로 바꿔준다.
     newArr[index] = true;
-    console.log("newArr: ", newArr);
     // state를 newArr로 업데이트한다
     setSelectedPage(newArr);
   };
-
+  console.log("---------메인 렌더링!!---------");
   useEffect(() => {
     try {
       // 소속된 워크스페이스 리스트 조회 요청
@@ -99,6 +89,11 @@ const Main = () => {
                       invitation: [...res.data.result],
                     })
                   );
+                  setUserInfo({
+                    ...userInfo,
+                    workSpaceList: [...wsInfoList],
+                    invitation: [...res.data.result],
+                  });
                 }
               })
               .catch((err) => console.log(err));
@@ -136,20 +131,21 @@ const Main = () => {
             />
           </div>
           <ul className="workspaces-list">
-            {workspaceList?.map((workspace, idx) => {
-              return (
-                <li
-                  className="workspace-source"
-                  onClick={() => {
-                    toGoWorkspace(workspace._id, workspace);
-                  }}
-                  key={idx}
-                >
-                  <UserAvatar width="20px" height="20px" />
-                  {workspace.workSpace.split("+")[1]}
-                </li>
-              );
-            })}
+            {workspaceList &&
+              workspaceList?.map((workspace, idx) => {
+                return (
+                  <li
+                    className="workspace-source"
+                    onClick={() => {
+                      toGoWorkspace(workspace._id, workspace);
+                    }}
+                    key={idx}
+                  >
+                    <UserAvatar width="20px" height="20px" />
+                    {workspace.workSpace.split("+")[1]}
+                  </li>
+                );
+              })}
           </ul>
         </div>
         {/* <div className="buttons">

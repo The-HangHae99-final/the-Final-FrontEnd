@@ -81,9 +81,8 @@ function createBox(
 
 const Board = () => {
   const { state } = useLocation();
-  const currentWorkspaceName = state.workSpace.split("+")[1];
-  const currntWorkspaceId = state._id;
-  console.log(`${currntWorkspaceId}+${currentWorkspaceName}`);
+  const currentWorkspaceName = state?.workspaceName?.split("+")[1];
+  const currntWorkspaceId = state.workspaceId;
 
   const [data, setData] = useState({
     title: "",
@@ -139,13 +138,13 @@ const Board = () => {
   };
 
   // 화면 렌더링 시 자동으로 workspace 의 이름과 할당자(본인이름)을 업데이트
-  // useEffect(() => {
-  //   setData({
-  //     ...data,
-  //     workSpaceName: currentParams,
-  //     assignees: getItemFromLs("userName"),
-  //   });
-  // }, []);
+  useEffect(() => {
+    setData({
+      ...data,
+      workSpaceName: currentWorkspaceName,
+      assignees: getItemFromLs("userName"),
+    });
+  }, []);
 
   // 보드 삭제
   const removeBoard = (postId) => {
@@ -324,6 +323,7 @@ const Board = () => {
 
     setInitState(newState);
   };
+
   return (
     <BoardStyle>
       <DragDropContext onDragEnd={onDragEnd}>

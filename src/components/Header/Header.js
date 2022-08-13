@@ -30,8 +30,12 @@ import useMountTransition from "../../utils/useMointTransition";
 import MyProfileModal from "../Modal/MyProfileModal";
 import * as common from "../../elements/toast";
 import Board from "../../pages/Board";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { userState } from "../../recoil/recoil";
 
 const Header = ({ invitation }) => {
+  const [userInfo, setUserInfo] = useRecoilState(userState);
+  console.log("userInfo: ", userInfo);
   const [workSpaceName, setWorkSpaceName] = useState("");
   const [modalOn, setModalOn] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
@@ -45,7 +49,7 @@ const Header = ({ invitation }) => {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user.value);
-  const workspaceList = user.workSpaceList;
+  const workspaceList = userInfo.workSpaceList;
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -82,7 +86,7 @@ const Header = ({ invitation }) => {
   //   setWorkspaceName(e.target.value);
   // };
 
-  //워크스페이스 추가
+  //워크스페이스 생성
   const addNewWorkSpace = (e) => {
     axios
       .post(
@@ -96,15 +100,10 @@ const Header = ({ invitation }) => {
       )
       .then((res) => {
         console.log("res: ", res);
-        dispatch(
-          getUserInfo({
-            ...user,
-            workSpaceList: [
-              ...user.workSpaceList,
-              res.data.createdWorkSpace.name,
-            ],
-          })
-        );
+        setUserInfo({
+          ...userInfo,
+          workSpaceList: [...userInfo.workSpaceList, res.data.addedOwner],
+        });
         setModalOn(false);
         setWorkSpaceName("");
         setIsMounted(true);
@@ -219,9 +218,8 @@ const Header = ({ invitation }) => {
                 <WorkspaceList>
                   {workspaceList &&
                     workspaceList?.map((item, idx) => {
-                      console.log("workspaceList: ", workspaceList);
-                      const workspaceName = item.workSpace.split("+");
-                      const id = item._id.substring(0, 6);
+                      const workspaceId = item?._id;
+                      const workspaceName = item?.workSpace?.split("+");
                       return (
                         <li
                           key={idx}
@@ -233,7 +231,12 @@ const Header = ({ invitation }) => {
                             //     ...workspace,
                             //   })
                             // );
-                            navigate(`/main/${id}/board`);
+                            navigate(`/main/${item._id}/board`, {
+                              state: {
+                                workspaceName: item.workSpace,
+                                workspaceId,
+                              },
+                            });
                           }}
                         >
                           <div className="workspace_avatar">

@@ -10,8 +10,12 @@ import { APP_USER_STATE } from "../pages/Main/Main";
 
 // 이미지
 import clap from "../public/img/Main/clap.png";
+import { useRecoilState } from "recoil";
+import { userState } from "../recoil/recoil";
 
 const ScreenForNewbie = ({ setAppState }) => {
+  const [userInfo, setUserInfo] = useRecoilState(userState);
+
   const [titleCharacter, setTitleCharacter] = useState(0);
   const [workSpaceName, setWorkSpaceName] = useState("");
   const [showTeamNoteBtn, setShowTeamNoteBtn] = useState(true);
@@ -21,7 +25,7 @@ const ScreenForNewbie = ({ setAppState }) => {
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
 
-  // 워크스페이스 생성 요청
+  // 워크스페이스 생성
   const addNewWorkSpace = () => {
     setShowCreateBox(false);
     setIsLoading(true);
@@ -47,6 +51,10 @@ const ScreenForNewbie = ({ setAppState }) => {
                 workSpaceList: [res.data.createdWorkSpace.name],
               })
             );
+            setUserInfo({
+              ...userInfo,
+              workSpaceList: [res.data.createdWorkSpace.name],
+            });
           }, 2000);
         })
         .catch((err) => console.log(err));
