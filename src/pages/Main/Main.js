@@ -33,6 +33,8 @@ const Main = () => {
   const [modalOn, setModalOn] = useState(false);
   const [workSpaceName, setWorkSpaceName] = useState("");
   const [isMounted, setIsMounted] = useState(false);
+  const [selectedPage, setSelectedPage] = useState([true, false, false]);
+  const [searchKeyword, setSearchKeyword] = useState("");
   const hasTransitionedIn = useMountTransition(isMounted, 1500);
   const isLoading = appstate === APP_USER_STATE.UNKNOWN;
   const navigate = useNavigate();
@@ -41,7 +43,6 @@ const Main = () => {
   const workspaceList = userInfo.workSpaceList;
   const params = useParams();
   const location = useLocation();
-  const [selectedPage, setSelectedPage] = useState([true, false, false]);
 
   const handleSelectedPage = (e) => {
     const pages = ["BOARD", "CALENDAR", "TALK"];
@@ -151,16 +152,28 @@ const Main = () => {
     setWorkSpaceName(e.target.value);
   };
 
+  // const onChangeSearch = (e) => {
+  //   setSearchKeyword(e.target.value);
+  // };
+
+  // const onKeyDownSearch = (e) => {
+  //   if (e.key !== "Enter") return;
+  //   const filterList = workspaceList.filter((item) => {
+  //     return item.workSpace.split("+")[1].includes(searchKeyword);
+  //   });
+  //   setList(filterList);
+  // };
+
   return (
     <MainStyle>
       <LeftSide>
         <div className="workspaces-container">
           <Divider />
 
-          <div className="workspaces-container_top" onClick={handleModal}>
+          <div className="workspaces-container_top">
             <h2 className="active-workspace">
               최근 활동한 팀플방
-              <div className="create-workspace">
+              <div className="create-workspace" onClick={handleModal}>
                 <BookmarkAddIcon />
                 New
               </div>
@@ -169,6 +182,9 @@ const Main = () => {
               type="text"
               placeholder="이름으로 검색하세요"
               className="find-workspaceName-input"
+              value={searchKeyword || ""}
+              // onChange={onChangeSearch}
+              // onKeyPress={onKeyDownSearch}
             />
           </div>
           <ul className="workspaces-list">
@@ -189,6 +205,8 @@ const Main = () => {
                   </li>
                 );
               })}
+            {/* {workspaceList &&
+              workspaceList?} */}
           </ul>
         </div>
         {/* <div className="buttons">
@@ -382,7 +400,11 @@ const LeftSide = styled.aside`
     gap: 14px;
     max-height: 450px;
     overflow: scroll;
-    padding: 10px;
+    padding: 0px 4px;
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
 
     .workspace-source {
       display: flex;

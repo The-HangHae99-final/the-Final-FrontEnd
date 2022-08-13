@@ -176,6 +176,10 @@ const SectionWrap = styled.div`
   .section-cards-screen {
     overflow: scroll;
     height: 100%;
+
+    ::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
   }
 
   .section-cards-wrap {

@@ -384,7 +384,6 @@ const BoardStyle = styled.div`
   width: 100%;
   height: 88%;
   padding: 20px;
-  background-color: red;
 `;
 
 const BoardContainer = styled.div`
@@ -403,69 +402,6 @@ const BoardContainer = styled.div`
     justify-content: space-around;
     width: 100%;
     gap: 10px;
-  }
-`;
-
-const SectionWrap = styled.div`
-  width: 26%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-
-  .section-top {
-    height: 50px;
-    background: #ffffff;
-    border: 1px solid #d5d8da;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-
-  .section-top_title {
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 600;
-    text-align: center;
-    color: #7d8bdb;
-  }
-
-  .section-cards-screen {
-    overflow: scroll;
-    height: 100%;
-  }
-
-  .section-cards-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .create-box {
-    width: 100%;
-    background-color: red;
-    padding: 25px 0px 19px 0px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #ffffff;
-    border: 1px solid #ecedf1;
-    border-radius: 5px;
-    gap: 3px;
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 26px;
-    text-align: center;
-    letter-spacing: -0.02em;
-    color: #cbcbd7;
-  }
-
-  .createBtn {
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
   }
 `;
 
