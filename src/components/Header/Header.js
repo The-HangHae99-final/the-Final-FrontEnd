@@ -40,6 +40,7 @@ const Header = ({ invitation }) => {
   const [modalOn, setModalOn] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
   const [openNoti, setOpenNoti] = useState(false);
+  const [hasNotification, setHasNotification] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const hasTransitionedIn = useMountTransition(isMounted, 1500);
   const [currentSocket, setCurrentSocket] = useState(null);
@@ -77,6 +78,14 @@ const Header = ({ invitation }) => {
   const handleWorkSpaceName = (e) => {
     setWorkSpaceName(e.target.value);
   };
+
+  useEffect(() => {
+    if (userInfo.invitation.length >= 1) {
+      setHasNotification(true);
+    } else {
+      setHasNotification(false);
+    }
+  }, []);
 
   // const handleChange = (e) => {
   //   if (workspaceName.length >= 10) {
@@ -160,7 +169,7 @@ const Header = ({ invitation }) => {
               </button>
               <button className="menuBtn" onClick={openNotiModal}>
                 <img src={bellIcon} alt="sun icon" />
-                {invitation?.length >= 1 && (
+                {hasNotification && (
                   <span className="badge">{invitation?.length}</span>
                 )}
               </button>
@@ -333,23 +342,12 @@ const HeaderStyle = styled.div`
 
     .badge {
       position: absolute;
-      top: -10px;
-      right: -10px;
-      padding: 5px 10px;
+      top: 0px;
+      right: 3px;
+      padding: 5px;
       border-radius: 50%;
       background: red;
       color: white;
-      animation: MoveUpDown 1s linear infinite;
-    }
-
-    @keyframes MoveUpDown {
-      0%,
-      100% {
-        transform: translateY(2px);
-      }
-      50% {
-        transform: translateY(-2px);
-      }
     }
   }
 

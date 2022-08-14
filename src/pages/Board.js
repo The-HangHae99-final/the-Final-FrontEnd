@@ -86,7 +86,6 @@ const Board = () => {
   const currentWorkspaceName = state?.workSpace?.split("+")[1];
   const currntWorkspaceId = state?.workspaceId;
   const currentWs = useRecoilValue(currentWorkspaceState);
-  console.log("currentWs: ", currentWs);
   const [data, setData] = useState({
     title: "",
     desc: "",
@@ -95,7 +94,6 @@ const Board = () => {
     workSpaceName: "",
     category: "todo",
   });
-  console.log("data: ", data);
 
   const [todoList, setTodoList] = useState([]);
   const [inProgressList, setInProgressList] = useState([]);
@@ -388,7 +386,7 @@ const initialData = {
 const BoardStyle = styled.div`
   width: 100%;
   height: 88%;
-  padding: 20px;
+  margin-top: 20px;
 `;
 
 const BoardContainer = styled.div`

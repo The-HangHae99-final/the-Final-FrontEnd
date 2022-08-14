@@ -58,7 +58,7 @@ const Router = () => {
           path="/api/oauth/login/kakao/callback"
           element={<KakaoLoginCallback />}
         />
-        <Route path="*" element={<div>There's nothing here!</div>} />
+        <Route path="*" element={<Navigate to="/join/signin" />} />
       </Routes>
       <ToastContainer />
     </>

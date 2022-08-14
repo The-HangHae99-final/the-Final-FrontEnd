@@ -16,6 +16,10 @@ import { currentWorkspaceState, userState } from "../../recoil/recoil";
 import ModalPortal from "../../elements/Portal/ModalPortal";
 import WorkspaceModal from "../../components/Modal/WorkspaceModal";
 import useMountTransition from "../../utils/useMountTransition";
+import AddMemberModal from "../../components/Modal/AddMemberModal";
+
+// 아이콘
+import addMemberIcon from "../../public/img/addMemberIcon.png";
 
 export const APP_USER_STATE = {
   NOT_AUTH: "로그인되지 않은 상태",
@@ -35,6 +39,10 @@ const Main = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [selectedPage, setSelectedPage] = useState([true, false, false]);
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [newMember, setNewMember] = useState({
+    workSpaceName: "",
+    userEmail: "",
+  });
   const hasTransitionedIn = useMountTransition(isMounted, 1500);
   const isLoading = appstate === APP_USER_STATE.UNKNOWN;
   const navigate = useNavigate();
@@ -44,8 +52,8 @@ const Main = () => {
   const params = useParams();
   const location = useLocation();
   const currentWs = useRecoilValue(currentWorkspaceState);
-  console.log("currentWs: ", currentWs);
 
+  // 선택된 페이지 상태 유지
   const handleSelectedPage = (e) => {
     const pages = ["BOARD", "CALENDAR", "TALK"];
     const index = e.target.getAttribute("index");
@@ -57,9 +65,10 @@ const Main = () => {
     // state를 newArr로 업데이트한다
     setSelectedPage(newArr);
   };
+
+  // 소속된 워크스페이스 리스트 조회
   useEffect(() => {
     try {
-      // 소속된 워크스페이스 리스트 조회 요청
       axios
         .get("https://teamnote.shop/api/members/spaceLists", {
           headers: {
@@ -154,24 +163,42 @@ const Main = () => {
     setWorkSpaceName(e.target.value);
   };
 
-  // const onChangeSearch = (e) => {
-  //   setSearchKeyword(e.target.value);
-  // };
+  // 새로운 멤버 초대
+  const addNewMember = () => {
+    axios({
+      method: "post",
+      url: "http://43.200.170.45/api/members/inviting",
+      data: newMember,
+      headers: {
+        Authorization: `Bearer ${getItemFromLs("myToken")}`,
+      },
+    })
+      .then((res) => {
+        console.log("res: ", res);
+        if (res.data.success) {
+          alert(`${newMember.userEmail}님에게 초대메시지를 보냈습니다`);
+          setModalOn(false);
+        } else {
+          alert(`${res.data.errorMessage}`);
+        }
+      })
+      .catch((err) => alert(`${err.response.data.errorMessage}`));
+  };
 
-  // const onKeyDownSearch = (e) => {
-  //   if (e.key !== "Enter") return;
-  //   const filterList = workspaceList.filter((item) => {
-  //     return item.workSpace.split("+")[1].includes(searchKeyword);
-  //   });
-  //   setList(filterList);
-  // };
+  const handleAddMemberModal = () => {
+    setNewMember({ ...newMember, workSpaceName: currentWorkspace });
+    setModalOn(!modalOn);
+  };
+
+  const closeModal = (e) => {
+    setModalOn(!modalOn);
+  };
 
   return (
     <MainStyle>
       <LeftSide>
         <div className="workspaces-container">
           <Divider />
-
           <div className="workspaces-container_top">
             <h2 className="active-workspace">
               최근 활동한 팀플방
@@ -207,50 +234,8 @@ const Main = () => {
                   </li>
                 );
               })}
-            {/* {workspaceList &&
-              workspaceList?} */}
           </ul>
         </div>
-        {/* <div className="buttons">
-          <div className="buttonWrap">
-            <div
-              onClick={() => {
-                navigate(`/main/${currentParams}/board`);
-              }}
-              className="page-navigate-button"
-            >
-              <img
-                src={boardIcon}
-                alt="boardcon"
-                className="side-btn boardcon"
-              />
-            </div>
-          </div>
-          <div className="buttonWrap">
-            <div
-              className="page-navigate-button"
-              onClick={() => navigate(`/main/${currentParams}/calendar`)}
-            >
-              <img
-                src={calendarIcon}
-                alt="calendarIcon"
-                className="calendarIcon side-btn"
-              />
-            </div>
-          </div>
-          <div className="buttonWrap">
-            <div
-              className="page-navigate-button"
-              onClick={() => navigate(`/main/${currentParams}/message`)}
-            >
-              <img
-                src={chatIcon}
-                alt="chatIcon"
-                className="chatIcon side-btn"
-              />
-            </div>
-          </div>
-        </div> */}
       </LeftSide>
 
       <RightSide>
@@ -261,42 +246,55 @@ const Main = () => {
                 <h1>어서오세요</h1>
               ) : (
                 <>
-                  <div className="private-workspace_header">
-                    <h1 className="private-workspace_title">
-                      {currentWorkspace.split("+")[1]}
-                    </h1>
-                    <ul className="private-workspace_navbar">
-                      <Link
-                        to={`/main/${params.id}/board`}
-                        index={0}
-                        onClick={(e) => handleSelectedPage(e)}
-                        className={`list-item ${
-                          selectedPage[0] ? "list-item_clicked" : ""
-                        }`}
-                      >
-                        BOARD
-                      </Link>
-                      <Link
-                        to={`/main/${params.id}/calendar`}
-                        index={1}
-                        className={`list-item ${
-                          selectedPage[1] ? "list-item_clicked" : ""
-                        }`}
-                        onClick={(e) => handleSelectedPage(e)}
-                      >
-                        CALENDAR
-                      </Link>
-                      <Link
-                        index={2}
-                        to={`/main/${params.id}/talk`}
-                        className={`list-item ${
-                          selectedPage[2] ? "list-item_clicked" : ""
-                        }`}
-                        onClick={(e) => handleSelectedPage(e)}
-                      >
-                        TALK
-                      </Link>
-                    </ul>
+                  <div className="main-header">
+                    <div className="private-workspace_header">
+                      <h1 className="private-workspace_title">
+                        {currentWorkspace.split("+")[1]}
+                      </h1>
+                      <ul className="private-workspace_navbar">
+                        <Link
+                          to={`/main/${params.id}/board`}
+                          index={0}
+                          onClick={(e) => handleSelectedPage(e)}
+                          className={`list-item ${
+                            selectedPage[0] ? "list-item_clicked" : ""
+                          }`}
+                        >
+                          BOARD
+                        </Link>
+                        <Link
+                          to={`/main/${params.id}/calendar`}
+                          index={1}
+                          className={`list-item ${
+                            selectedPage[1] ? "list-item_clicked" : ""
+                          }`}
+                          onClick={(e) => handleSelectedPage(e)}
+                        >
+                          CALENDAR
+                        </Link>
+                        <Link
+                          index={2}
+                          to={`/main/${params.id}/talk`}
+                          className={`list-item ${
+                            selectedPage[2] ? "list-item_clicked" : ""
+                          }`}
+                          onClick={(e) => handleSelectedPage(e)}
+                        >
+                          TALK
+                        </Link>
+                      </ul>
+                    </div>
+                    <button
+                      className="main-header-addBtn"
+                      onClick={handleAddMemberModal}
+                    >
+                      <img
+                        src={addMemberIcon}
+                        alt="addMemberIcon"
+                        className="addBtn-img"
+                      />
+                      <span className="addBtn-name">멤버 추가하기</span>
+                    </button>
                   </div>
                   <Outlet />
                 </>
@@ -314,6 +312,16 @@ const Main = () => {
             addNewWorkSpace={addNewWorkSpace}
             workSpaceName={workSpaceName}
             handleWorkSpaceName={handleWorkSpaceName}
+          />
+        )}
+      </ModalPortal>
+      <ModalPortal>
+        {modalOn && (
+          <AddMemberModal
+            newMember={newMember}
+            setNewMember={setNewMember}
+            onClose={closeModal}
+            addNewMember={addNewMember}
           />
         )}
       </ModalPortal>
@@ -436,6 +444,10 @@ const RightSide = styled.div`
     height: 100%;
     box-sizing: border-box;
 
+    .main-header {
+      display: flex;
+    }
+
     .private-workspace_header {
       width: 100%;
       height: 12%;
@@ -477,6 +489,34 @@ const RightSide = styled.div`
       width: 100%;
       height: 88%;
     }
+  }
+
+  .main-header-addBtn {
+    all: unset;
+    background: #7d8bdb;
+    min-width: 152px;
+    height: 52px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    :hover {
+      background-color: #7d8bdbe0;
+    }
+  }
+  .addBtn-img {
+    width: 25px;
+    height: 20px;
+    margin-right: 15px;
+  }
+  .addBtn-name {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 23px;
+    text-align: center;
+    color: #ffffff;
   }
 `;
 

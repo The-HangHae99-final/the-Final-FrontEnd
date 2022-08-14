@@ -5,12 +5,14 @@ import ModalPortal from "../../elements/Portal/ModalPortal";
 import { getItemFromLs } from "../../utils/localStorage";
 import { useSelector, useDispatch } from "react-redux";
 import { removeInvitation } from "../../redux/userReducer";
+import { useRecoilState } from "recoil";
+import { userState } from "../../recoil/recoil";
 
 const NotificationModal = ({ onClose }) => {
-  const user = useSelector((state) => state.user.value);
-  const invitations = user.invitation;
-  const dispatch = useDispatch();
+  const [userInfo, setUser] = useRecoilState(userState);
+  const invitations = userInfo.invitation;
 
+  // 초대 수락
   const accept = (invitee, fromThisWorkSpaceName, clickedID) => {
     axios
       .post(
@@ -23,21 +25,14 @@ const NotificationModal = ({ onClose }) => {
         }
       )
       .then((res) => {
-        console.log("res: ", res);
         const filteredInvitation = invitations.filter((item) => {
           return item._id !== clickedID;
         });
-        console.log(filteredInvitation);
-        dispatch(
-          removeInvitation({
-            ...user,
-            workSpaceList: [
-              ...user.workSpaceList,
-              res.data.createdMember.workSpace,
-            ],
-            invitation: [...filteredInvitation],
-          })
-        );
+        setUser({
+          ...userInfo,
+          workSpaceList: [...userInfo.workSpaceList, res.data.createdMember],
+          invitation: [...filteredInvitation],
+        });
       })
       .catch((err) => console.log(err));
   };
