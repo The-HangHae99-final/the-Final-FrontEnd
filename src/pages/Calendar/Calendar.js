@@ -15,23 +15,14 @@ import CalendarLabel from "./CalendarLabel";
 import { getItemFromLs } from "../../utils/localStorage";
 import axios from "axios";
 import { useOutletContext } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { currentWorkspaceState } from "../../recoil/recoil";
+import { useRecoilValue } from "recoil";
 
 const Calender = () => {
   const [modalOn, setModalOn] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
-  const today = moment();
-
-  // const monthTitle = document.querySelector(".react-datepicker__current-month");
-  // console.log(monthTitle.);
-
-  // const { currentParams } = useOutletContext();
-
-  const handleModal = (e) => {
-    setModalOn(() => {
-      setModalTitle(e.target.title);
-      return !modalOn;
-    });
-  };
+  const currentWs = useRecoilValue(currentWorkspaceState);
 
   const [taskContents, setTaskContents] = useState({
     startDate: "",
@@ -42,6 +33,12 @@ const Calender = () => {
     workSpaceName: "",
   });
   console.log("taskContents: ", taskContents);
+
+  const handleModal = (e) => {
+    setModalOn(!modalOn);
+    setModalTitle(e.target.title);
+    setTaskContents({ ...taskContents, workSpaceName: currentWs });
+  };
 
   const handleTaskInfoChange = (e) => {
     const { value, name } = e.target;
@@ -197,8 +194,7 @@ const CalenderStyle = styled.div`
     width: 280px;
     height: 100%;
     padding: 30px 20px;
-    /* background-color: #ffffff; */
-    background-color: red;
+    background-color: #ffffff;
     box-sizing: border-box;
 
     .myCalender-box {

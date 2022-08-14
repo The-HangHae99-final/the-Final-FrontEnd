@@ -101,6 +101,8 @@ const Board = () => {
   const [initState, setInitState] = useState(initialData);
   const [isShown, setIsShown] = useState(false);
   const [titleCharacter, setTitleCharacter] = useState(0);
+  console.log("initState: ", initState);
+
   // 보드 생성
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -210,7 +212,7 @@ const Board = () => {
     try {
       async function fetchBoards() {
         const res = await axios.get(
-          `https://teamnote.shop/api/posts/list/${currntWorkspaceId}+${currentWorkspaceName}`,
+          `https://teamnote.shop/api/posts/list/${currentWs}`,
           {
             headers: {
               Authorization: `Bearer ${getItemFromLs("myToken")}`,
@@ -218,26 +220,25 @@ const Board = () => {
           }
         );
         // 서버에서 받아온 데이터(배열)
-        console.log("res: ", res);
         const boards = res.data.posts;
-
         const newObject = {};
 
         boards.forEach((task) => {
           return (newObject[task.postId] = task);
         });
+        console.log("newObject: ", newObject);
 
         setInitState({
           ...initState,
           tasks: { ...newObject },
-          columns: {
-            ...initState.columns,
-            "column-1": {
-              id: "column-1",
-              title: "TO-DO",
-              taskIds: [...initState.columns["column-1"].taskIds],
-            },
-          },
+          // columns: {
+          //   ...initState.columns,
+          //   "column-1": {
+          //     id: "column-1",
+          //     title: "TO-DO",
+          //     taskIds: [...initState.columns["column-1"].taskIds],
+          //   },
+          // },
         });
       }
       fetchBoards();
@@ -332,6 +333,7 @@ const Board = () => {
         <BoardContainer>
           {initState.columnOrder.map((columnId) => {
             const column = initState.columns[columnId];
+            console.log("column: ", column);
             const tasks = column.taskIds.map(
               (taskId) => initState.tasks[taskId]
             );
