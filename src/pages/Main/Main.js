@@ -66,6 +66,12 @@ const Main = () => {
     setSelectedPage(newArr);
   };
 
+  useEffect(() => {
+    if (location.pathname.includes("board")) {
+      setSelectedPage([true, false, false]);
+    }
+  }, [location, location.pathname]);
+
   // 소속된 워크스페이스 리스트 조회
   useEffect(() => {
     try {

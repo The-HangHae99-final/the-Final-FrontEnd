@@ -200,6 +200,7 @@ const Calender = () => {
             });
 
             if (a !== undefined) {
+              console.log("a : ", a);
               html.push(<Dot color={a.color}>{a.title}</Dot>);
               return <>{html}</>;
             }
