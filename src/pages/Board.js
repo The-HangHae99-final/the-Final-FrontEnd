@@ -94,14 +94,12 @@ const Board = () => {
     workSpaceName: "",
     category: "todo",
   });
-
   const [todoList, setTodoList] = useState([]);
   const [inProgressList, setInProgressList] = useState([]);
   const [doneList, setDoneList] = useState([]);
   const [initState, setInitState] = useState(initialData);
   const [isShown, setIsShown] = useState(false);
   const [titleCharacter, setTitleCharacter] = useState(0);
-  console.log("initState: ", initState);
 
   // 보드 생성
   const handleSubmit = async (e) => {
@@ -115,11 +113,12 @@ const Board = () => {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },
       });
+      console.log("res: ", res);
       if (res.data.success) {
-        console.log("res: ", res);
         const task = res.data.result;
         let newObject = {};
         newObject[task.postId] = task;
+
         setInitState({
           ...initState,
           tasks: { ...initState.tasks, ...newObject },
@@ -132,6 +131,7 @@ const Board = () => {
             },
           },
         });
+
         setIsShown(false);
       } else {
         alert("빠진게 없는지 다시 한번 확인해주세요 :)");
@@ -222,23 +222,21 @@ const Board = () => {
         // 서버에서 받아온 데이터(배열)
         const boards = res.data.posts;
         const newObject = {};
-
         boards.forEach((task) => {
           return (newObject[task.postId] = task);
         });
-        console.log("newObject: ", newObject);
 
         setInitState({
           ...initState,
           tasks: { ...newObject },
-          // columns: {
-          //   ...initState.columns,
-          //   "column-1": {
-          //     id: "column-1",
-          //     title: "TO-DO",
-          //     taskIds: [...initState.columns["column-1"].taskIds],
-          //   },
-          // },
+          columns: {
+            ...initState.columns,
+            "column-1": {
+              id: "column-1",
+              title: "TO-DO",
+              taskIds: [...initState.columns["column-1"].taskIds],
+            },
+          },
         });
       }
       fetchBoards();
@@ -251,12 +249,10 @@ const Board = () => {
     const newtaskIds = Array.from(sourceCol.taskIds);
     const [removed] = newtaskIds.splice(startIndex, 1);
     newtaskIds.splice(endIndex, 0, removed);
-
     const newColumn = {
       ...sourceCol,
       taskIds: newtaskIds,
     };
-
     return newColumn;
   };
 
@@ -323,7 +319,6 @@ const Board = () => {
         [newEndCol.id]: newEndCol,
       },
     };
-
     setInitState(newState);
   };
 
@@ -333,7 +328,6 @@ const Board = () => {
         <BoardContainer>
           {initState.columnOrder.map((columnId) => {
             const column = initState.columns[columnId];
-            console.log("column: ", column);
             const tasks = column.taskIds.map(
               (taskId) => initState.tasks[taskId]
             );
@@ -381,7 +375,6 @@ const initialData = {
       taskIds: [],
     },
   },
-  // Facilitate reordering of the columns
   columnOrder: ["column-1", "column-2", "column-3"],
 };
 

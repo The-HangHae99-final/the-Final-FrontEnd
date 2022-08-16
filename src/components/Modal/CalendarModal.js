@@ -14,6 +14,8 @@ import { TextareaAutosize } from "@mui/base";
 import ko from "date-fns/locale/ko";
 import { getItemFromLs } from "../../utils/localStorage";
 import useMountTransition from "../../utils/useMountTransition";
+import { useRecoilState } from "recoil";
+import { myTaskList } from "../../recoil/recoil";
 
 registerLocale("ko", ko);
 
@@ -39,7 +41,7 @@ const CalendarModal = ({
   const [showPickers, setShowPickers] = useState(false);
   const [currentColorKr, setCurrentColorKr] = useState("파랑");
   const [currentColorEng, setCurrentColorEng] = useState("#7EA0E3");
-
+  const [myList, setMyList] = useRecoilState(myTaskList);
   const [isMounted, setIsMounted] = useState(false);
   const hasTransitionedIn = useMountTransition(isMounted, 300);
 
@@ -69,7 +71,10 @@ const CalendarModal = ({
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },
       })
-        .then((res) => console.log(res))
+        .then((res) => {
+          console.log(res);
+          setMyList([...myList, res.data.result]);
+        })
         .catch((err) => console.log(err));
     } else {
       console.log("팀일정 요청임!");
@@ -116,14 +121,14 @@ const CalendarModal = ({
                   }}
                   name="startDate"
                 />
-                <DatePickerCustom
+                {/* <DatePickerCustom
                   selected={endDate}
                   onChange={(date) => setEndDate(date)}
                   value={endDate}
                   locale="ko"
                   dateFormat="yyyy-MM-dd"
                   name="endDate"
-                />
+                /> */}
               </div>
             </RegisterDate>
             <ColorPickWrap>

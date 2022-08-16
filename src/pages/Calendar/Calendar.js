@@ -5,7 +5,8 @@ import styled from "styled-components";
 import "react-datepicker/dist/react-datepicker.css";
 import "./calendar.css";
 import moment from "moment";
-
+import Calendar from "react-calendar";
+import "./reacr-calendar.css";
 // file
 import BigCalendar from "../../components/Calendar/BigCalendar";
 import SmallCalendar from "../../components/Calendar/SmallCalendar";
@@ -16,13 +17,17 @@ import { getItemFromLs } from "../../utils/localStorage";
 import axios from "axios";
 import { useOutletContext } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { currentWorkspaceState } from "../../recoil/recoil";
+import { currentWorkspaceState, myTaskList } from "../../recoil/recoil";
 import { useRecoilValue } from "recoil";
 
 const Calender = () => {
   const [modalOn, setModalOn] = useState(false);
+  const [value, onChange] = useState(new Date());
   const [modalTitle, setModalTitle] = useState("");
   const currentWs = useRecoilValue(currentWorkspaceState);
+  console.log("currentWs: ", currentWs);
+  const [myList, setMyList] = useRecoilState(myTaskList);
+  console.log("myList: ", myList);
 
   const [taskContents, setTaskContents] = useState({
     startDate: "",
@@ -32,7 +37,6 @@ const Calender = () => {
     color: "#7EA0E3",
     workSpaceName: "",
   });
-  console.log("taskContents: ", taskContents);
 
   const handleModal = (e) => {
     setModalOn(!modalOn);
@@ -56,16 +60,36 @@ const Calender = () => {
   // 전체 개인 일정 조회 + 달력에 그리기
   // 1. startDate + (endDate에서 startDate와의 차이 일 수 ) using by add();
   // 2.
-  const fetchMyTasks = () => {
+
+  useEffect(() => {
     axios
       .get(`https://teamnote.shop/api/tasks/all/lists`, {
         headers: {
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },
       })
-      .then((res) => console.log(res));
-  };
+      .then((res) => {
+        console.log(res);
+        if (res.data.success) {
+          const rows = res.data.result.rows;
+          setMyList([...rows]);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
+  // 두 날짜 사이에 포함되는 리스트 출력
+  const getDateList = (startDate, endDate) => {
+    const result = [];
+    const curDate = new Date(startDate);
+
+    while (curDate <= new Date(endDate)) {
+      const date = curDate.toISOString().split("T")[0];
+      result.push(date);
+      curDate.setDate(curDate.getDate() + 1);
+    }
+    return result;
+  };
   // 전체 팀 일정 조회
   // const fetchTeamTasks = () => {
   //   // axios({
@@ -102,15 +126,16 @@ const Calender = () => {
   //   });
   // }, []);
 
+  const mark = ["2022-08-17", "2022-08-18", "2022-08-19", "2022-08-28"];
+
   return (
     <CalenderStyle className="calenderStyle">
       <div className="leftSection">
         {/* 작은 달력 */}
         <SmallCalendar />
-
         {/* My Calendar */}
 
-        {/* 
+        {/*         
         <A 
         {...{
           text,
@@ -134,7 +159,7 @@ const Calender = () => {
                 },
                 ,
               ],
-              onClickTitle: fetchMyTasks,
+              // onClickTitle: fetchMyTasks,
               onClickAdd: handleModal,
             }}
           />
@@ -165,7 +190,22 @@ const Calender = () => {
 
       <div className="rightSection">
         {/* 큰 달력 */}
-        <BigCalendar />
+        <Calendar
+          style={{ height: 500 }}
+          value={value}
+          tileContent={({ date, view }) => {
+            let html = [];
+            const a = myList.find((item) => {
+              return item.startDate === moment(date).format("YYYY-MM-DD");
+            });
+
+            if (a !== undefined) {
+              html.push(<Dot color={a.color}>{a.title}</Dot>);
+              return <>{html}</>;
+            }
+          }}
+          formatDay={(locale, date) => moment(date).format("DD")}
+        />
       </div>
       <ModalPortal>
         {modalOn && (
@@ -182,6 +222,17 @@ const Calender = () => {
     </CalenderStyle>
   );
 };
+
+const Dot = styled.div`
+  height: 18px;
+  width: 100%;
+  background-color: ${({ color }) => color};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  font-size: 0.8rem;
+`;
 
 const CalenderStyle = styled.div`
   width: 100%;

@@ -45,15 +45,9 @@ const ScreenForNewbie = ({ setAppState }) => {
           setTimeout(() => {
             setAppState(APP_USER_STATE.USER);
             setIsLoading(false);
-            dispatch(
-              getUserInfo({
-                ...user,
-                workSpaceList: [res.data.createdWorkSpace.name],
-              })
-            );
             setUserInfo({
               ...userInfo,
-              workSpaceList: [res.data.createdWorkSpace.name],
+              workSpaceList: [res.data.addedOwner],
             });
           }, 2000);
         })

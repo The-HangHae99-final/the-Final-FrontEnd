@@ -15,3 +15,17 @@ export const currentWorkspaceState = atom({
   key: "currentWorkspaceState",
   default: "",
 });
+
+export const canbanList = atom({
+  key: "canbanList",
+  default: {
+    "TO-DO": [],
+    "IN-PROGRESS": [],
+    COMPLETED: [],
+  },
+});
+
+export const myTaskList = atom({
+  key: "myTaskList",
+  default: [],
+});

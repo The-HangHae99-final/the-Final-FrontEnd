@@ -10,8 +10,8 @@ const CalendarLabel = ({ style, title, labels, onClickTitle, onClickAdd }) => {
           </div>
         </div>
         <ul className="calender-list-my">
-          {labels.map((label) => (
-            <li className="calender-item">
+          {labels.map((label, idx) => (
+            <li className="calender-item" key={idx}>
               <div className={`diffcolor ${label.color}`}></div>
               <span className="daily-title">{label.text}</span>
             </li>

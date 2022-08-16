@@ -51,6 +51,7 @@ const Header = ({ invitation }) => {
 
   const user = useSelector((state) => state.user.value);
   const workspaceList = userInfo.workSpaceList;
+  console.log("workspaceList: ", workspaceList);
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -227,6 +228,7 @@ const Header = ({ invitation }) => {
                 <WorkspaceList>
                   {workspaceList &&
                     workspaceList?.map((item, idx) => {
+                      console.log("item: ", item);
                       const workspaceId = item?._id;
                       const workspaceName = item?.workSpace?.split("+");
                       return (
@@ -238,7 +240,7 @@ const Header = ({ invitation }) => {
                             navigate(`/main/${item._id}/board`, {
                               state: item,
                             });
-                            setCurrentWorkspace(workspaceName[1]);
+                            setCurrentWorkspace(item?.workSpace);
                           }}
                         >
                           <div className="workspace_avatar">
