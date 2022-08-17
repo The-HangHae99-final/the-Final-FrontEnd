@@ -5,9 +5,7 @@ const CalendarLabel = ({ style, title, labels, onClickTitle, onClickAdd }) => {
     <CalendarLabelStyle className="myCalender-box" style={style}>
       <div className="teamchat-box">
         <div className="box-header">
-          <div className="box-title" onClick={onClickTitle}>
-            {title}
-          </div>
+          <div className="box-title">{title}</div>
         </div>
         <ul className="calender-list-my">
           {labels.map((label, idx) => (
@@ -16,16 +14,6 @@ const CalendarLabel = ({ style, title, labels, onClickTitle, onClickAdd }) => {
               <span className="daily-title">{label.text}</span>
             </li>
           ))}
-          <div
-            className="add-button-container"
-            title="My calendar"
-            onClick={onClickAdd}
-          >
-            <button className="add-button">
-              <div>+</div>
-            </button>
-            <span>Add</span>
-          </div>
         </ul>
       </div>
     </CalendarLabelStyle>

@@ -7,15 +7,20 @@ import "./calendar.css";
 import moment from "moment";
 import Calendar from "react-calendar";
 import "./reacr-calendar.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCirclePlus,
+  faPerson,
+  faPeopleGroup,
+} from "@fortawesome/free-solid-svg-icons";
+import { motion } from "framer-motion";
+
 // file
-import BigCalendar from "../../components/Calendar/BigCalendar";
-import SmallCalendar from "../../components/Calendar/SmallCalendar";
 import ModalPortal from "../../elements/Portal/ModalPortal";
 import CalendarModal from "../../components/Modal/CalendarModal";
 import CalendarLabel from "./CalendarLabel";
 import { getItemFromLs } from "../../utils/localStorage";
 import axios from "axios";
-import { useOutletContext } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { currentWorkspaceState, myTaskList } from "../../recoil/recoil";
 import { useRecoilValue } from "recoil";
@@ -25,10 +30,7 @@ const Calender = () => {
   const [value, onChange] = useState(new Date());
   const [modalTitle, setModalTitle] = useState("");
   const currentWs = useRecoilValue(currentWorkspaceState);
-  console.log("currentWs: ", currentWs);
   const [myList, setMyList] = useRecoilState(myTaskList);
-  console.log("myList: ", myList);
-
   const [taskContents, setTaskContents] = useState({
     startDate: "",
     endDate: "",
@@ -37,6 +39,11 @@ const Calender = () => {
     color: "#7EA0E3",
     workSpaceName: "",
   });
+  const [openActiveBar, setOpenActiveBar] = useState(false);
+
+  const handleActiveBar = () => {
+    setOpenActiveBar(!openActiveBar);
+  };
 
   const handleModal = (e) => {
     setModalOn(!modalOn);
@@ -131,10 +138,6 @@ const Calender = () => {
   return (
     <CalenderStyle className="calenderStyle">
       <div className="leftSection">
-        {/* 작은 달력 */}
-        <SmallCalendar />
-        {/* My Calendar */}
-
         {/*         
         <A 
         {...{
@@ -159,7 +162,6 @@ const Calender = () => {
                 },
                 ,
               ],
-              // onClickTitle: fetchMyTasks,
               onClickAdd: handleModal,
             }}
           />
@@ -188,7 +190,7 @@ const Calender = () => {
         </div>
       </div>
 
-      <div className="rightSection">
+      <RightSection>
         {/* 큰 달력 */}
         <Calendar
           style={{ height: 500 }}
@@ -207,7 +209,41 @@ const Calender = () => {
           }}
           formatDay={(locale, date) => moment(date).format("DD")}
         />
-      </div>
+
+        {/* <AddButton title="My calendar" onClick={handleModal}>
+          <div className="add-button">
+            <div>+</div>
+          </div>
+        </AddButton> */}
+
+        <ActiveBtns openActiveBar={openActiveBar}>
+          {openActiveBar && (
+            <div className={"add-bar" + (!openActiveBar ? "hide" : "")}>
+              <motion.div
+                className="addBtnWrap"
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              >
+                <FontAwesomeIcon icon={faPerson} className="personal" />
+              </motion.div>
+              <motion.div
+                className="addBtnWrap"
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              >
+                <FontAwesomeIcon icon={faPeopleGroup} className="group" />
+              </motion.div>
+            </div>
+          )}
+          <FontAwesomeIcon
+            icon={faCirclePlus}
+            className="circlePlus"
+            onClick={handleActiveBar}
+          />
+        </ActiveBtns>
+      </RightSection>
       <ModalPortal>
         {modalOn && (
           <CalendarModal
@@ -281,34 +317,6 @@ const CalenderStyle = styled.div`
       background: #7ea0e3;
     }
 
-    .add-button-container {
-      padding: 13px 10px;
-      display: flex;
-      align-items: center;
-      color: #7a858e;
-      opacity: 0.7;
-      cursor: pointer;
-    }
-
-    .add-button {
-      all: unset;
-      border-radius: 50%;
-      margin-right: 10px;
-      opacity: 0.7;
-      border: 1px solid #7a858e;
-      width: 24px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      div {
-        height: 100%;
-        display: Flex;
-        align-items: center;
-        transform: translateY(3%);
-      }
-    }
-
     .box-header {
       display: flex;
       align-items: center;
@@ -324,16 +332,99 @@ const CalenderStyle = styled.div`
       cursor: pointer;
     }
   }
+`;
 
-  .rightSection {
-    width: 100%;
-    height: 100%;
-    background-color: #ffffff;
+const ActiveBtns = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  right: 4rem;
+  bottom: 4rem;
+  gap: 20px;
+
+  .circlePlus {
+    all: unset;
+    display: flex;
+    align-items: center;
+    color: #7a858e;
+    opacity: 0.7;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    transform: ${(props) => props.openActiveBar && "rotate(45deg)"};
   }
 
-  .react-datepicker__navigation {
-    display: none;
+  .addBtnWrap {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    background-color: #e0e2e1;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
   }
+  .add-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    animation: duration 0.2s linear;
+
+    .personal,
+    .group {
+      font-size: 2.5rem;
+    }
+
+    .add-bar.hide {
+      display: none;
+    }
+
+    @keyframes duration {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  }
+`;
+// const AddButton = styled.button`
+//   all: unset;
+//   display: flex;
+//   align-items: center;
+//   color: #7a858e;
+//   opacity: 0.7;
+//   width: 50px;
+//   height: 50px;
+//   cursor: pointer;
+//   background-color: red;
+
+//   .add-button {
+//     all: unset;
+//     border-radius: 50%;
+//     margin-right: 10px;
+//     opacity: 0.7;
+//     border: 1px solid #7a858e;
+//     width: 24px;
+//     height: 24px;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     div {
+//       height: 100%;
+//       display: Flex;
+//       align-items: center;
+//       transform: translateY(3%);
+//     }
+//   }
+// `;
+
+const RightSection = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
 `;
 
 export default Calender;
