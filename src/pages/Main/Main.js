@@ -348,7 +348,7 @@ const Main = () => {
 
 const MainStyle = styled.div`
   height: 100vh;
-  padding-top: 82px;
+  padding-top: 72px;
   display: flex;
 `;
 

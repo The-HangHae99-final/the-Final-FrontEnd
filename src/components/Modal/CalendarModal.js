@@ -86,7 +86,10 @@ const CalendarModal = ({
           Authorization: `Bearer ${getItemFromLs("myToken")}`,
         },
       })
-        .then((res) => console.log(res))
+        .then((res) => {
+          console.log(res);
+          setMyList([...myList, res.data.result]);
+        })
         .catch((err) => console.log(err));
     }
   };
@@ -120,6 +123,7 @@ const CalendarModal = ({
                     border: "none",
                   }}
                   name="startDate"
+                  minDate={new Date()}
                 />
                 {/* <DatePickerCustom
                   selected={endDate}

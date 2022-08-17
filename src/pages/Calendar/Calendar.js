@@ -29,15 +29,14 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import { currentWorkspaceState, myTaskList } from "../../recoil/recoil";
 import { useRecoilValue } from "recoil";
+import CalendarDetailModal from "../../components/Modal/CalendarDetailModal";
 
 const Calender = () => {
   const [modalOn, setModalOn] = useState(false);
   const [value, onChange] = useState(new Date());
   const [modalTitle, setModalTitle] = useState("");
   const currentWs = useRecoilValue(currentWorkspaceState);
-  console.log("currentWs: ", currentWs);
   const [myList, setMyList] = useRecoilState(myTaskList);
-  console.log("myList: ", myList);
   const [taskContents, setTaskContents] = useState({
     startDate: "",
     endDate: "",
@@ -47,12 +46,16 @@ const Calender = () => {
     workSpaceName: "",
   });
   const [openActiveBar, setOpenActiveBar] = useState(false);
+  const [openDetailTag, setOpenDetailTag] = useState(false);
   const [label, setLabel] = React.useState("my");
+  const [currentDetailTask, setCurrentDetailTask] = useState([]);
 
+  // 라벨 색상 선택
   const handleSelectChange = (event) => {
     setLabel(event.target.value);
   };
 
+  // 개인, 팀 일정 생성 버튼 토글
   const handleActiveBar = () => {
     setOpenActiveBar(!openActiveBar);
   };
@@ -65,11 +68,13 @@ const Calender = () => {
     setTaskContents({ ...taskContents, workSpaceName: currentWs });
   };
 
+  // 일정 생성을 위한 인풋 값 업데이트
   const handleTaskInfoChange = (e) => {
     const { value, name } = e.target;
     setTaskContents({ ...taskContents, [name]: value });
   };
 
+  // 날짜 입력
   const handleTaskDateChage = (startDate, endDate) => {
     setTaskContents({
       ...taskContents,
@@ -109,13 +114,24 @@ const Calender = () => {
         .then((res) => {
           console.log(res);
           if (res.data.success) {
-            const rows = res.data.result.rows;
+            const rows = res.data.result;
             setMyList([...rows]);
           }
         })
         .catch((err) => console.log(err));
     }
   }, [label]);
+
+  // 상세 일정 조회
+  const showDetailPage = (task) => {
+    setOpenDetailTag(!openDetailTag);
+    const filterTask = myList.filter((a) => a.taskId === task.taskId);
+    setCurrentDetailTask(...filterTask);
+  };
+
+  const closeDetailPage = () => {
+    setOpenDetailTag(false);
+  };
 
   return (
     <CalenderStyle className="calenderStyle">
@@ -158,17 +174,7 @@ const Calender = () => {
               <CalendarLabel
                 {...{
                   title: "Team calendar",
-                  labels: [
-                    {
-                      text: "Meeting",
-                      color: "yellow",
-                    },
-                    {
-                      text: "Event",
-                      color: "red",
-                    },
-                    ,
-                  ],
+                  labels: myList,
                   // onClickTitle: fetchTeamTasks,
                   // onClickAdd: handleModal,
                 }}
@@ -180,7 +186,6 @@ const Calender = () => {
 
       <RightSection>
         {/* 큰 달력 */}
-
         <Calendar
           style={{ height: 500 }}
           value={value}
@@ -191,19 +196,28 @@ const Calender = () => {
             });
 
             if (a !== undefined) {
-              console.log("a : ", a);
-              html.push(<Dot color={a.color}>{a.title}</Dot>);
+              html.push(
+                <>
+                  <Dot
+                    color={a.color}
+                    taskId={a.taskId}
+                    onClick={() => showDetailPage(a)}
+                  >
+                    {a.title}
+                  </Dot>
+                </>
+              );
               return <>{html}</>;
             }
           }}
           formatDay={(locale, date) => moment(date).format("DD")}
         />
-
-        {/* <AddButton title="My calendar" onClick={handleModal}>
-          <div className="add-button">
-            <div>+</div>
-          </div>
-        </AddButton> */}
+        {openDetailTag && (
+          <CalendarDetailModal
+            currentDetailTask={currentDetailTask}
+            onClose={closeDetailPage}
+          />
+        )}
 
         <ActiveBtns openActiveBar={openActiveBar}>
           {openActiveBar && (

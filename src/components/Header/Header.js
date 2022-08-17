@@ -152,7 +152,7 @@ const Header = ({ invitation }) => {
             src={user.profile_image_url ? user.profile_image_url : Mask_basic}
             className="user-avatar_mobile"
             alt="user_avatar"
-            style={{ width: "34px", height: "34px" }}
+            style={{ width: "28px", height: "28px" }}
           />
 
           <div className="menuItems">
@@ -306,7 +306,7 @@ const Header = ({ invitation }) => {
 };
 
 const HeaderStyle = styled.div`
-  padding: 12px 24px;
+  padding: 8px 24px;
   width: 100vw;
   display: flex;
   box-sizing: border-box;
@@ -318,6 +318,7 @@ const HeaderStyle = styled.div`
   top: 0;
   left: 0;
   background-color: #bac9ff;
+
   .css-1rwt2y5-MuiButtonBase-root-MuiButton-root {
     color: #7d8bdb;
     /* transition: all 0.2s ease; */
@@ -333,7 +334,7 @@ const HeaderStyle = styled.div`
   }
 
   .logo {
-    width: 40px;
+    width: 34px;
   }
 
   .menuBtns {

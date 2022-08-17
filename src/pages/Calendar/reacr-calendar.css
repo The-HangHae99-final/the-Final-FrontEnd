@@ -5,6 +5,27 @@
   height: 100%;
 }
 
+.calendar__navigation__arrow,
+.react-calendar__navigation__prev2-button,
+.react-calendar__navigation__next2-button {
+  display: none;
+}
+
+.react-calendar__navigation__arrow {
+  font-weight: 600;
+  font-size: 1.5rem;
+  padding: 0;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+}
+
+.react-calendar__navigation__label {
+  cursor: not-allowed;
+  pointer-events: none;
+  font-size: 1.5rem;
+}
+
 .react-calendar__viewContainer {
   height: 100%;
 }
@@ -38,6 +59,7 @@
 }
 .react-calendar__navigation {
   display: flex;
+  justify-content: center;
   height: 5%;
   margin-bottom: 1em;
 }
