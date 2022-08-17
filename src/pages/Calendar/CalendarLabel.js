@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useState } from "react";
 
 const CalendarLabel = ({ style, title, labels, onClickTitle, onClickAdd }) => {
   return (
@@ -8,12 +9,15 @@ const CalendarLabel = ({ style, title, labels, onClickTitle, onClickAdd }) => {
           <div className="box-title">{title}</div>
         </div>
         <ul className="calender-list-my">
-          {labels.map((label, idx) => (
-            <li className="calender-item" key={idx}>
-              <div className={`diffcolor ${label.color}`}></div>
-              <span className="daily-title">{label.text}</span>
-            </li>
-          ))}
+          {labels.map((label, idx) => {
+            console.log("label: ", label);
+            return (
+              <li className="calender-item" key={idx}>
+                <DiffColor color={label.color}></DiffColor>
+                <span className="daily-title">{label.title}</span>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </CalendarLabelStyle>
@@ -48,25 +52,6 @@ const CalendarLabelStyle = styled.div`
     display: Flex;
   }
 
-  .diffcolor {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-
-  .diffcolor.yellow {
-    background: #f4d687;
-  }
-
-  .diffcolor.red {
-    background: #e37e7e;
-  }
-
-  .diffcolor.blue {
-    background: #7ea0e3;
-  }
-
   .add-button-container {
     padding: 13px 10px;
     display: flex;
@@ -96,4 +81,11 @@ const CalendarLabelStyle = styled.div`
   }
 `;
 
+const DiffColor = styled.div`
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: 10px;
+  background-color: ${({ color }) => color};
+`;
 export default CalendarLabel;

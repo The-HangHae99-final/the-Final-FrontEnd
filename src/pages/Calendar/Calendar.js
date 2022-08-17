@@ -14,6 +14,11 @@ import {
   faPeopleGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 // file
 import ModalPortal from "../../elements/Portal/ModalPortal";
@@ -30,7 +35,9 @@ const Calender = () => {
   const [value, onChange] = useState(new Date());
   const [modalTitle, setModalTitle] = useState("");
   const currentWs = useRecoilValue(currentWorkspaceState);
+  console.log("currentWs: ", currentWs);
   const [myList, setMyList] = useRecoilState(myTaskList);
+  console.log("myList: ", myList);
   const [taskContents, setTaskContents] = useState({
     startDate: "",
     endDate: "",
@@ -40,14 +47,21 @@ const Calender = () => {
     workSpaceName: "",
   });
   const [openActiveBar, setOpenActiveBar] = useState(false);
+  const [label, setLabel] = React.useState("my");
+
+  const handleSelectChange = (event) => {
+    setLabel(event.target.value);
+  };
 
   const handleActiveBar = () => {
     setOpenActiveBar(!openActiveBar);
   };
 
-  const handleModal = (e) => {
+  // 일정 생성 모달 창
+  const handleModal = (title) => {
+    setOpenActiveBar(false);
     setModalOn(!modalOn);
-    setModalTitle(e.target.title);
+    setModalTitle(title);
     setTaskContents({ ...taskContents, workSpaceName: currentWs });
   };
 
@@ -64,76 +78,44 @@ const Calender = () => {
     });
   };
 
-  // 전체 개인 일정 조회 + 달력에 그리기
-  // 1. startDate + (endDate에서 startDate와의 차이 일 수 ) using by add();
-  // 2.
-
+  // 개인, 팀 일정 조회
   useEffect(() => {
-    axios
-      .get(`https://teamnote.shop/api/tasks/all/lists`, {
-        headers: {
-          Authorization: `Bearer ${getItemFromLs("myToken")}`,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        if (res.data.success) {
-          const rows = res.data.result.rows;
-          setMyList([...rows]);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  // 두 날짜 사이에 포함되는 리스트 출력
-  const getDateList = (startDate, endDate) => {
-    const result = [];
-    const curDate = new Date(startDate);
-
-    while (curDate <= new Date(endDate)) {
-      const date = curDate.toISOString().split("T")[0];
-      result.push(date);
-      curDate.setDate(curDate.getDate() + 1);
+    if (label === "my") {
+      axios
+        .get(`https://teamnote.shop/api/tasks/all/lists`, {
+          headers: {
+            Authorization: `Bearer ${getItemFromLs("myToken")}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data.success) {
+            const rows = res.data.result.rows;
+            setMyList([...rows]);
+          }
+        })
+        .catch((err) => console.log(err));
+    } else {
+      axios
+        .post(
+          "https://teamnote.shop/api/team-tasks/lists",
+          { workSpaceName: currentWs },
+          {
+            headers: {
+              Authorization: `Bearer ${getItemFromLs("myToken")}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          if (res.data.success) {
+            const rows = res.data.result.rows;
+            setMyList([...rows]);
+          }
+        })
+        .catch((err) => console.log(err));
     }
-    return result;
-  };
-  // 전체 팀 일정 조회
-  // const fetchTeamTasks = () => {
-  //   // axios({
-  //   //   method: "post",
-  //   //   url: "https://teamnote.shop/api/team-tasks/lists",
-  //   //  {
-  //   //     workSpaceName: currentParams,
-  //   //   },
-  //   //   headers: {
-  //   //     Authorization: `Bearer ${getItemFromLs("myToken")}`,
-  //   //   },
-  //   // })
-  //   //   .then((res) => console.log(res))
-  //   //   .catch((err) => console.log(err));
-  //   axios
-  //     .post(
-  //       "https://teamnote.shop/api/team-tasks/lists",
-  //       {
-  //         workSpaceName: currentParams,
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${getItemFromLs("myToken")}`,
-  //         },
-  //       }
-  //     )
-  //     .then((res) => console.log(res));
-  // };
-
-  // useEffect(() => {
-  //   setTaskContents({
-  //     ...taskContents,
-  //     workSpaceName: currentParams,
-  //   });
-  // }, []);
-
-  const mark = ["2022-08-17", "2022-08-18", "2022-08-19", "2022-08-28"];
+  }, [label]);
 
   return (
     <CalenderStyle className="calenderStyle">
@@ -148,50 +130,57 @@ const Calender = () => {
         /> */}
 
         <div className="myCalender-box">
-          <CalendarLabel
-            {...{
-              title: "My calendar",
-              labels: [
-                {
-                  text: "Contents design",
-                  color: "blue",
-                },
-                {
-                  text: "Product design",
-                  color: "red",
-                },
-                ,
-              ],
-              onClickAdd: handleModal,
-            }}
-          />
-        </div>
-
-        {/* Team calendar */}
-        <div className="teamCalender">
-          <CalendarLabel
-            {...{
-              title: "Team calendar",
-              labels: [
-                {
-                  text: "Meeting",
-                  color: "yellow",
-                },
-                {
-                  text: "Event",
-                  color: "red",
-                },
-                ,
-              ],
-              // onClickTitle: fetchTeamTasks,
-              // onClickAdd: handleModal,
-            }}
-          />
+          <Box sx={{ minWidth: 120 }}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">일정</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={label}
+                label="일정"
+                onChange={handleSelectChange}
+              >
+                <MenuItem value="my">나의 일정</MenuItem>
+                <MenuItem value="team">팀 일정</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+          <div className="teamCalender">
+            {label === "my" ? (
+              <CalendarLabel
+                {...{
+                  title: "My calendar",
+                  labels: myList,
+                  onClickAdd: handleModal,
+                }}
+              />
+            ) : (
+              <CalendarLabel
+                {...{
+                  title: "Team calendar",
+                  labels: [
+                    {
+                      text: "Meeting",
+                      color: "yellow",
+                    },
+                    {
+                      text: "Event",
+                      color: "red",
+                    },
+                    ,
+                  ],
+                  // onClickTitle: fetchTeamTasks,
+                  // onClickAdd: handleModal,
+                }}
+              />
+            )}
+          </div>
         </div>
       </div>
 
       <RightSection>
         {/* 큰 달력 */}
+
         <Calendar
           style={{ height: 500 }}
           value={value}
@@ -224,6 +213,7 @@ const Calender = () => {
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ scale: 0.9 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                onClick={() => handleModal("My calendar")}
               >
                 <FontAwesomeIcon icon={faPerson} className="personal" />
               </motion.div>
@@ -232,6 +222,7 @@ const Calender = () => {
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ scale: 0.9 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                onClick={() => handleModal("Team calendar")}
               >
                 <FontAwesomeIcon icon={faPeopleGroup} className="group" />
               </motion.div>
