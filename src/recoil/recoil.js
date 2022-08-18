@@ -33,6 +33,11 @@ export const myTaskList = atom({
   default: [],
 });
 
+export const teamTaskList = atom({
+  key: "teamTaskList",
+  default: [],
+});
+
 export const initialKanbanData = atom({
   key: "initialKanbanData",
   default: {

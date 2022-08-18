@@ -15,7 +15,7 @@ import ko from "date-fns/locale/ko";
 import { getItemFromLs } from "../../utils/localStorage";
 import useMountTransition from "../../utils/useMountTransition";
 import { useRecoilState } from "recoil";
-import { myTaskList } from "../../recoil/recoil";
+import { myTaskList, teamTaskList } from "../../recoil/recoil";
 
 registerLocale("ko", ko);
 
@@ -35,15 +35,17 @@ const CalendarModal = ({
   taskContents,
   handleTaskInfoChange,
   handleTaskDateChage,
+  closeModalAfterRegister,
 }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [showPickers, setShowPickers] = useState(false);
   const [currentColorKr, setCurrentColorKr] = useState("파랑");
   const [currentColorEng, setCurrentColorEng] = useState("#7EA0E3");
-  const [myList, setMyList] = useRecoilState(myTaskList);
   const [isMounted, setIsMounted] = useState(false);
   const hasTransitionedIn = useMountTransition(isMounted, 300);
+  const [myList, setMyList] = useRecoilState(myTaskList);
+  const [teamScheduleList, setTeamScheduleList] = useRecoilState(teamTaskList);
 
   // UTC 시간 -> 한국 시간으로 변환
   const toKrTime = (date) => {
@@ -62,7 +64,6 @@ const CalendarModal = ({
   const taskSubmit = (e) => {
     e.preventDefault();
     if (modalTitle === "My calendar") {
-      console.log("개인일정 요청임!");
       axios({
         method: "post",
         url: "https://teamnote.shop/api/tasks",
@@ -72,12 +73,11 @@ const CalendarModal = ({
         },
       })
         .then((res) => {
-          console.log(res);
           setMyList([...myList, res.data.result]);
+          closeModalAfterRegister(false);
         })
         .catch((err) => console.log(err));
     } else {
-      console.log("팀일정 요청임!");
       axios({
         method: "post",
         url: "https://teamnote.shop/api/team-tasks",
@@ -87,8 +87,8 @@ const CalendarModal = ({
         },
       })
         .then((res) => {
-          console.log(res);
-          setMyList([...myList, res.data.result]);
+          setTeamScheduleList([...teamScheduleList, res.data.result]);
+          closeModalAfterRegister(false);
         })
         .catch((err) => console.log(err));
     }

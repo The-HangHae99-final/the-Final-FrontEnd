@@ -27,7 +27,11 @@ import CalendarLabel from "./CalendarLabel";
 import { getItemFromLs } from "../../utils/localStorage";
 import axios from "axios";
 import { useRecoilState } from "recoil";
-import { currentWorkspaceState, myTaskList } from "../../recoil/recoil";
+import {
+  currentWorkspaceState,
+  myTaskList,
+  teamTaskList,
+} from "../../recoil/recoil";
 import { useRecoilValue } from "recoil";
 import CalendarDetailModal from "../../components/Modal/CalendarDetailModal";
 
@@ -37,6 +41,7 @@ const Calender = () => {
   const [modalTitle, setModalTitle] = useState("");
   const currentWs = useRecoilValue(currentWorkspaceState);
   const [myList, setMyList] = useRecoilState(myTaskList);
+  const [teamScheduleList, setTeamScheduleList] = useRecoilState(teamTaskList);
   const [taskContents, setTaskContents] = useState({
     startDate: "",
     endDate: "",
@@ -49,6 +54,7 @@ const Calender = () => {
   const [openDetailTag, setOpenDetailTag] = useState(false);
   const [label, setLabel] = React.useState("my");
   const [currentDetailTask, setCurrentDetailTask] = useState([]);
+  const [currentList, setCurrentList] = useState([]);
 
   // 라벨 색상 선택
   const handleSelectChange = (event) => {
@@ -96,7 +102,10 @@ const Calender = () => {
           console.log(res);
           if (res.data.success) {
             const rows = res.data.result.rows;
-            setMyList([...rows]);
+            setCurrentList(() => {
+              setMyList([...rows]);
+              return myList;
+            });
           }
         })
         .catch((err) => console.log(err));
@@ -115,7 +124,12 @@ const Calender = () => {
           console.log(res);
           if (res.data.success) {
             const rows = res.data.result;
-            setMyList([...rows]);
+            console.log("rows: ", rows);
+            // setTeamScheduleList([...rows]);
+            setCurrentList(() => {
+              setTeamScheduleList([...rows]);
+              return teamScheduleList;
+            });
           }
         })
         .catch((err) => console.log(err));
@@ -125,7 +139,7 @@ const Calender = () => {
   // 상세 일정 조회
   const showDetailPage = (task) => {
     setOpenDetailTag(!openDetailTag);
-    const filterTask = myList.filter((a) => a.taskId === task.taskId);
+    const filterTask = currentList.filter((a) => a.taskId === task.taskId);
     setCurrentDetailTask(...filterTask);
   };
 
@@ -133,6 +147,12 @@ const Calender = () => {
     setOpenDetailTag(false);
   };
 
+  useEffect(() => {
+    setTaskContents({
+      ...taskContents,
+      workSpaceName: getItemFromLs("workspaceName"),
+    });
+  }, []);
   return (
     <CalenderStyle className="calenderStyle">
       <div className="leftSection">
@@ -174,7 +194,7 @@ const Calender = () => {
               <CalendarLabel
                 {...{
                   title: "Team calendar",
-                  labels: myList,
+                  labels: teamScheduleList,
                   // onClickTitle: fetchTeamTasks,
                   // onClickAdd: handleModal,
                 }}
@@ -191,9 +211,14 @@ const Calender = () => {
           value={value}
           tileContent={({ date, view }) => {
             let html = [];
-            const a = myList.find((item) => {
-              return item.startDate === moment(date).format("YYYY-MM-DD");
-            });
+            const a =
+              label === "my"
+                ? myList.find((item) => {
+                    return item.startDate === moment(date).format("YYYY-MM-DD");
+                  })
+                : teamScheduleList.find((item) => {
+                    return item.startDate === moment(date).format("YYYY-MM-DD");
+                  });
 
             if (a !== undefined) {
               html.push(
@@ -252,6 +277,7 @@ const Calender = () => {
       <ModalPortal>
         {modalOn && (
           <CalendarModal
+            closeModalAfterRegister={setModalOn}
             onClose={handleModal}
             modalTitle={modalTitle}
             taskContents={taskContents}
