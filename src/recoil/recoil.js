@@ -14,6 +14,11 @@ export const userState = atom({
   },
 });
 
+export const memberList = atom({
+  key: "memberList",
+  default: [],
+});
+
 export const currentWorkspaceState = atom({
   key: "currentWorkspaceState",
   default: "",

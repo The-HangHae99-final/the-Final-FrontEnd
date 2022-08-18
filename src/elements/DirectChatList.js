@@ -4,13 +4,16 @@ import styled from "styled-components";
 import { getItemFromLs } from "../utils/localStorage";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { useRecoilState } from "recoil";
+import { memberList, userState } from "../recoil/recoil";
 
 const DirectChatList = ({ moveRoom, roomName }) => {
   const userName = getItemFromLs("userName");
   const workspace = useSelector((state) => state.workSpace.value);
+  const [member, setMeber] = useRecoilState(memberList);
 
   const exceptMe = () => {
-    const notMeInThisArr = workspace.member_list.filter(
+    const notMeInThisArr = member.filter(
       (item) => item.memberName !== userName
     );
     return notMeInThisArr;
@@ -27,6 +30,7 @@ const DirectChatList = ({ moveRoom, roomName }) => {
             return (
               <div>
                 <UserProfile
+                  size="40px"
                   key={idx}
                   text={member.memberName}
                   roomName={roomName}

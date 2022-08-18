@@ -33,12 +33,13 @@ import Board from "../../pages/Board";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { currentWorkspaceState, userState } from "../../recoil/recoil";
 
-const Header = ({ invitation }) => {
+const Header = () => {
   const [userInfo, setUserInfo] = useRecoilState(userState);
   const setCurrentWorkspace = useSetRecoilState(currentWorkspaceState);
   const [workSpaceName, setWorkSpaceName] = useState("");
   const [modalOn, setModalOn] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
+  console.log("openDropdown: ", openDropdown);
   const [openNoti, setOpenNoti] = useState(false);
   const [hasNotification, setHasNotification] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -48,10 +49,10 @@ const Header = ({ invitation }) => {
   const username = getItemFromLs("userName");
   const userEmail = getItemFromLs("userEmail");
   const navigate = useNavigate();
+  const invitation = userInfo?.invitation;
 
   const user = useSelector((state) => state.user.value);
   const workspaceList = userInfo.workSpaceList;
-  console.log("workspaceList: ", workspaceList);
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -170,9 +171,7 @@ const Header = ({ invitation }) => {
               </button>
               <button className="menuBtn" onClick={openNotiModal}>
                 <img src={bellIcon} alt="sun icon" />
-                {hasNotification && (
-                  <span className="badge">{invitation?.length}</span>
-                )}
+                {hasNotification && <span className="badge"></span>}
               </button>
               {openNoti && <NotificationModal onClose={closeNoti} />}
             </div>
@@ -228,7 +227,6 @@ const Header = ({ invitation }) => {
                 <WorkspaceList>
                   {workspaceList &&
                     workspaceList?.map((item, idx) => {
-                      console.log("item: ", item);
                       const workspaceId = item?._id;
                       const workspaceName = item?.workSpace?.split("+");
                       return (
@@ -351,6 +349,7 @@ const HeaderStyle = styled.div`
       border-radius: 50%;
       background: red;
       color: white;
+      font-size: 8px;
     }
   }
 

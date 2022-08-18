@@ -101,7 +101,6 @@ const Board = () => {
   const [initState, setInitState] = useRecoilState(initialKanbanData);
   const [isShown, setIsShown] = useState(false);
   const [titleCharacter, setTitleCharacter] = useState(0);
-  console.log("initState: ", initState);
 
   // 보드 생성
   const handleSubmit = async (e) => {
@@ -331,14 +330,10 @@ const Board = () => {
       <DragDropContext onDragEnd={onDragEnd}>
         <BoardContainer>
           {initState.columnOrder.map((columnId) => {
-            console.log("initState: ", initState);
             const column = initState.columns[columnId];
-            console.log("column: ", column);
             const tasks = column.taskIds.map((taskId) => {
-              console.log("taskId: ", taskId);
               return initState.tasks[taskId];
             });
-            console.log("tasks: ", tasks);
             return (
               <Column
                 key={column.id}

@@ -17,6 +17,7 @@ import ModalPortal from "../../elements/Portal/ModalPortal";
 import WorkspaceModal from "../../components/Modal/WorkspaceModal";
 import useMountTransition from "../../utils/useMountTransition";
 import AddMemberModal from "../../components/Modal/AddMemberModal";
+import { TypeAnimation } from "react-type-animation";
 
 // 아이콘
 import addMemberIcon from "../../public/img/addMemberIcon.png";
@@ -83,12 +84,8 @@ const Main = () => {
         })
         .then((res) => {
           if (res.data.success) {
-            console.log("res: ", res.data);
             const wsInfoList = res.data.includedList;
-            // const workSpaceFullname = wsInfoList.map((ws) => {
-            //   return ws.workSpace.split("+")[1];
-            // });
-            // console.log("workSpaceFullname: ", workSpaceFullname);
+
             // 앱 상태(3가지)에 따라 조건부 렌더링
             // 1. 앱 상태가 확인 될 때까지 앱상태 UNKNOWN => spinner
             // 2. 로그인한 사용자의 워크스페이스가 비어있으면 앱상태 NEWBIE로 변경 => 신규 사용자 화면
@@ -99,7 +96,7 @@ const Main = () => {
               setAppState(APP_USER_STATE.USER);
             }
 
-            // 받은 초대메시지 목록 요청
+            // 받은 초대메시지 리스트 조회
             axios
               .get(`https://teamnote.shop/api/members/inviting`, {
                 headers: {
@@ -108,13 +105,6 @@ const Main = () => {
               })
               .then((res) => {
                 if (res.data.success) {
-                  dispatch(
-                    getUserInfo({
-                      ...user,
-                      workSpaceList: [...wsInfoList],
-                      invitation: [...res.data.result],
-                    })
-                  );
                   setUserInfo({
                     ...userInfo,
                     workSpaceList: [...wsInfoList],
@@ -250,7 +240,49 @@ const Main = () => {
           {appstate === APP_USER_STATE.USER ? (
             <>
               {location.pathname === "/main" ? (
-                <h1>어서오세요</h1>
+                <div className="main-text-wrap">
+                  <TypeAnimation
+                    cursor={false}
+                    sequence={["TEAMNOTE.", 2000]}
+                    wrapper="h2"
+                    repeat={Infinity}
+                    className="main-text"
+                    speed={5}
+                  />
+                  <TypeAnimation
+                    cursor={false}
+                    sequence={["TEAMNOTE.", 2000]}
+                    wrapper="h2"
+                    repeat={Infinity}
+                    className="main-text"
+                    speed={5}
+                  />
+                  <TypeAnimation
+                    cursor={false}
+                    sequence={["TEAMNOTE.", 2000]}
+                    wrapper="h2"
+                    repeat={Infinity}
+                    className="main-text"
+                    speed={5}
+                    style={{ color: "#7d8bdb" }}
+                  />
+                  <TypeAnimation
+                    cursor={false}
+                    sequence={["TEAMNOTE.", 2000]}
+                    wrapper="h2"
+                    repeat={Infinity}
+                    className="main-text"
+                    speed={5}
+                  />
+                  <TypeAnimation
+                    cursor={false}
+                    sequence={["TEAMNOTE.", 2000]}
+                    wrapper="h2"
+                    repeat={Infinity}
+                    className="main-text"
+                    speed={5}
+                  />
+                </div>
               ) : (
                 <>
                   <div className="main-header">
@@ -445,6 +477,7 @@ const RightSide = styled.div`
   flex-direction: column;
   padding: 24px;
   box-sizing: border-box;
+  position: relative;
 
   .main-container {
     width: 100%;
@@ -469,6 +502,7 @@ const RightSide = styled.div`
       display: flex;
       gap: 25px;
       margin-left: 10px;
+      margin-bottom: 7px;
     }
 
     .list-item {
@@ -501,8 +535,8 @@ const RightSide = styled.div`
   .main-header-addBtn {
     all: unset;
     background: #7d8bdb;
-    min-width: 152px;
-    height: 52px;
+    min-width: 122px;
+    height: 42px;
     border-radius: 5px;
     display: flex;
     align-items: center;
@@ -520,10 +554,18 @@ const RightSide = styled.div`
   }
   .addBtn-name {
     font-weight: 500;
-    font-size: 12px;
+    font-size: 10px;
+
     line-height: 23px;
     text-align: center;
     color: #ffffff;
+  }
+
+  .main-text-wrap {
+    position: absolute;
+    top: 30%;
+    left: 40px;
+    font-size: 4rem;
   }
 `;
 

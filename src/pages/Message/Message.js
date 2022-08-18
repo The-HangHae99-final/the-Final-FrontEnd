@@ -17,6 +17,9 @@ import topArrowActive from "../../public/img/top-arrow-active.png";
 
 import camera from "../../public/img/camera.png";
 import FileUploadBtn from "../../components/FileUploadBtn";
+import { useRecoilState } from "recoil";
+import { memberList, userState } from "../../recoil/recoil";
+import axios from "axios";
 
 const Message = () => {
   const [currentSocket, setCurrentSocket] = useState(null);
@@ -26,13 +29,12 @@ const Message = () => {
   const [showChat, setShowChat] = useState(false);
   const [roomName, setRoomName] = useState("");
   const [oppenent, setOppenent] = useState("");
+  const [members, setMembers] = useRecoilState(memberList);
 
-  const dispatch = useDispatch();
   const workspace = useSelector((state) => state.workSpace.value);
-  const teamChatRoomName = getItemFromLs("workspace");
+  const teamChatRoomName = getItemFromLs("workspaceName");
   const username = getItemFromLs("userName");
   const [showActiveBtn, setShowActiveBtn] = useState(false);
-  console.log("showActiveBtn: ", showActiveBtn);
 
   const leaveRoom = (oldRoom) => {
     currentSocket.emit("leave_room", oldRoom);
@@ -82,6 +84,24 @@ const Message = () => {
     }
   }, [currentMessage]);
 
+  // 해당 워크스페이스 팀원 목록 조회
+  useEffect(() => {
+    axios
+      .get(
+        `https://teamnote.shop/api/members/lists/${getItemFromLs(
+          "workspaceName"
+        )}`,
+        {
+          headers: {
+            Authorization: `Bearer ${getItemFromLs("myToken")}`,
+          },
+        }
+      )
+      .then((res) => {
+        setMembers(res.data.result);
+      });
+  }, []);
+
   // 훅을 이용해 소켓 관리
   useEffect(() => {
     setCurrentSocket(socketIOClient("https://teamnote.shop/chat"));
@@ -96,7 +116,7 @@ const Message = () => {
           {/* 왼쪽 섹션 */}
           <LeftSection className="leftSection">
             {/* Online User */}
-            <OnlineBox className="online-box">
+            {/* <OnlineBox className="online-box">
               <BoxHeader className="box-header">
                 <BoxTitle className="box-title">Online User</BoxTitle>
                 <OnlineUserCount className="online-user-count">
@@ -104,14 +124,8 @@ const Message = () => {
                 </OnlineUserCount>
               </BoxHeader>
               <OnlineList className="user-list">
-                {/* {exceptMe() && exceptMe().map((member, idx) => {})} */}
-                {/* <UserProfile online={true} marginRight="10px" />
-                <UserProfile online={true} marginRight="10px" />
-                <UserProfile online={true} marginRight="10px" />
-                <UserProfile online={true} marginRight="10px" />
-                <UserProfile online={true} marginRight="10px" /> */}
               </OnlineList>
-            </OnlineBox>
+            </OnlineBox> */}
 
             {/* Team Chat */}
             <TeamchatBox className="teamchat-box">
@@ -142,16 +156,15 @@ const Message = () => {
           <RightSection className="rightSection">
             <ChatSection className="ChatSection">
               {/* 채팅 화면 상단 바 */}
-              <BarTop className="BarTop">
-                <div className="user-state">
-                  <div className="user-state_content">
-                    <div className="user-name">
-                      {oppenent ? oppenent : "????"}
+              {oppenent ? (
+                <BarTop>
+                  <div className="user-state">
+                    <div className="user-state_content">
+                      <div className="user-name">{oppenent}</div>
                     </div>
-                    <div className="recent-active">4분전 활동</div>
                   </div>
-                </div>
-              </BarTop>
+                </BarTop>
+              ) : null}
 
               {/* 채팅 화면 */}
               {showChat && (
@@ -229,6 +242,7 @@ const RightSection = styled.div`
   width: 100%;
   height: 100%;
   background-color: #ffffff;
+  border: 1px solid #ecedf1;
   border-radius: 5px;
 `;
 
@@ -263,9 +277,7 @@ const OnlineUserCount = styled.div`
   color: #7d8bdb;
 `;
 
-const TeamchatBox = styled.div`
-  margin-top: 25px;
-`;
+const TeamchatBox = styled.div``;
 
 const MyChatBox = styled.div`
   margin-top: 30px;
@@ -283,9 +295,9 @@ const ChatSection = styled.div`
 const BarTop = styled.div`
   width: 100%;
   height: 60px;
-  background-color: #ffffff;
+  background-color: white;
   position: sticky;
-  top: 0;
+  top: 0px;
   padding: 16px 45px;
   z-index: 99;
   display: flex;

@@ -4,12 +4,17 @@ import UserProfile from "../elements/UserProfile";
 import { getItemFromLs } from "../utils/localStorage";
 import topArrow from "../public/img/top-arrow.png";
 import camera from "../public/img/camera.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComments } from "@fortawesome/free-solid-svg-icons";
+import { useRecoilState } from "recoil";
+import { userState } from "../recoil/recoil";
 
 const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
-  console.log("messageList: ", messageList);
   const [currentMessage, setCurrentMessage] = useState("");
   const username = getItemFromLs("userName");
   const bottomRef = useRef(null);
+  const [userInfo, setUserInfo] = useRecoilState(userState);
+  console.log("userInfo: ", userInfo);
 
   useEffect(() => {
     // 서버에서 클라로 전송할 데이터 있을 시 그 데이터를 받아 차곡차곡 쌓는다
@@ -30,6 +35,7 @@ const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
         {messageList.length >= 1 ? (
           <>
             {messageList.map((message, idx) => {
+              console.log("message: ", message.author, username);
               if (message.author === username) {
                 return (
                   <div className="bubble bubble_right" key={idx}>
@@ -49,7 +55,6 @@ const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
               } else {
                 return (
                   <div className="bubble bubble_left" key={idx}>
-                    <UserProfile marginRight="10px" toTop="-15px" />
                     <ContentBox className="ContentBox">
                       <YourName className="YourName">{message.author}</YourName>
                       <BubbleContent className="BubbleContent">
@@ -70,7 +75,10 @@ const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
             })}
           </>
         ) : (
-          <div>채팅을 시작해보세요!</div>
+          <div className="init-msg">
+            <FontAwesomeIcon icon={faComments} className="comments-icon" />
+            <h1>대화를 시작해보세요!</h1>
+          </div>
         )}
       </div>
       <div ref={bottomRef} />
@@ -81,6 +89,7 @@ const BubbleBox = ({ roomName, messageList, setMessageList, socket }) => {
 const BubbleBoxStyle = styled.div`
   height: 86%;
   overflow: scroll;
+  position: relative;
 
   ::-webkit-scrollbar {
     display: none;
@@ -152,6 +161,23 @@ const BubbleBoxStyle = styled.div`
 
   .created-time-left {
     margin-left: 6px;
+  }
+
+  .init-msg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    color: #353841;
+    opacity: 0.3;
+
+    .comments-icon {
+      font-size: 6rem;
+    }
   }
 `;
 
