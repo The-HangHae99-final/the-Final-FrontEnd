@@ -55,7 +55,7 @@ const Column = ({
               ref={droppableProvided.innerRef}
               {...droppableProvided.droppableProps}
             >
-              {tasks.map((task, index) => {
+              {tasks?.map((task, index) => {
                 console.log("task: ", task);
                 return (
                   <Draggable

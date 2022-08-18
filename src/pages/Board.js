@@ -18,7 +18,8 @@ import { keys } from "@mui/system";
 import Column from "../components/Board/Column";
 import { useLocation } from "react-router";
 import { useRecoilValue } from "recoil";
-import { currentWorkspaceState } from "../recoil/recoil";
+import { currentWorkspaceState, initialKanbanData } from "../recoil/recoil";
+import { useRecoilState } from "recoil";
 
 function createBox(
   handleSubmit,
@@ -97,9 +98,10 @@ const Board = () => {
   const [todoList, setTodoList] = useState([]);
   const [inProgressList, setInProgressList] = useState([]);
   const [doneList, setDoneList] = useState([]);
-  const [initState, setInitState] = useState(initialData);
+  const [initState, setInitState] = useRecoilState(initialKanbanData);
   const [isShown, setIsShown] = useState(false);
   const [titleCharacter, setTitleCharacter] = useState(0);
+  console.log("initState: ", initState);
 
   // 보드 생성
   const handleSubmit = async (e) => {
@@ -145,10 +147,10 @@ const Board = () => {
   useEffect(() => {
     setData({
       ...data,
-      workSpaceName: currentWs,
+      workSpaceName: getItemFromLs("workspaceName"),
       assignees: getItemFromLs("userName"),
     });
-  }, [state?.workSpace, currentWs]);
+  }, []);
 
   // 보드 삭제
   const removeBoard = (postId) => {
@@ -220,6 +222,7 @@ const Board = () => {
           }
         );
         // 서버에서 받아온 데이터(배열)
+        console.log("res: ", res);
         const boards = res.data.posts;
         const newObject = {};
         boards.forEach((task) => {
@@ -320,6 +323,7 @@ const Board = () => {
       },
     };
     setInitState(newState);
+    console.log("newState: ", newState);
   };
 
   return (
@@ -327,10 +331,14 @@ const Board = () => {
       <DragDropContext onDragEnd={onDragEnd}>
         <BoardContainer>
           {initState.columnOrder.map((columnId) => {
+            console.log("initState: ", initState);
             const column = initState.columns[columnId];
-            const tasks = column.taskIds.map(
-              (taskId) => initState.tasks[taskId]
-            );
+            console.log("column: ", column);
+            const tasks = column.taskIds.map((taskId) => {
+              console.log("taskId: ", taskId);
+              return initState.tasks[taskId];
+            });
+            console.log("tasks: ", tasks);
             return (
               <Column
                 key={column.id}

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo } from "../../redux/userReducer";
 import axios from "axios";
-import { getItemFromLs } from "../../utils/localStorage";
+import { getItemFromLs, setItemToLs } from "../../utils/localStorage";
 import ScreenForNewbie from "../../components/ScreenForNewbie";
 import Spinner from "../../elements/Spinner";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
@@ -225,18 +225,19 @@ const Main = () => {
           <ul className="workspaces-list">
             {workspaceList &&
               workspaceList?.map((workspace, idx) => {
-                const workspaceName = workspace.workSpace.split("+")[1];
+                const workspaceName = workspace.workSpace;
                 return (
                   <li
                     className="workspace-source"
                     onClick={() => {
                       toGoWorkspace(workspace._id, workspace);
-                      setCurrentWorkspace(workspace.workSpace);
+                      setCurrentWorkspace(workspaceName);
+                      setItemToLs("workspaceName", workspaceName);
                     }}
                     key={idx}
                   >
                     <UserAvatar width="20px" height="20px" />
-                    {workspaceName}
+                    {workspaceName.split("+")[1]}
                   </li>
                 );
               })}

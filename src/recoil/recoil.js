@@ -1,4 +1,7 @@
 import { atom } from "recoil";
+import { recoilPersist } from "recoil-persist";
+
+const { persistAtom } = recoilPersist();
 
 export const userState = atom({
   key: "userState",
@@ -28,4 +31,30 @@ export const canbanList = atom({
 export const myTaskList = atom({
   key: "myTaskList",
   default: [],
+});
+
+export const initialKanbanData = atom({
+  key: "initialKanbanData",
+  default: {
+    tasks: {},
+    columns: {
+      "column-1": {
+        id: "column-1",
+        title: "TO-DO",
+        taskIds: [],
+      },
+      "column-2": {
+        id: "column-2",
+        title: "IN-PROGRESS",
+        taskIds: [],
+      },
+      "column-3": {
+        id: "column-3",
+        title: "COMPLETED",
+        taskIds: [],
+      },
+    },
+    columnOrder: ["column-1", "column-2", "column-3"],
+  },
+  effects_UNSTABLE: [persistAtom],
 });
