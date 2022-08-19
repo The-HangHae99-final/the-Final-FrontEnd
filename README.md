@@ -1,31 +1,15 @@
 # 💻 TEAM NOTE (FE)
-<br />
-## 일정 관리부터 실시간 소통까지, 똑똑한 팀플을 위한 팀 노트!
+> 일정 관리부터 실시간 소통까지, 똑똑한 팀플을 위한 TeamNote.
+
 <br />
 <img src="https://user-images.githubusercontent.com/105115805/182895596-13eecf6c-4ed7-4a4c-9286-64ef3010a91d.png"/>
-[서비스 이용해보기](teamnote.co.kr)
-## 🗂️ 목차
 
-### 1. [프로젝트 소개](#-프로젝트-소개)
-### 2. [팀 멤버](#-팀-멤버)
-### 3. [기술 스텍](#-기술스택-why)
-### 4. [라이브러리](#-라이브러리-why)
-### 5. [주요 기능](#️-주요-기능)
-### 6. [아키텍쳐](#-프론트-아키텍처)
-### 7. [트러블 슈팅](#트러블-슈팅)
-
-<hr>
-<br>
-
-### 1. 프로젝트 소개
-
-실용적이고, 매력적인 UI로 협업에서 받는 스트레스를 줄여 드립니다!
-
+실용적이고, 매력적인 UI로 팀플에서 받는 스트레스를 줄여 드립니다!
 함께 프로젝트를 하는 사람들과 일정을 공유하고, 정리하고, 대화를 나눠보세요!
 
-Share your task ~! Share your Idea !
+### 🗓 프로젝트 기간
 
-<br>
+- 2022년 6월 24일 ~ 2022년 8월 5일
 
 **팀노트 팀노션** :  https://sprout-dress-47a.notion.site/1-SA-269179d67de145ab9a6a1135fdb5e297
 
@@ -33,13 +17,16 @@ Share your task ~! Share your Idea !
 
 <br>
 
-## 🗓 프로젝트 기간
+## 🗂️ 목차
 
-- 2022년 6월 24일 ~ 2022년 8월 5일
+### 1. [팀 멤버](#-팀-멤버)
+### 2. [기술 스텍](#-기술스택-why)
+### 3. [라이브러리](#-라이브러리-why)
+### 4. [주요 기능](#️-주요-기능)
+### 5. [아키텍쳐](#-프론트-아키텍처)
 
-<br>
 
-### 2. 팀 멤버
+### 1. 팀 멤버
 
 <table>
    <tr>
@@ -72,7 +59,7 @@ Share your task ~! Share your Idea !
 
 <br>
 
-## 3. 기술스택 ([WHY?](https://spark-stove-6bf.notion.site/cf6de263fec844ba8c989b4c9a6dd32e))
+## 2. 기술스택 ([WHY?](https://spark-stove-6bf.notion.site/cf6de263fec844ba8c989b4c9a6dd32e))
 
 
 | 기술스택      |           설명           |
@@ -84,7 +71,7 @@ Share your task ~! Share your Idea !
 
 <br>
 
-## 4. 라이브러리
+## 3. 라이브러리
 
 | 라이브러리      |           목적           |
 | ------------- | :----------------------: |
@@ -99,7 +86,7 @@ Share your task ~! Share your Idea !
 
 <br/>
 
-## 5. 주요 기능
+## 4. 주요 기능
 
 ### 💁🏻‍소셜 로그인
 - 네이버와 카카오를 이용한 간편한 로그인 시스템입니다.
@@ -120,13 +107,7 @@ Share your task ~! Share your Idea !
 
 <br/>
 
-## 6. 아키텍쳐
+## 5. 아키텍쳐
 <img src="https://user-images.githubusercontent.com/105115805/182904504-0db404d6-f456-490b-b3a3-b500df06b134.png" />
 
 <br/>
-
-
-## 8. 트러블 슈팅
-
-<br/>
-
