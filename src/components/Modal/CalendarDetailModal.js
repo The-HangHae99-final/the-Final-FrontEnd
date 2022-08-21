@@ -8,6 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const CalendarDetailModal = ({ currentDetailTask, onClose }) => {
+  console.log("currentDetailTask: ", currentDetailTask);
   const { title, desc, startDate, color } = currentDetailTask;
   return (
     <CalendarDetailStyle>

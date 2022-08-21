@@ -259,7 +259,6 @@ const Board = () => {
   };
 
   const onDragEnd = (result) => {
-    console.log("result: ", result);
     const { source, destination } = result;
 
     // If 유저가 정해지지 않은 영역에 드랍 할 떄
@@ -275,10 +274,8 @@ const Board = () => {
 
     // If 유저가 같은 column에 다른 위치에 드랍 할 떄
     const sourceCol = initState.columns[source.droppableId];
-    console.log("sourceCol: ", sourceCol);
 
     const destinationCol = initState.columns[destination.droppableId];
-    console.log("destinationCol: ", destinationCol);
 
     if (sourceCol.id === destinationCol.id) {
       const newColumn = reorderColumnList(
@@ -322,7 +319,6 @@ const Board = () => {
       },
     };
     setInitState(newState);
-    console.log("newState: ", newState);
   };
 
   return (

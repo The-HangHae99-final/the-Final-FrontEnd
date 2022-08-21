@@ -39,21 +39,16 @@ const Header = () => {
   const [workSpaceName, setWorkSpaceName] = useState("");
   const [modalOn, setModalOn] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
-  console.log("openDropdown: ", openDropdown);
   const [openNoti, setOpenNoti] = useState(false);
   const [hasNotification, setHasNotification] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const hasTransitionedIn = useMountTransition(isMounted, 1500);
-  const [currentSocket, setCurrentSocket] = useState(null);
   const dropdownRef = useRef(null);
   const username = getItemFromLs("userName");
   const userEmail = getItemFromLs("userEmail");
   const navigate = useNavigate();
-  const invitation = userInfo?.invitation;
-
   const user = useSelector((state) => state.user.value);
   const workspaceList = userInfo.workSpaceList;
-  const dispatch = useDispatch();
   const location = useLocation();
 
   const [openMyProfileModal, setOpenMyProfileModal] = useState(false);
@@ -110,7 +105,6 @@ const Header = () => {
         }
       )
       .then((res) => {
-        console.log("res: ", res);
         setUserInfo({
           ...userInfo,
           workSpaceList: [...userInfo.workSpaceList, res.data.addedOwner],
@@ -471,6 +465,11 @@ const WorkspaceList = styled.ul`
   height: 300px;
   overflow: scroll;
   scroll-behavior: smooth;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
   .workspace-item {
     display: Flex;
     align-items: center;

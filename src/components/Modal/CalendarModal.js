@@ -143,7 +143,6 @@ const CalendarModal = ({
                   }`}
                 >
                   {colors.map((color, idx) => {
-                    console.log("color: ", color);
                     return (
                       <Color
                         key={idx}

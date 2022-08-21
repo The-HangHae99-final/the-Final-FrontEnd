@@ -106,7 +106,7 @@ const Signup = () => {
   const onChangePassword = useCallback((e) => {
     const passwordValue = e.target.value;
     setPassword(passwordValue);
-    if (passwordValue.length <= 6) {
+    if (passwordValue.length < 6) {
       setPasswordErrorMessage("6글자 이상 입력해주세요.");
       setIsPassword(false);
     } else {

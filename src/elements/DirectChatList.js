@@ -58,5 +58,8 @@ const MyChatList = styled.div`
   gap: 18px;
   margin-top: 20px;
   overflow: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 export default DirectChatList;

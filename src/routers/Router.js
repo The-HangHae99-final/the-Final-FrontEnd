@@ -9,15 +9,11 @@ import Calender from "../pages/Calendar/Calendar";
 import Message from "../pages/Message/Message";
 import NaverLoginCallBack from "../elements/introMain/NaverLoginCallBack";
 import KakaoLoginCallback from "../elements/introMain/KakaoLoginCallBack";
-import PrivateMain from "../components/PrivateMain";
 import JoinRouter from "./JoinRouter";
 import { SignIn } from "../components/SignIn/SignIn.js";
 import Signup from "../components/SignIn/Signup";
-import { useMediaQuery } from "react-responsive";
 import { ToastContainer } from "react-toastify";
 import Header from "../components/Header/Header";
-import Aside from "../components/Aside";
-import { getItemFromLs } from "../utils/localStorage";
 import isLogin from "../utils/isLogin";
 
 // 로그인 후
@@ -30,7 +26,6 @@ import isLogin from "../utils/isLogin";
 
 // * 로그인 전에 /main 입력 시 처리
 console.log("isLogin(): ", isLogin());
-
 const Router = () => {
   return (
     <>
@@ -40,10 +35,7 @@ const Router = () => {
           <Route path="signin" element={<SignIn />} />
           <Route path="signup" element={<Signup />} />
         </Route>
-        <Route
-          path="/main"
-          element={isLogin() ? <Main /> : <Navigate to="/join/signin" />}
-        ></Route>
+        <Route path="/main" element={<Main />}></Route>
         <Route path="/main/:id/*" element={<Main />}>
           <Route path="board" element={<Board />} />
           <Route path="calendar" element={<Calender />} />

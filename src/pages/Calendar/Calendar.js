@@ -40,7 +40,7 @@ const Calender = () => {
   const [value, onChange] = useState(new Date());
   const [modalTitle, setModalTitle] = useState("");
   const currentWs = useRecoilValue(currentWorkspaceState);
-  const [myList, setMyList] = useRecoilState(myTaskList);
+  const [myScheduleList, setMyScheduleList] = useRecoilState(myTaskList);
   const [teamScheduleList, setTeamScheduleList] = useRecoilState(teamTaskList);
   const [taskContents, setTaskContents] = useState({
     startDate: "",
@@ -54,6 +54,7 @@ const Calender = () => {
   const [openDetailTag, setOpenDetailTag] = useState(false);
   const [label, setLabel] = React.useState("my");
   const [currentDetailTask, setCurrentDetailTask] = useState([]);
+  console.log("currentDetailTask: ", currentDetailTask);
   const [currentList, setCurrentList] = useState([]);
 
   // 라벨 색상 선택
@@ -103,8 +104,8 @@ const Calender = () => {
           if (res.data.success) {
             const rows = res.data.result.rows;
             setCurrentList(() => {
-              setMyList([...rows]);
-              return myList;
+              setMyScheduleList([...rows]);
+              return myScheduleList;
             });
           }
         })
@@ -138,9 +139,10 @@ const Calender = () => {
 
   // 상세 일정 조회
   const showDetailPage = (task) => {
-    setOpenDetailTag(!openDetailTag);
-    const filterTask = currentList.filter((a) => a.taskId === task.taskId);
-    setCurrentDetailTask(...filterTask);
+    console.log("task: ", task);
+    // setOpenDetailTag(!openDetailTag);
+    // const filterTask = currentList.filter((a) => a.taskId === task.taskId);
+    // setCurrentDetailTask(...filterTask);
   };
 
   const closeDetailPage = () => {
@@ -186,7 +188,7 @@ const Calender = () => {
               <CalendarLabel
                 {...{
                   title: "My calendar",
-                  labels: myList,
+                  labels: myScheduleList,
                   onClickAdd: handleModal,
                 }}
               />
@@ -213,7 +215,7 @@ const Calender = () => {
             let html = [];
             const a =
               label === "my"
-                ? myList.find((item) => {
+                ? myScheduleList.find((item) => {
                     return item.startDate === moment(date).format("YYYY-MM-DD");
                   })
                 : teamScheduleList.find((item) => {

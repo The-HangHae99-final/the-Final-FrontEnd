@@ -56,7 +56,6 @@ const Column = ({
               {...droppableProvided.droppableProps}
             >
               {tasks?.map((task, index) => {
-                console.log("task: ", task);
                 return (
                   <Draggable
                     key={task.postId}

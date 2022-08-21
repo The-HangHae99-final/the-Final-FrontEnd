@@ -1,22 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
-
 import logo from "../../public/img/Login/logo-colored.png";
 import axios from "axios";
 import { setItemToLs } from "../../utils/localStorage";
 import { useNavigate } from "react-router-dom";
 import Divider from "../../elements/Divider";
 import SocialLogin from "../SocialLogin";
-import { useDispatch } from "react-redux";
-import CalendarLabel from "../../pages/Calendar/CalendarLabel";
 import * as common from "../../elements/toast";
-import { successNotify } from "../../elements/toast";
-import Signup from "./Signup";
 import { Button } from "@mui/material";
-
-// 이미지
-import loginHelp from "../../public/img/Login/login-help.png";
-import loginBanner from "../../public/img/Login/login-banner.png";
 
 function PopUpErrorMsg() {
   return (
@@ -41,7 +32,6 @@ export const SignIn = () => {
   const emailRef = useRef();
   const pwRef = useRef();
 
-  // useInput 으로 함수 분리하기
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLoginValue({ ...loginValue, [name]: value });
@@ -65,7 +55,6 @@ export const SignIn = () => {
         password,
       });
       if (res.data.success) {
-        console.log("res: ", res);
         const user_name = res.data.userName;
         const user_email = res.data.userEmail;
         const token = res.data.token;
@@ -77,7 +66,7 @@ export const SignIn = () => {
         navigate("/main");
       }
     } catch (err) {
-      // TOODO 토스트 얼럿으로 변경하는게 좋음
+      // TODO 토스트 얼럿으로 변경하는게 좋음
       console.log("err: ", err);
       if (err.response.data.errorMessage == "일치하는 이메일이 없습니다.") {
         setEmailHelpMessage("이메일 형식을 다시 확인 해주세요.");
@@ -87,10 +76,6 @@ export const SignIn = () => {
         pwRef.current.focus();
       }
     }
-  };
-
-  const handleGoToLogin = () => {
-    setShowLogin(true);
   };
 
   useEffect(() => {

@@ -21,6 +21,7 @@ import { TypeAnimation } from "react-type-animation";
 
 // 아이콘
 import addMemberIcon from "../../public/img/addMemberIcon.png";
+import mainbg from "../../public/img/Main/main-bg.webp";
 
 export const APP_USER_STATE = {
   NOT_AUTH: "로그인되지 않은 상태",
@@ -44,6 +45,7 @@ const Main = () => {
     workSpaceName: "",
     userEmail: "",
   });
+  const [memberModalOn, setMemberModalOn] = useState(false);
   const hasTransitionedIn = useMountTransition(isMounted, 1500);
   const isLoading = appstate === APP_USER_STATE.UNKNOWN;
   const navigate = useNavigate();
@@ -163,7 +165,7 @@ const Main = () => {
   const addNewMember = () => {
     axios({
       method: "post",
-      url: "http://43.200.170.45/api/members/inviting",
+      url: "https://teamnote.shop/api/members/inviting",
       data: newMember,
       headers: {
         Authorization: `Bearer ${getItemFromLs("myToken")}`,
@@ -173,7 +175,7 @@ const Main = () => {
         console.log("res: ", res);
         if (res.data.success) {
           alert(`${newMember.userEmail}님에게 초대메시지를 보냈습니다`);
-          setModalOn(false);
+          setMemberModalOn(false);
         } else {
           alert(`${res.data.errorMessage}`);
         }
@@ -181,13 +183,8 @@ const Main = () => {
       .catch((err) => alert(`${err.response.data.errorMessage}`));
   };
 
-  const handleAddMemberModal = () => {
-    setNewMember({ ...newMember, workSpaceName: currentWorkspace });
-    setModalOn(!modalOn);
-  };
-
-  const closeModal = (e) => {
-    setModalOn(!modalOn);
+  const memberModal = () => {
+    setMemberModalOn(!memberModalOn);
   };
 
   return (
@@ -196,19 +193,19 @@ const Main = () => {
         <div className="workspaces-container">
           <Divider />
           <div className="workspaces-container_top">
-            <h2 className="active-workspace">
-              최근 활동한 팀플방
+            <div className="active-workspace">
+              <span className="recent-activity-text">최근 활동한 팀플방</span>
               <div className="create-workspace" onClick={handleModal}>
                 <BookmarkAddIcon />
                 New
               </div>
-            </h2>
+            </div>
             <input
               type="text"
               placeholder="이름으로 검색하세요"
               className="find-workspaceName-input"
               value={searchKeyword || ""}
-              // onChange={onChangeSearch}
+              readOnly
               // onKeyPress={onKeyDownSearch}
             />
           </div>
@@ -325,7 +322,7 @@ const Main = () => {
                     </div>
                     <button
                       className="main-header-addBtn"
-                      onClick={handleAddMemberModal}
+                      onClick={memberModal}
                     >
                       <img
                         src={addMemberIcon}
@@ -355,11 +352,11 @@ const Main = () => {
         )}
       </ModalPortal>
       <ModalPortal>
-        {modalOn && (
+        {memberModalOn && (
           <AddMemberModal
             newMember={newMember}
             setNewMember={setNewMember}
-            onClose={closeModal}
+            onClose={memberModal}
             addNewMember={addNewMember}
           />
         )}
@@ -399,6 +396,9 @@ const LeftSide = styled.aside`
   }
 
   .workspaces-container_top {
+    .recent-activity-text {
+    }
+
     .active-workspace {
       display: flex;
       justify-content: space-between;
@@ -472,12 +472,27 @@ const LeftSide = styled.aside`
 `;
 
 const RightSide = styled.div`
-  display: flex;
   width: 82%;
+  display: flex;
   flex-direction: column;
-  padding: 24px;
   box-sizing: border-box;
   position: relative;
+  z-index: 1;
+  padding: 20px;
+
+  ::after {
+    width: 100%;
+    height: 100%;
+    content: "";
+    background: url(${mainbg});
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    opacity: 0.3;
+  }
 
   .main-container {
     width: 100%;
@@ -566,6 +581,7 @@ const RightSide = styled.div`
     top: 30%;
     left: 40px;
     font-size: 4rem;
+    padding: 20px;
   }
 `;
 

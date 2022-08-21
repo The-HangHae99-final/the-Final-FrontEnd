@@ -153,19 +153,6 @@ const ScreenForNewbie = ({ setAppState }) => {
   );
 };
 
-const TeamNoteBtn = styled.button`
-  all: unset;
-  width: 402px;
-  height: 91px;
-  background: #889aff;
-  border-radius: 5px;
-  font-weight: 400;
-  font-size: 30px;
-  line-height: 43px;
-  cursor: pointer;
-  color: #ffffff;
-`;
-
 const ScreenForNewbieStyle = styled.div`
   height: 100%;
   width: 100%;
@@ -178,6 +165,7 @@ const ScreenForNewbieStyle = styled.div`
   text-align: center;
   z-index: 999;
   backdrop-filter: blur(10px);
+
   .create-box-container {
     width: 434px;
     height: 227px;
@@ -285,5 +273,18 @@ const ScreenForNewbieStyle = styled.div`
     color: #cbcbd7;
     cursor: pointer;
   }
+`;
+
+const TeamNoteBtn = styled.button`
+  all: unset;
+  width: 402px;
+  height: 91px;
+  background: #889aff;
+  border-radius: 5px;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 43px;
+  cursor: pointer;
+  color: #ffffff;
 `;
 export default ScreenForNewbie;

@@ -22,11 +22,11 @@ const JoinRouterSC = styled.div`
   height: 100%;
   position: absolute;
   top: 0;
+  left: 0;
   display: flex;
-
+  overflow: hidden;
   .signin-screen_left {
     width: 53%;
-    background-color: yellowgreen;
     background: url(${loginBanner});
     background-size: cover;
     background-position: center;
