@@ -25,7 +25,8 @@ function createBox(
   handleSubmit,
   handleChange,
   titleCharacter,
-  handleLabelClick
+  handleLabelClick,
+  activeLabel
 ) {
   return (
     <CreateBoxStyle onSubmit={handleSubmit}>
@@ -45,16 +46,32 @@ function createBox(
         </div>
 
         <div className="label-wrap">
-          <div className="label" onClick={handleLabelClick}>
+          <div
+            className={`label ${activeLabel === "0" ? "active" : ""}`}
+            id={"0"}
+            onClick={handleLabelClick}
+          >
             공지사항
           </div>
-          <div className="label" onClick={handleLabelClick}>
+          <div
+            className={`label ${activeLabel === "1" ? "active" : ""}`}
+            id={"1"}
+            onClick={handleLabelClick}
+          >
             업무자료
           </div>
-          <div className="label" onClick={handleLabelClick}>
+          <div
+            className={`label ${activeLabel === "2" ? "active" : ""}`}
+            id={"2"}
+            onClick={handleLabelClick}
+          >
             일정공유
           </div>
-          <div className="label" onClick={handleLabelClick}>
+          <div
+            className={`label ${activeLabel === "3" ? "active" : ""}`}
+            id={"3"}
+            onClick={handleLabelClick}
+          >
             회의록
           </div>
         </div>
@@ -83,9 +100,6 @@ function createBox(
 }
 
 const Board = () => {
-  const { state } = useLocation();
-  const currentWorkspaceName = state?.workSpace?.split("+")[1];
-  const currntWorkspaceId = state?.workspaceId;
   const currentWs = useRecoilValue(currentWorkspaceState);
   const [data, setData] = useState({
     title: "",
@@ -95,12 +109,10 @@ const Board = () => {
     workSpaceName: "",
     category: "todo",
   });
-  const [todoList, setTodoList] = useState([]);
-  const [inProgressList, setInProgressList] = useState([]);
-  const [doneList, setDoneList] = useState([]);
   const [initState, setInitState] = useRecoilState(initialKanbanData);
   const [isShown, setIsShown] = useState(false);
   const [titleCharacter, setTitleCharacter] = useState(0);
+  const [activeLabel, setActiveLabel] = useState("");
 
   // 보드 생성
   const handleSubmit = async (e) => {
@@ -132,7 +144,7 @@ const Board = () => {
             },
           },
         });
-
+        setActiveLabel("");
         setIsShown(false);
       } else {
         alert("빠진게 없는지 다시 한번 확인해주세요 :)");
@@ -192,6 +204,7 @@ const Board = () => {
   const handleLabelClick = (e) => {
     const label = e.target.innerText;
     setData({ ...data, label: label });
+    setActiveLabel(e.target.id);
   };
 
   const showCreateBox = () => {
@@ -337,6 +350,7 @@ const Board = () => {
                 tasks={tasks}
                 state={initState}
                 createBox={createBox}
+                activeLabel={activeLabel}
                 isShown={isShown}
                 handleSubmit={handleSubmit}
                 handleChange={handleChange}
@@ -510,7 +524,11 @@ const CreateBoxStyle = styled.form`
       }
 
       .label:hover {
-        background-color: #7d8bdb;
+        background-color: #e0e2e1;
+      }
+
+      .label.active {
+        background-color: #e0e2e1;
       }
     }
 

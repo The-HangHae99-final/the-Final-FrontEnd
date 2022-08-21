@@ -15,6 +15,7 @@ const Column = ({
   showCreateBox,
   titleCharacter,
   handleLabelClick,
+  activeLabel,
 }) => {
   return (
     <SectionWrap>
@@ -30,7 +31,8 @@ const Column = ({
                   handleSubmit,
                   handleChange,
                   titleCharacter,
-                  handleLabelClick
+                  handleLabelClick,
+                  activeLabel
                 )
               ) : (
                 <div className="create-box">
